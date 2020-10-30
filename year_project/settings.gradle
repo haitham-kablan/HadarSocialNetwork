@@ -1,0 +1,2 @@
+rootProject.name='Hadar_Project'
+include ':app'
