@@ -1,5 +1,4 @@
 
-import 'dart:collection';
 
 import 'package:hadar/users/RegisteredUser.dart';
 import 'package:hadar/users/User.dart';
