@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1065832186997",
+    "firebase_url": "https://hadarsocialnetwork.firebaseio.com",
+    "project_id": "hadarsocialnetwork",
+    "storage_bucket": "hadarsocialnetwork.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065832186997:android:7f09ac96d130a87669a43c",
+        "android_client_info": {
+          "package_name": "com.example.hadar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1065832186997-b89mfhv8fead14amf1dv3ntakfvabvl7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYzAWXpsTZ0oS3D60dK3mCrPcJ0MwQOmk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1065832186997-b89mfhv8fead14amf1dv3ntakfvabvl7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
