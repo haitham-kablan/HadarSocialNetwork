@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/users/UserInNeed.dart';
+import 'package:hadar/users/Volunteer.dart';
+import 'package:hadar/utils/HelpRequest.dart';
 
 class DataBaseService{
 
@@ -8,30 +11,38 @@ class DataBaseService{
   final CollectionReference Usesr_in_need_collection = FirebaseFirestore.instance.collection('USERS_IN_NEED');
   final CollectionReference Registeration_requests_collection = FirebaseFirestore.instance.collection('REGISTRATION_REQUESTS');
   final CollectionReference Help_requests_type_collection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
-  final CollectionReference Help_requests_collection = FirebaseFirestore.instance.collection('HELP_REQUESTS');
 
 
-  Stream<QuerySnapshot> get Helpers{
+  List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
+    return snapshot.docs.map((doc) =>
+        UserInNeed(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? 0, doc.data()['email'] ?? '')).toList();
+  }
 
-    return Helpers_collection.snapshots();
+  List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
+    return snapshot.docs.map((doc) =>
+        Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? 0, doc.data()['email'] ?? '')).toList();
+  }
+
+  List<HelpRequest> HelpRequestListFromSnapShot(QuerySnapshot snapshot){
+    return snapshot.docs.map((doc) =>
+        HelpRequest(doc.data()['category'] ?? '', doc.data()['description'] ?? '', doc.data()['date'] ?? '')).toList();
+  }
+
+  Stream<List<Volunteer>> get Helpers{
+    return Helpers_collection.snapshots().map(VolunteerListFromSnapShot);
 
   }
 
-  Stream<QuerySnapshot> get Usesr_in_need{
-    return Usesr_in_need_collection.snapshots();
+  Stream<List<UserInNeed>> get Usesr_in_need{
+    return Usesr_in_need_collection.snapshots().map(UserInNeedListFromSnapShot);
   }
 
-  Stream<QuerySnapshot> get Registeration_requests{
-    return Registeration_requests_collection.snapshots();
+  Stream<List<HelpRequest>> get_User_Help_Requests(String username){
+    return Usesr_in_need_collection.doc(username).collection('REQUESTS').snapshots().map(HelpRequestListFromSnapShot);
   }
 
-  Stream<QuerySnapshot> get Help_requests_type{
-    return Help_requests_type_collection.snapshots();
-  }
 
-  Stream<QuerySnapshot> get Help_requests{
-    return Help_requests_collection.snapshots();
-  }
+
 }
 
 

@@ -1,21 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/utils/HelpRequest.dart';
+import 'package:hadar/feeds/feed_items/help_request_tile.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-
-class helper_feed extends StatefulWidget {
+class HelperFeed extends StatefulWidget {
   @override
-  _helper_feedState createState() => _helper_feedState();
+  _HelperFeedState createState() => _HelperFeedState();
 }
 
-class _helper_feedState extends State<helper_feed> {
+class _HelperFeedState extends State<HelperFeed> {
   @override
   Widget build(BuildContext context) {
-
-    final helpers = Provider.of<QuerySnapshot>(context);
-
-    return Container();
+    final requests = Provider.of<List<HelpRequest>>(context);
+    return ListView.builder(
+      itemCount: requests.length,
+      itemBuilder: (context,index){
+        return HelpRequestTile(helpRequest: requests[index]);
+      },
+    );
   }
 }

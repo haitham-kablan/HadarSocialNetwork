@@ -1,9 +1,11 @@
-import 'dart:html';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/feeds/helper_feed.dart';
+import 'package:hadar/utils/HelpRequest.dart';
 import 'package:provider/provider.dart';
 
 
@@ -11,9 +13,14 @@ import 'package:hadar/home_page.dart';
 
 
 
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
-    home: Log_In_Screen(),
+    home: tmp(),
   ));
 }
 
@@ -45,17 +52,29 @@ class Log_In_Screen extends StatelessWidget {
 
 
 
-
-
 class tmp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<QuerySnapshot>.value(
-      value: DataBaseService().Helpers,
+    return StreamProvider<List<HelpRequest>>.value(
+      value: DataBaseService().get_User_Help_Requests('haitham'),
       child: Scaffold(
-        body: Feed(),
+        backgroundColor: Colors.brown[50],
+        appBar: AppBar(
+          title: Text('Brew Crew'),
+          backgroundColor: Colors.brown[400],
+          elevation: 0.0,
+          actions: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('logout'),
+            ),
+          ],
+        ),
+        body: HelperFeed(),
       ),
-
     );
   }
 }
+
+
