@@ -1,4 +1,9 @@
+import 'dart:html';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/services/DataBaseServices.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -106,3 +111,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 }
 
+
+class tmp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<QuerySnapshot>.value(
+      value: DataBaseService().Helpers,
+      child: Scaffold(
+        body: Feed(),
+      ),
+
+    );
+  }
+}
