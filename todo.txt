@@ -1,0 +1,9 @@
+As a user in need,
+I’d like to view my previous and current help requests in a feed,
+So, I can observe their status.
+
+1- clicking on the post will display window showing the request status:
+         1 - fulfilled or not
+          2 - renew button
+          3 - if not fulfilled , show a list of offers (if there is any) 
+              button
