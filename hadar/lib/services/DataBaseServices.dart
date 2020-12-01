@@ -25,7 +25,7 @@ class DataBaseService{
 
   List<HelpRequest> HelpRequestListFromSnapShot(QuerySnapshot snapshot){
     return snapshot.docs.map((doc) =>
-        HelpRequest(doc.data()['category'] ?? '', doc.data()['description'] ?? '', doc.data()['date'] ?? '' , doc.data()['sender'] ? '')).toList();
+        HelpRequest(doc.data()['category'] ?? '', doc.data()['description'] ?? '', doc.data()['date'] ?? '' , doc.data()['sender'] ?? '')).toList();
   }
 
   Stream<List<Volunteer>> get Helpers{
@@ -50,8 +50,9 @@ class DataBaseService{
     to_add['sender'] = helpRequest.sender;
     to_add['description'] = helpRequest.description;
     to_add['date'] = helpRequest.date;
-    
-    return await Usesr_in_need_collection.doc(helpRequest.sender).set(to_add);
+
+    return await Usesr_in_need_collection.doc(helpRequest.sender).collection('REQUESTS').doc()
+    .set(to_add);
   }
 
 }

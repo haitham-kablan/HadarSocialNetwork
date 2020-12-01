@@ -71,7 +71,12 @@ class tmp extends StatelessWidget {
             ),
           ],
         ),
-        body: HelperFeed(),
+        //body: HelperFeed(),
+        floatingActionButton: FloatingActionButton(
+          onPressed:() {
+            DataBaseService().AddHelpRequestToDataBase(HelpRequest('category', 'description', 'date', 'haitham'));
+          }
+        ),
       ),
     );
   }
