@@ -4,31 +4,41 @@ import './feed_page.dart';
 
 class Home_Page_Screen extends StatelessWidget {
   static const String _title = 'Home Page';
+  Widget runningWidget;
+
+  Home_Page_Screen(this.runningWidget);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
-      home: MyStatefulWidget(),
+      home: MyStatefulWidget(runningWidget),
     );
   }
 }
 
 /// This is the stateful widget that the main application instantiates.
 class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}) : super(key: key);
+  MyStatefulWidget({Key key, this.runningWidget}) : super(key: key);
+  Widget runningWidget;
+
+
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState(runningWidget);
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
+
+  _MyStatefulWidgetState(this.runningWidget);
+
+  Widget runningWidget;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     Container(
-              child: Show_Feed_Page(),
+              child: runningWidget,
               //color: Colors.green
 
     ),

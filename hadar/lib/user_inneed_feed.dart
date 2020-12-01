@@ -5,6 +5,8 @@ import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 
 import 'dart:developer';
+
+import 'UserInNeedFeed.dart';
 bool debug = true;
 
 class UserInNeedHelpRequestsFeed extends StatefulWidget{
@@ -52,9 +54,13 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
             title: Row(
               children: [
                 RaisedButton(
-                  child: Text("Add item"),
-                  onPressed: (){_handleFeedChange(HelpRequest.fake(), true);},
-
+                  child: Text("Add Help Request"),
+                  onPressed: (){
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => helpWindow()),
+                    );
+                  }
                 ),
                 SizedBox(width: 20,),
                 Center(

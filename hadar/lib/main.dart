@@ -34,17 +34,34 @@ class Log_In_Screen extends StatelessWidget {
         title: Text('Hadar'),
         centerTitle: true,
       ),
-      body: Center(
-        child: RaisedButton(
-          child: Text("go next"),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Home_Page_Screen()),
-            );
-          },
+      body: Column(
+      children: [
+       Center(
+
+          child: RaisedButton(
+            child: Text("go to volunteer feed"),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home_Page_Screen()),
+              );
+            },
+          ),
         ),
-      ),
+        Center(
+
+          child: RaisedButton(
+            child: Text("go to user in_need feed"),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home_Page_Screen()),
+              );
+            },
+          ),
+        ),
+      ],
+      )
 
     );
   }
