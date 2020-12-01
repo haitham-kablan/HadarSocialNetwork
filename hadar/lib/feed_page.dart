@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hadar/main.dart';
 
 class Show_Feed_Page extends StatelessWidget {
   static const String _title = 'Home Page';
@@ -33,13 +34,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 //      appBar: AppBar(
 //        title: const Text('Feed Page'),
 //      ),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (BuildContext context, int index) {
-          //return PostCard();
-          return feed();
-        },
-      ),
+      body: tmp(),
+
     );
   }
 }

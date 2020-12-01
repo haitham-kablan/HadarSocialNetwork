@@ -14,10 +14,14 @@ class _HelperFeedState extends State<HelperFeed> {
   Widget build(BuildContext context) {
     final requests = Provider.of<List<HelpRequest>>(context);
     return ListView.builder(
-      itemCount: requests.length,
+      itemCount: (requests == null) ? 0 : requests.length,
       itemBuilder: (context,index){
         return HelpRequestTile(helpRequest: requests[index]);
       },
     );
+  }
+
+  void PrintMenu(){
+    print("111");
   }
 }
