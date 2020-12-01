@@ -6,6 +6,7 @@ class HelpRequest{
   String category;
   String description;
   String date;
+  String sender;
 
-  HelpRequest( this.category, this.description, this.date);
+  HelpRequest( this.category, this.description, this.date , this.sender);
 }
