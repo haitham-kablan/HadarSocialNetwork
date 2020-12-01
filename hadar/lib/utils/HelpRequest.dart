@@ -5,7 +5,7 @@ import 'HelpRequestType.dart';
 
 class HelpRequest{
 
-  HelpRequestType category;
+  String category;
   String description;
   String date;
   String sender;
@@ -17,7 +17,7 @@ class HelpRequest{
   //HelpRequest(this.sender, this.category, this.description, this.date);
   HelpRequest.fake():
         sender = "slim shady" + (indexer++).toString(),
-        category = HelpRequestType("food"),
+        category = "food",
         description = "i need someone to peel some potatoes for me",
         date = DateTime.now().toString();
 

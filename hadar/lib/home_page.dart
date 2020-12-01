@@ -4,53 +4,39 @@ import './feed_page.dart';
 
 class Home_Page_Screen extends StatelessWidget {
   static const String _title = 'Home Page';
-  Widget runningWidget;
 
-  Home_Page_Screen(this.runningWidget);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
-      home: MyStatefulWidget(runningWidget),
+      home: MyStatefulWidget(),
     );
   }
 }
 
 /// This is the stateful widget that the main application instantiates.
 class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key, this.runningWidget}) : super(key: key);
-  Widget runningWidget;
+  MyStatefulWidget({Key key}): super(key: key);
 
+
+  //MyStatefulWidget.byWidget(this.runningWidget);
 
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState(runningWidget);
+  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
 
-  _MyStatefulWidgetState(this.runningWidget);
-
-  Widget runningWidget;
-  static const TextStyle optionStyle =
+  //Widget runningWidget;
+  final TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static List<Widget> _widgetOptions = <Widget>[
-    Container(
-              child: runningWidget,
-              //color: Colors.green
+  /*static List<Widget> _widgetOptions = <Widget>[
 
-    ),
-    Container(
-        child:Text(
-              'Index 1: Profile',
-              style: optionStyle,
-          ),
-        //color: Colors.amber,
-    ),
 
-  ];
+  ];*/
 
   void _onItemTapped(int index) {
     setState(() {
@@ -73,7 +59,24 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           //color: Colors.amber[600],
           //width: 48.0,
           //height: 48.0,
-          child: _widgetOptions.elementAt(_selectedIndex)
+          child: Column(
+            children: [
+              Container(
+                child: Text(
+                  'Index 0: Home',
+                  style: optionStyle,
+                  //color: Colors.green
+                )
+              ),
+              Container(
+                child:Text(
+                  'Index 1: Profile',
+                  style: optionStyle,
+                ),
+                //color: Colors.amber,
+              ),
+            ],
+          )
         ),
 
       ),

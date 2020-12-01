@@ -6,7 +6,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 
 import 'dart:developer';
 
-import 'UserInNeedFeed.dart';
+import 'UserInNeedRequestView.dart';
 bool debug = true;
 
 class UserInNeedHelpRequestsFeed extends StatefulWidget{
@@ -29,7 +29,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
   // if addedRequest is true, then the change that will be done is adding the
   // given helpRequest to the feed.
   // Otherwise, the given helpRequest will be removed from the feed
-  void _handleFeedChange(HelpRequest helpRequest, bool addedRequest) {
+  void handleFeedChange(HelpRequest helpRequest, bool addedRequest) {
     setState(() {
       if (addedRequest) {
         feed.add(helpRequest);
@@ -58,7 +58,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
                   onPressed: (){
                     Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => helpWindow()),
+                    MaterialPageRoute(builder: (context) => HelpWindow(this)),
                     );
                   }
                 ),
@@ -158,7 +158,7 @@ class HelpRequestStatus extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: helpRequest.category.description,
+      title: helpRequest.category,
       home: Container(
         padding: const EdgeInsets.only(top: 40, bottom: 200),
         child: Column(

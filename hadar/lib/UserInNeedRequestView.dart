@@ -1,9 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hadar/user_inneed_feed.dart';
+import 'package:hadar/utils/HelpRequest.dart';
 
-class helpWindow extends StatelessWidget {
+class HelpWindow extends StatelessWidget {
   static const String _title = 'helpWindow';
+
+  final HelpRequestFeedState parent;
+
+  HelpWindow(this.parent);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +35,7 @@ class helpWindow extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Grocories'),
+                  builder: (context) => DescriptonBox(title: 'Grocories', parent: parent,),
                 ),
               ),
             ),
@@ -41,7 +47,7 @@ class helpWindow extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Babysitter'),
+                  builder: (context) => DescriptonBox(title: 'Babysitter', parent: parent,),
                 ),
               ),
             ),
@@ -53,7 +59,7 @@ class helpWindow extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Health issues'),
+                  builder: (context) => DescriptonBox(title: 'Health issues', parent: parent,),
                 ),
               ),
             ),
@@ -65,7 +71,7 @@ class helpWindow extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Dentist'),
+                  builder: (context) => DescriptonBox(title: 'Dentist', parent: parent,),
                 ),
               ),
             ),
@@ -77,7 +83,7 @@ class helpWindow extends StatelessWidget {
               onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Food'),
+                  builder: (context) => DescriptonBox(title: 'Food', parent: parent,),
                 ),
               ),
             ),
@@ -87,7 +93,7 @@ class helpWindow extends StatelessWidget {
     );
   }
 }
-
+/*
 class UserInNeedFeed extends StatelessWidget {
   static const String _title = 'Feed';
 
@@ -103,7 +109,7 @@ class UserInNeedFeed extends StatelessWidget {
           onPressed: () => {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => helpWindow()),
+              MaterialPageRoute(builder: (context) => HelpWindow()),
             )
           },
         ),
@@ -111,26 +117,45 @@ class UserInNeedFeed extends StatelessWidget {
     );
   }
 }
+*/
 
 //when a user clicks on the category, he gets a description box,
 // where he can describe his request
 class DescriptonBox extends StatefulWidget {
-  DescriptonBox({Key key, this.title}) : super(key: key);
+  DescriptonBox({Key key, this.title, this.parent}) : super(key: key);
   final String title;
-
+  final HelpRequestFeedState parent;
   @override
   _DescriptonBox createState() => _DescriptonBox();
 }
 
 class _DescriptonBox extends State<DescriptonBox> {
   String _inputtext = 'waiting..';
+  HelpRequest helpRequest;
   TextEditingController inputtextField = TextEditingController();
 
   void _processText() {
     setState(() {
       _inputtext = inputtextField.text;
-    });
+      helpRequest = HelpRequest(
+          widget.title, _inputtext, DateTime.now().toString(), "sender");
+      widget.parent.handleFeedChange(helpRequest, true);
+      //todo: push to database
+      if (Navigator.canPop(context)) {
+        Navigator.pop(
+          context,
+        );
+      }
+      if (Navigator.canPop(context)) {
+        Navigator.pop(
+          context,
+        );
+      }
+    }
+    );
+
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -150,13 +175,13 @@ class _DescriptonBox extends State<DescriptonBox> {
                     border: OutlineInputBorder(), labelText: 'Description'),
               ),
             ),
-            Padding(
+            /*Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 '$_inputtext',
                 style: Theme.of(context).textTheme.display1,
               ),
-            ),
+            ),*/
             RaisedButton(
               onPressed: _processText,
               child: Text('Done'),
