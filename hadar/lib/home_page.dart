@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './feed_page.dart';
+
 class Home_Page_Screen extends StatelessWidget {
   static const String _title = 'Home Page';
 
@@ -24,14 +26,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
+  static List<Widget> _widgetOptions = <Widget>[
+    Container(
+              child: Show_Feed_Page(),
+              //color: Colors.green
+
     ),
-    Text(
-      'Index 1: Profile',
-      style: optionStyle,
+    Container(
+        child:Text(
+              'Index 1: Profile',
+              style: optionStyle,
+          ),
+        //color: Colors.amber,
     ),
 
   ];
@@ -49,7 +55,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         title: const Text('Home Page'),
       ),
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+
+         // child: _widgetOptions.elementAt(_selectedIndex),
+
+        child: Container(
+          margin: const EdgeInsets.all(10.0),
+          //color: Colors.amber[600],
+          //width: 48.0,
+          //height: 48.0,
+          child: _widgetOptions.elementAt(_selectedIndex)
+        ),
+
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
