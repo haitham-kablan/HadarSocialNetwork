@@ -40,7 +40,8 @@ class Log_In_Screen extends StatelessWidget {
       ),
       body: Column(
       children: [
-       Center(
+        SizedBox(height: 200,),
+        Center(
 
           child: RaisedButton(
             child: Text("go to volunteer feed"),
@@ -86,7 +87,7 @@ class tmp extends StatelessWidget {
         backgroundColor: Colors.brown[50],
 
         appBar: AppBar(
-          title: Text('Brew Crew'),
+          title: Text('Volunteer Feed'),
           backgroundColor: Colors.brown[400],
           elevation: 0.0,
           actions: <Widget>[

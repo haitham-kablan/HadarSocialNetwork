@@ -99,7 +99,7 @@ class HelpRequestItem extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HelpRequestStatus(helpRequest)),
+              MaterialPageRoute(builder: (context) => MyHomePage()),
             );
           },
           leading: CircleAvatar(
@@ -164,8 +164,8 @@ class HelpRequestStatus extends StatelessWidget{
         child: Column(
           children: [
 
-            Container(
-              child: Scaffold(
+            /*Container(
+              child:*/ Scaffold(
                 appBar: AppBar(
                   title: Row(
                     children:[
@@ -200,7 +200,7 @@ class HelpRequestStatus extends StatelessWidget{
                   ),
                 ),
               )
-            ),
+           //),
 
           ],
         ),
