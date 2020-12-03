@@ -8,8 +8,8 @@ import 'UnregisteredUser.dart';
 class Admin extends RegisteredUser{
   List users;
 
-  Admin(String name, String phoneNumber, String email, bool isSignedIn)
-      : super(name, phoneNumber, email, Privilege.Admin, isSignedIn) {
+  Admin(String name, String phoneNumber, String email, bool isSignedIn , String id)
+      : super(name, phoneNumber, email, Privilege.Admin, isSignedIn,id) {
 
     users = new List<RegisteredUser>();
   }

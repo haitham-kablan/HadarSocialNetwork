@@ -104,7 +104,7 @@ class HelpRequestItem extends StatelessWidget {
           },
           leading: CircleAvatar(
             backgroundColor: Colors.blueGrey,
-            child: Text(helpRequest.sender[0]),
+            child: Text(helpRequest.sender_id[0]),
           ),
           title:  HelpRequestItemTile(helpRequest: helpRequest,),
           tileColor: Colors.blueGrey[200],
@@ -132,7 +132,7 @@ class HelpRequestItemTile extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            child: Text(helpRequest.sender + " request:\n" + helpRequest.description),
+            child: Text(helpRequest.sender_id + " request:\n" + helpRequest.description),
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(bottom: 8),
           ),
@@ -158,7 +158,7 @@ class HelpRequestStatus extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: helpRequest.category,
+      title: helpRequest.category.toString(),
       home: Container(
         padding: const EdgeInsets.only(top: 40, bottom: 200),
         child: Column(

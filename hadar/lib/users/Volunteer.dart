@@ -9,8 +9,8 @@ class Volunteer extends RegisteredUser{
   List helpRequestsCategories;
   List helpRequests;
 
-  Volunteer(String name, String phoneNumber, String email, bool isSignedIn)
-      : super(name, phoneNumber, email, Privilege.Volunteer, isSignedIn){
+  Volunteer(String name, String phoneNumber, String email, bool isSignedIn , String id)
+      : super(name, phoneNumber, email, Privilege.Volunteer, isSignedIn , id){
 
     helpRequestsCategories = new List<HelpRequestType>();
     helpRequests = new List<HelpRequest>();

@@ -7,8 +7,8 @@ import 'RegisteredUser.dart';
 class UserInNeed extends RegisteredUser{
   List myHelpRequests;
 
-  UserInNeed(String name, String phoneNumber, String email, bool isSignedIn)
-      : super(name, phoneNumber, email, Privilege.UserInNeed, isSignedIn){
+  UserInNeed(String name, String phoneNumber, String email, bool isSignedIn , String id)
+      : super(name, phoneNumber, email, Privilege.UserInNeed, isSignedIn , id){
 
     myHelpRequests = new List<HelpRequest>();
   }

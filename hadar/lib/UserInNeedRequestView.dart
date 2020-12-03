@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
 
 class HelpWindow extends StatelessWidget {
   static const String _title = 'helpWindow';
@@ -138,7 +139,7 @@ class _DescriptonBox extends State<DescriptonBox> {
     setState(() {
       _inputtext = inputtextField.text;
       helpRequest = HelpRequest(
-          widget.title, _inputtext, DateTime.now().toString(), "sender");
+          HelpRequestType(widget.title), _inputtext, DateTime.now(), "sender");
       widget.parent.handleFeedChange(helpRequest, true);
       //todo: push to database
       if (Navigator.canPop(context)) {

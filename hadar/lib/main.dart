@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/feeds/helper_feed.dart';
 import 'package:hadar/user_inneed_feed.dart';
+import 'package:hadar/users/User.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:provider/provider.dart';
@@ -61,8 +62,8 @@ class Log_In_Screen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => UserInNeedHelpRequestsFeed(helpRequests: <HelpRequest>[
-                  HelpRequest("clothes", "description", DateTime.now().toString(), "chuck norris"),
-                  HelpRequest("food", "description2", DateTime.now().toString(),"bruce lee"),
+                  HelpRequest(HelpRequestType("clothes"), "description", DateTime.now(), "chuck norris"),
+                  HelpRequest(HelpRequestType("food"), "description2", DateTime.now(),"bruce lee"),
                 ],)),
               );
             },
@@ -82,7 +83,7 @@ class tmp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<HelpRequest>>.value(
-      value: DataBaseService().getUserHelpRequests('haitham'),
+      value: DataBaseService().getUserHelpRequests(User('haitham','0545522973','ss',Privilege.Admin,'111111111')),
       child: Scaffold(
         backgroundColor: Colors.brown[50],
 
