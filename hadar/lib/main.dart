@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/feeds/helper_feed.dart';
+import 'package:hadar/tests/db_test.dart';
 import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/User.dart';
@@ -34,96 +35,12 @@ void main() async {
 class Log_In_Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.red,
-        title: Text('Hadar'),
-        centerTitle: true,
-      ),
-      body: Column(
-      children: [
-        SizedBox(height: 200,),
-        Center(
-          child: RaisedButton(
-            child: Text('test'),
-            onPressed: (){
-              DataBaseService().addAdminToDataBase(Admin('1','2','3',true,'1'));
-              DataBaseService().addHelpRequestToDataBase(HelpRequest(HelpRequestType('1'), '2', DateTime.now(), '2'));
-              DataBaseService().addHelpRequestTypeDataBase(HelpRequestType('no no'));
-              DataBaseService().addUserInNeedToDataBase(User('haitham', '2', '2', Privilege.UserInNeed, '2'));
-              DataBaseService().addVolunteerToDataBase(Volunteer('s','3', '4', false, '5'));
-            },
-          ),
-        ),
-        Center(
-          child: RaisedButton(
-            child: Text('remove'),
-            onPressed: (){
-
-            },
-          ),
-        ),
-        Center(
-
-          child: RaisedButton(
-            child: Text("go to volunteer feed"),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Show_Feed_Page()),
-              );
-            },
-          ),
-        ),
-        Center(
-
-          child: RaisedButton(
-            child: Text("go to user in_need feed"),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UserInNeedHelpRequestsFeed(helpRequests: <HelpRequest>[
-                  HelpRequest(HelpRequestType("clothes"), "description", DateTime.now(), "chuck norris"),
-                  HelpRequest(HelpRequestType("food"), "description2", DateTime.now(),"bruce lee"),
-                ],)),
-              );
-            },
-          ),
-        ),
-      ],
-      )
-
-    );
+    return db_test();
   }
 }
 
 
 
-class tmp extends StatelessWidget {
 
-  @override
-  Widget build(BuildContext context) {
-    return StreamProvider<List<HelpRequest>>.value(
-      value: DataBaseService().getUserHelpRequests(User('haitham','0545522973','ss',Privilege.Admin,'111111111')),
-      child: Scaffold(
-        backgroundColor: Colors.brown[50],
-
-        appBar: AppBar(
-          title: Text('Volunteer Feed'),
-          backgroundColor: Colors.brown[400],
-          elevation: 0.0,
-          actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('logout'),
-            ),
-          ],
-        ),
-        body: HelperFeed(),
-      ),
-    );
-  }
-}
 
 

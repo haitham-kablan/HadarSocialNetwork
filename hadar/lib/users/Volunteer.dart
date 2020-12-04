@@ -1,4 +1,8 @@
 
+import 'dart:core';
+import 'dart:core';
+import 'dart:core';
+
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 
@@ -9,10 +13,10 @@ class Volunteer extends RegisteredUser{
   List helpRequestsCategories;
   List helpRequests;
 
-  Volunteer(String name, String phoneNumber, String email, bool isSignedIn , String id)
+  Volunteer(String name, String phoneNumber, String email, bool isSignedIn , String id , List<HelpRequestType> categories)
       : super(name, phoneNumber, email, Privilege.Volunteer, isSignedIn , id){
 
-    helpRequestsCategories = new List<HelpRequestType>();
+    helpRequestsCategories = categories;
     helpRequests = new List<HelpRequest>();
   }
 

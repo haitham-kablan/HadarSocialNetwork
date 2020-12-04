@@ -17,13 +17,13 @@ class DataBaseService{
   final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
 
 
-  Future addHelpRequestToDataBase(HelpRequest helpRequest) async{
+  Future addHelpRequestToDataBaseForUserInNeed(HelpRequest helpRequest) async{
 
     Map<String,dynamic> to_add = Map();
     to_add['category'] = helpRequest.category.description;
     to_add['sender_id'] = helpRequest.sender_id;
     to_add['description'] = helpRequest.description;
-    to_add['date'] = helpRequest.date;
+    to_add['date'] = helpRequest.date.toString();
 
     return await userInNeedCollection.doc(helpRequest.sender_id).collection('REQUESTS').doc()
     .set(to_add);
@@ -37,7 +37,7 @@ class DataBaseService{
     to_add['phoneNumber'] = user.phoneNumber;
     to_add['email'] = user.email;
     to_add['id'] = user.id;
-    to_add['privilege'] = user.privilege.toString();
+    to_add['privilege'] = user.privilege.toString().substring(10);
     
     return await userInNeedCollection.doc(user.id).set(to_add);
   }
@@ -50,7 +50,7 @@ class DataBaseService{
     to_add['phoneNumber'] = user.phoneNumber;
     to_add['email'] = user.email;
     to_add['id'] = user.id;
-    to_add['privilege'] = user.privilege.toString();
+    to_add['privilege'] = user.privilege.toString().substring(10);
 
     return await adminsCollection.doc(user.id).set(to_add);
   }
@@ -63,18 +63,11 @@ class DataBaseService{
     to_add['phoneNumber'] = user.phoneNumber;
     to_add['email'] = user.email;
     to_add['id'] = user.id;
-    to_add['privilege'] = user.privilege.toString();
-    to_add['helpRequestsCategories'] = user.helpRequestsCategories.map((e) => e.toString()).toList();
+    to_add['privilege'] = user.privilege.toString().substring(10);
+    to_add['helpRequestsCategories'] = user.helpRequestsCategories.map((e) => e.description).toList();
 
     return await helpersCollection.doc(user.id).set(to_add);
   }
-
-//  Future removeUserFromDataBase(User user) async{
-//
-//    CollectionReference col = user.privilege == Privilege.UserInNeed ? userInNeedCollection : (user.privilege == Privilege.Volunteer ? helpersCollection :  adminsCollection);
-//    //TODO ALOSE DELETE COLLECOTION REQUESTS
-//    return await col.doc(user.id).delete();
-//  }
 
   Future addHelpRequestTypeDataBase(HelpRequestType helpRequestType) async{
 
@@ -82,6 +75,17 @@ class DataBaseService{
 
     to_add['description'] = helpRequestType.description;
     return await helpRequestsTypeCollection.doc().set(to_add);
+  }
+
+  Future assignHelpRequestForVolunteer(Volunteer volunteer,HelpRequest helpRequest) async{
+    
+    Map<String,dynamic> to_add = Map();
+    to_add['category'] = helpRequest.category.description;
+    to_add['sender_id'] = helpRequest.sender_id;
+    to_add['description'] = helpRequest.description;
+    to_add['date'] = helpRequest.date.toString();
+    
+    return await helpersCollection.doc(volunteer.id).collection('REQUESTS').doc().set(to_add);
   }
 
   Stream<List<HelpRequest>> getUserHelpRequests(User user) {
@@ -105,17 +109,40 @@ class DataBaseService{
         .map(helpRequestTypeListFromSnapShot);
   }
 
+  Stream<List<Volunteer>> getAllVolunteersForSpecificRequest(HelpRequestType helpRequestType){
+
+    CollectionReference col = helpersCollection.where('helpRequestsCategories' , arrayContains: helpRequestType.description );
+    return col
+        .snapshots()
+        .map(VolunteerListFromSnapShot);
+  }
+  
+  
+
+
 }
 
 
 List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      HelpRequest(doc.data()['category'] ?? '', doc.data()['description'] ?? '', doc.data()['date'] ?? '' , doc.data()['sender_id'] ?? '')).toList();
+      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '')).toList();
 }
 
 List<HelpRequestType> helpRequestTypeListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
       HelpRequestType(doc.data()['description'] ?? '')).toList();
 }
+
+List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
+
+  return snapshot.docs.map((doc) =>
+      Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['String id'] ?? '' , (doc.data()['helpRequestsCategories'] as List<String>).map((e)
+          => HelpRequestType(e)).toList() ?? List<HelpRequestType>())).toList();
+}
+
+
+
+
 
 
