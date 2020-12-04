@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hadar/feeds/helper_feed.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
+import 'package:provider/provider.dart';
 
 class db_test extends StatelessWidget {
   @override
@@ -75,16 +77,19 @@ class db_test extends StatelessWidget {
             ),
             RaisedButton(
               child: Text('get user help request'),
-              onPressed: (){
-                print('getting user help request');
-                print(DataBaseService().getUserHelpRequests(User('haitham', '2233', 'no_need', Privilege.UserInNeed, '1')));
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => testing_stream()),
+                );
               },
             ),
             RaisedButton(
               child: Text('get all voulnteers for specif request'),
               onPressed: (){
-
+                
               },
+
             ),
             RaisedButton(
               child: Text('get vol help request'),
@@ -102,6 +107,32 @@ class db_test extends StatelessWidget {
         ),
       ),
 
+    );
+  }
+}
+
+class testing_stream extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<List<HelpRequest>>.value(
+      value: DataBaseService().getUserHelpRequests(User('haitham', '2233', 'no_need', Privilege.UserInNeed, '1')),
+      child: Scaffold(
+        backgroundColor: Colors.brown[50],
+
+        appBar: AppBar(
+          title: Text('Volunteer Feed'),
+          backgroundColor: Colors.brown[400],
+          elevation: 0.0,
+          actions: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('logout'),
+            ),
+          ],
+        ),
+        body: HelperFeed(),
+      ),
     );
   }
 }

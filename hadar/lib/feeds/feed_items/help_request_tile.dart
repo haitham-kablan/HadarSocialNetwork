@@ -22,8 +22,8 @@ class HelpRequestTile extends StatelessWidget {
             radius: 25.0,
             backgroundColor: Colors.brown,
           ),
-          title: Text(helpRequest.category.toString()),
-          subtitle: Text(helpRequest.description),
+          title: Text(helpRequest.category.description),
+          subtitle: Text(helpRequest.date.toString()),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
