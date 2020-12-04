@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/feeds/helper_feed.dart';
 import 'package:hadar/user_inneed_feed.dart';
+import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/User.dart';
+import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +44,26 @@ class Log_In_Screen extends StatelessWidget {
       body: Column(
       children: [
         SizedBox(height: 200,),
+        Center(
+          child: RaisedButton(
+            child: Text('test'),
+            onPressed: (){
+              DataBaseService().addAdminToDataBase(Admin('1','2','3',true,'1'));
+              DataBaseService().addHelpRequestToDataBase(HelpRequest(HelpRequestType('1'), '2', DateTime.now(), '2'));
+              DataBaseService().addHelpRequestTypeDataBase(HelpRequestType('no no'));
+              DataBaseService().addUserInNeedToDataBase(User('haitham', '2', '2', Privilege.UserInNeed, '2'));
+              DataBaseService().addVolunteerToDataBase(Volunteer('s','3', '4', false, '5'));
+            },
+          ),
+        ),
+        Center(
+          child: RaisedButton(
+            child: Text('remove'),
+            onPressed: (){
+
+            },
+          ),
+        ),
         Center(
 
           child: RaisedButton(

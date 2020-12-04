@@ -20,7 +20,7 @@ class DataBaseService{
   Future addHelpRequestToDataBase(HelpRequest helpRequest) async{
 
     Map<String,dynamic> to_add = Map();
-    to_add['category'] = helpRequest.category;
+    to_add['category'] = helpRequest.category.description;
     to_add['sender_id'] = helpRequest.sender_id;
     to_add['description'] = helpRequest.description;
     to_add['date'] = helpRequest.date;
@@ -37,7 +37,7 @@ class DataBaseService{
     to_add['phoneNumber'] = user.phoneNumber;
     to_add['email'] = user.email;
     to_add['id'] = user.id;
-    to_add['privilege'] = user.privilege;
+    to_add['privilege'] = user.privilege.toString();
     
     return await userInNeedCollection.doc(user.id).set(to_add);
   }
@@ -50,7 +50,7 @@ class DataBaseService{
     to_add['phoneNumber'] = user.phoneNumber;
     to_add['email'] = user.email;
     to_add['id'] = user.id;
-    to_add['privilege'] = user.privilege;
+    to_add['privilege'] = user.privilege.toString();
 
     return await adminsCollection.doc(user.id).set(to_add);
   }
@@ -63,18 +63,18 @@ class DataBaseService{
     to_add['phoneNumber'] = user.phoneNumber;
     to_add['email'] = user.email;
     to_add['id'] = user.id;
-    to_add['privilege'] = user.privilege;
+    to_add['privilege'] = user.privilege.toString();
     to_add['helpRequestsCategories'] = user.helpRequestsCategories.map((e) => e.toString()).toList();
 
     return await helpersCollection.doc(user.id).set(to_add);
   }
 
-  Future removeUserFromDataBase(User user) async{
-
-
-    CollectionReference col = user.privilege == UserInNeed ? userInNeedCollection : (user.privilege == Volunteer ? helpersCollection :  adminsCollection);
-    return await col.doc(user.id).delete();
-  }
+//  Future removeUserFromDataBase(User user) async{
+//
+//    CollectionReference col = user.privilege == Privilege.UserInNeed ? userInNeedCollection : (user.privilege == Privilege.Volunteer ? helpersCollection :  adminsCollection);
+//    //TODO ALOSE DELETE COLLECOTION REQUESTS
+//    return await col.doc(user.id).delete();
+//  }
 
   Future addHelpRequestTypeDataBase(HelpRequestType helpRequestType) async{
 
