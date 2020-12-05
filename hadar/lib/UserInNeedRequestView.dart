@@ -4,6 +4,29 @@ import 'package:flutter/widgets.dart';
 import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 
+class ButtonDesign extends StatelessWidget {
+  ButtonDesign({this.title, this.parent}) : super(key: ObjectKey(title));
+
+  final title;
+  final HelpRequestFeedState parent;
+
+  @override
+  Widget build(BuildContext context) {
+    return RaisedButton(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+          side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
+      child: Text(title),
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DescriptonBox(title: title, parent: parent),
+        ),
+      ),
+    );
+  }
+}
+
 class HelpWindow extends StatelessWidget {
   static const String _title = 'helpWindow';
 
@@ -27,66 +50,11 @@ class HelpWindow extends StatelessWidget {
           crossAxisCount: 2,
           // Generate 100 widgets that display their index in the List.
           children: [
-            RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
-              child: Text('groceries'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Grocories', parent: parent,),
-                ),
-              ),
-            ),
-            RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
-              child: Text('Babysitter'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Babysitter', parent: parent,),
-                ),
-              ),
-            ),
-            RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
-              child: Text('Health issue'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Health issues', parent: parent,),
-                ),
-              ),
-            ),
-            RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
-              child: Text('Dentist'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Dentist', parent: parent,),
-                ),
-              ),
-            ),
-            RaisedButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.0),
-                  side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
-              child: Text('Food'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DescriptonBox(title: 'Food', parent: parent,),
-                ),
-              ),
-            ),
+            ButtonDesign(title: 'Groceries', parent: parent),
+            ButtonDesign(title: 'Health issues', parent: parent),
+            ButtonDesign(title: 'BabySitter', parent: parent),
+            ButtonDesign(title: 'Dentist', parent: parent),
+            ButtonDesign(title: 'Food', parent: parent),
           ],
         ),
       ),
@@ -125,6 +93,7 @@ class DescriptonBox extends StatefulWidget {
   DescriptonBox({Key key, this.title, this.parent}) : super(key: key);
   final String title;
   final HelpRequestFeedState parent;
+
   @override
   _DescriptonBox createState() => _DescriptonBox();
 }
@@ -151,11 +120,8 @@ class _DescriptonBox extends State<DescriptonBox> {
           context,
         );
       }
-    }
-    );
-
+    });
   }
-
 
   @override
   Widget build(BuildContext context) {
