@@ -9,6 +9,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:provider/provider.dart';
 
 class db_test extends StatelessWidget {
+  DateTime date ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +23,7 @@ class db_test extends StatelessWidget {
             RaisedButton(
               child: Text('add user in need'),
               onPressed: (){
-                DataBaseService().addUserInNeedToDataBase(User('haitham', '2233', 'no_need', Privilege.UserInNeed, '1'));
+                DataBaseService().addUserInNeedToDataBase(User('haitham', '2233', 'no_need', Privilege.UserInNeed, '123456789'));
                 DataBaseService().addUserInNeedToDataBase(User('s3ed', '2233', 'no_need', Privilege.UserInNeed, '2'));
                 DataBaseService().addUserInNeedToDataBase(User('lbed', '2233', 'no_need', Privilege.UserInNeed, '3'));
               },
@@ -56,10 +57,11 @@ class db_test extends StatelessWidget {
             RaisedButton(
               child: Text('add help request'),
               onPressed: (){
-                DataBaseService().addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food', DateTime.now(), '1'));
-                DataBaseService().addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food but more', DateTime.now(), '1'));
-                DataBaseService().addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('money'), 'lots of lots of money', DateTime.now(), '2'));
-                DataBaseService().addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('fighting'), 'lots of lots of fights', DateTime.now(), '3'));
+                date = DateTime.now();
+                DataBaseService().addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food', date, '123456789'));
+                DataBaseService().addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food but more', DateTime.now(), '123456789'));
+                DataBaseService().addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('money'), 'lots of lots of money', date, '2'));
+                DataBaseService().addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('fighting'), 'lots of lots of fights', date, '3'));
 
               },
             ),
@@ -69,8 +71,8 @@ class db_test extends StatelessWidget {
                 List<HelpRequestType> list1 = List<HelpRequestType>();
                 list1.add(HelpRequestType('food'));
                 list1.add(HelpRequestType('money'));
-                DataBaseService().assignHelpRequestForVolunteer(Volunteer('hsen', 'sa', '123', false, '4', list1), HelpRequest(HelpRequestType('food'), 'lots of lots of food', DateTime.now(), '1'));
-                DataBaseService().assignHelpRequestForVolunteer(Volunteer('lolly', 'sa', '123', false, '5', list1), HelpRequest(HelpRequestType('money'), 'lots of lots of money', DateTime.now(), '2'));
+                DataBaseService().assignHelpRequestForVolunteer(Volunteer('hsen', 'sa', '123', false, '4', list1), HelpRequest(HelpRequestType('food'), 'lots of lots of food', date, '123456789'));
+                DataBaseService().assignHelpRequestForVolunteer(Volunteer('lolly', 'sa', '123', false, '5', list1), HelpRequest(HelpRequestType('money'), 'lots of lots of money',date, '2'));
 
 
               },
