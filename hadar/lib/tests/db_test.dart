@@ -117,8 +117,11 @@ class testing_stream extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<HelpRequestType> list1 = List<HelpRequestType>();
+    list1.add(HelpRequestType('food'));
+    list1.add(HelpRequestType('money'));
     return StreamProvider<List<HelpRequest>>.value(
-      value: DataBaseService().getUserHelpRequests(User('haitham', '2233', 'no_need', Privilege.UserInNeed, '1')),
+      value: DataBaseService().getVolPendingRequests(Volunteer('hsen', 'sa', '123', false, '4', list1)),
       child: Scaffold(
         backgroundColor: Colors.brown[50],
 
