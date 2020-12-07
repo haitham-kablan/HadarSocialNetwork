@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/users/Admin.dart';
@@ -9,6 +11,9 @@ import 'package:hadar/utils/HelpRequestType.dart';
 
 class DataBaseService{
 
+  static final String user_in_need_requests = 'REQUESTS';
+  static final String volunteer_accepted_requests = 'ACCEPTED_REQUESTS';
+  static final String volunteer_pending_requests = 'PENDING_REQUESTS';
 
   final CollectionReference helpersCollection = FirebaseFirestore.instance.collection('HELPERS');
   final CollectionReference userInNeedCollection = FirebaseFirestore.instance.collection('USERS_IN_NEED');
@@ -17,6 +22,10 @@ class DataBaseService{
   final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
 
 
+  /*
+  THIS FUNCTION WILL AUTOMATICALLY ADD THE REQUEST TO ALL THE RELEVANT
+  VOULNTEERS
+   */
   Future addHelpRequestToDataBaseForUserInNeed(HelpRequest helpRequest) async{
 
     Map<String,dynamic> to_add = Map();
@@ -25,8 +34,18 @@ class DataBaseService{
     to_add['description'] = helpRequest.description;
     to_add['date'] = helpRequest.date.toString();
 
-    return await userInNeedCollection.doc(helpRequest.sender_id).collection('REQUESTS').doc()
-    .set(to_add);
+
+     await userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id)
+    .set(to_add).catchError((error) => print("problem in addHelpRequestToDataBaseForUserInNeed"));
+     
+    return await helpersCollection.where('helpRequestsCategories' , arrayContains: helpRequest.category.description )
+        .get().then((QuerySnapshot querySnapshot) => {
+          querySnapshot.docs.forEach((doc) { 
+            doc.reference.collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add).catchError((error) => print("failed to add for this voulnteer"));
+          })
+    } );
+
+
   }
 
   Future addUserInNeedToDataBase(User user) async{
@@ -77,6 +96,10 @@ class DataBaseService{
     return await helpRequestsTypeCollection.doc().set(to_add);
   }
 
+  /*
+  this function move the request from pending to accepted collection.
+  make sure to put the exact date of the request and not the current date
+   */
   Future assignHelpRequestForVolunteer(Volunteer volunteer,HelpRequest helpRequest) async{
     
     Map<String,dynamic> to_add = Map();
@@ -85,19 +108,61 @@ class DataBaseService{
     to_add['description'] = helpRequest.description;
     to_add['date'] = helpRequest.date.toString();
     
-    return await helpersCollection.doc(volunteer.id).collection('REQUESTS').doc().set(to_add);
+    await helpersCollection.doc(volunteer.id).collection(volunteer_accepted_requests).doc(to_add['date']+"-"+helpRequest.sender_id).set(to_add);
+    return await helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(to_add['date']+"-"+helpRequest.sender_id).delete();
+  }
+
+  /*
+  before u call this function u must type await . so u only user the returend value when the fuchntion ends
+   */
+  Future getUserById(String id,Privilege privilege) async{
+
+    DocumentSnapshot doc;
+
+    if (privilege == Privilege.UserInNeed){
+
+      await userInNeedCollection.doc(id).get()
+      .then((document) => doc = document);
+
+      return UserInNeed(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['String id'] ?? '' );
+    }
+
+    if (privilege == Privilege.Admin){
+
+      await adminsCollection.doc(id).get()
+          .then((document) => doc = document);
+      return  Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['String id'] ?? '' );
+    }
+
+    if (privilege == Privilege.Volunteer){
+
+      await helpersCollection.doc(id).get()
+          .then((document) => doc = document);
+      return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['String id'] ?? '' , (doc.data()['helpRequestsCategories'] as List<String>).map((e)
+          => HelpRequestType(e)).toList() ?? List<HelpRequestType>());
+    }
   }
 
   Stream<List<HelpRequest>> getUserHelpRequests(User user) {
 
-    return userInNeedCollection.doc(user.id).collection('REQUESTS')
+    return userInNeedCollection.doc(user.id).collection(user_in_need_requests)
         .snapshots()
         .map(helpRequestListFromSnapShot);
   }
 
-  Stream<List<HelpRequest>> getVolHelpRequests(Volunteer volunteer) {
+  Stream<List<HelpRequest>> getVolPendingRequests(Volunteer volunteer) {
 
-    return helpersCollection.doc(volunteer.id).collection('FEED')
+    return helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests)
+        .snapshots()
+        .map(helpRequestListFromSnapShot);
+  }
+
+  Stream<List<HelpRequest>> getVolAceeptedRequests(Volunteer volunteer) {
+
+    return helpersCollection.doc(volunteer.id).collection(volunteer_accepted_requests)
         .snapshots()
         .map(helpRequestListFromSnapShot);
   }
