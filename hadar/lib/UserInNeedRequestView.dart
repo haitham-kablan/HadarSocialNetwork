@@ -3,89 +3,96 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
+import 'package:hadar/services/DataBaseServices.dart';
+import 'package:provider/provider.dart';
 
-class ButtonDesign extends StatelessWidget {
-  ButtonDesign({this.title, this.parent}) : super(key: ObjectKey(title));
-
-  final title;
+class RequestWindow extends StatelessWidget {
   final HelpRequestFeedState parent;
+
+  RequestWindow(this.parent);
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0),
-          side: BorderSide(color: Color.fromRGBO(0, 160, 227, 1))),
-      child: Text(title),
-      onPressed: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DescriptonBox(title: title, parent: parent),
-        ),
-      ),
-    );
-  }
-}
-
-class HelpWindow extends StatelessWidget {
-  static const String _title = 'helpWindow';
-
-  final HelpRequestFeedState parent;
-
-  HelpWindow(this.parent);
-
-  @override
-  Widget build(BuildContext context) {
-    final title = 'Help Categories';
-
     return MaterialApp(
-      title: title,
+      title: 'Choose a category',
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+      ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: Row(
+            children: [
+              Center(
+                child: Text("Choose a category"),
+              ),
+            ],
+          ),
         ),
-        body: GridView.count(
-          // Create a grid with 2 columns. If you change the scrollDirection to
-          // horizontal, this produces 2 rows.
-          crossAxisCount: 2,
-          // Generate 100 widgets that display their index in the List.
+        body: Column(
           children: [
-            ButtonDesign(title: 'Groceries', parent: parent),
-            ButtonDesign(title: 'Health issues', parent: parent),
-            ButtonDesign(title: 'BabySitter', parent: parent),
-            ButtonDesign(title: 'Dentist', parent: parent),
-            ButtonDesign(title: 'Food', parent: parent),
+            Container(
+              height: 300,
+              child: Dropdown(),
+            ),
+            Container(
+              height: 140,
+              child: DescriptonBox(title: 'Description', parent: parent),
+            ),
           ],
         ),
       ),
     );
   }
 }
-/*
-class UserInNeedFeed extends StatelessWidget {
-  static const String _title = 'Feed';
+
+class Dropdown extends StatefulWidget {
+  State createState() => DropDownState();
+}
+
+class DropDownState extends State<Dropdown> {
+  List<HelpRequestType> types = <HelpRequestType>[
+    HelpRequestType('Groceries'),
+    HelpRequestType('Food'),
+    HelpRequestType('Dentist'),
+    HelpRequestType('Babysitting'),
+    HelpRequestType('Health issues')
+  ];
+  HelpRequestType selectedType;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Feed'),
-      ),
       body: Center(
-        child: RaisedButton(
-          child: Text('I need help'),
-          onPressed: () => {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HelpWindow()),
-            )
+        child: DropdownButton<HelpRequestType>(
+          hint: Text("Select a category"),
+          value: selectedType,
+          onChanged: (HelpRequestType Value) {
+            setState(() {
+              selectedType = Value;
+            });
           },
+          items: types.map((HelpRequestType type) {
+            return DropdownMenuItem<HelpRequestType>(
+              value: type,
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    type.description,
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
         ),
       ),
     );
   }
 }
-*/
 
 //when a user clicks on the category, he gets a description box,
 // where he can describe his request
@@ -102,12 +109,14 @@ class _DescriptonBox extends State<DescriptonBox> {
   String _inputtext = 'waiting..';
   HelpRequest helpRequest;
   TextEditingController inputtextField = TextEditingController();
+  HelpRequestType helpRequestType;
 
   void _processText() {
     setState(() {
       _inputtext = inputtextField.text;
-      helpRequest = HelpRequest(
-          widget.title, _inputtext, DateTime.now().toString(), "sender");
+      helpRequestType = HelpRequestType(_inputtext);
+      helpRequest =
+          HelpRequest(helpRequestType, _inputtext, DateTime.now(), "sender");
       widget.parent.handleFeedChange(helpRequest, true);
       //todo: push to database
       if (Navigator.canPop(context)) {
@@ -126,9 +135,6 @@ class _DescriptonBox extends State<DescriptonBox> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -138,16 +144,9 @@ class _DescriptonBox extends State<DescriptonBox> {
               child: TextField(
                 controller: inputtextField,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: 'Description'),
+                    border: OutlineInputBorder(), labelText: widget.title),
               ),
             ),
-            /*Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                '$_inputtext',
-                style: Theme.of(context).textTheme.display1,
-              ),
-            ),*/
             RaisedButton(
               onPressed: _processText,
               child: Text('Done'),
