@@ -32,10 +32,16 @@ void main() async {
   ));
 }
 
+
 class Log_In_Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return db_test();
+    return UserInNeedHelpRequestsFeed(
+      helpRequests: [
+        HelpRequest(HelpRequestType("clothes"), "description", DateTime.now(), "chuck norris"),
+        HelpRequest(HelpRequestType("clothes"), "description2", DateTime.now(), "chuck norris2"),
+      ],
+    );
   }
 }
 
