@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/feeds/helper_feed.dart';
+import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/services/getters/getUserName.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:intl/intl.dart';
+
 
 class HelpRequestTile extends StatefulWidget {
 
@@ -36,17 +39,32 @@ class _HelpRequestTileState extends State<HelpRequestTile> {
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         child: ListTile(
           //dense: true,
-          leading: CircleAvatar(
-            radius: 25.0,
-            backgroundColor: Colors.brown,
-          ),
+//          leading: CircleAvatar(
+//            radius: 25.0,
+//            backgroundColor: Colors.brown,
+//          ),
           isThreeLine: true,
-          title: Text(widget.helpRequest.category.description),
+          //title: Text(widget.helpRequest.category.description),
+          title: Row(
+            children: <Widget> [
+              Container(
+                child:Text(widget.helpRequest.category.description) ,
+                alignment: Alignment.topLeft,
+              ),
+              Spacer(),
+              Container(
+                child:Text(formatter.format(now)),
+                alignment: Alignment.topRight,
+              ),
+            ]
+          )
+          ,
           subtitle: Container(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 //Text(widget.helpRequest.date.toString()),
+                GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
                 Text(formatter.format(now)),
                 Text(widget.helpRequest.description),
               ]
@@ -62,7 +80,7 @@ class _HelpRequestTileState extends State<HelpRequestTile> {
                     padding: EdgeInsets.all(16.0),
                     child: Icon(Icons.call,
                         size: 20.0,
-                        color: Colors.brown[900],
+                        color: Colors.green,
                         )
                 ),
               ),

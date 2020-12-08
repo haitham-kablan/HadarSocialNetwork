@@ -129,12 +129,12 @@ class testing_stream extends StatelessWidget {
           title: Text('Volunteer Feed'),
           backgroundColor: Colors.brown[400],
           elevation: 0.0,
-          actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('logout'),
-            ),
-          ],
+//          actions: <Widget>[
+//            FlatButton.icon(
+//              icon: Icon(Icons.person),
+//              label: Text('logout'),
+//            ),
+//          ],
         ),
         body: HelperFeed(),
       ),
