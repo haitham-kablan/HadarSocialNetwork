@@ -80,7 +80,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
           onPressed: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HelpWindow(this)),
+              MaterialPageRoute(builder: (context) => RequestWindow(this)),
             );
           },
           label: Text("Add Help Request"),
