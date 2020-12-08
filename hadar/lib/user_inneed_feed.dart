@@ -6,6 +6,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 
 import 'dart:developer';
 
+import 'Design/basicTools.dart';
 import 'UserInNeedRequestView.dart';
 bool debug = true;
 
@@ -54,11 +55,13 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'User In-need Feed',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
+//      theme: ThemeData(
+//       // primarySwatch: Colors.teal,
+//      ),
       home: Scaffold(
+        backgroundColor: BasicColor.BackgroundClr,
         appBar: AppBar(
+          backgroundColor: BasicColor.userInNeedClr,
           title: Row(
             children: [
               SizedBox(width: 20,),
@@ -85,7 +88,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
           },
           label: Text("Add Help Request"),
           icon: Icon(Icons.add),
-          backgroundColor: Colors.teal,
+          backgroundColor: BasicColor.userInNeedClr,
         ),
 
       ),
@@ -232,14 +235,27 @@ class HelpRequestStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.teal[50],
+        color: BasicColor.BackgroundClr,
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             SizedBox(
               height: 20,
             ),
-
+            Container(
+              //width: MediaQuery.of(context).size.width,
+              child:Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  helpRequest.date.toString().substring(0, 16),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: BasicColor.userInNeedClr,
+                    fontFamily: "Arial",
+                  ),
+                ),
+              ),
+            ),
             Container(
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -247,7 +263,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                   helpRequest.category.description + ":",
                   style: TextStyle(
                     fontSize: 30,
-                    color: Colors.green[800],
+                    color:BasicColor.userInNeedClr,
                     fontFamily: "Arial"
                   ),
                 ),
@@ -262,7 +278,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                   helpRequest.description,
                   style: TextStyle(
                       fontSize: 20,
-                      color: Colors.green[800],
+                      color: Colors.black,
                       fontFamily: "Arial"
                   ),
                   maxLines: 10,
@@ -272,26 +288,14 @@ class HelpRequestStatusWidget extends StatelessWidget {
             SizedBox(
               height: 40,
             ),
-            Container(
-              //width: MediaQuery.of(context).size.width,
-              child:Align(
-                alignment: Alignment.bottomRight,
-                child: Text(
-                  helpRequest.date.toString().substring(0, 16),
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.green[800],
-                    fontFamily: "Arial",
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(left: 20),
+
+            Container(height: 140,
+//              padding: const EdgeInsets.only(left: 20),
 
               child: Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.bottomCenter,
                 child:RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                   onPressed: (){
                     print("renew this request");
                   },

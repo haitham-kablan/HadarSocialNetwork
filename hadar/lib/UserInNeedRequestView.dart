@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
@@ -16,11 +17,12 @@ class RequestWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Choose a category',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
+//      theme: ThemeData(
+//        primarySwatch: Colors.teal,
+//      ),
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: BasicColor.userInNeedClr,
           title: Row(
             children: [
               Center(
@@ -29,17 +31,22 @@ class RequestWindow extends StatelessWidget {
             ],
           ),
         ),
-        body: Column(
-          children: [
-            Container(
-              height: 300,
-              child: Dropdown(),
-            ),
-            Container(
-              height: 140,
-              child: DescriptonBox(title: 'Description', parent: parent),
-            ),
-          ],
+        body: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 170,
+              ),
+              Container(
+                height: 100,
+                child: Dropdown(),
+              ),
+              Container(
+                height: 140,
+                child: DescriptonBox(title: 'Description', parent: parent),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -124,11 +131,6 @@ class _DescriptonBox extends State<DescriptonBox> {
           context,
         );
       }
-      if (Navigator.canPop(context)) {
-        Navigator.pop(
-          context,
-        );
-      }
     });
   }
 
@@ -149,6 +151,8 @@ class _DescriptonBox extends State<DescriptonBox> {
             ),
             RaisedButton(
               onPressed: _processText,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50)),
               child: Text('Done'),
             )
           ],

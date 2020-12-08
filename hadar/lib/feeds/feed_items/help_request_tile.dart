@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/feeds/helper_feed.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/getters/getUserName.dart';
@@ -85,7 +86,7 @@ class _HelpRequestTileState extends State<HelpRequestTile> {
                     padding: EdgeInsets.all(16.0),
                     child: Icon(Icons.call,
                         size: 20.0,
-                        color: Colors.green,
+                        color: BasicColor.userInNeedClr,
                         )
                 ),
               ),

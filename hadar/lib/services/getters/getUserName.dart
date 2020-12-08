@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/users/User.dart';
 
 
@@ -30,7 +31,8 @@ class GetUserName extends StatelessWidget {
           Map<String, dynamic> data = snapshot.data.data();
           return Text("${data['name']}"
                     , style: TextStyle(
-              color: Colors.green,
+              color: BasicColor.userInNeedClr,
+              fontWeight: FontWeight.bold,
             ),
           );
         }
