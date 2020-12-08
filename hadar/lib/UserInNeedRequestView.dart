@@ -35,10 +35,10 @@ class RequestWindow extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 170,
+                height: 60,
               ),
               Container(
-                height: 100,
+                height: 60,
                 child: Dropdown(),
               ),
               Container(

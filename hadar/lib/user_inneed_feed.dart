@@ -110,6 +110,7 @@ class HelpRequestItem extends StatelessWidget {
     return Column(
       children:[
         ListTile(
+          //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           onTap: () => parent.showHelpRequestStatus(helpRequest),
           leading: CircleAvatar(
             backgroundColor: Colors.blueGrey,
@@ -289,7 +290,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
               height: 40,
             ),
 
-            Container(height: 140,
+            Container(height: 100,
 //              padding: const EdgeInsets.only(left: 20),
 
               child: Align(
