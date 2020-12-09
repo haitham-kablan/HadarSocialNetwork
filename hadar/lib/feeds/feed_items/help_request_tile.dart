@@ -5,6 +5,7 @@ import 'package:hadar/services/getters/getUserName.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class HelpRequestTile extends StatefulWidget {
@@ -35,6 +36,14 @@ class _HelpRequestTileState extends State<HelpRequestTile> {
     Offset _tapPosition;
     void _storePosition(TapDownDetails details) {
       _tapPosition = details.globalPosition;
+    }
+    _launchCaller() async {
+      const url = "tel:+972545522973";
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
     }
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
@@ -79,7 +88,12 @@ class _HelpRequestTileState extends State<HelpRequestTile> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               GestureDetector(
-                onTap: () => print("Tap: call"),
+                //onTap: () => print("Tap: call"),
+                //onTap: () => _launchCaller(),
+                onTap: (){
+                  _launchCaller();
+
+                },
                 onLongPress: () => print("Long Press: Call"),
                 child: Padding(
                     padding: EdgeInsets.all(16.0),
