@@ -1,5 +1,7 @@
 //import 'dart:html';
 
+//import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/users/Admin.dart';
@@ -122,26 +124,40 @@ class DataBaseService{
     if (privilege == Privilege.UserInNeed){
 
       await userInNeedCollection.doc(id).get()
-      .then((document) => doc = document);
+      .then((document) => doc = document.exists ? document : null);
+
+      if (doc == null){
+        return null;
+      }
 
       return UserInNeed(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '' );
+          doc.data()['id'] ?? '' );
     }
 
     if (privilege == Privilege.Admin){
 
       await adminsCollection.doc(id).get()
           .then((document) => doc = document);
+
+      if (doc == null){
+        return null;
+      }
+
       return  Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '' );
+          doc.data()['id'] ?? '' );
     }
 
     if (privilege == Privilege.Volunteer){
 
       await helpersCollection.doc(id).get()
           .then((document) => doc = document);
+
+      if (doc == null){
+        return null;
+      }
+
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '' , (doc.data()['helpRequestsCategories'] as List<String>).map((e)
+          doc.data()['id'] ?? '' , (doc.data()['helpRequestsCategories'] as List<String>).map((e)
           => HelpRequestType(e)).toList() ?? List<HelpRequestType>());
     }
   }
@@ -183,7 +199,19 @@ class DataBaseService{
   }
 
 
-  
+  Future<List<HelpRequestType>> helpRequestAsAlist() async {
+
+    List<HelpRequestType> list1 = List<HelpRequestType>();
+
+    await helpRequestsTypeCollection.get().then((querySnapshot){
+      querySnapshot.docs.forEach((element){
+        list1.add(HelpRequestType(element.data()['description']));
+      });
+    });
+
+    return list1;
+
+  }
   
 
 

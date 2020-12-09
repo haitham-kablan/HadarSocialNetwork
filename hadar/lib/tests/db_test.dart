@@ -3,6 +3,7 @@ import 'package:hadar/feeds/helper_feed.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/User.dart';
+import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
@@ -94,15 +95,26 @@ class db_test extends StatelessWidget {
 
             ),
             RaisedButton(
-              child: Text('get vol help request'),
-              onPressed: (){
+              child: Text('get help request as a list'),
+              onPressed: () async {
+                List<HelpRequestType> x = await DataBaseService()
+                    .helpRequestAsAlist();
 
+                print_list(x);
               },
             ),
             RaisedButton(
-              child: Text('get help request types'),
-              onPressed: (){
-
+              child: Text('get user by id'),
+              onPressed: () async {
+                UserInNeed userInNeed = (await DataBaseService().getUserById("123456789", Privilege.UserInNeed)) as UserInNeed;
+                print("printing user");
+                if (userInNeed == null){
+                  print('got null');
+                }else {
+                  print(userInNeed.name);
+                  print(userInNeed.id);
+                  print(userInNeed.phoneNumber);
+                }
               },
             ),
           ],
@@ -140,4 +152,13 @@ class testing_stream extends StatelessWidget {
       ),
     );
   }
+}
+
+
+void print_list(List<HelpRequestType> s){
+
+  for(int i = 0 ; i < s.length ; i++){
+    print(s[i].description);
+  }
+
 }
