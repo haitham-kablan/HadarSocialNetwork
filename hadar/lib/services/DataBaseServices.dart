@@ -180,21 +180,21 @@ class DataBaseService{
 
   Stream<List<HelpRequest>> getUserHelpRequests(User user) {
 
-    return userInNeedCollection.doc(user.id).collection(user_in_need_requests)
+    return userInNeedCollection.doc(user.id).collection(user_in_need_requests).orderBy('date',descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
   }
 
   Stream<List<HelpRequest>> getVolPendingRequests(Volunteer volunteer) {
 
-    return helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests)
+    return helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).orderBy('date',descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
   }
 
   Stream<List<HelpRequest>> getVolAceeptedRequests(Volunteer volunteer) {
 
-    return helpersCollection.doc(volunteer.id).collection(volunteer_accepted_requests)
+    return helpersCollection.doc(volunteer.id).collection(volunteer_accepted_requests).orderBy('date',descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
   }
