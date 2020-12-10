@@ -35,6 +35,7 @@ class DataBaseService{
     to_add['sender_id'] = helpRequest.sender_id;
     to_add['description'] = helpRequest.description;
     to_add['date'] = helpRequest.date.toString();
+    to_add['time'] = helpRequest.time;
 
 
      await userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id)
@@ -180,21 +181,21 @@ class DataBaseService{
 
   Stream<List<HelpRequest>> getUserHelpRequests(User user) {
 
-    return userInNeedCollection.doc(user.id).collection(user_in_need_requests).orderBy('date',descending: true)
+    return userInNeedCollection.doc(user.id).collection(user_in_need_requests).orderBy('time',descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
   }
 
   Stream<List<HelpRequest>> getVolPendingRequests(Volunteer volunteer) {
 
-    return helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).orderBy('date',descending: true)
+    return helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).orderBy('time',descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
   }
 
   Stream<List<HelpRequest>> getVolAceeptedRequests(Volunteer volunteer) {
 
-    return helpersCollection.doc(volunteer.id).collection(volunteer_accepted_requests).orderBy('date',descending: true)
+    return helpersCollection.doc(volunteer.id).collection(volunteer_accepted_requests).orderBy('time',descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
   }

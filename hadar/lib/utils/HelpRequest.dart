@@ -10,7 +10,10 @@ class HelpRequest{
   DateTime date;
   String sender_id;
   static int indexer = 0;
-  HelpRequest( this.category, this.description, this.date , this.sender_id);
+  int time;
+  HelpRequest( this.category, this.description, this.date , this.sender_id){
+    time = date.millisecondsSinceEpoch;
+  }
   //DateTime date;
 
 
