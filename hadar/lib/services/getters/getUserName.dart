@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/users/User.dart';
 
 
@@ -28,7 +29,12 @@ class GetUserName extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
-          return Text("Full Name: ${data['name']}");
+          return Text("${data['name']}"
+                    , style: TextStyle(
+              color: BasicColor.userInNeedClr,
+              fontWeight: FontWeight.bold,
+            ),
+          );
         }
 
         return Text("loading");

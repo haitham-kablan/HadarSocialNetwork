@@ -139,14 +139,14 @@ class testing_stream extends StatelessWidget {
 
         appBar: AppBar(
           title: Text('Volunteer Feed'),
-          backgroundColor: Colors.brown[400],
+          backgroundColor: Colors.blue,
           elevation: 0.0,
-          actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('logout'),
-            ),
-          ],
+//          actions: <Widget>[
+//            FlatButton.icon(
+//              icon: Icon(Icons.person),
+//              label: Text('logout'),
+//            ),
+//          ],
         ),
         body: HelperFeed(),
       ),

@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  gradient_app_bar: ^0.0.1
   flutter:
     sdk: flutter
 
@@ -31,6 +32,8 @@ dependencies:
   cloud_firestore: ^0.14.3+1
   firebase_core : ^0.5.0
   provider: ^3.1.0
+  intl: ^0.16.1
+  jiffy: ^3.0.1
 
 dev_dependencies:
   flutter_test:
