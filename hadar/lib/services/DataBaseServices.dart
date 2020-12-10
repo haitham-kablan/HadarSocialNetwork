@@ -115,7 +115,23 @@ class DataBaseService{
   }
 
   /*
-  before u call this function u must type await . so u only user the returend value when the fuchntion ends
+  before u call this function u must type await . so u only use the returned value when the function  ends
+  and also u should check if the returned  value is not null (if it is null it means the user hasnt been found)
+  one more thing - u should relate to the returned value using as because future return dynamic type,
+  for exmaple :
+    onPressed: () async {
+                UserInNeed userInNeed = (await DataBaseService().getUserById("123456789", Privilege.UserInNeed)) as UserInNeed;
+                print("printing user");
+                if (userInNeed == null){
+                  print('got null');
+                }else {
+                  print(userInNeed.name);
+                  print(userInNeed.id);
+                  print(userInNeed.phoneNumber);
+                }
+              },
+      here i know that i want user in need , therfore i put as user in need , so i can
+      reach its fields
    */
   Future getUserById(String id,Privilege privilege) async{
 
