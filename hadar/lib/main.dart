@@ -23,6 +23,7 @@ import 'feed_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   runApp(MaterialApp(
     home: Log_In_Screen(),
   ));
