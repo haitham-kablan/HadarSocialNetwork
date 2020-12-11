@@ -29,12 +29,7 @@ void main() async {
     home: ForNow(),
   ));
 }
-class ss extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
+
 
 
 class ForNow extends StatelessWidget {
