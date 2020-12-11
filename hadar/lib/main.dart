@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/Design/Buttons/RoundedWeightedButtons.dart';
 import 'package:hadar/Design/basicTools.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
@@ -25,9 +26,54 @@ void main() async {
   await Firebase.initializeApp();
 
   runApp(MaterialApp(
-    home: Log_In_Screen(),
+    home: ForNow(),
   ));
 }
+
+
+class ForNow extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: BasicColor.BackgroundClr,
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: BasicColor.AppBarClr,
+        title: Text('Hadar' , style: TextStyle(
+                      fontSize: 40,
+                      color: BasicColor.BackgroundClr,
+          ),
+        ),
+
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Expanded(
+              child: SizedBox(),
+              flex: 4,
+            ),
+            Expanded(
+                child: RounderWightedButtons(1,3,1,'Visit as a volunteer',volunteer_home_page()),
+            ),
+            Expanded(
+              child: SizedBox(),
+              flex: 1,
+            ),
+            Expanded(
+              child: RounderWightedButtons(1,3,1,'Visit as a user in need',user_in_need_home_page()),
+            ),
+            Expanded(
+              child: SizedBox(),
+              flex: 4,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 class Log_In_Screen extends StatelessWidget {
   @override
@@ -48,19 +94,22 @@ class Log_In_Screen extends StatelessWidget {
             SizedBox(
               height: 200,
             ),
-            Center(
-              child: RaisedButton(
-                child: Text("go to volunteer feed"),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => tmp()),
-                  );
-                },
+            Expanded(
+              child: Center(
+                child: RaisedButton(
+                  child: Text("go to volunteer feed"),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => tmp()),
+                    );
+                  },
+                ),
               ),
             ),
-            Center(
+            Expanded(
+              child: Center(
               child: RaisedButton(
                 child: Text("go to user in_need feed"),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
@@ -85,6 +134,7 @@ class Log_In_Screen extends StatelessWidget {
                   );
                 },
               ),
+            ),
             ),
           ],
         ));
