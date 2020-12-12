@@ -8,17 +8,23 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:provider/provider.dart';
 
 class RequestWindow extends StatelessWidget {
-  final HelpRequestFeedState parent;
+  HelpRequestFeedState parent;
+  DescriptonBox desBox;
+  Dropdown drop;
+  RequestWindow(HelpRequestFeedState parent){
+    this.parent=parent;
+    init();
+  }
 
-  RequestWindow(this.parent);
+  void init(){
+    this.desBox=DescriptonBox(title: 'Description', parent: parent);
+    this.drop=Dropdown(desBox);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Choose a category',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
       home: Scaffold(
         appBar: AppBar(
           title: Row(
@@ -29,17 +35,22 @@ class RequestWindow extends StatelessWidget {
             ],
           ),
         ),
-        body: Column(
-          children: [
-            Container(
-              height: 300,
-              child: Dropdown(),
-            ),
-            Container(
-              height: 140,
-              child: DescriptonBox(title: 'Description', parent: parent),
-            ),
-          ],
+        body: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 170,
+              ),
+              Container(
+                height: 100,
+                child: drop,
+              ),
+              Container(
+                height: 140,
+                child: desBox,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -47,18 +58,40 @@ class RequestWindow extends StatelessWidget {
 }
 
 class Dropdown extends StatefulWidget {
-  State createState() => DropDownState();
+  DescriptonBox desBox;
+  DropDownState dropDownState;
+  Dropdown(this.desBox){
+    this.dropDownState=DropDownState(desBox);
+  }
+
+  @override
+  State createState() => dropDownState;
+
+  HelpRequestType getSelectedType(){
+    return dropDownState.getSelectedType();
+  }
 }
 
+
 class DropDownState extends State<Dropdown> {
-  List<HelpRequestType> types = <HelpRequestType>[
-    HelpRequestType('Groceries'),
-    HelpRequestType('Food'),
-    HelpRequestType('Dentist'),
-    HelpRequestType('Babysitting'),
-    HelpRequestType('Health issues')
-  ];
   HelpRequestType selectedType;
+  DescriptonBox desBox;
+  DropDownState(DescriptonBox desBox){
+    this.desBox=desBox;
+    init();
+  }
+
+  Future<void> init() async {
+    this.types = await DataBaseService().helpRequestAsAlist();
+  }
+
+  List<HelpRequestType> types;
+
+
+  HelpRequestType getSelectedType(){
+    return selectedType;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +101,12 @@ class DropDownState extends State<Dropdown> {
           hint: Text("Select a category"),
           value: selectedType,
           onChanged: (HelpRequestType Value) {
-            setState(() {
-              selectedType = Value;
-            });
+            setState(
+              () {
+                selectedType = Value;
+                desBox.setSelectedType(selectedType);
+              },
+            );
           },
           items: types.map((HelpRequestType type) {
             return DropdownMenuItem<HelpRequestType>(
@@ -98,11 +134,16 @@ class DropDownState extends State<Dropdown> {
 // where he can describe his request
 class DescriptonBox extends StatefulWidget {
   DescriptonBox({Key key, this.title, this.parent}) : super(key: key);
+  _DescriptonBox desBoxState=_DescriptonBox();
   final String title;
   final HelpRequestFeedState parent;
 
+  void setSelectedType(HelpRequestType selectedType){
+    desBoxState.setSelectedType(selectedType);
+  }
+
   @override
-  _DescriptonBox createState() => _DescriptonBox();
+  _DescriptonBox createState() => desBoxState ;
 }
 
 class _DescriptonBox extends State<DescriptonBox> {
@@ -111,14 +152,27 @@ class _DescriptonBox extends State<DescriptonBox> {
   TextEditingController inputtextField = TextEditingController();
   HelpRequestType helpRequestType;
 
+  void setSelectedType(HelpRequestType selectedType){
+    setState(() {
+      _inputtext = inputtextField.text;
+    });
+  }
+
   void _processText() {
     setState(() {
       _inputtext = inputtextField.text;
       helpRequestType = HelpRequestType(_inputtext);
       helpRequest =
           HelpRequest(helpRequestType, _inputtext, DateTime.now(), "sender");
+
       widget.parent.handleFeedChange(helpRequest, true);
-      //todo: push to database
+      DataBaseService().addHelpRequestToDataBaseForUserInNeed(helpRequest);
+
+      if (Navigator.canPop(context)) {
+        Navigator.pop(
+          context,
+        );
+      }
       if (Navigator.canPop(context)) {
         Navigator.pop(
           context,
