@@ -8,6 +8,7 @@ import 'dart:developer';
 
 import 'Design/basicTools.dart';
 import 'UserInNeedRequestView.dart';
+import 'package:hadar/services/DataBaseServices.dart';
 bool debug = true;
 
 class UserInNeedHelpRequestsFeed extends StatefulWidget{
@@ -80,10 +81,11 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
                 }).toList(),
               ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: (){
+          onPressed: () async {
+            List<HelpRequestType> types = await DataBaseService().helpRequestAsAlist();
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => RequestWindow(this)),
+              MaterialPageRoute(builder: (context) => RequestWindow(this,types)),
             );
           },
           label: Text("Add Help Request"),
