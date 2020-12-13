@@ -6,6 +6,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 
 import 'dart:developer';
 
+import 'Design/basicTools.dart';
 import 'UserInNeedRequestView.dart';
 bool debug = true;
 
@@ -41,42 +42,54 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
     });
   }
 
+  void showHelpRequestStatus(HelpRequest helpRequest) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return HelpRequestStatusWidget(helpRequest);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'User In-need Feed',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
+//      theme: ThemeData(
+//       // primarySwatch: Colors.teal,
+//      ),
       home: Scaffold(
-          appBar: AppBar(
-            title: Row(
-              children: [
-                RaisedButton(
-                  child: Text("Add Help Request"),
-                  onPressed: (){
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HelpWindow(this)),
-                    );
-                  }
-                ),
-                SizedBox(width: 20,),
-                Center(
-                  child: Text("My Feed"),
-                ),
-              ],
-            )
-          ),
-          body: ListView(
-                  padding: const EdgeInsets.all(8),
-                  children: feed.map((HelpRequest helpRequest) {
-                    return HelpRequestItem(
-                      helpRequest: helpRequest,
-                    );
-                  }).toList(),
-                  ),
+        backgroundColor: BasicColor.BackgroundClr,
+        appBar: AppBar(
+          backgroundColor: BasicColor.userInNeedClr,
+          title: Row(
+            children: [
+              SizedBox(width: 20,),
+              Center(
+                child: Text("My Feed"),
+              ),
+            ],
+          )
+        ),
+        body: ListView(
+                padding: const EdgeInsets.all(8),
+                children: feed.map((HelpRequest helpRequest) {
+                  return HelpRequestItem(
+                    helpRequest: helpRequest, parent: this,
+                  );
+                }).toList(),
+              ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: (){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RequestWindow(this)),
+            );
+          },
+          label: Text("Add Help Request"),
+          icon: Icon(Icons.add),
+          backgroundColor: BasicColor.userInNeedClr,
+        ),
 
       ),
     );
@@ -86,25 +99,21 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
 
 
 class HelpRequestItem extends StatelessWidget {
-  HelpRequestItem({this.helpRequest})
+  HelpRequestItem({this.helpRequest, this.parent})
       : super(key: ObjectKey(helpRequest));
 
   final HelpRequest helpRequest;
+  final HelpRequestFeedState parent;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children:[
         ListTile(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MyHomePage()),
-            );
-          },
+          onTap: () => parent.showHelpRequestStatus(helpRequest),
           leading: CircleAvatar(
             backgroundColor: Colors.blueGrey,
-            child: Text(helpRequest.sender[0]),
+            child: Text(helpRequest.sender_id[0]),
           ),
           title:  HelpRequestItemTile(helpRequest: helpRequest,),
           tileColor: Colors.blueGrey[200],
@@ -132,11 +141,16 @@ class HelpRequestItemTile extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            child: Text(helpRequest.sender + " request:\n" + helpRequest.description),
+            child: Text("request: " + helpRequest.category.description + ":"),
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(bottom: 8),
           ),
           //SizedBox(height: 8,),
+          Container(
+            child: Text(helpRequest.description),
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(bottom: 8, left: 10),
+          ),
           Container(
             //we trim the date object to include only the date, hours and minutes
             child: Text(helpRequest.date.toString().substring(0, 16)),
@@ -158,7 +172,7 @@ class HelpRequestStatus extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: helpRequest.category,
+      title: helpRequest.category.description,
       home: Container(
         padding: const EdgeInsets.only(top: 40, bottom: 200),
         child: Column(
@@ -210,6 +224,7 @@ class HelpRequestStatus extends StatelessWidget{
   }
 }
 
+
 class HelpRequestStatusWidget extends StatelessWidget {
   HelpRequestStatusWidget(this.helpRequest)
       : super(key: ObjectKey(helpRequest));
@@ -218,6 +233,118 @@ class HelpRequestStatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        color: BasicColor.BackgroundClr,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              //width: MediaQuery.of(context).size.width,
+              child:Align(
+                alignment: Alignment.bottomRight,
+                child: Text(
+                  helpRequest.date.toString().substring(0, 16),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: BasicColor.userInNeedClr,
+                    fontFamily: "Arial",
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  helpRequest.category.description + ":",
+                  style: TextStyle(
+                    fontSize: 30,
+                    color:BasicColor.userInNeedClr,
+                    fontFamily: "Arial"
+                  ),
+                ),
+              ),
+            ),
 
+            Container(
+              padding: const EdgeInsets.only(right: 20, bottom: 20, top: 20),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  helpRequest.description,
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontFamily: "Arial"
+                  ),
+                  maxLines: 10,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+
+            Container(height: 140,
+//              padding: const EdgeInsets.only(left: 20),
+
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child:RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                  onPressed: (){
+                    print("renew this request");
+                  },
+                  child: Text('renew request'),
+                ),
+              ),
+            ),
+          ],
+        )
+      ),
+    );
+  }
+
+}
+
+/*
+//show/hide, not used yet..
+//when clicking on a post a slide sheet appears with the options of renew, and
+//track the request
+//will be used after the feed is implemented
+class HelpRequestStatusWidget extends StatefulWidget {
+  HelpRequestStatusWidget({Key key, this.helpRequest}) : super(key: key);
+
+  final HelpRequest helpRequest;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _HelpRequestStatusWidget extends State<HelpRequestStatusWidget> {
+  /*void slideSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return HelpRequestStatusWidget(widget.helpRequest);
+        });
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: RaisedButton(
+          onPressed: slideSheet,
+          child: Text('Click'),
+        ),
+      ),
+    );
   }
 }
+*/
+

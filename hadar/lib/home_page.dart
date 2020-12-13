@@ -1,42 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:hadar/user_inneed_feed.dart';
+import 'package:hadar/utils/HelpRequest.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
 
-import './feed_page.dart';
-
-class Home_Page_Screen extends StatelessWidget {
-  static const String _title = 'Home Page';
-
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: _title,
-      home: MyStatefulWidget(),
-    );
-  }
-}
+import 'main.dart';
 
 /// This is the stateful widget that the main application instantiates.
-class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}): super(key: key);
-
-
-  //MyStatefulWidget.byWidget(this.runningWidget);
+class volunteer_home_page extends StatefulWidget {
+  volunteer_home_page({Key key}) : super(key: key);
 
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _volunteer_home_pageState createState() => _volunteer_home_pageState();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+class _volunteer_home_pageState extends State<volunteer_home_page> {
   int _selectedIndex = 0;
-
-  //Widget runningWidget;
-  final TextStyle optionStyle =
+  static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  /*static List<Widget> _widgetOptions = <Widget>[
-
-
-  ];*/
+  static  List<Widget> _widgetOptions = <Widget>[
+    tmp(),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -47,38 +39,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
       body: Center(
-
-         // child: _widgetOptions.elementAt(_selectedIndex),
-
-        child: Container(
-          margin: const EdgeInsets.all(10.0),
-          //color: Colors.amber[600],
-          //width: 48.0,
-          //height: 48.0,
-          child: Column(
-            children: [
-              Container(
-                child: Text(
-                  'Index 0: Home',
-                  style: optionStyle,
-                  //color: Colors.green
-                )
-              ),
-              Container(
-                child:Text(
-                  'Index 1: Profile',
-                  style: optionStyle,
-                ),
-                //color: Colors.amber,
-              ),
-            ],
-          )
-        ),
-
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -87,10 +49,87 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Profile',
+            icon: Icon(Icons.business),
+            label: 'Business',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'School',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
 
+
+
+class user_in_need_home_page extends StatefulWidget {
+  user_in_need_home_page({Key key}) : super(key: key);
+
+  @override
+  _user_in_need_home_pageState createState() => _user_in_need_home_pageState();
+}
+
+/// This is the private State class that goes with MyStatefulWidget.
+class _user_in_need_home_pageState extends State<user_in_need_home_page> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static  List<Widget> _widgetOptions = <Widget>[
+    UserInNeedHelpRequestsFeed(
+      helpRequests: <HelpRequest>[
+        HelpRequest(
+            HelpRequestType("clothes"),
+            "description",
+            DateTime.now(),
+            "chuck norris"),
+        HelpRequest(
+            HelpRequestType("food"),
+            "description2",
+            DateTime.now(),
+            "bruce lee"),
+      ],
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Business',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'School',
+          ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
