@@ -13,6 +13,13 @@ class HelpRequest{
   HelpRequest( this.category, this.description, this.date , this.sender_id);
   //DateTime date;
 
+  //copy constructor.. but change the date to DateTime.now()
+  HelpRequest.copy(HelpRequest other):
+      category = other.category,
+      description = other.description,
+      date = DateTime.now(),
+      sender_id = other.sender_id;
+
 
   //HelpRequest(this.sender, this.category, this.description, this.date);
   HelpRequest.fake():
