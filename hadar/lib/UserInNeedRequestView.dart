@@ -123,7 +123,7 @@ class _DescriptonBox extends State<DescriptonBox> {
       _inputtext = inputtextField.text;
       helpRequestType = HelpRequestType(_inputtext);
       helpRequest =
-          HelpRequest(helpRequestType, _inputtext, DateTime.now(), "sender");
+          HelpRequest(helpRequestType, _inputtext, DateTime.now(), "123456789");
       widget.parent.handleFeedChange(helpRequest, true);
       //todo: push to database
       if (Navigator.canPop(context)) {
@@ -131,6 +131,7 @@ class _DescriptonBox extends State<DescriptonBox> {
           context,
         );
       }
+
     });
   }
 

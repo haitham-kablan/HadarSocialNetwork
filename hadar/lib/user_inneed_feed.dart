@@ -2,31 +2,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/lang/HebrewText.dart';
+import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import 'dart:developer';
 
 import 'Design/basicTools.dart';
 import 'UserInNeedRequestView.dart';
 import 'feeds/feed_items/help_request_tile.dart';
+
 bool debug = true;
 
 class UserInNeedHelpRequestsFeed extends StatefulWidget{
-  UserInNeedHelpRequestsFeed({Key key, this.helpRequests}): super(key: key);
-
-  final List<HelpRequest> helpRequests;
+  UserInNeedHelpRequestsFeed({Key key}): super(key: key);
 
   @override
-  State<StatefulWidget> createState() => HelpRequestFeedState(helpRequests.toSet());
+  State<StatefulWidget> createState() => HelpRequestFeedState();
 
 }
 
-class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
-  Set<HelpRequest> feed;
 
-  HelpRequestFeedState(this.feed);
+class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
+  List<HelpRequest> feed;
+
+  HelpRequestFeedState();
 
   // adding or removing items from the _feed should go through this function in
   // order for the widget state to be updated
@@ -37,11 +39,15 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
     setState(() {
       if (addedRequest) {
         feed.add(helpRequest);
+        DataBaseService().addHelpRequestToDataBaseForUserInNeed(helpRequest);
         if(debug)
           log("feed size = " + feed.length.toString());
       }
       else
         feed.remove(helpRequest);
+        //todo: remove from database
+
+        //feed.removeWhere((element) => element.category.description == "money");
     });
   }
 
@@ -58,6 +64,19 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
 
   @override
   Widget build(BuildContext context) {
+
+    feed = Provider.of<List<HelpRequest>>(context);
+    List<HelpRequestTile> feedTiles = List();
+
+    if(feed != null) {
+      feedTiles = feed.map((HelpRequest helpRequest) {
+        return HelpRequestTile(helpRequestWidget: HelpRequestItem(
+          helpRequest: helpRequest, parent: this,
+        ),);
+      }).toList();
+    }
+
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'User In-need Feed',
@@ -69,22 +88,17 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
         appBar: AppBar(
           backgroundColor: BasicColor.userInNeedClr,
           title: Row(
-            //textDirection: TextDirection.rtl,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(width: 20,),
-              Center(
-                child: HebrewText("הבקשות שלי"),
-              ),
+              HebrewText("הבקשות שלי"),
             ],
           )
         ),
         body: ListView(
-                //padding: const EdgeInsets.all(8),
-                children: feed.map((HelpRequest helpRequest) {
-                  return HelpRequestTile(helpRequestWidget: HelpRequestItem(
-                    helpRequest: helpRequest, parent: this,
-                  ),);
-                }).toList(),
+                semanticChildCount: (feed == null) ? 0 : feed.length,
+                padding: const EdgeInsets.only(bottom: 70.0),
+                children: feedTiles,
               ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: (){

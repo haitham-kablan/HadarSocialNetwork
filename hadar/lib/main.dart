@@ -67,20 +67,15 @@ class Log_In_Screen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => UserInNeedHelpRequestsFeed(
-                          helpRequests: <HelpRequest>[
-                            HelpRequest(
-                                HelpRequestType("clothes"),
-                                "description",
-                                DateTime.now(),
-                                "chuck norris"),
-                            HelpRequest(
-                                HelpRequestType("food"),
-                                "description2",
-                                DateTime.now(),
-                                "bruce lee"),
-                          ],
-                        )),
+                        builder: (context) {
+                          //User(this.name, this.phoneNumber, this.email, this.privilege , this.id
+                          //       );
+                          return StreamProvider<List<HelpRequest>>.value(
+                            value: DataBaseService().getUserHelpRequests(User("haitham", "099000","no_need",Privilege.UserInNeed,"123456789")),
+                            child: UserInNeedHelpRequestsFeed(),
+                          );
+                        }
+                    ),
                   );
                 },
               ),
