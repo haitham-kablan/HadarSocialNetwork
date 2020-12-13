@@ -11,14 +11,17 @@ class RequestWindow extends StatelessWidget {
   HelpRequestFeedState parent;
   DescriptonBox desBox;
   Dropdown drop;
-  RequestWindow(HelpRequestFeedState parent){
+  List<HelpRequestType> types;
+
+  RequestWindow(HelpRequestFeedState parent,List<HelpRequestType> types){
     this.parent=parent;
-    init();
+    this.types=types;
+    // init();
   }
 
   void init(){
     this.desBox=DescriptonBox(title: 'Description', parent: parent);
-    this.drop=Dropdown(desBox);
+    this.drop=Dropdown(desBox,types);
   }
 
   @override
@@ -60,8 +63,11 @@ class RequestWindow extends StatelessWidget {
 class Dropdown extends StatefulWidget {
   DescriptonBox desBox;
   DropDownState dropDownState;
-  Dropdown(this.desBox){
-    this.dropDownState=DropDownState(desBox);
+  List<HelpRequestType> types;
+  Dropdown(DescriptonBox desBox,List<HelpRequestType> types){
+    this.types=types;
+    this.desBox=desBox;
+    this.dropDownState=DropDownState(desBox,types);
   }
 
   @override
@@ -76,17 +82,11 @@ class Dropdown extends StatefulWidget {
 class DropDownState extends State<Dropdown> {
   HelpRequestType selectedType;
   DescriptonBox desBox;
-  DropDownState(DescriptonBox desBox){
-    this.desBox=desBox;
-    init();
-  }
-
-  Future<void> init() async {
-    this.types = await DataBaseService().helpRequestAsAlist();
-  }
-
   List<HelpRequestType> types;
-
+  DropDownState(DescriptonBox desBox,List<HelpRequestType> types){
+    this.desBox=desBox;
+    this.types=types;
+  }
 
   HelpRequestType getSelectedType(){
     return selectedType;
