@@ -28,17 +28,18 @@ class ButtonDesign extends StatelessWidget {
   }
 }
 
-
-
 //when using this, send the color you want to use
 //see example in BackgroundDesign class
 class BarDesign extends StatelessWidget {
   Color usedClr;
   String title;
-  BarDesign(this.usedClr,this.title);
+
+  BarDesign(this.usedClr, this.title);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: BasicColor.BackgroundClr,
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, 150),
         child: Container(
@@ -67,7 +68,10 @@ class BarDesign extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(this.title,style: TextStyle(fontSize: 30,color: Colors.white),),
+                  Text(
+                    this.title,
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                  ),
                 ],
               ),
             ),
@@ -79,13 +83,14 @@ class BarDesign extends StatelessWidget {
   }
 }
 
-
 //when using this, send the color you want to use
 //see example in BackgroundDesign class
 //the icons aren't linked to another page yet
 class BottomBar extends StatelessWidget {
   Color usedClr;
+
   BottomBar(this.usedClr);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,10 +122,30 @@ class BottomBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // FlatButton(child:Icon(Icons.person_rounded,size: 40,color: BasicColor.adminClr,),onPressed: ,),
-                  Icon(Icons.person_rounded,size: 40,color: usedClr,),
-                  Icon(Icons.dynamic_feed_outlined,size: 40,color: usedClr,),
-                  Icon(Icons.add_rounded,size: 40,color: usedClr,),
+                  FlatButton(
+                    child: Icon(
+                      Icons.person_rounded,
+                      size: 40,
+                      color: usedClr,
+                    ),
+                    onPressed: () {},
+                  ),
+                  FlatButton(
+                    child: Icon(
+                      Icons.dynamic_feed_outlined,
+                      size: 40,
+                      color: usedClr,
+                    ),
+                    onPressed: () {},
+                  ),
+                  FlatButton(
+                    child: Icon(
+                      Icons.add_rounded,
+                      size: 40,
+                      color: usedClr,
+                    ),
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ),
@@ -133,15 +158,18 @@ class BottomBar extends StatelessWidget {
 
 class UserCircle extends StatelessWidget {
   Color usedClr;
+
   UserCircle(this.usedClr);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
         children: [
-          Container(height: 20, width: 50),
+          //Container(height: 20, width: 50),
           Container(
+            margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
             alignment: Alignment.topLeft,
             width: 150,
             height: 135,
@@ -172,9 +200,9 @@ class BackgroundDesign extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          BarDesign(BasicColor.userInNeedClr, 'User Feed'),
-          UserCircle(BasicColor.userInNeedClr),
-          BottomBar(BasicColor.userInNeedClr),
+          BarDesign(BasicColor.HelperClr, 'User Feed'),
+          UserCircle(BasicColor.HelperClr),
+          BottomBar(BasicColor.HelperClr),
         ],
       ),
     );
