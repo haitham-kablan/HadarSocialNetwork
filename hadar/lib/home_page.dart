@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import './feed_page.dart';
 
 class Home_Page_Screen extends StatelessWidget {
   static const String _title = 'Home Page';

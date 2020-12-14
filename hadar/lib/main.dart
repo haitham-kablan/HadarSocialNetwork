@@ -18,7 +18,7 @@ import 'package:hadar/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'feed_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,7 +54,7 @@ class Log_In_Screen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => tmp()),
+                    MaterialPageRoute(builder: (context) => VoulunteerFeed()),
                   );
                 },
               ),
@@ -90,24 +90,3 @@ class Log_In_Screen extends StatelessWidget {
   }
 }
 
-class tmp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    List<HelpRequestType> list1 = List<HelpRequestType>();
-    list1.add(HelpRequestType('food'));
-    list1.add(HelpRequestType('money'));
-
-    return StreamProvider<List<HelpRequest>>.value(
-      value: DataBaseService().getVolPendingRequests(Volunteer('hsen', 'sa', '123', false, '4', list1)),
-      child: Scaffold(
-        backgroundColor: BasicColor.BackgroundClr,
-        appBar: AppBar(
-          title: Text('Volunteer Feed'),
-          backgroundColor: BasicColor.HelperClr,
-          elevation: 0.0,
-        ),
-        body: HelperFeed(),
-      ),
-    );
-  }
-}
