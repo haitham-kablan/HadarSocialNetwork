@@ -5,6 +5,7 @@ import 'package:hadar/Design/basicTools.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/feeds/helper_feed.dart';
+import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/users/RegisteredUser.dart';
 import 'package:hadar/users/User.dart';
@@ -26,7 +27,7 @@ void main() async {
   await Firebase.initializeApp();
 
   runApp(MaterialApp(
-    home: ForNow(),
+    home: LogInPage(),
   ));
 }
 
