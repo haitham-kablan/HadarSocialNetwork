@@ -17,7 +17,7 @@ class _HelperFeedState extends State<HelperFeed> {
     return ListView.builder(
       itemCount: (requests == null) ? 0 : requests.length,
       itemBuilder: (context,index){
-        return HelpRequestTile(helpRequest: requests[index]);
+        return HelpRequestTile(helpRequestWidget: VolunteerFeedTile(helpRequest: requests[index],));
       },
     );
   }
