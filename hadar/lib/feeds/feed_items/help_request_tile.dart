@@ -1,3 +1,5 @@
+//import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/feeds/helper_feed.dart';
@@ -11,9 +13,8 @@ import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HelpRequestTile extends StatefulWidget {
-  final HelpRequest helpRequest;
-  final int index;
-  HelpRequestTile({this.helpRequest, this.index});
+  final Widget helpRequestWidget;
+  HelpRequestTile({this.helpRequestWidget});
 
   @override
   _HelpRequestTileState createState() => _HelpRequestTileState();
@@ -22,58 +23,70 @@ class HelpRequestTile extends StatefulWidget {
 class _HelpRequestTileState extends State<HelpRequestTile> {
   _HelpRequestTileState();
 
-  void showHelpRequestStatus(HelpRequest helpRequest) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return HelpRequestStatusWidget(helpRequest);
-        });
-  }
-  //final String formatted = formatter.format(now);
-
   @override
   Widget build(BuildContext context) {
-    final DateTime now = widget.helpRequest.date;
-    final DateFormat formatter = DateFormat.yMd().add_Hm();
+
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         color: Colors.brown[30],
-        child: ListTile(
-          onTap: () => showHelpRequestStatus(widget.helpRequest),
-          isThreeLine: true,
-          title: Row(children: <Widget>[
-            Container(
-              child: Text(widget.helpRequest.category.description),
-              alignment: Alignment.topRight,
-            ),
-            Spacer(),
-            Container(
-              child: Text(formatter.format(now)),
-              alignment: Alignment.topLeft,
-            ),
-          ]),
-          subtitle: Container(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                GetUserName(widget.helpRequest.sender_id,
-                    DataBaseService().userInNeedCollection),
-                Text(widget.helpRequest.description),
-              ])),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              CallWidget(widget.helpRequest),
-              ThreeDotsWidget(),
-            ],
-          ),
-        ),
+        child: widget.helpRequestWidget,
       ),
     );
   }
 }
+
+
+
+class VolunteerFeedTile extends StatefulWidget {
+  final HelpRequest helpRequest;
+
+  VolunteerFeedTile(this.helpRequest);
+  @override
+  _VolunteerFeedTileState createState() => _VolunteerFeedTileState();
+}
+
+class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
+  @override
+  Widget build(BuildContext context) {
+    final DateTime now = widget.helpRequest.date;
+    final DateFormat formatter = DateFormat.yMd().add_Hm();
+
+    return ListTile(
+      onTap: () => print("wowwww!!!!"),//showHelpRequestStatus(helpRequest),
+      isThreeLine: true,
+      title: Row(children: <Widget>[
+        Container(
+          child: Text(widget.helpRequest.category.description),
+          alignment: Alignment.topRight,
+        ),
+        Spacer(),
+        Container(
+          child: Text(formatter.format(now)),
+          alignment: Alignment.topLeft,
+        ),
+      ]),
+      subtitle: Container(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+               // GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
+                Text(widget.helpRequest.description),
+              ])),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          CallWidget(widget.helpRequest),
+          ThreeDotsWidget(),
+        ],
+      ),
+    );
+  }
+}
+
+
+
 
 class CallWidget extends StatelessWidget {
   final HelpRequest helpRequest;

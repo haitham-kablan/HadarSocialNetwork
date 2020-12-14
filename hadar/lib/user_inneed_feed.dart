@@ -268,7 +268,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        //this color is to make the corners look transparent to the main screen: Color(0xFF737373)
+        //this color is to make the corners look transparent to the main screen: Color(0xFF696969)
         color: Color(0xFF696969),
         height: MediaQuery.of(context).size.height /2,
         child: Container(

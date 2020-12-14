@@ -166,7 +166,6 @@ class _DescriptonBox extends State<DescriptonBox> {
           HelpRequest(helpRequestType, _inputtext, DateTime.now(), "sender");
 
       widget.parent.handleFeedChange(helpRequest, true);
-      DataBaseService().addHelpRequestToDataBaseForUserInNeed(helpRequest);
 
       // if (Navigator.canPop(context)) {
       //   Navigator.pop(
