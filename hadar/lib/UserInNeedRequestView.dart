@@ -13,15 +13,15 @@ class RequestWindow extends StatelessWidget {
   Dropdown drop;
   List<HelpRequestType> types;
 
-  RequestWindow(HelpRequestFeedState parent,List<HelpRequestType> types){
-    this.parent=parent;
-    this.types=types;
-    // init();
+  RequestWindow(HelpRequestFeedState parent, List<HelpRequestType> types) {
+    this.parent = parent;
+    this.types = types;
+    init();
   }
 
-  void init(){
-    this.desBox=DescriptonBox(title: 'Description', parent: parent);
-    this.drop=Dropdown(desBox,types);
+  void init() {
+    this.desBox = DescriptonBox(title: 'Description', parent: parent);
+    this.drop = Dropdown(desBox, types);
   }
 
   @override
@@ -64,34 +64,34 @@ class Dropdown extends StatefulWidget {
   DescriptonBox desBox;
   DropDownState dropDownState;
   List<HelpRequestType> types;
-  Dropdown(DescriptonBox desBox,List<HelpRequestType> types){
-    this.types=types;
-    this.desBox=desBox;
-    this.dropDownState=DropDownState(desBox,types);
+
+  Dropdown(DescriptonBox desBox, List<HelpRequestType> types) {
+    this.types = types;
+    this.desBox = desBox;
+    this.dropDownState = DropDownState(desBox, types);
   }
 
   @override
   State createState() => dropDownState;
 
-  HelpRequestType getSelectedType(){
+  HelpRequestType getSelectedType() {
     return dropDownState.getSelectedType();
   }
 }
-
 
 class DropDownState extends State<Dropdown> {
   HelpRequestType selectedType;
   DescriptonBox desBox;
   List<HelpRequestType> types;
-  DropDownState(DescriptonBox desBox,List<HelpRequestType> types){
-    this.desBox=desBox;
-    this.types=types;
+
+  DropDownState(DescriptonBox desBox, List<HelpRequestType> types) {
+    this.desBox = desBox;
+    this.types = types;
   }
 
-  HelpRequestType getSelectedType(){
+  HelpRequestType getSelectedType() {
     return selectedType;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -134,16 +134,16 @@ class DropDownState extends State<Dropdown> {
 // where he can describe his request
 class DescriptonBox extends StatefulWidget {
   DescriptonBox({Key key, this.title, this.parent}) : super(key: key);
-  _DescriptonBox desBoxState=_DescriptonBox();
+  _DescriptonBox desBoxState = _DescriptonBox();
   final String title;
   final HelpRequestFeedState parent;
 
-  void setSelectedType(HelpRequestType selectedType){
+  void setSelectedType(HelpRequestType selectedType) {
     desBoxState.setSelectedType(selectedType);
   }
 
   @override
-  _DescriptonBox createState() => desBoxState ;
+  _DescriptonBox createState() => desBoxState;
 }
 
 class _DescriptonBox extends State<DescriptonBox> {
@@ -152,9 +152,9 @@ class _DescriptonBox extends State<DescriptonBox> {
   TextEditingController inputtextField = TextEditingController();
   HelpRequestType helpRequestType;
 
-  void setSelectedType(HelpRequestType selectedType){
+  void setSelectedType(HelpRequestType selectedType) {
     setState(() {
-      _inputtext = inputtextField.text;
+      _inputtext = selectedType.description;
     });
   }
 
@@ -168,21 +168,11 @@ class _DescriptonBox extends State<DescriptonBox> {
       widget.parent.handleFeedChange(helpRequest, true);
       DataBaseService().addHelpRequestToDataBaseForUserInNeed(helpRequest);
 
-      if (Navigator.canPop(context)) {
-        Navigator.pop(
-          context,
-        );
-      }
-      if (Navigator.canPop(context)) {
-        Navigator.pop(
-          context,
-        );
-      }
-      if (Navigator.canPop(context)) {
-        Navigator.pop(
-          context,
-        );
-      }
+      // if (Navigator.canPop(context)) {
+      //   Navigator.pop(
+      //     context,
+      //   );
+      // }
     });
   }
 
@@ -202,7 +192,14 @@ class _DescriptonBox extends State<DescriptonBox> {
               ),
             ),
             RaisedButton(
-              onPressed: _processText,
+              onPressed: () {
+                _processText();
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(
+                    context,
+                  );
+                }
+              },
               child: Text('Done'),
             )
           ],
