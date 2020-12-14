@@ -39,7 +39,7 @@ class BarDesign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BasicColor.BackgroundClr,
+      backgroundColor: Colors.transparent,
       appBar: PreferredSize(
         preferredSize: Size(double.infinity, 150),
         child: Container(
@@ -196,7 +196,7 @@ class BackgroundDesign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.transparent,
       body: Stack(
         fit: StackFit.expand,
         children: [

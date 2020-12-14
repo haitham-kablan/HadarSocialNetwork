@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hadar/screens/logInScreen.dart';
+import 'package:hadar/Design/basicTools.dart';
 
 import 'Design/mainDesign.dart';
 
@@ -7,7 +7,7 @@ import 'Design/mainDesign.dart';
 class TmpClass extends StatelessWidget{
   @override
   Widget build(BuildContext context){
-    return Scaffold(backgroundColor: Colors.transparent,);
+    return Scaffold(backgroundColor: BasicColor.BackgroundClr,);
   }
 }
 
@@ -20,6 +20,7 @@ class stackedPages extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          page,
           BackgroundDesign()
         ],
       ),
