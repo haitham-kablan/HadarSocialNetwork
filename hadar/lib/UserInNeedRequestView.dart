@@ -16,13 +16,10 @@ class RequestWindow extends StatelessWidget {
   RequestWindow(HelpRequestFeedState parent, List<HelpRequestType> types) {
     this.parent = parent;
     this.types = types;
-    init();
-  }
-
-  void init() {
     this.desBox = DescriptonBox(title: 'Description', parent: parent);
     this.drop = Dropdown(desBox, types);
   }
+
 
   @override
   Widget build(BuildContext context) {
