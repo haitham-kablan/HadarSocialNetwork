@@ -69,7 +69,7 @@ class _HelpRequestTileState extends State<HelpRequestTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 //Text(widget.helpRequest.date.toString()),
-                GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
+               // GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
                 //Text(formatter.format(now)),
                 //Text(fromnow),
                 Text(widget.helpRequest.description),

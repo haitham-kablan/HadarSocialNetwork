@@ -13,18 +13,28 @@ import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 
-class DataBaseService{
+class DataBaseServiceMock{
 
+  FirebaseFirestore firebaseFirestore;
   static final String user_in_need_requests = 'REQUESTS';
   static final String volunteer_accepted_requests = 'ACCEPTED_REQUESTS';
   static final String volunteer_pending_requests = 'PENDING_REQUESTS';
 
-  final CollectionReference helpersCollection = FirebaseFirestore.instance.collection('HELPERS');
-  final CollectionReference userInNeedCollection = FirebaseFirestore.instance.collection('USERS_IN_NEED');
-  final CollectionReference adminsCollection = FirebaseFirestore.instance.collection('ADMINS');
-  final CollectionReference registrationRequestsCollection = FirebaseFirestore.instance.collection('REGISTRATION_REQUESTS');
-  final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
+  CollectionReference helpersCollection;
+  CollectionReference userInNeedCollection;
+  CollectionReference adminsCollection;
+  CollectionReference registrationRequestsCollection;
+  CollectionReference helpRequestsTypeCollection;
 
+  DataBaseServiceMock(FirebaseFirestore firebaseFirestore){
+
+    this.firebaseFirestore = firebaseFirestore;
+    helpersCollection = firebaseFirestore.collection('HELPERS');
+    userInNeedCollection = firebaseFirestore.collection('USERS_IN_NEED');
+    adminsCollection = firebaseFirestore.collection('ADMINS');
+    registrationRequestsCollection = firebaseFirestore.collection('REGISTRATION_REQUESTS');
+    helpRequestsTypeCollection = firebaseFirestore.collection('HELP_REQUESTS_TYPES');
+  }
 
   /*
   THIS FUNCTION WILL AUTOMATICALLY ADD THE REQUEST TO ALL THE RELEVANT
@@ -40,14 +50,14 @@ class DataBaseService{
     to_add['time'] = helpRequest.time;
 
 
-     await userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id)
-    .set(to_add).catchError((error) => print("problem in addHelpRequestToDataBaseForUserInNeed"));
-     
+    await userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id)
+        .set(to_add).catchError((error) => print("problem in addHelpRequestToDataBaseForUserInNeed"));
+
     return await helpersCollection.where('helpRequestsCategories' , arrayContains: helpRequest.category.description )
         .get().then((QuerySnapshot querySnapshot) => {
-          querySnapshot.docs.forEach((doc) { 
-            doc.reference.collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add).catchError((error) => print("failed to add for this voulnteer"));
-          })
+      querySnapshot.docs.forEach((doc) {
+        doc.reference.collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add).catchError((error) => print("failed to add for this voulnteer"));
+      })
     } );
 
 
@@ -62,7 +72,7 @@ class DataBaseService{
     to_add['email'] = user.email;
     to_add['id'] = user.id;
     to_add['privilege'] = user.privilege.toString().substring(10);
-    
+
     return await userInNeedCollection.doc(user.id).set(to_add);
   }
 
@@ -88,7 +98,7 @@ class DataBaseService{
     to_add['email'] = user.email;
     to_add['id'] = user.id;
     to_add['privilege'] = user.privilege.toString().substring(10);
-    to_add['helpRequestsCategories'] = user.helpRequestsCategories.map((e) => e.description).toList();
+    to_add['helpRequestsCategories'] =  user.helpRequestsCategories.map((e) => e.description).toList();
 
     return await helpersCollection.doc(user.id).set(to_add);
   }
@@ -106,13 +116,13 @@ class DataBaseService{
   make sure to put the exact date of the request and not the current date
    */
   Future assignHelpRequestForVolunteer(Volunteer volunteer,HelpRequest helpRequest) async{
-    
+
     Map<String,dynamic> to_add = Map();
     to_add['category'] = helpRequest.category.description;
     to_add['sender_id'] = helpRequest.sender_id;
     to_add['description'] = helpRequest.description;
     to_add['date'] = helpRequest.date.toString();
-    
+
     await helpersCollection.doc(volunteer.id).collection(volunteer_accepted_requests).doc(to_add['date']+"-"+helpRequest.sender_id).set(to_add);
     return await helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(to_add['date']+"-"+helpRequest.sender_id).delete();
   }
@@ -143,7 +153,7 @@ class DataBaseService{
     if (privilege == Privilege.UserInNeed){
 
       await userInNeedCollection.doc(id).get()
-      .then((document) => doc = document.exists ? document : null);
+          .then((document) => doc = document.exists ? document : null);
 
       if (doc == null){
         return null;
@@ -175,9 +185,13 @@ class DataBaseService{
         return null;
       }
 
+      List<HelpRequestType> categories = [];
+      for (var type in doc.data()['helpRequestsCategories']){
+        categories.add(HelpRequestType(type as String));
+      }
+
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' , (doc.data()['helpRequestsCategories'] as List<String>).map((e)
-          => HelpRequestType(e)).toList() ?? List<HelpRequestType>());
+          doc.data()['id'] ?? '' , categories);
     }
   }
 
@@ -231,7 +245,7 @@ class DataBaseService{
     return list1;
 
   }
-  
+
 
 
 }
@@ -249,13 +263,21 @@ List<HelpRequestType> helpRequestTypeListFromSnapShot(QuerySnapshot snapshot){
 
 List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
 
+
+  //todo u might changfe the get categoreies
   return snapshot.docs.map((doc) =>
       Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '' , (doc.data()['helpRequestsCategories'] as List<String>).map((e)
-          => HelpRequestType(e)).toList() ?? List<HelpRequestType>())).toList();
+          doc.data()['String id'] ?? '' , get_categoreis(doc)));
 }
 
+List<HelpRequestType> get_categoreis(DocumentSnapshot doc){
 
+  List<HelpRequestType> categories = [];
+  for (var type in doc.data()['helpRequestsCategories']){
+    categories.add(HelpRequestType(type as String));
+  }
+
+}
 
 
 
