@@ -25,10 +25,10 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
       child: TextField(
         textAlign:TextAlign.right,
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: border_color),
-          ),
+//          enabledBorder: OutlineInputBorder(
+//            borderRadius: BorderRadius.circular(30),
+//            borderSide: BorderSide(color: border_color),
+//          ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide(color: on_tap_color),
