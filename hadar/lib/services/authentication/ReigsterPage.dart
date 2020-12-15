@@ -11,6 +11,12 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
   Map<String, Icon> tripTypes = user_types([Colors.black , Colors.black , Colors.black , Colors.black]);
   List<String> tripKeys ;
+  String name;
+  String id;
+  String phone_number;
+  String email;
+  String pw;
+  String second_pw;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +70,8 @@ class _ReigesterPageState extends State<ReigesterPage> {
                   Navigator.pop(
                     context,
                   );
-              }},
+              }
+             },
               child: Text('הרשמה'),
             ),
           ],
@@ -93,6 +100,9 @@ Map<String, Icon> user_types(List<Color> colors) => {
   "צד שלישי": Icon(Icons.airplanemode_active, size: 30,color: colors[3] ),
 };
 
+bool Check_user(name, String id, String phone_number, String email, String pw, String second_pw){
 
+
+}
 
 
