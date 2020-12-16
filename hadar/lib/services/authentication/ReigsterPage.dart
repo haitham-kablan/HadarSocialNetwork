@@ -37,7 +37,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
         body: Column(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 30),
+              margin: EdgeInsets.only(top: 60),
               child: Column(
                 children: [
                   Form(
@@ -67,12 +67,15 @@ class _ReigesterPageState extends State<ReigesterPage> {
                 ],
               ),
             ),
-            Text(
-              'נרשם בתור:',
-              style: TextStyle(
-                fontSize: 20,
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Text(
+                'נרשם בתור:',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+                textAlign: TextAlign.right,
               ),
-              textAlign: TextAlign.right,
             ),
             Expanded(
               child: GridView.count(
@@ -98,34 +101,37 @@ class _ReigesterPageState extends State<ReigesterPage> {
               ),
             ),
 
-            RaisedButton(
-              onPressed: () async {
-                second_pw_Validator.First_pw = first_pw_Controller.text;
+            Container(
+              margin: EdgeInsets.only(bottom: 40),
+              child: RaisedButton(
+                onPressed: () async {
+                  second_pw_Validator.First_pw = first_pw_Controller.text;
 
-                if(!nameKey.currentState.validate() ||!idKey.currentState.validate() ||!phoneKey.currentState.validate()
-                    ||!emailKey.currentState.validate() || !paswwordKey.currentState.validate()
-                    ||!secnd_pass_Key.currentState.validate()
-                ){
-                  return;
-                }
-
-                try {
-                 await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: email_Controller.text,
-                      password: first_pw_Controller.text
-
-                  );
-                } on FirebaseAuthException catch (e) {
-                  if (e.code == 'weak-password') {
-                    print('The password provided is too weak.');
-                  } else if (e.code == 'email-already-in-use') {
-                    print('The account already exists for that email.');
+                  if(!nameKey.currentState.validate() ||!idKey.currentState.validate() ||!phoneKey.currentState.validate()
+                      ||!emailKey.currentState.validate() || !paswwordKey.currentState.validate()
+                      ||!secnd_pass_Key.currentState.validate()
+                  ){
+                    return;
                   }
-                } catch (e) {
-                  print(e);
-                }
-             },
-              child: Text('הרשמה'),
+
+                  try {
+                   await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                        email: email_Controller.text,
+                        password: first_pw_Controller.text
+
+                    );
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'weak-password') {
+                      print('The password provided is too weak.');
+                    } else if (e.code == 'email-already-in-use') {
+                      print('The account already exists for that email.');
+                    }
+                  } catch (e) {
+                    print(e);
+                  }
+               },
+                child: Text('הרשמה'),
+              ),
             ),
 
           ],

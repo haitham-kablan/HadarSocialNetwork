@@ -12,8 +12,7 @@ class _LogInPageState extends State<LogInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
+      body:  Column(
           children: [
     //        Custom_Text_feild('שם משתמש',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
      //       Custom_Text_feild('סיסמה',Icon(Icons.lock),Colors.purple,Colors.orange),
@@ -31,7 +30,7 @@ class _LogInPageState extends State<LogInPage> {
             ),
           ],
         ),
-      ),
+
     );
   }
 }
