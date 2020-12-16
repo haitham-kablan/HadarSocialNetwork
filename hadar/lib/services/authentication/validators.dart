@@ -4,7 +4,10 @@ class Email_Validator{
 
   static String Validate(String value){
     if(value.isEmpty){
-      return 'Email can\'t be empty';
+      return 'האימיל לא יכול להיות ריק';
+    }
+    else{
+      return null;
     }
   }
 
@@ -14,7 +17,10 @@ class password_Validator{
 
   static String Validate(String value){
     if(value.isEmpty){
-      return 'Password can\'t be empty';
+      return 'הסיסמה לא יכולה להיות ריקה';
+    }
+    else{
+      return null;
     }
   }
 
@@ -24,7 +30,10 @@ class Id_Validator{
 
   static String Validate(String value){
     if(value.isEmpty){
-      return 'Id can\'t be empty';
+      return 'תעודת זהות לא יכול להיות ריק';
+    }
+    else{
+      return null;
     }
   }
 
@@ -34,7 +43,10 @@ class name_Validator{
 
   static String Validate(String value){
     if(value.isEmpty){
-      return 'Name can\'t be empty';
+      return 'השם לא יכול להיות ריק';
+    }
+    else{
+      return null;
     }
   }
 
@@ -44,7 +56,10 @@ class number_Validator{
 
   static String Validate(String value){
     if(value.isEmpty){
-      return 'Number can\'t be empty';
+      return 'מספר טלפון לא יכול להיות ריק';
+    }
+    else{
+      return null;
     }
   }
 
@@ -52,9 +67,12 @@ class number_Validator{
 
 class second_pw_Validator{
 
+  static String First_pw;
   static String Validate(String value){
-    if(value.isEmpty){
-      return 'pw arent the same';
+    if(First_pw != value){
+      return 'הסיסמה לא תואמת';
+    }else{
+      return null;
     }
   }
 

@@ -6,10 +6,10 @@ class Custom_Text_feild extends StatefulWidget {
   Color border_color;
   Color on_tap_color;
   var Validtor;
-
-  Custom_Text_feild(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor);
+  var Controller;
+  Custom_Text_feild(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller);
   @override
-  _Custom_Text_feildState createState() => _Custom_Text_feildState(hint,icon,border_color,on_tap_color,Validtor);
+  _Custom_Text_feildState createState() => _Custom_Text_feildState(hint,icon,border_color,on_tap_color,Validtor,Controller);
 }
 
 class _Custom_Text_feildState extends State<Custom_Text_feild> {
@@ -19,7 +19,8 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
   Color border_color;
   Color on_tap_color;
   var Validtor;
-  _Custom_Text_feildState(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor);
+  var Controller;
+  _Custom_Text_feildState(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller);
 
 
   @override
@@ -27,6 +28,7 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
     return FractionallySizedBox(
       widthFactor: 0.7,
       child: TextFormField(
+        controller: Controller,
         validator: Validtor,
         textAlign:TextAlign.right,
         decoration: InputDecoration(

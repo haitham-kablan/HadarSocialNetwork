@@ -12,16 +12,21 @@ class ReigesterPage extends StatefulWidget {
 
 class _ReigesterPageState extends State<ReigesterPage> {
 
-  final formKey = GlobalKey<FormState>();
+  final nameKey = GlobalKey<FormState>();
+  final emailKey = GlobalKey<FormState>();
+  final paswwordKey = GlobalKey<FormState>();
+  final secnd_pass_Key = GlobalKey<FormState>();
+  final idKey = GlobalKey<FormState>();
+  final phoneKey = GlobalKey<FormState>();
   Map<String, Icon> tripTypes = user_types([Colors.black , Colors.black , Colors.black , Colors.black]);
   List<String> tripKeys ;
-  String name;
-  String id;
-  String phone_number;
-  String email;
-  String pw;
-  String second_pw;
 
+  final name_Controller = TextEditingController();
+  final id_Controller = TextEditingController();
+  final email_Controller = TextEditingController();
+  final phone_Controller = TextEditingController();
+  final first_pw_Controller = TextEditingController();
+  final second_pw_Controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
 
@@ -31,12 +36,37 @@ class _ReigesterPageState extends State<ReigesterPage> {
         resizeToAvoidBottomPadding: false,
         body: Column(
           children: [
-           // Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,name_Validator.Validate),
-           // Custom_Text_feild('תעודת זהות',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-           // Custom_Text_feild('מספר טלפון',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-           // Custom_Text_feild('אימיל',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-           // Custom_Text_feild('סיסמה',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-           // Custom_Text_feild('סיסמה עוד פעם',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
+            Container(
+              margin: EdgeInsets.only(top: 30),
+              child: Column(
+                children: [
+                  Form(
+                    child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,name_Validator.Validate,name_Controller),
+                    key: nameKey,
+                  ),
+                  Form(
+                    child: Custom_Text_feild('תעודת זהות',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,Id_Validator.Validate,id_Controller),
+                    key: idKey,
+                  ),
+                  Form(
+                    child: Custom_Text_feild('מספר טלפון',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,number_Validator.Validate,phone_Controller),
+                    key: phoneKey,
+                  ),
+                  Form(
+                    child: Custom_Text_feild('כתובת אימיל',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,Email_Validator.Validate,email_Controller),
+                    key: emailKey,
+                  ),
+                  Form(
+                    child: Custom_Text_feild('סיסמה',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,password_Validator.Validate,first_pw_Controller),
+                    key: paswwordKey,
+                  ),
+                  Form(
+                    child: Custom_Text_feild('אימות סיסמה',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,second_pw_Validator.Validate,second_pw_Controller),
+                    key: secnd_pass_Key,
+                  ),
+                ],
+              ),
+            ),
             Text(
               'נרשם בתור:',
               style: TextStyle(
@@ -69,16 +99,32 @@ class _ReigesterPageState extends State<ReigesterPage> {
             ),
 
             RaisedButton(
-              onPressed: () {
-                formKey.currentState.validate();
+              onPressed: () async {
+//                second_pw_Validator.First_pw = first_pw_Controller.text;
+//                emailKey.currentState.validate();
+//                paswwordKey.currentState.validate();
+//                secnd_pass_Key.currentState.validate();
+//                idKey.currentState.validate();
+//                phoneKey.currentState.validate();
+//                nameKey.currentState.validate();
+                try {
+                  UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      email: "12m",
+                      password: "4!"
+                  );
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'weak-password') {
+                    print('The password provided is too weak.');
+                  } else if (e.code == 'email-already-in-use') {
+                    print('The account already exists for that email.');
+                  }
+                } catch (e) {
+                  print(e);
+                }
              },
               child: Text('הרשמה'),
             ),
-            Form(
-                child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,name_Validator.Validate),
-                key: formKey,
-              
-            ),
+
           ],
         ),
 
