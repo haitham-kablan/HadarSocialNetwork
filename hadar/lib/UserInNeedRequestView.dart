@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
@@ -9,20 +8,28 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:provider/provider.dart';
 
 class RequestWindow extends StatelessWidget {
-  final HelpRequestFeedState parent;
+  HelpRequestFeedState parent;
+  DescriptonBox desBox;
+  Dropdown drop;
+  List<HelpRequestType> types;
 
-  RequestWindow(this.parent);
+  RequestWindow(HelpRequestFeedState parent, List<HelpRequestType> types) {
+    this.parent = parent;
+    this.types = types;
+    init();
+  }
+
+  void init() {
+    this.desBox = DescriptonBox(title: 'Description', parent: parent);
+    this.drop = Dropdown(desBox, types);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Choose a category',
-//      theme: ThemeData(
-//        primarySwatch: Colors.teal,
-//      ),
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: BasicColor.userInNeedClr,
           title: Row(
             children: [
               Center(
@@ -39,11 +46,11 @@ class RequestWindow extends StatelessWidget {
               ),
               Container(
                 height: 100,
-                child: Dropdown(),
+                child: drop,
               ),
               Container(
                 height: 140,
-                child: DescriptonBox(title: 'Description', parent: parent),
+                child: desBox,
               ),
             ],
           ),
@@ -54,18 +61,37 @@ class RequestWindow extends StatelessWidget {
 }
 
 class Dropdown extends StatefulWidget {
-  State createState() => DropDownState();
+  DescriptonBox desBox;
+  DropDownState dropDownState;
+  List<HelpRequestType> types;
+
+  Dropdown(DescriptonBox desBox, List<HelpRequestType> types) {
+    this.types = types;
+    this.desBox = desBox;
+    this.dropDownState = DropDownState(desBox, types);
+  }
+
+  @override
+  State createState() => dropDownState;
+
+  HelpRequestType getSelectedType() {
+    return dropDownState.getSelectedType();
+  }
 }
 
 class DropDownState extends State<Dropdown> {
-  List<HelpRequestType> types = <HelpRequestType>[
-    HelpRequestType('Groceries'),
-    HelpRequestType('Food'),
-    HelpRequestType('Dentist'),
-    HelpRequestType('Babysitting'),
-    HelpRequestType('Health issues')
-  ];
   HelpRequestType selectedType;
+  DescriptonBox desBox;
+  List<HelpRequestType> types;
+
+  DropDownState(DescriptonBox desBox, List<HelpRequestType> types) {
+    this.desBox = desBox;
+    this.types = types;
+  }
+
+  HelpRequestType getSelectedType() {
+    return selectedType;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +101,12 @@ class DropDownState extends State<Dropdown> {
           hint: Text("Select a category"),
           value: selectedType,
           onChanged: (HelpRequestType Value) {
-            setState(() {
-              selectedType = Value;
-            });
+            setState(
+              () {
+                selectedType = Value;
+                desBox.setSelectedType(selectedType);
+              },
+            );
           },
           items: types.map((HelpRequestType type) {
             return DropdownMenuItem<HelpRequestType>(
@@ -105,11 +134,16 @@ class DropDownState extends State<Dropdown> {
 // where he can describe his request
 class DescriptonBox extends StatefulWidget {
   DescriptonBox({Key key, this.title, this.parent}) : super(key: key);
+  _DescriptonBox desBoxState = _DescriptonBox();
   final String title;
   final HelpRequestFeedState parent;
 
+  void setSelectedType(HelpRequestType selectedType) {
+    desBoxState.setSelectedType(selectedType);
+  }
+
   @override
-  _DescriptonBox createState() => _DescriptonBox();
+  _DescriptonBox createState() => desBoxState;
 }
 
 class _DescriptonBox extends State<DescriptonBox> {
@@ -118,19 +152,26 @@ class _DescriptonBox extends State<DescriptonBox> {
   TextEditingController inputtextField = TextEditingController();
   HelpRequestType helpRequestType;
 
+  void setSelectedType(HelpRequestType selectedType) {
+    setState(() {
+      _inputtext = selectedType.description;
+    });
+  }
+
   void _processText() {
     setState(() {
       _inputtext = inputtextField.text;
       helpRequestType = HelpRequestType(_inputtext);
       helpRequest =
           HelpRequest(helpRequestType, _inputtext, DateTime.now(), "sender");
+
       widget.parent.handleFeedChange(helpRequest, true);
-      //todo: push to database
-      if (Navigator.canPop(context)) {
-        Navigator.pop(
-          context,
-        );
-      }
+
+      // if (Navigator.canPop(context)) {
+      //   Navigator.pop(
+      //     context,
+      //   );
+      // }
     });
   }
 
@@ -150,9 +191,14 @@ class _DescriptonBox extends State<DescriptonBox> {
               ),
             ),
             RaisedButton(
-              onPressed: _processText,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)),
+              onPressed: () {
+                _processText();
+                if (Navigator.canPop(context)) {
+                  Navigator.pop(
+                    context,
+                  );
+                }
+              },
               child: Text('Done'),
             )
           ],
