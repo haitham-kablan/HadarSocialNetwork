@@ -6,6 +6,9 @@ class Email_Validator{
     if(value.isEmpty){
       return 'האימיל לא יכול להיות ריק';
     }
+    if(!value.contains('@')){
+      return 'האימיל לא חוקי';
+    }
     else{
       return null;
     }
@@ -32,6 +35,9 @@ class Id_Validator{
     if(value.isEmpty){
       return 'תעודת זהות לא יכול להיות ריק';
     }
+    if(value.length != 9){
+      return 'תעודת זהות לא חוקית';
+    }
     else{
       return null;
     }
@@ -45,6 +51,9 @@ class name_Validator{
     if(value.isEmpty){
       return 'השם לא יכול להיות ריק';
     }
+    if (value.length > 60){
+      return 'השם שלך ארוך מדי';
+    }
     else{
       return null;
     }
@@ -57,6 +66,9 @@ class number_Validator{
   static String Validate(String value){
     if(value.isEmpty){
       return 'מספר טלפון לא יכול להיות ריק';
+    }
+    if(value.length != 10){
+      return'מספר טלפון אינו חוקי';
     }
     else{
       return null;
