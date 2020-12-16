@@ -38,14 +38,13 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
         validator: Validtor,
         textAlign:TextAlign.right,
         decoration: InputDecoration(
-//          enabledBorder: OutlineInputBorder(
-//            borderRadius: BorderRadius.circular(30),
-//            borderSide: BorderSide(color: border_color),
-//          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: border_color),
+          ),
+          focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: on_tap_color),
           ),
+
           suffixIcon: icon,
           hintText: hint,
         ),

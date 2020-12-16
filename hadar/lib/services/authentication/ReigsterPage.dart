@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/authentication/validators.dart';
 
 
@@ -70,39 +71,47 @@ class _ReigesterPageState extends State<ReigesterPage> {
             Container(
               margin: EdgeInsets.only(top: 20),
               child: Text(
+
                 'נרשם בתור:',
                 style: TextStyle(
                   fontSize: 20,
+
                 ),
                 textAlign: TextAlign.right,
-              ),
-            ),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 4,
-                scrollDirection: Axis.vertical,
-                primary: false,
-                children: List.generate(tripTypes.length, (index) {
-                  return FlatButton(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        tripTypes[tripKeys[index]],
-                        Text(tripKeys[index]),
-                      ],
-                    ),
-                    onPressed: ()  {
-                      setState(() {
-                        tripTypes = update_list(index);
-                      });
-                    },
-                  );
-                }),
+                textDirection: TextDirection.rtl,
+
               ),
             ),
 
+             Expanded(
+               child: GridView.count(
+                      crossAxisCount: 4,
+                      scrollDirection: Axis.vertical,
+                      primary: false,
+                      children: List.generate(tripTypes.length, (index) {
+                        return FlatButton(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              tripTypes[tripKeys[index]],
+                              Text(tripKeys[index]),
+                            ],
+                          ),
+                          onPressed: ()  {
+                            setState(() {
+                              tripTypes = update_list(index);
+                            });
+                          },
+                        );
+                      }),
+                    ),
+
+
+              ),
+
+
             Container(
-              margin: EdgeInsets.only(bottom: 40),
+              margin: EdgeInsets.only(bottom: 60),
               child: RaisedButton(
                 onPressed: () async {
                   second_pw_Validator.First_pw = first_pw_Controller.text;
