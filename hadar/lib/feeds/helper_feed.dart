@@ -29,7 +29,7 @@ class _HelperFeedState extends State<HelperFeed> {
 }
 
 
-class VoulunteerFeed extends StatelessWidget {
+class VolunteerFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<HelpRequestType> list1 = List<HelpRequestType>();

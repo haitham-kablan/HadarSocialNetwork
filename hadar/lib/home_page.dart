@@ -20,7 +20,7 @@ class _volunteer_home_pageState extends State<volunteer_home_page> {
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static  List<Widget> _widgetOptions = <Widget>[
-    VoulunteerFeed(),
+    VolunteerFeed(),
     Text(
       'Index 1: Business',
       style: optionStyle,
