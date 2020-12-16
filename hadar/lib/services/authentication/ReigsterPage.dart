@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
-import 'package:item_selector/item_selector.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hadar/services/authentication/validators.dart';
+
 
 class ReigesterPage extends StatefulWidget {
   @override
   _ReigesterPageState createState() => _ReigesterPageState();
+
 }
 
 class _ReigesterPageState extends State<ReigesterPage> {
 
+  final formKey = GlobalKey<FormState>();
   Map<String, Icon> tripTypes = user_types([Colors.black , Colors.black , Colors.black , Colors.black]);
   List<String> tripKeys ;
   String name;
@@ -27,12 +31,12 @@ class _ReigesterPageState extends State<ReigesterPage> {
         resizeToAvoidBottomPadding: false,
         body: Column(
           children: [
-            Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-            Custom_Text_feild('תעודת זהות',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-            Custom_Text_feild('מספר טלפון',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-            Custom_Text_feild('אימיל',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-            Custom_Text_feild('סיסמה',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-            Custom_Text_feild('סיסמה עוד פעם',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
+           // Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,name_Validator.Validate),
+           // Custom_Text_feild('תעודת זהות',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
+           // Custom_Text_feild('מספר טלפון',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
+           // Custom_Text_feild('אימיל',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
+           // Custom_Text_feild('סיסמה',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
+           // Custom_Text_feild('סיסמה עוד פעם',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
             Text(
               'נרשם בתור:',
               style: TextStyle(
@@ -65,14 +69,15 @@ class _ReigesterPageState extends State<ReigesterPage> {
             ),
 
             RaisedButton(
-              onPressed: (){
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(
-                    context,
-                  );
-              }
+              onPressed: () {
+                formKey.currentState.validate();
              },
               child: Text('הרשמה'),
+            ),
+            Form(
+                child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,name_Validator.Validate),
+                key: formKey,
+              
             ),
           ],
         ),
@@ -101,6 +106,7 @@ Map<String, Icon> user_types(List<Color> colors) => {
 };
 
 bool Check_user(name, String id, String phone_number, String email, String pw, String second_pw){
+
 
 
 }

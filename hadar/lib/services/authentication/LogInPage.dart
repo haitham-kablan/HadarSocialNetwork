@@ -15,8 +15,8 @@ class _LogInPageState extends State<LogInPage> {
       body: Center(
         child: Column(
           children: [
-            Custom_Text_feild('שם משתמש',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
-            Custom_Text_feild('סיסמה',Icon(Icons.lock),Colors.purple,Colors.orange),
+    //        Custom_Text_feild('שם משתמש',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange),
+     //       Custom_Text_feild('סיסמה',Icon(Icons.lock),Colors.purple,Colors.orange),
             RaisedButton(
               onPressed: () {  },
               child: Text('log in'),
