@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hadar/services/authentication/validators.dart';
 
 class Custom_Text_feild extends StatefulWidget {
   Icon icon;
@@ -7,9 +8,10 @@ class Custom_Text_feild extends StatefulWidget {
   Color on_tap_color;
   var Validtor;
   var Controller;
-  Custom_Text_feild(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller);
+  bool is_pw;
+  Custom_Text_feild(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller,this.is_pw);
   @override
-  _Custom_Text_feildState createState() => _Custom_Text_feildState(hint,icon,border_color,on_tap_color,Validtor,Controller);
+  _Custom_Text_feildState createState() => _Custom_Text_feildState(hint,icon,border_color,on_tap_color,Validtor,Controller,is_pw);
 }
 
 class _Custom_Text_feildState extends State<Custom_Text_feild> {
@@ -18,9 +20,10 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
   String hint;
   Color border_color;
   Color on_tap_color;
+  bool is_pw;
   var Validtor;
   var Controller;
-  _Custom_Text_feildState(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller);
+  _Custom_Text_feildState(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller,this.is_pw);
 
 
   @override
@@ -28,6 +31,9 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
     return FractionallySizedBox(
       widthFactor: 0.7,
       child: TextFormField(
+        obscureText: is_pw,
+        autocorrect: !is_pw,
+        enableSuggestions: !is_pw,
         controller: Controller,
         validator: Validtor,
         textAlign:TextAlign.right,

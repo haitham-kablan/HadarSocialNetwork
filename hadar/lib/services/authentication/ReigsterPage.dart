@@ -41,27 +41,27 @@ class _ReigesterPageState extends State<ReigesterPage> {
               child: Column(
                 children: [
                   Form(
-                    child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,name_Validator.Validate,name_Controller),
+                    child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,name_Validator.Validate,name_Controller,false),
                     key: nameKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('תעודת זהות',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,Id_Validator.Validate,id_Controller),
+                    child: Custom_Text_feild('תעודת זהות',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,Id_Validator.Validate,id_Controller,false),
                     key: idKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('מספר טלפון',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,number_Validator.Validate,phone_Controller),
+                    child: Custom_Text_feild('מספר טלפון',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,number_Validator.Validate,phone_Controller,false),
                     key: phoneKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('כתובת אימיל',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,Email_Validator.Validate,email_Controller),
+                    child: Custom_Text_feild('כתובת אימיל',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,Email_Validator.Validate,email_Controller,false),
                     key: emailKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('סיסמה',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,password_Validator.Validate,first_pw_Controller),
+                    child: Custom_Text_feild('סיסמה',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,password_Validator.Validate,first_pw_Controller,true),
                     key: paswwordKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('אימות סיסמה',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,second_pw_Validator.Validate,second_pw_Controller),
+                    child: Custom_Text_feild('אימות סיסמה',Icon(Icons.account_circle_rounded),Colors.purple,Colors.orange,second_pw_Validator.Validate,second_pw_Controller,true),
                     key: secnd_pass_Key,
                   ),
                 ],
@@ -100,17 +100,20 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
             RaisedButton(
               onPressed: () async {
-//                second_pw_Validator.First_pw = first_pw_Controller.text;
-//                emailKey.currentState.validate();
-//                paswwordKey.currentState.validate();
-//                secnd_pass_Key.currentState.validate();
-//                idKey.currentState.validate();
-//                phoneKey.currentState.validate();
-//                nameKey.currentState.validate();
+                second_pw_Validator.First_pw = first_pw_Controller.text;
+
+                if(!nameKey.currentState.validate() ||!idKey.currentState.validate() ||!phoneKey.currentState.validate()
+                    ||!emailKey.currentState.validate() || !paswwordKey.currentState.validate()
+                    ||!secnd_pass_Key.currentState.validate()
+                ){
+                  return;
+                }
+
                 try {
-                  UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                      email: "12m",
-                      password: "4!"
+                 await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      email: email_Controller.text,
+                      password: first_pw_Controller.text
+
                   );
                 } on FirebaseAuthException catch (e) {
                   if (e.code == 'weak-password') {
