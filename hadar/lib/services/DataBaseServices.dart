@@ -176,8 +176,7 @@ class DataBaseService{
       }
 
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' , (doc.data()['helpRequestsCategories'] as List<String>).map((e)
-          => HelpRequestType(e)).toList() ?? List<HelpRequestType>());
+          doc.data()['id'] ?? '' , get_categoreis(doc));
     }
   }
 
@@ -251,11 +250,19 @@ List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
 
   return snapshot.docs.map((doc) =>
       Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '' , (doc.data()['helpRequestsCategories'] as List<String>).map((e)
-          => HelpRequestType(e)).toList() ?? List<HelpRequestType>())).toList();
+          doc.data()['String id'] ?? '' , get_categoreis(doc)));
 }
 
+List<HelpRequestType> get_categoreis(DocumentSnapshot doc){
 
+  List<HelpRequestType> categories = [];
+  for (var type in doc.data()['helpRequestsCategories']){
+    categories.add(HelpRequestType(type as String));
+  }
+
+  return categories;
+
+}
 
 
 

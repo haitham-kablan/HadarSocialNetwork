@@ -185,13 +185,13 @@ class DataBaseServiceMock{
         return null;
       }
 
-      List<HelpRequestType> categories = [];
-      for (var type in doc.data()['helpRequestsCategories']){
-        categories.add(HelpRequestType(type as String));
-      }
+//      List<HelpRequestType> categories = [];
+//      for (var type in doc.data()['helpRequestsCategories']){
+//        categories.add(HelpRequestType(type as String));
+//      }
 
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' , categories);
+          doc.data()['id'] ?? '' , get_categoreis(doc));
     }
   }
 
@@ -264,7 +264,6 @@ List<HelpRequestType> helpRequestTypeListFromSnapShot(QuerySnapshot snapshot){
 List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
 
 
-  //todo u might changfe the get categoreies
   return snapshot.docs.map((doc) =>
       Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
           doc.data()['String id'] ?? '' , get_categoreis(doc)));
@@ -276,6 +275,8 @@ List<HelpRequestType> get_categoreis(DocumentSnapshot doc){
   for (var type in doc.data()['helpRequestsCategories']){
     categories.add(HelpRequestType(type as String));
   }
+
+  return categories;
 
 }
 
