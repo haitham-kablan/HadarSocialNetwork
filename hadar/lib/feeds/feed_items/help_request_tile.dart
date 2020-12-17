@@ -71,7 +71,7 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-               // GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
+                GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
                 Text(widget.helpRequest.description),
               ])),
       trailing: Row(
