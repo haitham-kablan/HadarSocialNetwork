@@ -132,9 +132,9 @@ class ThreeDotsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => print("Tap: more_vert"),
+      //onTap: () => print("Tap: more_vert"),
       onTapDown: _storePosition,
-      onLongPress: () async {
+      onTap: () async {
         final RenderBox overlay =
             Overlay.of(context).context.findRenderObject();
         final int _selected = await showMenu(
@@ -151,12 +151,12 @@ class ThreeDotsWidget extends StatelessWidget {
                 ],
               ),
             ),
-            PopupMenuItem(
-                value: 2,
-                child: Row(children: <Widget>[
-                  const Icon(Icons.clear, color: Colors.red),
-                  const Text("   Deny"),
-                ])),
+//            PopupMenuItem(
+//                value: 2,
+//                child: Row(children: <Widget>[
+//                  const Icon(Icons.clear, color: Colors.red),
+//                  const Text("   Deny"),
+//                ])),
             PopupMenuItem(
               value: 3,
               child: Row(
@@ -182,9 +182,9 @@ class ThreeDotsWidget extends StatelessWidget {
 //                        MaterialPageRoute(builder: (context) => testing_stream()),
 //                      );
             break;
-          case 2:
-            print("deny seleted");
-            break;
+//          case 2:
+//            print("deny seleted");
+//            break;
           case 3:
             print("profile selected");
             break;
