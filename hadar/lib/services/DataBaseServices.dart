@@ -114,16 +114,17 @@ class DataBaseService{
     to_add['date'] = helpRequest.date.toString();
     to_add['handler_id'] = volunteer.id;
 
-    List<QueryDocumentSnapshot> docs = null;
+    QuerySnapshot docs = await helpersCollection.get();
 
-    await helpersCollection.where('id',isNotEqualTo: volunteer.id).get().then((value) => docs = value.docs);
-
-    for (QueryDocumentSnapshot doc_snap_shot in docs){
+    for (QueryDocumentSnapshot doc_snap_shot in docs.docs){
       DocumentReference curr_doc = doc_snap_shot.reference;
-      curr_doc.collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
+      if(curr_doc.id != volunteer.id) {
+        curr_doc.collection(volunteer_pending_requests).doc(
+            helpRequest.date.toString() + "-" + helpRequest.sender_id).delete();
+      }
     }
 
-    return await helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
+    helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
   }
 
   /*

@@ -7,7 +7,9 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/getters/getUserName.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
+import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -48,12 +50,14 @@ class VolunteerFeedTile extends StatefulWidget {
 }
 
 class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
+
   @override
   Widget build(BuildContext context) {
     final DateTime now = widget.helpRequest.date;
     final DateFormat formatter = DateFormat.yMd().add_Hm();
-
+    Color color = widget.helpRequest.handler_id == '' ? Colors.white : Colors.blue;
     return ListTile(
+      tileColor: color,
       onTap: () => print("wowwww!!!!"),//showHelpRequestStatus(helpRequest),
       isThreeLine: true,
       title: Row(children: <Widget>[
@@ -78,7 +82,8 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           CallWidget(widget.helpRequest),
-          ThreeDotsWidget(),
+          ThreeDotsWidget(widget.helpRequest),
+
         ],
       ),
     );
@@ -124,6 +129,11 @@ class CallWidget extends StatelessWidget {
 }
 
 class ThreeDotsWidget extends StatelessWidget {
+
+  HelpRequest helpRequest;
+  ThreeDotsWidget(this.helpRequest);
+
+
   Offset _tapPosition;
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
@@ -176,7 +186,11 @@ class ThreeDotsWidget extends StatelessWidget {
         switch (_selected) {
           case 1:
             print("accept seleted");
-
+           // helpRequest.handler_id = '4';
+            List<HelpRequestType> list1 = List<HelpRequestType>();
+            list1.add(HelpRequestType('food'));
+            list1.add(HelpRequestType('money'));
+            DataBaseService().assignHelpRequestForVolunteer(Volunteer('hsen', 'sa', '123', false, '4', list1), helpRequest);
 //                      Navigator.push(
 //                        context,
 //                        MaterialPageRoute(builder: (context) => testing_stream()),
