@@ -9,9 +9,10 @@ class HelpRequest{
   String description;
   DateTime date;
   String sender_id;
+  String handler_id;
   static int indexer = 0;
   int time;
-  HelpRequest( this.category, this.description, this.date , this.sender_id){
+  HelpRequest( this.category, this.description, this.date , this.sender_id,this.handler_id){
     time = date.millisecondsSinceEpoch;
   }
   //DateTime date;

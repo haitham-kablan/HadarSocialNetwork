@@ -86,12 +86,12 @@ class _user_in_need_home_pageState extends State<user_in_need_home_page> {
             HelpRequestType("clothes"),
             "description",
             DateTime.now(),
-            "chuck norris"),
+            "chuck norris",''),
         HelpRequest(
             HelpRequestType("food"),
             "description2",
             DateTime.now(),
-            "bruce lee"),
+            "bruce lee",''),
       ],
     ),
     Text(

@@ -16,7 +16,6 @@ import 'package:hadar/utils/HelpRequestType.dart';
 class DataBaseService{
 
   static final String user_in_need_requests = 'REQUESTS';
-  static final String volunteer_accepted_requests = 'ACCEPTED_REQUESTS';
   static final String volunteer_pending_requests = 'PENDING_REQUESTS';
 
   final CollectionReference helpersCollection = FirebaseFirestore.instance.collection('HELPERS');
@@ -38,6 +37,7 @@ class DataBaseService{
     to_add['description'] = helpRequest.description;
     to_add['date'] = helpRequest.date.toString();
     to_add['time'] = helpRequest.time;
+    to_add['handler_id'] = helpRequest.handler_id;
 
 
     await userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id)
@@ -112,9 +112,18 @@ class DataBaseService{
     to_add['sender_id'] = helpRequest.sender_id;
     to_add['description'] = helpRequest.description;
     to_add['date'] = helpRequest.date.toString();
+    to_add['handler_id'] = volunteer.id;
 
-    await helpersCollection.doc(volunteer.id).collection(volunteer_accepted_requests).doc(to_add['date']+"-"+helpRequest.sender_id).set(to_add);
-    return await helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(to_add['date']+"-"+helpRequest.sender_id).delete();
+    List<QueryDocumentSnapshot> docs = null;
+
+    await helpersCollection.where('id',isNotEqualTo: volunteer.id).get().then((value) => docs = value.docs);
+
+    for (QueryDocumentSnapshot doc_snap_shot in docs){
+      DocumentReference curr_doc = doc_snap_shot.reference;
+      curr_doc.collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
+    }
+
+    return await helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
   }
 
   /*
@@ -194,12 +203,6 @@ class DataBaseService{
         .map(helpRequestListFromSnapShot);
   }
 
-  Stream<List<HelpRequest>> getVolAceeptedRequests(Volunteer volunteer) {
-
-    return helpersCollection.doc(volunteer.id).collection(volunteer_accepted_requests).orderBy('time',descending: true)
-        .snapshots()
-        .map(helpRequestListFromSnapShot);
-  }
 
   Stream<List<HelpRequestType>> getHelpRequestsTypes() {
 
@@ -233,12 +236,14 @@ class DataBaseService{
 
 
 
+
+
 }
 
 
 List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '')).toList();
+      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '')).toList();
 }
 
 List<HelpRequestType> helpRequestTypeListFromSnapShot(QuerySnapshot snapshot){
@@ -261,6 +266,9 @@ List<HelpRequestType> get_categoreis(DocumentSnapshot doc){
   }
 
   return categories;
+
+
+
 
 }
 

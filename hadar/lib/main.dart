@@ -5,6 +5,7 @@ import 'package:hadar/Design/basicTools.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/feeds/helper_feed.dart';
+import 'package:hadar/tests/db_test.dart';
 import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/users/RegisteredUser.dart';
 import 'package:hadar/users/User.dart';
@@ -124,12 +125,12 @@ class Log_In_Screen extends StatelessWidget {
                                 HelpRequestType("clothes"),
                                 "description",
                                 DateTime.now(),
-                                "chuck norris"),
+                                "chuck norris",''),
                             HelpRequest(
                                 HelpRequestType("food"),
                                 "description2",
                                 DateTime.now(),
-                                "bruce lee"),
+                                "bruce lee",''),
                           ],
                         )),
                   );
