@@ -27,7 +27,7 @@ void main() async {
   await Firebase.initializeApp();
 
   runApp(MaterialApp(
-    home: ForNow(),
+    home: db_test(),
   ));
 }
 
