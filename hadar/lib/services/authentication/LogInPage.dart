@@ -88,7 +88,7 @@ class _LogInPageState extends State<LogInPage> {
             ),
             Container(
               margin: EdgeInsets.only(top: 80),
-              child:Form(key:nameKey,child: Custom_Text_feild('שם משתמש',Icon(Icons.account_circle_rounded),Color(0xff494CF5),Colors.black,Email_Validator.Validate,email_control,false)),
+              child:Form(key:nameKey,child: Custom_Text_feild('שם משתמש',Icon(Icons.email),Color(0xff494CF5),Colors.black,Email_Validator.Validate,email_control,false)),
             ),
             Container(
               margin: EdgeInsets.only(top: 20),
