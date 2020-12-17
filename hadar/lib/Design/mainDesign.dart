@@ -2,50 +2,158 @@ import 'dart:ui';
 import 'basicTools.dart';
 import 'package:flutter/material.dart';
 
-//when using this, send the color you want to use
-//see example in BackgroundDesign class
-class BarDesign extends StatelessWidget {
-  String title;
-
-  BarDesign(this.title);
-
+class Sample2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: PreferredSize(
-        preferredSize: Size(double.infinity, 250),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 150,
-          child: Container(
-            decoration: BoxDecoration(
-              color: BasicColor.clr,
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(60),
-                  bottomRight: Radius.circular(60)),
+    return SafeArea(
+      child: Material(
+        child: CustomScrollView(
+          slivers: [
+            SliverPersistentHeader(
+              delegate: MySliverAppBar(expandedHeight: 100, title: 'USER'),
+              pinned: true,
             ),
-            child: Container(
-              alignment: Alignment.topRight,
-              margin: EdgeInsets.fromLTRB(0, 40, 10, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'שלום חנין',
-                    // this.title,
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (_, index) => ListTile(
+                  title: Text("Index: $index"),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MySliverAppBar extends SliverPersistentHeaderDelegate {
+  final double expandedHeight;
+  String title;
+
+  MySliverAppBar({@required this.expandedHeight, this.title});
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Stack(
+      fit: StackFit.expand,
+      overflow: Overflow.visible,
+      children: [
+        Container( decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(60),
+                bottomRight: Radius.circular(60)),
+          ),
+          child: Image.asset(
+            "assets/images/color.jpg",
+            fit: BoxFit.cover,
+          ),
+        ),
+        Center(
+          child: Opacity(
+            opacity: shrinkOffset / expandedHeight,
+            child: Text(
+              title,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 23,
               ),
             ),
           ),
         ),
-      ),
+        Positioned(
+          top: expandedHeight / 2 - shrinkOffset,
+          left: MediaQuery.of(context).size.width / 4,
+          child: Opacity(
+            opacity: (1 - shrinkOffset / expandedHeight),
+            child: Card(
+
+              elevation:0 ,color: Colors.transparent,
+              child: SizedBox(
+                height: expandedHeight,
+                width: MediaQuery.of(context).size.width / 2,
+                child: UserCircle(),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  double get maxExtent => expandedHeight;
+
+  @override
+  double get minExtent => kToolbarHeight;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
+}
+
+//when using this, send the color you want to use
+//see example in BackgroundDesign class
+class BarDesign extends StatelessWidget with PreferredSizeWidget {
+  @override
+  final Size preferredSize;
+
+  final String userName;
+
+  BarDesign(
+    this.userName, {
+    Key key,
+  })  : preferredSize = Size(double.infinity, 150),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      // title: Text(
+      //   title,
+      //   style: TextStyle(color: Colors.black),
+      // ),
+      backgroundColor: Colors.white60,
+      automaticallyImplyLeading: true,
+      actions: <Widget>[
+        Icon(Icons.comment, color: BasicColor.clr,),
+        Icon(Icons.settings, color: BasicColor.clr,),
+      ],
+      elevation: 50.0,
+      // bottom:PreferredSize(
+      //   preferredSize: Size(double.infinity, 250),
+      //   child: Container(
+      //     width: MediaQuery.of(context).size.width,
+      //     height: 150,
+      //     child: Container(
+      //       decoration: BoxDecoration(
+      //         color: BasicColor.clr,
+      //         borderRadius: BorderRadius.only(
+      //             bottomLeft: Radius.circular(60),
+      //             bottomRight: Radius.circular(60)),
+      //       ),
+      //       child: Container(
+      //         alignment: Alignment.topRight,
+      //         margin: EdgeInsets.fromLTRB(0, 40, 10, 0),
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.end,
+      //           crossAxisAlignment: CrossAxisAlignment.end,
+      //           children: [
+      //             Text(
+      //               ' שלום $userName',
+      //               // this.title,
+      //               style: TextStyle(
+      //                   fontSize: 20,
+      //                   color: Colors.white,
+      //                   fontWeight: FontWeight.bold),
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 }
@@ -56,13 +164,15 @@ class BarDesign extends StatelessWidget {
 class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      bottomNavigationBar: PreferredSize(
+    return
+      // Scaffold(
+      // backgroundColor: Colors.transparent,
+      // bottomNavigationBar:
+      PreferredSize(
         preferredSize: Size(double.infinity, 50),
         child: Container(
           width: MediaQuery.of(context).size.width,
-          height: 70,
+          height: 50,
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -75,7 +185,7 @@ class BottomBar extends StatelessWidget {
               ],
             ),
             child: Container(
-              margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+              margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -83,7 +193,7 @@ class BottomBar extends StatelessWidget {
                   FlatButton(
                     child: Icon(
                       Icons.person_rounded,
-                      size: 40,
+                      size: 30,
                       color: BasicColor.clr,
                     ),
                     onPressed: () {},
@@ -91,7 +201,7 @@ class BottomBar extends StatelessWidget {
                   FlatButton(
                     child: Icon(
                       Icons.dynamic_feed_outlined,
-                      size: 40,
+                      size: 30,
                       color: BasicColor.clr,
                     ),
                     onPressed: () {},
@@ -99,7 +209,7 @@ class BottomBar extends StatelessWidget {
                   FlatButton(
                     child: Icon(
                       Icons.add_rounded,
-                      size: 40,
+                      size: 30,
                       color: BasicColor.clr,
                     ),
                     onPressed: () {},
@@ -109,12 +219,13 @@ class BottomBar extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      // ),
     );
   }
 }
 
-class BarCircle extends StatelessWidget {
+
+class UserCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,8 +237,8 @@ class BarCircle extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Image.asset(
               'assets/images/barPic.png',
-              width: 180,
-              height: 180,
+              width: 200,
+              height: 200,
             ),
           ),
         ],
@@ -136,21 +247,3 @@ class BarCircle extends StatelessWidget {
   }
 }
 
-class BackgroundDesign extends StatelessWidget {
-//todo: change the color depending on the user type
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          BarDesign('User Feed'),
-          BottomBar(),
-          BarCircle(),
-        ],
-      ),
-    );
-  }
-}
