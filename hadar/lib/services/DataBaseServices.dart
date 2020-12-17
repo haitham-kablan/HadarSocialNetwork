@@ -231,6 +231,16 @@ class DataBaseService{
   }
   
 
+  Future<bool> is_id_taken(String id)async{
+
+    DocumentSnapshot snapShot_helper = await helpersCollection.doc(id).get();
+    DocumentSnapshot snapShot_need = await userInNeedCollection.doc(id).get();
+    DocumentSnapshot snapShot_admin = await adminsCollection.doc(id).get();
+    if (snapShot_helper.exists || snapShot_need.exists || snapShot_admin.exists ) {
+      return true;
+    }
+    return false;
+  }
 
 }
 

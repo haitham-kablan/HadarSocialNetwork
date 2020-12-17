@@ -8,6 +8,7 @@ import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
+import 'package:intl/intl.dart';
 
 
 class ReigesterPage extends StatefulWidget {
@@ -24,8 +25,9 @@ class _ReigesterPageState extends State<ReigesterPage> {
   final secnd_pass_Key = GlobalKey<FormState>();
   final idKey = GlobalKey<FormState>();
   final phoneKey = GlobalKey<FormState>();
-  bool not_clicked = true;
-  bool first_time = true;
+  String _error_msg = '';
+  bool alert = false;
+  bool clicked=false;
   Privilege clicked_priv = null;
   Map<String, Icon> tripTypes = user_types([Colors.black , Colors.black , Colors.black]);
   List<String> tripKeys ;
@@ -45,8 +47,9 @@ class _ReigesterPageState extends State<ReigesterPage> {
         resizeToAvoidBottomPadding: false,
         body: Column(
               children: [
+                Container(margin: EdgeInsets.all(35),child: showAlert()),
                 Container(
-                  margin: EdgeInsets.only(top: 60),
+                  margin: EdgeInsets.only(top: 25),
                   child: Column(
                     children: [
                       Form(
@@ -76,61 +79,50 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: Text(
-
-                    'נרשם בתור:',
-                    style: TextStyle(
-                      fontSize: 20,
-
-                    ),
-                    textAlign: TextAlign.right,
-                    textDirection: TextDirection.rtl,
-
-                  ),
-                ),
-
                 Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    scrollDirection: Axis.vertical,
-                    primary: false,
-                    children: List.generate(tripTypes.length, (index) {
-                      return FlatButton(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            tripTypes[tripKeys[index]],
-                            Text(tripKeys[index]),
-                          ],
-                        ),
-                        onPressed: ()  {
-                          not_clicked = false;
-                          if(index == 0){
-                            clicked_priv = Privilege.Admin;
-                          }
-                          if(index == 1){
-                            clicked_priv = Privilege.UserInNeed;
-                          }
-                          if(index == 2){
-                            clicked_priv = Privilege.Volunteer;
-                          }
+                  child:
+                      GridView.count(
+                        crossAxisCount: 3,
+                        scrollDirection: Axis.vertical,
+                        primary: false,
+                        children: List.generate(tripTypes.length, (index) {
+                          return FlatButton(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                tripTypes[tripKeys[index]],
+                                Text(tripKeys[index]),
+                              ],
+                            ),
+                            onPressed: ()  {
+                              alert = false;
+                              clicked=true;
+                              if(index == 0){
+                                clicked_priv = Privilege.Admin;
+                              }
+                              if(index == 1){
+                                clicked_priv = Privilege.UserInNeed;
+                              }
+                              if(index == 2){
+                                clicked_priv = Privilege.Volunteer;
+                              }
 //                          if(index == 3){
 //                            clicked_priv = Privilege.Admin;
 //                          }
-                          setState(() {
-                            tripTypes = update_list(index);
-                          });
-                        },
-                      );
-                    }),
-                  ),
+                              setState(() {
+                                tripTypes = update_list(index);
+                              });
+                            },
+                          );
+                        }),
+                      ),
+
+
 
 
                 ),
 
-                Container(margin: EdgeInsets.all(20),child: showAlert()),
+
                 Container(
                   margin: EdgeInsets.only(bottom: 60),
                   child: RaisedButton(
@@ -140,16 +132,25 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                     onPressed: () async {
                       second_pw_Validator.First_pw = first_pw_Controller.text;
-                      if(first_time){
-                        setState(() {
-                          first_time=false;
-                        });
-                      }
                       if(!nameKey.currentState.validate() ||!idKey.currentState.validate() ||!phoneKey.currentState.validate()
                           ||!emailKey.currentState.validate() || !paswwordKey.currentState.validate()
                           ||!secnd_pass_Key.currentState.validate()
                       ){
                         return;
+                      }
+
+                      bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text);
+                      if(id_check_if_exsist){
+                        setState(() {
+                          alert=true;
+                          _error_msg = 'תעודת הזהות כבר תפוסה';
+                        });
+                      }
+                      if(clicked == false){
+                        setState(() {
+                          alert=true;
+                          _error_msg = 'אנא בחר את התור שלך';
+                        });
                       }
                       assert (clicked_priv != null);
                       try {
@@ -162,8 +163,16 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
+                          setState(() {
+                            alert=true;
+                            _error_msg = 'הסיסמה שלך חלשה';
+                          });
                           print('The password provided is too weak.');
                         } else if (e.code == 'email-already-in-use') {
+                          setState(() {
+                            alert=true;
+                            _error_msg = 'האימיל שלך כבר תפוס';
+                          });
                           print('The account already exists for that email.');
                         }
                       } catch (e) {
@@ -187,7 +196,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
   }
 
   Widget showAlert() {
-    if (not_clicked && !first_time) {
+    if (alert) {
       return Container(
         color: Color(0xff494CF5),
         width: double.infinity,
@@ -199,13 +208,16 @@ class _ReigesterPageState extends State<ReigesterPage> {
               child: IconButton(
                 icon: Icon(Icons.close,color: Colors.white,),
                 onPressed: () {
-                  first_time = false;
+                  setState(() {
+                    alert = false;
+                  });
+
                 },
               ),
             ),
             Expanded(
               child: Text(
-                'אנא בחר את התור שלך',
+                _error_msg,
                 maxLines: 3,
                 textAlign: TextAlign.right,
                 style: TextStyle(color: Colors.white),

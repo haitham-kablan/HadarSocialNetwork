@@ -21,6 +21,7 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
   Color border_color;
   Color on_tap_color;
   bool is_pw;
+
   var Validtor;
   var Controller;
   _Custom_Text_feildState(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller,this.is_pw);
@@ -44,7 +45,6 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: on_tap_color),
           ),
-
           suffixIcon: icon,
           hintText: hint,
         ),

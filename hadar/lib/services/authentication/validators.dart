@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:string_validator/string_validator.dart';
 
 class Email_Validator{
 
@@ -6,7 +7,7 @@ class Email_Validator{
     if(value.isEmpty){
       return 'האימיל לא יכול להיות ריק';
     }
-    if(!value.contains('@')){
+    if(!isEmail(value)){
       return 'האימיל לא חוקי';
     }
     else{
@@ -18,6 +19,7 @@ class Email_Validator{
 
 class password_Validator{
 
+  // ignore: non_constant_identifier_names
   static String Validate(String value){
     if(value.isEmpty){
       return 'הסיסמה לא יכולה להיות ריקה';
@@ -38,9 +40,11 @@ class Id_Validator{
     if(value.length != 9){
       return 'תעודת זהות לא חוקית';
     }
-    else{
-      return null;
+    if(!isNumeric(value)){
+      return 'תעודת זהות לא חוקית';
     }
+      return null;
+
   }
 
 }
@@ -67,7 +71,10 @@ class number_Validator{
     if(value.isEmpty){
       return 'מספר טלפון לא יכול להיות ריק';
     }
-    if(value.length != 10){
+    if(value.length != 10 ){
+      return'מספר טלפון אינו חוקי';
+    }
+    if(!isNumeric(value)){
       return'מספר טלפון אינו חוקי';
     }
     else{
