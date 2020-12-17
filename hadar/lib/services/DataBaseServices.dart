@@ -107,12 +107,8 @@ class DataBaseService{
    */
   Future assignHelpRequestForVolunteer(Volunteer volunteer,HelpRequest helpRequest) async{
 
-    Map<String,dynamic> to_add = Map();
-    to_add['category'] = helpRequest.category.description;
-    to_add['sender_id'] = helpRequest.sender_id;
-    to_add['description'] = helpRequest.description;
-    to_add['date'] = helpRequest.date.toString();
-    to_add['handler_id'] = volunteer.id;
+    Map<String,dynamic> to_update = Map();
+    to_update['handler_id'] = volunteer.id;
 
     QuerySnapshot docs = await helpersCollection.get();
 
@@ -124,7 +120,7 @@ class DataBaseService{
       }
     }
 
-    helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
+    helpersCollection.doc(volunteer.id).update(to_update);
   }
 
   /*
