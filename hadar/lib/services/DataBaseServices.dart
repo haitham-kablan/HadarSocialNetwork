@@ -120,7 +120,7 @@ class DataBaseService{
       }
     }
 
-    helpersCollection.doc(volunteer.id).update(to_update);
+    helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(helpRequest.date.toString() + "-" + helpRequest.sender_id).update(to_update);
   }
 
   /*
