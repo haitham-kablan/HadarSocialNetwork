@@ -29,6 +29,7 @@ class GetUserName extends StatelessWidget {
 
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data.data();
+          if(data == null){return Text('shouldnt be here , u might instered request with wrong id');}
           return Text("${data['name']}"
                     , style: TextStyle(
               color: BasicColor.userInNeedClr,

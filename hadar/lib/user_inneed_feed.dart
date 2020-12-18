@@ -102,18 +102,18 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
                 padding: const EdgeInsets.only(bottom: 70.0),
                 children: feedTiles,
               ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () async {
-            List<HelpRequestType> types = await DataBaseService().helpRequestAsAlist();
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => RequestWindow(this,types)),
-            );
-          },
-          label: HebrewText("בקש עזרה"),
-          icon: Icon(Icons.add),
-          backgroundColor: BasicColor.userInNeedClr,
-        ),
+//        floatingActionButton: FloatingActionButton.extended(
+//          onPressed: () async {
+//            List<HelpRequestType> types = await DataBaseService().helpRequestAsAlist();
+//            Navigator.push(
+//              context,
+//              MaterialPageRoute(builder: (context) => RequestWindow(this,types)),
+//            );
+//          },
+//          label: HebrewText("בקש עזרה"),
+//          icon: Icon(Icons.add),
+//          backgroundColor: BasicColor.userInNeedClr,
+//        ),
 
       ),
     );
