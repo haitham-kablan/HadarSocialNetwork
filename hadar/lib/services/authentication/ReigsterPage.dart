@@ -29,7 +29,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
   bool alert = false;
   bool clicked=false;
   Privilege clicked_priv = null;
-  Map<String, Icon> tripTypes = user_types([Colors.black , Colors.black , Colors.black]);
+  Map<String, Icon> tripTypes = user_types([Colors.grey , Colors.grey , Colors.grey]);
   List<String> tripKeys ;
 
   final name_Controller = TextEditingController();
@@ -45,145 +45,169 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        body: Column(
-              children: [
-                Container(margin: EdgeInsets.all(35),child: showAlert()),
-                Container(
-                  margin: EdgeInsets.only(top: 25),
-                  child: Column(
-                    children: [
-                      Form(
-                        child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded ),Color(0xff494CF5),Colors.black,name_Validator.Validate,name_Controller,false),
-                        key: nameKey,
+        body: Center(
+          child: Column(
+                children: [
+                  Container(margin: EdgeInsets.only(top: 20),),
+                  Container(margin: EdgeInsets.all(35),child: showAlert()),
+                        Form(
+                          child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded ),Color(0xff494CF5),Colors.black,name_Validator.Validate,name_Controller,false),
+                          key: nameKey,
+                        ),
+                        Form(
+                          child: Custom_Text_feild('תעודת זהות',Icon(Icons.arrow_left_outlined),Color(0xff494CF5),Colors.black,Id_Validator.Validate,id_Controller,false),
+                          key: idKey,
+                        ),
+                        Form(
+                          child: Custom_Text_feild('מספר טלפון',Icon(Icons.phone),Color(0xff494CF5),Colors.black,number_Validator.Validate,phone_Controller,false),
+                          key: phoneKey,
+                        ),
+                        Form(
+                          child: Custom_Text_feild('כתובת אימיל',Icon(Icons.email),Color(0xff494CF5),Colors.black,Email_Validator.Validate,email_Controller,false),
+                          key: emailKey,
+                        ),
+                        Form(
+                          child: Custom_Text_feild('סיסמה',Icon(Icons.lock, size: 20),Color(0xff494CF5),Colors.black,password_Validator.Validate,first_pw_Controller,true),
+                          key: paswwordKey,
+                        ),
+                        Form(
+                          child: Custom_Text_feild('אימות סיסמה',Icon(Icons.lock),Color(0xff494CF5),Colors.black,second_pw_Validator.Validate,second_pw_Controller,true),
+                          key: secnd_pass_Key,
+                        ),
+                  Container(
+                    margin: EdgeInsets.only(top:35),
+                    child: Text(
+                      'נרשם בתור',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color(0xff494CF5),
+                        fontWeight: FontWeight.bold,
                       ),
-                      Form(
-                        child: Custom_Text_feild('תעודת זהות',Icon(Icons.arrow_left_outlined),Color(0xff494CF5),Colors.black,Id_Validator.Validate,id_Controller,false),
-                        key: idKey,
-                      ),
-                      Form(
-                        child: Custom_Text_feild('מספר טלפון',Icon(Icons.phone),Color(0xff494CF5),Colors.black,number_Validator.Validate,phone_Controller,false),
-                        key: phoneKey,
-                      ),
-                      Form(
-                        child: Custom_Text_feild('כתובת אימיל',Icon(Icons.email),Color(0xff494CF5),Colors.black,Email_Validator.Validate,email_Controller,false),
-                        key: emailKey,
-                      ),
-                      Form(
-                        child: Custom_Text_feild('סיסמה',Icon(Icons.lock, size: 20),Color(0xff494CF5),Colors.black,password_Validator.Validate,first_pw_Controller,true),
-                        key: paswwordKey,
-                      ),
-                      Form(
-                        child: Custom_Text_feild('אימות סיסמה',Icon(Icons.lock),Color(0xff494CF5),Colors.black,second_pw_Validator.Validate,second_pw_Controller,true),
-                        key: secnd_pass_Key,
-                      ),
-                    ],
+                      textAlign: TextAlign.right,
+
+                    ),
                   ),
-                ),
-                Expanded(
-                  child:
-                      GridView.count(
-                        crossAxisCount: 3,
-                        scrollDirection: Axis.vertical,
-                        primary: false,
-                        children: List.generate(tripTypes.length, (index) {
-                          return FlatButton(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                tripTypes[tripKeys[index]],
-                                Text(tripKeys[index]),
-                              ],
+                   Container(
+                     margin: EdgeInsets.all(10),
+                     child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FlatButton(
+                         onPressed: ()  {
+
+                                setState(() {
+                                  tripTypes = update_list(0);
+                                  alert = false;
+                                  clicked=true;
+                                  clicked_priv = Privilege.Admin;
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  tripTypes["מנהל"],
+                                  Text('מנהל'),
+                                ],
+                              ),
                             ),
-                            onPressed: ()  {
-                              alert = false;
-                              clicked=true;
-                              if(index == 0){
-                                clicked_priv = Privilege.Admin;
-                              }
-                              if(index == 1){
-                                clicked_priv = Privilege.UserInNeed;
-                              }
-                              if(index == 2){
-                                clicked_priv = Privilege.Volunteer;
-                              }
-//                          if(index == 3){
-//                            clicked_priv = Privilege.Admin;
-//                          }
-                              setState(() {
-                                tripTypes = update_list(index);
-                              });
-                            },
-                          );
-                        }),
-                      ),
+                            FlatButton(
+                              onPressed: () {
+                                setState(() {
+                                  tripTypes = update_list(1);
+                                  alert = false;
+                                  clicked=true;
+                                  clicked_priv = Privilege.UserInNeed;
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  tripTypes["מבקש עזרה"],
+                                  Text('מבקש עזרה'),
+                                ],
+                              ),
+                            ),
+                            FlatButton(
+                              onPressed: () {
+                                setState(() {
+                                  tripTypes = update_list(2);
+                                  alert = false;
+                                  clicked=true;
+                                  clicked_priv = Privilege.Volunteer;
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  tripTypes["עוזר"],
+                                  Text('עוזר'),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                   ),
 
 
-
-
-                ),
-
-
-                Container(
-                  margin: EdgeInsets.only(bottom: 60),
-                  child: RaisedButton(
-                    color: Color(0xff494CF5),
-                    splashColor: Colors.white,
-                    child: Text('הרשמה',style: TextStyle(fontSize: 18 , color: Colors.white),),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    onPressed: () async {
-                      second_pw_Validator.First_pw = first_pw_Controller.text;
-                      if(!nameKey.currentState.validate() ||!idKey.currentState.validate() ||!phoneKey.currentState.validate()
-                          ||!emailKey.currentState.validate() || !paswwordKey.currentState.validate()
-                          ||!secnd_pass_Key.currentState.validate()
-                      ){
-                        return;
-                      }
-
-                      bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text);
-                      if(id_check_if_exsist){
-                        setState(() {
-                          alert=true;
-                          _error_msg = 'תעודת הזהות כבר תפוסה';
-                        });
-                      }
-                      if(clicked == false){
-                        setState(() {
-                          alert=true;
-                          _error_msg = 'אנא בחר את התור שלך';
-                        });
-                      }
-                      assert (clicked_priv != null);
-                      try {
-                        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                            email: email_Controller.text,
-                            password: first_pw_Controller.text
-                        );
-
-                        addUserToDb(name_Controller.text, id_Controller.text, phone_Controller.text, email_Controller.text, clicked_priv);
-
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          setState(() {
-                            alert=true;
-                            _error_msg = 'הסיסמה שלך חלשה';
-                          });
-                          print('The password provided is too weak.');
-                        } else if (e.code == 'email-already-in-use') {
-                          setState(() {
-                            alert=true;
-                            _error_msg = 'האימיל שלך כבר תפוס';
-                          });
-                          print('The account already exists for that email.');
+                  Container(
+                    margin: EdgeInsets.all(30),
+                    child: RaisedButton(
+                      color: Color(0xff494CF5),
+                      splashColor: Colors.white,
+                      child: Text('הרשמה',style: TextStyle(fontSize: 18 , color: Colors.white),),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                      onPressed: () async {
+                        second_pw_Validator.First_pw = first_pw_Controller.text;
+                        if(!nameKey.currentState.validate() ||!idKey.currentState.validate() ||!phoneKey.currentState.validate()
+                            ||!emailKey.currentState.validate() || !paswwordKey.currentState.validate()
+                            ||!secnd_pass_Key.currentState.validate()
+                        ){
+                          return;
                         }
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
-                  ),
-                ),
 
-              ],
-            ),
+                        bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text);
+                        if(id_check_if_exsist){
+                          setState(() {
+                            alert=true;
+                            _error_msg = 'תעודת הזהות כבר תפוסה';
+                          });
+                        }
+                        if(clicked == false){
+                          setState(() {
+                            alert=true;
+                            _error_msg = 'אנא בחר את התור שלך';
+                          });
+                        }
+                        assert (clicked_priv != null);
+                        try {
+                          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                              email: email_Controller.text,
+                              password: first_pw_Controller.text
+                          );
+
+                          addUserToDb(name_Controller.text, id_Controller.text, phone_Controller.text, email_Controller.text, clicked_priv);
+
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'weak-password') {
+                            setState(() {
+                              alert=true;
+                              _error_msg = 'הסיסמה שלך חלשה';
+                            });
+                            print('The password provided is too weak.');
+                          } else if (e.code == 'email-already-in-use') {
+                            setState(() {
+                              alert=true;
+                              _error_msg = 'האימיל שלך כבר תפוס';
+                            });
+                            print('The account already exists for that email.');
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                    ),
+                  ),
+
+                ],
+              ),
+        ),
     );
   }
 
@@ -241,9 +265,9 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
 Map<String, Icon> user_types(List<Color> colors) => {
 
-  "מנהל": Icon(Icons.admin_panel_settings_outlined, size: 27 ,color: colors[0]),
-  "מבקש עזרה": Icon(Icons.account_circle_outlined, size: 27,color: colors[1]),
-  "עוזר": Icon(Icons.supervisor_account_sharp, size: 27,color: colors[2] ),
+  "מנהל": Icon(Icons.admin_panel_settings_outlined, size: 25 ,color: colors[0]),
+  "מבקש עזרה": Icon(Icons.account_circle_outlined, size: 25,color: colors[1]),
+  "עוזר": Icon(Icons.supervisor_account_sharp, size: 25,color: colors[2] ),
  // "צד שלישי": Icon(Icons.app_registration, size: 27,color: colors[3] ),
 };
 
@@ -274,4 +298,54 @@ void addUserToDb(String name , String id,String phoneNumber,String email,Privile
       print('error in reg page');
   }
 
+}
+
+class ss extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+//      child: GridView.count(
+//        crossAxisCount: 3,
+//        scrollDirection: Axis.vertical,
+//        primary: false,
+//        children: List.generate(tripTypes.length, (index) {
+//          return FlatButton(
+//            child: Center(
+//              child: Column(
+//                mainAxisAlignment: MainAxisAlignment.center,
+//                children: <Widget>[
+//                  tripTypes[tripKeys[index]],
+//                  Text(tripKeys[index]),
+//                ],
+//              ),
+//            ),
+//
+//            onPressed: ()  {
+//
+//              setState(() {
+//                tripTypes = update_list(index);
+//                alert = false;
+//                clicked=true;
+//                if(index == 0){
+//                  clicked_priv = Privilege.Admin;
+//                }
+//                if(index == 1){
+//                  clicked_priv = Privilege.UserInNeed;
+//                }
+//                if(index == 2){
+//                  clicked_priv = Privilege.Volunteer;
+//                }
+////                          if(index == 3){
+////                            clicked_priv = Privilege.Admin;
+////                          }
+//              });
+//            },
+//          );
+//        }),
+//      ),
+    );
+
+
+  }
 }
