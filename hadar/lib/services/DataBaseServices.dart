@@ -249,14 +249,18 @@ class DataBaseService{
 
     FirebaseAuth.instance
         .authStateChanges()
-        .listen((fb_user_auth.User user) {
+        .listen((fb_user_auth.User user) async {
       if (user == null) {
         print('User is currently signed out!');
         return null;
       } else {
         print('User is signed in!');
-        user.email;
-        //TODO get the right user
+        QuerySnapshot user_in_need_col = await userInNeedCollection.where('email',isEqualTo: user.email).get();
+        QuerySnapshot admin_col = await helpersCollection.where('email',isEqualTo: user.email).get();
+        QuerySnapshot volunteer_col = await adminsCollection.where('email',isEqualTo: user.email).get();
+        if (querySnapshot.docs.length != 0){
+
+        }
       }
     });
   }
