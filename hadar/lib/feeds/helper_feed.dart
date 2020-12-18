@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
@@ -18,12 +19,26 @@ class _HelperFeedState extends State<HelperFeed> {
   Widget build(BuildContext context) {
     final requests = Provider.of<List<HelpRequest>>(context);
 
-    return ListView.builder(
-      itemCount: (requests == null) ? 0 : requests.length,
-      itemBuilder: (context,index){
-        return HelpRequestTile(helpRequestWidget: VolunteerFeedTile(requests[index]));
-      },
-    );
+//    return ListView.builder(
+//      itemCount: (requests == null) ? 0 : requests.length,
+//      itemBuilder: (context,index){
+//        return HelpRequestTile(helpRequestWidget: VolunteerFeedTile(requests[index]));
+//      },
+//    );
+
+      return new Directionality(
+          textDirection: TextDirection.rtl,
+        child: new Builder(
+          builder: (BuildContext context) {
+            return ListView.builder(
+              itemCount: (requests == null) ? 0 : requests.length,
+              itemBuilder: (context,index){
+                return HelpRequestTile(helpRequestWidget: VolunteerFeedTile(requests[index]));
+              },
+            );
+          },
+        ),
+      );
   }
 
 }
@@ -41,7 +56,13 @@ class VolunteerFeed extends StatelessWidget {
       child: Scaffold(
         backgroundColor: BasicColor.BackgroundClr,
         appBar: AppBar(
-          title: Text('Volunteer Feed'),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(width: 20,),
+                HebrewText('בקשות העזרה'),
+              ],
+            ),
           backgroundColor: BasicColor.HelperClr,
           elevation: 0.0,
         ),

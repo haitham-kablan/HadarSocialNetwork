@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/feeds/helper_feed.dart';
+import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/getters/getUserName.dart';
 import 'package:hadar/users/User.dart';
@@ -55,11 +56,11 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
   Widget build(BuildContext context) {
     final DateTime now = widget.helpRequest.date;
     final DateFormat formatter = DateFormat.yMd().add_Hm();
-    Color color = widget.helpRequest.handler_id == '' ? Colors.white : Colors.blue;
+    Color color = widget.helpRequest.handler_id == '' ? Colors.white : Colors.lightBlue[50];
     return ListTile(
       tileColor: color,
       onTap: () => print("wowwww!!!!"),//showHelpRequestStatus(helpRequest),
-      isThreeLine: true,
+      isThreeLine: false,
       title: Row(children: <Widget>[
         Container(
           child: Text(widget.helpRequest.category.description),
@@ -67,7 +68,7 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
         ),
         Spacer(),
         Container(
-          child: Text(formatter.format(now)),
+          child: HebrewText(  formatter.format(now) ),
           alignment: Alignment.topLeft,
         ),
       ]),
@@ -75,17 +76,27 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
-                Text(widget.helpRequest.description),
-              ])),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          CallWidget(widget.helpRequest),
-          ThreeDotsWidget(widget.helpRequest),
-
-        ],
+                Row(children: <Widget>[
+                          GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
+                          Spacer(),
+                          Spacer(),
+                          CallWidget(widget.helpRequest),
+                          ThreeDotsWidget(widget.helpRequest)]
+                ),
+                HebrewText(widget.helpRequest.description),
+              ]
+          )
       ),
+//      trailing:
+//          Row(
+//            mainAxisSize: MainAxisSize.min,
+//            children: <Widget>[
+//              //CallWidget(widget.helpRequest),
+//             // ThreeDotsWidget(widget.helpRequest),
+//
+//            ],
+//          ),
+//
     );
   }
 }
@@ -157,7 +168,7 @@ class ThreeDotsWidget extends StatelessWidget {
                     Icons.done,
                     color: Colors.green,
                   ),
-                  const Text("   Accept"),
+                   HebrewText("קבל בקשה     "),
                 ],
               ),
             ),
@@ -172,7 +183,7 @@ class ThreeDotsWidget extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   const Icon(Icons.person),
-                  const Text("   Profile"),
+                  HebrewText("משתמש     "),
                 ],
               ),
             )
@@ -289,7 +300,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                           onPressed: () {
                             print("Accepted");
                           },
-                          child: Text('Accept'),
+                          child: HebrewText('קבל בקשה'),
                         ),
                         RaisedButton(
                           shape: RoundedRectangleBorder(
