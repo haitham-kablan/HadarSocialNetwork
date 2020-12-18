@@ -3,9 +3,11 @@
 //import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb_user_auth;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/users/Admin.dart';
-import 'package:hadar/users/User.dart';
+import 'package:hadar/users/User.dart' as ours;
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
@@ -51,7 +53,7 @@ class DataBaseService{
 
   }
 
-  Future addUserInNeedToDataBase(User user) async{
+  Future addUserInNeedToDataBase(ours.User user) async{
 
     Map<String,dynamic> to_add = Map();
 
@@ -134,11 +136,11 @@ class DataBaseService{
       here i know that i want user in need , therfore i put as user in need , so i can
       reach its fields
    */
-  Future getUserById(String id,Privilege privilege) async{
+  Future getUserById(String id,ours.Privilege privilege) async{
 
     DocumentSnapshot doc;
 
-    if (privilege == Privilege.UserInNeed){
+    if (privilege == ours.Privilege.UserInNeed){
 
       await userInNeedCollection.doc(id).get()
       .then((document) => doc = document.exists ? document : null);
@@ -151,7 +153,7 @@ class DataBaseService{
           doc.data()['id'] ?? '' );
     }
 
-    if (privilege == Privilege.Admin){
+    if (privilege == ours.Privilege.Admin){
 
       await adminsCollection.doc(id).get()
           .then((document) => doc = document);
@@ -164,7 +166,7 @@ class DataBaseService{
           doc.data()['id'] ?? '' );
     }
 
-    if (privilege == Privilege.Volunteer){
+    if (privilege == ours.Privilege.Volunteer){
 
       await helpersCollection.doc(id).get()
           .then((document) => doc = document);
@@ -179,7 +181,7 @@ class DataBaseService{
     }
   }
 
-  Stream<List<HelpRequest>> getUserHelpRequests(User user) {
+  Stream<List<HelpRequest>> getUserHelpRequests(ours.User user) {
 
     return userInNeedCollection.doc(user.id).collection(user_in_need_requests).orderBy('time',descending: true)
         .snapshots()
@@ -241,6 +243,24 @@ class DataBaseService{
     }
     return false;
   }
+
+
+  Future get_current_user() async {
+
+    FirebaseAuth.instance
+        .authStateChanges()
+        .listen((fb_user_auth.User user) {
+      if (user == null) {
+        print('User is currently signed out!');
+        return null;
+      } else {
+        print('User is signed in!');
+        user.email;
+        //TODO get the right user
+      }
+    });
+  }
+
 
 }
 
