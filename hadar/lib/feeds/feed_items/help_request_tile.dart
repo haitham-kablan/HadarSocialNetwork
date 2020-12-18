@@ -117,7 +117,7 @@ class CallWidget extends StatelessWidget {
           child: Icon(
             Icons.call,
             size: 20.0,
-            color: BasicColor.userInNeedClr,
+            color: BasicColor.clr,
           )),
     );
   }
@@ -209,7 +209,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          color: BasicColor.BackgroundClr,
+          color: BasicColor.backgroundClr,
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
@@ -224,7 +224,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                     helpRequest.date.toString().substring(0, 16),
                     style: TextStyle(
                       fontSize: 14,
-                      color: BasicColor.userInNeedClr,
+                      color: BasicColor.clr,
                       fontFamily: "Arial",
                     ),
                   ),
@@ -237,7 +237,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                     helpRequest.category.description + ":",
                     style: TextStyle(
                         fontSize: 30,
-                        color: BasicColor.userInNeedClr,
+                        color: BasicColor.clr,
                         fontFamily: "Arial"),
                   ),
                 ),

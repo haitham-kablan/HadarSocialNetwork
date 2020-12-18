@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
@@ -39,16 +41,24 @@ class VolunteerFeed extends StatelessWidget {
     return StreamProvider<List<HelpRequest>>.value(
       value: DataBaseService().getVolPendingRequests(Volunteer('hsen', 'sa', '123', false, '4', list1)),
       child: Scaffold(
-        backgroundColor: BasicColor.BackgroundClr,
-        appBar: AppBar(
-          title: Text('Volunteer Feed'),
-          backgroundColor: BasicColor.HelperClr,
-          elevation: 0.0,
+        bottomNavigationBar: BottomBar(),
+        backgroundColor: BasicColor.backgroundClr,
+        body: CustomScrollView(
+          slivers: [
+            SliverPersistentHeader(
+              delegate: MySliverAppBar(expandedHeight: 150, title: 'USER'),
+              pinned: true,
+            ),
+            SliverGrid.count(
+              crossAxisCount: 1,
+              children: [
+                HelperFeed(),
+              ],
+            ),
+          ],
         ),
-        body: HelperFeed(),
+        // body: HelperFeed(),
       ),
     );
   }
 }
-
-

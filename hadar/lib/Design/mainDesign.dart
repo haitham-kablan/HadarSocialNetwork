@@ -2,30 +2,6 @@ import 'dart:ui';
 import 'basicTools.dart';
 import 'package:flutter/material.dart';
 
-class Sample2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Material(
-        child: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-              delegate: MySliverAppBar(expandedHeight: 100, title: 'USER'),
-              pinned: true,
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (_, index) => ListTile(
-                  title: Text("Index: $index"),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class MySliverAppBar extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -95,71 +71,6 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
 
 //when using this, send the color you want to use
 //see example in BackgroundDesign class
-class BarDesign extends StatelessWidget with PreferredSizeWidget {
-  @override
-  final Size preferredSize;
-
-  final String userName;
-
-  BarDesign(
-    this.userName, {
-    Key key,
-  })  : preferredSize = Size(double.infinity, 150),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      // title: Text(
-      //   title,
-      //   style: TextStyle(color: Colors.black),
-      // ),
-      backgroundColor: Colors.white60,
-      automaticallyImplyLeading: true,
-      actions: <Widget>[
-        Icon(Icons.comment, color: BasicColor.clr,),
-        Icon(Icons.settings, color: BasicColor.clr,),
-      ],
-      elevation: 50.0,
-      // bottom:PreferredSize(
-      //   preferredSize: Size(double.infinity, 250),
-      //   child: Container(
-      //     width: MediaQuery.of(context).size.width,
-      //     height: 150,
-      //     child: Container(
-      //       decoration: BoxDecoration(
-      //         color: BasicColor.clr,
-      //         borderRadius: BorderRadius.only(
-      //             bottomLeft: Radius.circular(60),
-      //             bottomRight: Radius.circular(60)),
-      //       ),
-      //       child: Container(
-      //         alignment: Alignment.topRight,
-      //         margin: EdgeInsets.fromLTRB(0, 40, 10, 0),
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.end,
-      //           crossAxisAlignment: CrossAxisAlignment.end,
-      //           children: [
-      //             Text(
-      //               ' שלום $userName',
-      //               // this.title,
-      //               style: TextStyle(
-      //                   fontSize: 20,
-      //                   color: Colors.white,
-      //                   fontWeight: FontWeight.bold),
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // ),
-    );
-  }
-}
-
-//when using this, send the color you want to use
-//see example in BackgroundDesign class
 //the icons aren't linked to another page yet
 class BottomBar extends StatelessWidget {
   @override
@@ -224,7 +135,8 @@ class BottomBar extends StatelessWidget {
   }
 }
 
-
+// in  the future this will show the user picture
+// gets the user name and looks for the picture in the database
 class UserCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

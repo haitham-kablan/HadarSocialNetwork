@@ -7,6 +7,8 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:provider/provider.dart';
 
+import 'Design/mainDesign.dart';
+
 class RequestWindow extends StatelessWidget {
   HelpRequestFeedState parent;
   DescriptonBox desBox;
@@ -29,31 +31,34 @@ class RequestWindow extends StatelessWidget {
     return MaterialApp(
       title: 'Choose a category',
       home: Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Center(
-                child: Text("Choose a category"),
-              ),
-            ],
-          ),
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 170,
-              ),
-              Container(
-                height: 100,
-                child: drop,
-              ),
-              Container(
-                height: 140,
-                child: desBox,
-              ),
-            ],
-          ),
+        bottomNavigationBar: BottomBar(),
+        body: CustomScrollView(
+          slivers: [
+            SliverPersistentHeader(
+              delegate: MySliverAppBar(expandedHeight: 150, title: 'USER'),
+              pinned: true,
+            ),
+            SliverGrid.count(
+              crossAxisCount: 1,
+              children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 170,
+                    ),
+                    Container(
+                      height: 100,
+                      child: drop,
+                    ),
+                    Container(
+                      height: 140,
+                      child: desBox,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -166,7 +171,7 @@ class _DescriptonBox extends State<DescriptonBox> {
           HelpRequest(helpRequestType, _inputtext, DateTime.now(), "sender");
 
       widget.parent.handleFeedChange(helpRequest, true);
-
+      // Navigator.push(context, MaterialPageRoute(builder: (context) => UserInNeedHelpRequestsFeed()),);
       // if (Navigator.canPop(context)) {
       //   Navigator.pop(
       //     context,

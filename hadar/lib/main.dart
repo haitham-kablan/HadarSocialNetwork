@@ -23,12 +23,12 @@ class Log_In_Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: BasicColor.BackgroundClr,
+        backgroundColor: BasicColor.backgroundClr,
         appBar: AppBar(
-          backgroundColor: BasicColor.BackgroundClr,
+          backgroundColor: BasicColor.backgroundClr,
           title: Text('Hadar',
             style: TextStyle(
-              color: BasicColor.BackgroundClr,
+              color: BasicColor.backgroundClr,
               fontSize: 30,
             ),),
           centerTitle: true,
@@ -59,8 +59,8 @@ class Log_In_Screen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) {
-                          //User(this.name, this.phoneNumber, this.email, this.privilege , this.id
-                          //       );
+                          // User(this.name, this.phoneNumber, this.email, this.privilege , this.id
+                                // );
                           return StreamProvider<List<HelpRequest>>.value(
                             value: DataBaseService().getUserHelpRequests(User("haitham", "099000","no_need",Privilege.UserInNeed,"123456789")),
                             child: UserInNeedHelpRequestsFeed(),

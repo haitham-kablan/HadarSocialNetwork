@@ -31,7 +31,7 @@ class GetUserName extends StatelessWidget {
           Map<String, dynamic> data = snapshot.data.data();
           return Text("${data['name']}"
                     , style: TextStyle(
-              color: BasicColor.userInNeedClr,
+              color: BasicColor.clr,
               fontWeight: FontWeight.bold,
             ),
           );
