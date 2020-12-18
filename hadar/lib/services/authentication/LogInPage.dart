@@ -113,6 +113,8 @@ class _LogInPageState extends State<LogInPage> {
                         email: email_control.text,
                         password: pw_control.text
                     );
+                    print(FirebaseAuth.instance.currentUser);
+
                     email_control.clear();
                     pw_control.clear();
                     Navigator.push(

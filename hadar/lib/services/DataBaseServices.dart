@@ -288,37 +288,19 @@ class DataBaseService{
   check the privilage of the returned type and use as to correct its actual type
    */
   Future getCurrentUser() async {
-    fb_auth.User x = fb_auth.FirebaseAuth.instance.currentUser;
-//    hadar.User to_ret = null;
-//    if (x == null) {
-//      return null;
-//    } else {
-//      to_ret = await getUserByEmail(x.email, hadar.Privilege.UserInNeed);
-//      if (to_ret == null) {
-//        to_ret = await getUserByEmail(x.email, hadar.Privilege.Volunteer);
-//        if (to_ret == null) {
-//          to_ret = await getUserByEmail(x.email, hadar.Privilege.Admin);
-//        }
-//      }
-//    }
+    fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
+    if(curr_db_user == null){
+      return null;
+    }
+    hadar.User user = await getUserByEmail(curr_db_user.email, hadar.Privilege.UserInNeed);
+    if(user == null){
+      user = await getUserByEmail(curr_db_user.email, hadar.Privilege.Admin);
+      if(user == null){
+        user = await getUserByEmail(curr_db_user.email, hadar.Privilege.Volunteer);
+      }
+    }
 
-//    fb_auth.FirebaseAuth.instance
-//        .authStateChanges()
-//        .listen((fb_auth.User user) async {
-//      if (user == null) {
-//        print('User is currently signed out!');
-//      } else {
-//        to_ret = await getUserByEmail(user.email, hadar.Privilege.UserInNeed);
-//        if(to_ret == null){
-//          to_ret = await getUserByEmail(user.email, hadar.Privilege.Volunteer);
-//          if(to_ret == null){
-//            to_ret = await getUserByEmail(user.email, hadar.Privilege.Admin);
-//          }
-//        }
-//      }
-//    });
-      return x;
-
+    return user;
   }
 
   Future<bool> is_id_taken(String id)async{
