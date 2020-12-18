@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/Buttons/RoundedWeightedButtons.dart';
 import 'package:hadar/Design/basicTools.dart';
@@ -20,10 +19,21 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  //User curr_user = await DataBaseService().getCurrentUser();
+
 
   runApp(MaterialApp(
-    home: LogInPage(),
+    home: curr_user == null ? LogInPage() : weork_right(),
   ));
+}
+
+class weork_right extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('sssssssssssssssssssssssssssssss'),
+    );
+  }
 }
 
 

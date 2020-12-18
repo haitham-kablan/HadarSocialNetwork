@@ -9,6 +9,8 @@ import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:hadar/services/authentication/ReigsterPage.dart';
 import 'package:hadar/services/authentication/validators.dart';
 
+import '../../main.dart';
+
 class LogInPage extends StatefulWidget {
   @override
   _LogInPageState createState() => _LogInPageState();
@@ -115,7 +117,7 @@ class _LogInPageState extends State<LogInPage> {
                     pw_control.clear();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ReigesterPage()),
+                      MaterialPageRoute(builder: (context) => weork_right()),
                     );
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {

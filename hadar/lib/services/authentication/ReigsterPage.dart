@@ -183,7 +183,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                           );
 
                           addUserToDb(name_Controller.text, id_Controller.text, phone_Controller.text, email_Controller.text, clicked_priv);
-
+                          Navigator.pop(context);
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
                             setState(() {

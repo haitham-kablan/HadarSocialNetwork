@@ -5,9 +5,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:hadar/users/Admin.dart';
-import 'package:hadar/users/User.dart';
+import 'package:hadar/users/User.dart' as hadar;
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
@@ -53,7 +54,7 @@ class DataBaseService{
 
   }
 
-  Future addUserInNeedToDataBase(User user) async{
+  Future addUserInNeedToDataBase(hadar.User user) async{
 
     Map<String,dynamic> to_add = Map();
 
@@ -142,11 +143,11 @@ class DataBaseService{
       here i know that i want user in need , therfore i put as user in need , so i can
       reach its fields
    */
-  Future getUserById(String id,Privilege privilege) async{
+  Future getUserById(String id,hadar.Privilege privilege) async{
 
     DocumentSnapshot doc;
 
-    if (privilege == Privilege.UserInNeed){
+    if (privilege == hadar.Privilege.UserInNeed){
 
       await userInNeedCollection.doc(id).get()
           .then((document) => doc = document.exists ? document : null);
@@ -159,7 +160,7 @@ class DataBaseService{
           doc.data()['id'] ?? '' );
     }
 
-    if (privilege == Privilege.Admin){
+    if (privilege == hadar.Privilege.Admin){
 
       await adminsCollection.doc(id).get()
           .then((document) => doc = document);
@@ -172,7 +173,7 @@ class DataBaseService{
           doc.data()['id'] ?? '' );
     }
 
-    if (privilege == Privilege.Volunteer){
+    if (privilege == hadar.Privilege.Volunteer){
 
       await helpersCollection.doc(id).get()
           .then((document) => doc = document);
@@ -186,7 +187,7 @@ class DataBaseService{
     }
   }
 
-  Stream<List<HelpRequest>> getUserHelpRequests(User user) {
+  Stream<List<HelpRequest>> getUserHelpRequests(hadar.User user) {
 
     return userInNeedCollection.doc(user.id).collection(user_in_need_requests).orderBy('time',descending: true)
         .snapshots()
@@ -232,8 +233,104 @@ class DataBaseService{
   }
 
 
+  Future getUserByEmail(String email,hadar.Privilege privilege) async{
 
+    QuerySnapshot querySnapshot = null;
+    DocumentSnapshot doc = null;
 
+    if (privilege == hadar.Privilege.UserInNeed){
+
+      querySnapshot = await userInNeedCollection.where('email',isEqualTo: email).get();
+
+      if (querySnapshot == null){
+        return null;
+      }
+      for(int i = 0 ; i< querySnapshot.docs.length ; i++){
+        doc = querySnapshot.docs[i];
+      }
+
+      return UserInNeed(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['id'] ?? '' );
+    }
+
+    if (privilege == hadar.Privilege.Admin){
+
+      querySnapshot = await adminsCollection.where('email',isEqualTo: email).get();
+
+      if (querySnapshot == null){
+        return null;
+      }
+      for(int i = 0 ; i< querySnapshot.docs.length ; i++){
+        doc = querySnapshot.docs[i];
+      }
+
+      return  Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['id'] ?? '' );
+    }
+
+    if (privilege == hadar.Privilege.Volunteer){
+
+      querySnapshot = await helpersCollection.where('email',isEqualTo: email).get();
+
+      if (querySnapshot == null){
+        return null;
+      }
+      for(int i = 0 ; i< querySnapshot.docs.length ; i++){
+        doc = querySnapshot.docs[i];
+      }
+
+      return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['id'] ?? '' , get_categoreis(doc));
+    }
+  }
+
+  /*/
+  check the privilage of the returned type and use as to correct its actual type
+   */
+  Future getCurrentUser() async {
+    fb_auth.User x = fb_auth.FirebaseAuth.instance.currentUser;
+//    hadar.User to_ret = null;
+//    if (x == null) {
+//      return null;
+//    } else {
+//      to_ret = await getUserByEmail(x.email, hadar.Privilege.UserInNeed);
+//      if (to_ret == null) {
+//        to_ret = await getUserByEmail(x.email, hadar.Privilege.Volunteer);
+//        if (to_ret == null) {
+//          to_ret = await getUserByEmail(x.email, hadar.Privilege.Admin);
+//        }
+//      }
+//    }
+
+//    fb_auth.FirebaseAuth.instance
+//        .authStateChanges()
+//        .listen((fb_auth.User user) async {
+//      if (user == null) {
+//        print('User is currently signed out!');
+//      } else {
+//        to_ret = await getUserByEmail(user.email, hadar.Privilege.UserInNeed);
+//        if(to_ret == null){
+//          to_ret = await getUserByEmail(user.email, hadar.Privilege.Volunteer);
+//          if(to_ret == null){
+//            to_ret = await getUserByEmail(user.email, hadar.Privilege.Admin);
+//          }
+//        }
+//      }
+//    });
+      return x;
+
+  }
+
+  Future<bool> is_id_taken(String id)async{
+
+    DocumentSnapshot snapShot_helper = await helpersCollection.doc(id).get();
+    DocumentSnapshot snapShot_need = await userInNeedCollection.doc(id).get();
+    DocumentSnapshot snapShot_admin = await adminsCollection.doc(id).get();
+    if (snapShot_helper.exists || snapShot_need.exists || snapShot_admin.exists ) {
+      return true;
+    }
+    return false;
+  }
 
 }
 
