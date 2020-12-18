@@ -24,7 +24,7 @@ void main() async {
 
 
   runApp(MaterialApp(
-    home: DataBaseService().getCurrentUser() == null ? LogInPage() : weork_right(),
+    home: LogInPage(),
   ));
 }
 
