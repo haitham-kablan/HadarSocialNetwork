@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'dart:developer';
 
 import 'Design/basicTools.dart';
+import 'Design/mainDesign.dart';
 import 'UserInNeedRequestView.dart';
 
 import 'feeds/feed_items/help_request_tile.dart';
@@ -82,39 +83,44 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'User In-need Feed',
-//      theme: ThemeData(
-//       // primarySwatch: Colors.teal,
-//      ),
       home: Scaffold(
-        backgroundColor: BasicColor.BackgroundClr,
-        appBar: AppBar(
-          backgroundColor: BasicColor.userInNeedClr,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(width: 20,),
-              HebrewText("הבקשות שלי"),
-            ],
-          )
+        bottomNavigationBar: BottomBar(),
+        backgroundColor: BasicColor.backgroundClr,
+        body: CustomScrollView(
+          slivers: [
+            SliverPersistentHeader(
+              delegate: MySliverAppBar(expandedHeight: 150, title: 'USER'),
+              pinned: true,
+            ),
+            SliverGrid.count(
+              crossAxisCount: 1,
+              children: [
+                ListView(
+                          semanticChildCount: (feed == null) ? 0 : feed.length,
+                          padding: const EdgeInsets.only(bottom: 70.0, top: 100),
+                          children: feedTiles,
+                        ),
+              ],
+            ),
+          ],
         ),
-        body: ListView(
-                semanticChildCount: (feed == null) ? 0 : feed.length,
-                padding: const EdgeInsets.only(bottom: 70.0),
-                children: feedTiles,
-              ),
-//        floatingActionButton: FloatingActionButton.extended(
-//          onPressed: () async {
-//            List<HelpRequestType> types = await DataBaseService().helpRequestAsAlist();
-//            Navigator.push(
-//              context,
-//              MaterialPageRoute(builder: (context) => RequestWindow(this,types)),
-//            );
-//          },
-//          label: HebrewText("בקש עזרה"),
-//          icon: Icon(Icons.add),
-//          backgroundColor: BasicColor.userInNeedClr,
-//        ),
-
+        floatingActionButton: Container(
+          color: Colors.transparent,
+          padding: EdgeInsets.only(bottom: 20.0, right: 5),
+          child: FloatingActionButton.extended(
+            onPressed: () async {
+              List<HelpRequestType> types = await DataBaseService().helpRequestAsAlist();
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RequestWindow(this,types)),
+              );
+            },
+            label: HebrewText("בקש עזרה"),
+            icon: Icon(Icons.add),
+            backgroundColor: BasicColor.clr,
+            elevation: 10,
+          ),
+        ),
       ),
     );
 
@@ -273,7 +279,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
         height: MediaQuery.of(context).size.height /2,
         child: Container(
           decoration:  BoxDecoration(
-              color: BasicColor.BackgroundClr,
+              color: BasicColor.backgroundClr,
               borderRadius: BorderRadius.only(
                 topRight: const Radius.circular(20),
                 topLeft: const Radius.circular(20),
@@ -293,7 +299,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                     helpRequest.date.toString().substring(0, 16),
                     style: TextStyle(
                       fontSize: 14,
-                      color: BasicColor.userInNeedClr,
+                      color: BasicColor.clr,
                       fontFamily: "Arial",
                     ),
                   ),
@@ -306,7 +312,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                     helpRequest.category.description + ":",
                     style: TextStyle(
                       fontSize: 30,
-                      color:BasicColor.userInNeedClr,
+                      color:BasicColor.clr,
                       fontFamily: "Arial"
                     ),
                   ),
