@@ -6,6 +6,7 @@ import 'package:hadar/feeds/helper_feed.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/getters/getUserName.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
@@ -202,7 +203,7 @@ class ThreeDotsWidget extends StatelessWidget {
             List<HelpRequestType> list1 = List<HelpRequestType>();
             list1.add(HelpRequestType('food'));
             list1.add(HelpRequestType('money'));
-            DataBaseService().assignHelpRequestForVolunteer(Volunteer('hsen', 'sa', '123', false, '4', list1), helpRequest);
+            DataBaseService().assignHelpRequestForVolunteer(CurrentUser.curr_user as Volunteer, helpRequest);
 //                      Navigator.push(
 //                        context,
 //                        MaterialPageRoute(builder: (context) => testing_stream()),

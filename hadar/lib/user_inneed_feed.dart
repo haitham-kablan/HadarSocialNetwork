@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:intl/intl.dart' as Intl;
@@ -19,6 +21,8 @@ import 'feeds/feed_items/help_request_tile.dart';
 bool debug = true;
 
 class UserInNeedHelpRequestsFeed extends StatefulWidget{
+
+
   UserInNeedHelpRequestsFeed({Key key}): super(key: key);
 
   @override
@@ -110,6 +114,8 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
           child: FloatingActionButton.extended(
             onPressed: () async {
               List<HelpRequestType> types = await DataBaseService().helpRequestAsAlist();
+              types.add(HelpRequestType('אחר..'));
+              //we must add אחר so it always appears on the last of the list
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => RequestWindow(this,types)),

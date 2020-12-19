@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/user_inneed_feed.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
+import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/services/DataBaseServices.dart';
@@ -167,7 +169,7 @@ class _DescriptonBox extends State<DescriptonBox> {
       helpRequestType = HelpRequestType(_inputtext);
       _inputtext = inputtextField.text;
       helpRequest =
-          HelpRequest(helpRequestType, _inputtext, DateTime.now(), "123456789","");
+          HelpRequest(helpRequestType, _inputtext, DateTime.now(), CurrentUser.curr_user.id,"");
       print("input text" + _inputtext);
       print("helpRequest" + helpRequestType.description);
 
@@ -182,8 +184,7 @@ class _DescriptonBox extends State<DescriptonBox> {
         context,
         MaterialPageRoute(builder: (context) {
           return StreamProvider<List<HelpRequest>>.value(
-            value: DataBaseService().getUserHelpRequests(User("haitham",
-                "099000", "no_need", Privilege.UserInNeed, "123456789")),
+            value: DataBaseService().getUserHelpRequests(CurrentUser.curr_user as UserInNeed),
             child: UserInNeedHelpRequestsFeed(),
           );
         }),

@@ -9,6 +9,7 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:hadar/services/authentication/ReigsterPage.dart';
 import 'package:hadar/services/authentication/validators.dart';
+import 'package:hadar/users/CurrentUser.dart';
 
 import '../../main.dart';
 
@@ -91,11 +92,11 @@ class _LogInPageState extends State<LogInPage> {
             ),
             Container(
               margin: EdgeInsets.only(top: 80),
-              child:Form(key:nameKey,child: Custom_Text_feild('שם משתמש',Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false)),
+              child:Form(key:nameKey,child: Custom_Text_feild('שם משתמש',Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false,Colors.grey)),
             ),
             Container(
               margin: EdgeInsets.only(top: 20),
-              child: Form(key: paswwordKey , child: Custom_Text_feild('סיסמה',Icon(Icons.lock),BasicColor.clr,Colors.black,password_Validator.Validate,pw_control,true)),
+              child: Form(key: paswwordKey , child: Custom_Text_feild('סיסמה',Icon(Icons.lock),BasicColor.clr,Colors.black,password_Validator.Validate,pw_control,true,Colors.grey)),
             ),
 
             Container(
@@ -118,9 +119,10 @@ class _LogInPageState extends State<LogInPage> {
 
                     email_control.clear();
                     pw_control.clear();
+                    Widget curr_widget = await CurrentUser.init_user();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Log_In_Screen()),
+                      MaterialPageRoute(builder: (context) => curr_widget),
                     );
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {

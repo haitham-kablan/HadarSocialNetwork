@@ -43,6 +43,8 @@ class _HelperFeedState extends State<HelperFeed> {
 
 
 class VolunteerFeed extends StatelessWidget {
+  Volunteer curr_user;
+  VolunteerFeed(this.curr_user);
   @override
   Widget build(BuildContext context) {
     List<HelpRequestType> list1 = List<HelpRequestType>();
@@ -50,7 +52,7 @@ class VolunteerFeed extends StatelessWidget {
     list1.add(HelpRequestType('money'));
 
     return StreamProvider<List<HelpRequest>>.value(
-      value: DataBaseService().getVolPendingRequests(Volunteer('hsen', 'sa', '123', false, '4', list1)),
+      value: DataBaseService().getVolPendingRequests(curr_user),
       child: Scaffold(
         bottomNavigationBar: BottomBar(),
         backgroundColor: BasicColor.backgroundClr,

@@ -242,7 +242,7 @@ class DataBaseService{
 
       querySnapshot = await userInNeedCollection.where('email',isEqualTo: email).get();
 
-      if (querySnapshot == null){
+      if (querySnapshot.size == 0){
         return null;
       }
       for(int i = 0 ; i< querySnapshot.docs.length ; i++){
@@ -257,7 +257,7 @@ class DataBaseService{
 
       querySnapshot = await adminsCollection.where('email',isEqualTo: email).get();
 
-      if (querySnapshot == null){
+      if (querySnapshot.size == 0){
         return null;
       }
       for(int i = 0 ; i< querySnapshot.docs.length ; i++){
@@ -272,7 +272,7 @@ class DataBaseService{
 
       querySnapshot = await helpersCollection.where('email',isEqualTo: email).get();
 
-      if (querySnapshot == null){
+      if (querySnapshot.size == 0){
         return null;
       }
       for(int i = 0 ; i< querySnapshot.docs.length ; i++){
@@ -289,10 +289,11 @@ class DataBaseService{
    */
   Future getCurrentUser() async {
     fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
+    hadar.User user;
     if(curr_db_user == null){
       return null;
     }
-    hadar.User user = await getUserByEmail(curr_db_user.email, hadar.Privilege.UserInNeed);
+    user = await getUserByEmail(curr_db_user.email, hadar.Privilege.UserInNeed);
     if(user == null){
       user = await getUserByEmail(curr_db_user.email, hadar.Privilege.Admin);
       if(user == null){
