@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
-import 'package:hadar/Design/mainDesign.dart';
+import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
@@ -20,13 +19,23 @@ class _HelperFeedState extends State<HelperFeed> {
   Widget build(BuildContext context) {
     final requests = Provider.of<List<HelpRequest>>(context);
 
-    return ListView.builder(
-      padding: const EdgeInsets.only(bottom: 70.0, top: 100),
-      itemCount: (requests == null) ? 0 : requests.length,
-      itemBuilder: (context,index){
-        return HelpRequestTile(helpRequestWidget: VolunteerFeedTile(requests[index]));
-      },
-    );
+
+
+      return new Directionality(
+          textDirection: TextDirection.rtl,
+        child: new Builder(
+          builder: (BuildContext context) {
+            return ListView.builder(
+			 padding: const EdgeInsets.only(bottom: 70.0, top: 100),
+              itemCount: (requests == null) ? 0 : requests.length,
+              itemBuilder: (context,index){
+                return HelpRequestTile(helpRequestWidget: VolunteerFeedTile(requests[index]));
+              },
+            );
+          },
+        ),
+      );
+
   }
 
 }
@@ -42,7 +51,6 @@ class VolunteerFeed extends StatelessWidget {
     return StreamProvider<List<HelpRequest>>.value(
       value: DataBaseService().getVolPendingRequests(Volunteer('hsen', 'sa', '123', false, '4', list1)),
       child: Scaffold(
-        bottomNavigationBar: BottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
           slivers: [
@@ -52,10 +60,13 @@ class VolunteerFeed extends StatelessWidget {
             ),
             SliverFillRemaining( child: HelperFeed(),
             ),
-          ],
+          backgroundColor: BasicColor.clr,
+          elevation: 0.0,
         ),
-        // body: HelperFeed(),
+        body: HelperFeed(),
       ),
     );
   }
 }
+
+

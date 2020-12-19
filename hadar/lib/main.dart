@@ -10,6 +10,8 @@ import 'package:hadar/utils/HelpRequest.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'lang/HebrewText.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +42,7 @@ class Log_In_Screen extends StatelessWidget {
             ),
             Center(
               child: RaisedButton(
-                child: Text("go to volunteer feed"),
+                child: HebrewText("פייד המתנדב"),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                 onPressed: () {
                   Navigator.push(
@@ -52,7 +54,7 @@ class Log_In_Screen extends StatelessWidget {
             ),
             Center(
               child: RaisedButton(
-                child: Text("go to user in_need feed"),
+                child: HebrewText("פייד מבקש העזרה"),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                 onPressed: () {
                   Navigator.push(
