@@ -32,7 +32,7 @@ class GetUserName extends StatelessWidget {
           if(data == null){return Text('shouldnt be here , u might instered request with wrong id');}
           return Text("${data['name']}"
                     , style: TextStyle(
-              color: BasicColor.userInNeedClr,
+              color: BasicColor.clr,
               fontWeight: FontWeight.bold,
             ),
           );

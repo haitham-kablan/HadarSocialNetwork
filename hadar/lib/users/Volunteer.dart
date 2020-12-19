@@ -10,7 +10,7 @@ import 'RegisteredUser.dart';
 import 'User.dart';
 
 class Volunteer extends RegisteredUser{
-  List helpRequestsCategories;
+  List<HelpRequestType> helpRequestsCategories;
   List helpRequests;
 
   Volunteer(String name, String phoneNumber, String email, bool isSignedIn , String id , List<HelpRequestType> categories)
