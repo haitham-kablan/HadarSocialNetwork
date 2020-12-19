@@ -54,7 +54,7 @@ class VolunteerFeed extends StatelessWidget {
     return StreamProvider<List<HelpRequest>>.value(
       value: DataBaseService().getVolPendingRequests(Volunteer('hsen', 'sa', '123', false, '4', list1)),
       child: Scaffold(
-        backgroundColor: BasicColor.BackgroundClr,
+        backgroundColor: BasicColor.backgroundClr,
         appBar: AppBar(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,7 +63,7 @@ class VolunteerFeed extends StatelessWidget {
                 HebrewText('בקשות העזרה'),
               ],
             ),
-          backgroundColor: BasicColor.HelperClr,
+          backgroundColor: BasicColor.clr,
           elevation: 0.0,
         ),
         body: HelperFeed(),
