@@ -3,7 +3,6 @@ import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 
-import 'feeds/helper_feed.dart';
 import 'main.dart';
 
 /// This is the stateful widget that the main application instantiates.
@@ -20,7 +19,7 @@ class _volunteer_home_pageState extends State<volunteer_home_page> {
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static  List<Widget> _widgetOptions = <Widget>[
-    VolunteerFeed(),
+    //tmp(),
     Text(
       'Index 1: Business',
       style: optionStyle,
@@ -81,7 +80,9 @@ class _user_in_need_home_pageState extends State<user_in_need_home_page> {
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static  List<Widget> _widgetOptions = <Widget>[
-    UserInNeedHelpRequestsFeed(),
+    UserInNeedHelpRequestsFeed(
+
+    ),
     Text(
       'Index 1: Business',
       style: optionStyle,
