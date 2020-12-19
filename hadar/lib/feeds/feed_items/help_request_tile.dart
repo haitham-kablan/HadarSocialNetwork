@@ -56,14 +56,15 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
   Widget build(BuildContext context) {
     final DateTime now = widget.helpRequest.date;
     final DateFormat formatter = DateFormat.yMd().add_Hm();
-    Color color = widget.helpRequest.handler_id == '' ? Colors.white : Colors.lightBlue[50];
+    Color color = widget.helpRequest.handler_id == '' ? Colors.white : BasicColor.stam;
     return ListTile(
       tileColor: color,
       onTap: () => print("wowwww!!!!"),//showHelpRequestStatus(helpRequest),
       isThreeLine: false,
       title: Row(children: <Widget>[
         Container(
-          child: Text(widget.helpRequest.category.description),
+          // child: Text(widget.helpRequest.category.description),
+          child: GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
           alignment: Alignment.topRight,
         ),
         Spacer(),
@@ -77,7 +78,7 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(children: <Widget>[
-                          GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
+                          Text(widget.helpRequest.category.description),
                           Spacer(),
                           Spacer(),
                           CallWidget(widget.helpRequest),

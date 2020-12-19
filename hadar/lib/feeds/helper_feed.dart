@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Volunteer.dart';
@@ -51,6 +52,7 @@ class VolunteerFeed extends StatelessWidget {
     return StreamProvider<List<HelpRequest>>.value(
       value: DataBaseService().getVolPendingRequests(Volunteer('hsen', 'sa', '123', false, '4', list1)),
       child: Scaffold(
+        bottomNavigationBar: BottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
           slivers: [
@@ -60,10 +62,8 @@ class VolunteerFeed extends StatelessWidget {
             ),
             SliverFillRemaining( child: HelperFeed(),
             ),
-          backgroundColor: BasicColor.clr,
-          elevation: 0.0,
-        ),
-        body: HelperFeed(),
+        ]),
+        // body: HelperFeed(),
       ),
     );
   }

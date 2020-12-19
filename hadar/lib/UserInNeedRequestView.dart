@@ -167,7 +167,7 @@ class _DescriptonBox extends State<DescriptonBox> {
       helpRequestType = HelpRequestType(_inputtext);
       _inputtext = inputtextField.text;
       helpRequest =
-          HelpRequest(helpRequestType, _inputtext, DateTime.now(), "123456789");
+          HelpRequest(helpRequestType, _inputtext, DateTime.now(), "123456789","");
       print("input text" + _inputtext);
       print("helpRequest" + helpRequestType.description);
 

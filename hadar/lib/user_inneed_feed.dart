@@ -4,7 +4,7 @@ import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import 'dart:developer';
@@ -92,11 +92,16 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
               pinned: true,
             ),
 
-            SliverFillRemaining(child :ListView(
+            SliverFillRemaining(child
+                :Directionality(
+                textDirection: TextDirection.rtl,
+              child: ListView(
               semanticChildCount: (feed == null) ? 0 : feed.length,
               padding: const EdgeInsets.only(bottom: 70.0, top: 100),
               children: feedTiles,
-            ),),
+              ),
+            ),
+            ),
           ],
         ),
         floatingActionButton: Container(
@@ -132,27 +137,27 @@ class HelpRequestItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DateFormat dateFormat = DateFormat.yMd().add_Hm();
+    final Intl.DateFormat dateFormat = Intl.DateFormat.yMd().add_Hm();
     return ListTile(
       onTap: () => parent.showHelpRequestStatus(helpRequest),
       isThreeLine: true,
       title: Row(
           children: <Widget> [
             Container(
-              child:HebrewText(helpRequest.category.description) ,
-              alignment: Alignment.topLeft,
+              child:Text(helpRequest.category.description, style:TextStyle(color: BasicColor.clr)) ,
+              //alignment: Alignment.topLeft,
             ),
             Spacer(),
             Container(
               child:Text(dateFormat.format(helpRequest.date)),
-              alignment: Alignment.topRight,
+              alignment: Alignment.topLeft,
             ),
           ]
       ),
       subtitle: Container(
         child: HebrewText(helpRequest.description),
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(left: 8),
+        //alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(top: 8, left: 8),
       ),
 
     );

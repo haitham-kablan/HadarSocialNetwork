@@ -93,7 +93,7 @@ class BottomBar extends StatelessWidget {
               ],
             ),
             child: Container(
-              margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              margin: EdgeInsets.fromLTRB(60, 10, 60, 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,14 +114,14 @@ class BottomBar extends StatelessWidget {
                     ),
                     onPressed: () {},
                   ),
-                  FlatButton(
-                    child: Icon(
-                      Icons.add_rounded,
-                      size: 30,
-                      color: BasicColor.clr,
-                    ),
-                    onPressed: () {},
-                  ),
+                  // FlatButton(
+                  //   child: Icon(
+                  //     Icons.notifications_on_rounded,
+                  //     size: 30,
+                  //     color: BasicColor.clr,
+                  //   ),
+                  //   onPressed: () {},
+                  // ),
                 ],
               ),
             ),
