@@ -9,6 +9,7 @@ import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import 'Design/mainDesign.dart';
@@ -103,33 +104,36 @@ class DropDownState extends State<Dropdown> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: DropdownButton<HelpRequestType>(
-          hint: HebrewText("בחר קטיגוריה"),
-          value: selectedType,
-          onChanged: (HelpRequestType Value) {
-            setState(
-              () {
-                selectedType = Value;
-                desBox.setSelectedType(selectedType);
-              },
-            );
-          },
-          items: types.map((HelpRequestType type) {
-            return DropdownMenuItem<HelpRequestType>(
-              value: type,
-              child: Row(
-                children: <Widget>[
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    type.description,
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: DropdownButton<HelpRequestType>(
+            hint: HebrewText("בחר קטיגוריה"),
+            value: selectedType,
+            onChanged: (HelpRequestType Value) {
+              setState(
+                () {
+                  selectedType = Value;
+                  desBox.setSelectedType(selectedType);
+                },
+              );
+            },
+            items: types.map((HelpRequestType type) {
+              return DropdownMenuItem<HelpRequestType>(
+                value: type,
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      type.description,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
