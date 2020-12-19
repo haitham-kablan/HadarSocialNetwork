@@ -16,16 +16,13 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
       fit: StackFit.expand,
       overflow: Overflow.visible,
       children: [
-        Container( decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(60),
-                bottomRight: Radius.circular(60)),
-          ),
+        Container(
           child: Image.asset(
             "assets/images/color.jpg",
             fit: BoxFit.cover,
           ),
         ),
+        // Container( alignment: Alignment.topRight, child: Text(' שלום $title') ),
         Center(
           child: Opacity(
             opacity: shrinkOffset / expandedHeight,
@@ -149,8 +146,8 @@ class UserCircle extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Image.asset(
               'assets/images/barPic.png',
-              width: 200,
-              height: 200,
+              // width: 150,
+              // height: 150,
             ),
           ),
         ],

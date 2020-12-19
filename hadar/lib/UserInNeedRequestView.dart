@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/user_inneed_feed.dart';
+import 'package:hadar/users/User.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/services/DataBaseServices.dart';
@@ -22,41 +24,38 @@ class RequestWindow extends StatelessWidget {
   }
 
   void init() {
-    this.desBox = DescriptonBox(title: 'Description', parent: parent);
+    this.desBox = DescriptonBox(title: 'פירוט', parent: parent);
     this.drop = Dropdown(desBox, types);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Choose a category',
       home: Scaffold(
         bottomNavigationBar: BottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
-              delegate: MySliverAppBar(expandedHeight: 150, title: 'USER'),
+              delegate:
+                  MySliverAppBar(expandedHeight: 150, title: 'בחר קטיגוריה'),
               pinned: true,
             ),
-            SliverGrid.count(
-              crossAxisCount: 1,
-              children: [
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 170,
-                    ),
-                    Container(
-                      height: 100,
-                      child: drop,
-                    ),
-                    Container(
-                      height: 140,
-                      child: desBox,
-                    ),
-                  ],
-                ),
-              ],
+            SliverFillRemaining(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 120,
+                  ),
+                  Container(
+                    height: 100,
+                    child: drop,
+                  ),
+                  Container(
+                    height: 140,
+                    child: desBox,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -103,7 +102,7 @@ class DropDownState extends State<Dropdown> {
     return Scaffold(
       body: Center(
         child: DropdownButton<HelpRequestType>(
-          hint: Text("Select a category"),
+          hint: HebrewText("בחר קטיגוריה"),
           value: selectedType,
           onChanged: (HelpRequestType Value) {
             setState(
@@ -165,10 +164,12 @@ class _DescriptonBox extends State<DescriptonBox> {
 
   void _processText() {
     setState(() {
-      _inputtext = inputtextField.text;
       helpRequestType = HelpRequestType(_inputtext);
+      _inputtext = inputtextField.text;
       helpRequest =
-          HelpRequest(helpRequestType, _inputtext, DateTime.now(), "sender");
+          HelpRequest(helpRequestType, _inputtext, DateTime.now(), "123456789");
+      print("input text" + _inputtext);
+      print("helpRequest" + helpRequestType.description);
 
       widget.parent.handleFeedChange(helpRequest, true);
       // Navigator.push(context, MaterialPageRoute(builder: (context) => UserInNeedHelpRequestsFeed()),);
@@ -177,7 +178,18 @@ class _DescriptonBox extends State<DescriptonBox> {
       //     context,
       //   );
       // }
-    });
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return StreamProvider<List<HelpRequest>>.value(
+            value: DataBaseService().getUserHelpRequests(User("haitham",
+                "099000", "no_need", Privilege.UserInNeed, "123456789")),
+            child: UserInNeedHelpRequestsFeed(),
+          );
+        }),
+      );
+    }
+    );
   }
 
   @override
@@ -188,84 +200,25 @@ class _DescriptonBox extends State<DescriptonBox> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: inputtextField,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(), labelText: widget.title),
-              ),
-            ),
+                padding: const EdgeInsets.all(16.0),
+                child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: TextField(
+                      controller: inputtextField,
+                      textAlign: TextAlign.right,
+                      autofocus: true,
+                      decoration: new InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: widget.title,
+                      ),
+                    ))),
             RaisedButton(
               onPressed: () {
                 _processText();
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(
-                    context,
-                  );
-                }
               },
-              child: Text('Done'),
+              child: Text('אישור'),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-//show/hide, not used yet..
-//when clicking on a post a slide sheet appears with the options of renew, and
-//track the request
-//will be used after the feed is implemented
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  void slideSheet() {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            color: Color(0xFF737373),
-            child: Container(
-              height: 180,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10)),
-                color: Colors.white,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[Text('Renew')],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[Text('Track')],
-                  )
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: RaisedButton(
-          onPressed: slideSheet,
-          child: Text('Click'),
         ),
       ),
     );

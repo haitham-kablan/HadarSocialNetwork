@@ -21,6 +21,7 @@ class _HelperFeedState extends State<HelperFeed> {
     final requests = Provider.of<List<HelpRequest>>(context);
 
     return ListView.builder(
+      padding: const EdgeInsets.only(bottom: 70.0, top: 100),
       itemCount: (requests == null) ? 0 : requests.length,
       itemBuilder: (context,index){
         return HelpRequestTile(helpRequestWidget: VolunteerFeedTile(requests[index]));
@@ -49,11 +50,7 @@ class VolunteerFeed extends StatelessWidget {
               delegate: MySliverAppBar(expandedHeight: 150, title: 'USER'),
               pinned: true,
             ),
-            SliverGrid.count(
-              crossAxisCount: 1,
-              children: [
-                HelperFeed(),
-              ],
+            SliverFillRemaining( child: HelperFeed(),
             ),
           ],
         ),

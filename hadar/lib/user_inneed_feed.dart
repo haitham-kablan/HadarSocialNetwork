@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/lang/HebrewText.dart';
@@ -48,21 +47,21 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
       }
       else
         feed.remove(helpRequest);
-        //todo: remove from database
+      //todo: remove from database
 
-        //feed.removeWhere((element) => element.category.description == "money");
+      //feed.removeWhere((element) => element.category.description == "money");
     });
   }
 
   void showHelpRequestStatus(HelpRequest helpRequest) {
     showModalBottomSheet(
-      context: context,
+        context: context,
         /*shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(30) ,topRight: Radius.circular(30))
         ),*/
-      builder: (context) {
-        return HelpRequestStatusWidget(helpRequest, this);
-      });
+        builder: (context) {
+          return HelpRequestStatusWidget(helpRequest, this);
+        });
   }
 
   @override
@@ -92,16 +91,12 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
               delegate: MySliverAppBar(expandedHeight: 150, title: 'USER'),
               pinned: true,
             ),
-            SliverGrid.count(
-              crossAxisCount: 1,
-              children: [
-                ListView(
-                          semanticChildCount: (feed == null) ? 0 : feed.length,
-                          padding: const EdgeInsets.only(bottom: 70.0, top: 100),
-                          children: feedTiles,
-                        ),
-              ],
-            ),
+
+            SliverFillRemaining(child :ListView(
+              semanticChildCount: (feed == null) ? 0 : feed.length,
+              padding: const EdgeInsets.only(bottom: 70.0, top: 100),
+              children: feedTiles,
+            ),),
           ],
         ),
         floatingActionButton: Container(
@@ -175,29 +170,29 @@ class HelpRequestItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(5.0),
-      //height: 100,
-      //color: Colors.transparent,
-      child: Column(
-        children: [
-          Container(
-            child: Text("request: " + helpRequest.category.description + ":"),
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(bottom: 8),
-          ),
-          //SizedBox(height: 8,),
-          Container(
-            child: Text(helpRequest.description),
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(bottom: 8, left: 10),
-          ),
-          Container(
-            //we trim the date object to include only the date, hours and minutes
-            child: Text(helpRequest.date.toString().substring(0, 16)),
-            alignment: Alignment.bottomRight,
-          ),
+        //height: 100,
+        //color: Colors.transparent,
+        child: Column(
+          children: [
+            Container(
+              child: Text("request: " + helpRequest.category.description + ":"),
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(bottom: 8),
+            ),
+            //SizedBox(height: 8,),
+            Container(
+              child: Text(helpRequest.description),
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(bottom: 8, left: 10),
+            ),
+            Container(
+              //we trim the date object to include only the date, hours and minutes
+              child: Text(helpRequest.date.toString().substring(0, 16)),
+              alignment: Alignment.bottomRight,
+            ),
 
-        ],
-      )
+          ],
+        )
     );
   }
 }
@@ -211,33 +206,33 @@ class HelpRequestStatus extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: helpRequest.category.description,
-      home: Container(
-        padding: const EdgeInsets.only(top: 40, bottom: 200),
-        child: Column(
-          children: [
+        title: helpRequest.category.description,
+        home: Container(
+          padding: const EdgeInsets.only(top: 40, bottom: 200),
+          child: Column(
+            children: [
 
-            /*Container(
+              /*Container(
               child:*/ Scaffold(
                 appBar: AppBar(
-                  title: Row(
-                    children:[
-                      Container(
-                        width: 100,
-                        child: BackButton(
-                          color: Colors.deepOrange,
-                          onPressed: () {
-                            if(Navigator.canPop(context)) {
-                              Navigator.pop(
-                                context,
-                              );
-                            }
-                          },
-                        ),
-                      )
+                    title: Row(
+                      children:[
+                        Container(
+                          width: 100,
+                          child: BackButton(
+                            color: Colors.deepOrange,
+                            onPressed: () {
+                              if(Navigator.canPop(context)) {
+                                Navigator.pop(
+                                  context,
+                                );
+                              }
+                            },
+                          ),
+                        )
 
-                    ],
-                  )
+                      ],
+                    )
                 ),
 
                 //a BackButton requires a material widget parent..
@@ -253,12 +248,12 @@ class HelpRequestStatus extends StatelessWidget{
                   ),
                 ),
               )
-           //),
+              //),
 
-          ],
-        ),
-        color: Colors.white,
-      )
+            ],
+          ),
+          color: Colors.white,
+        )
     );
   }
 }
@@ -274,16 +269,16 @@ class HelpRequestStatusWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        //this color is to make the corners look transparent to the main screen: Color(0xFF696969)
+      //this color is to make the corners look transparent to the main screen: Color(0xFF696969)
         color: Color(0xFF696969),
         height: MediaQuery.of(context).size.height /2,
         child: Container(
           decoration:  BoxDecoration(
-              color: BasicColor.backgroundClr,
-              borderRadius: BorderRadius.only(
-                topRight: const Radius.circular(20),
-                topLeft: const Radius.circular(20),
-              ),
+            color: BasicColor.backgroundClr,
+            borderRadius: BorderRadius.only(
+              topRight: const Radius.circular(20),
+              topLeft: const Radius.circular(20),
+            ),
           ),
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -311,9 +306,9 @@ class HelpRequestStatusWidget extends StatelessWidget {
                   child: Text(
                     helpRequest.category.description + ":",
                     style: TextStyle(
-                      fontSize: 30,
-                      color:BasicColor.clr,
-                      fontFamily: "Arial"
+                        fontSize: 30,
+                        color:BasicColor.clr,
+                        fontFamily: "Arial"
                     ),
                   ),
                 ),
@@ -364,7 +359,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
             ],
           ),
         )
-      );
+    );
   }
 
 }
@@ -376,13 +371,10 @@ class HelpRequestStatusWidget extends StatelessWidget {
 //will be used after the feed is implemented
 class HelpRequestStatusWidget extends StatefulWidget {
   HelpRequestStatusWidget({Key key, this.helpRequest}) : super(key: key);
-
   final HelpRequest helpRequest;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
-
 class _HelpRequestStatusWidget extends State<HelpRequestStatusWidget> {
   /*void slideSheet() {
     showModalBottomSheet(
@@ -391,7 +383,6 @@ class _HelpRequestStatusWidget extends State<HelpRequestStatusWidget> {
           return HelpRequestStatusWidget(widget.helpRequest);
         });
   }*/
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -405,4 +396,3 @@ class _HelpRequestStatusWidget extends State<HelpRequestStatusWidget> {
   }
 }
 */
-
