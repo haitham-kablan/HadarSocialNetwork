@@ -45,9 +45,6 @@ dependencies:
   url_launcher: ^5.7.10
 
 
-
-  url_launcher: ^5.7.10
-
   cloud_firestore_mocks: ^0.5.2+1
 
 

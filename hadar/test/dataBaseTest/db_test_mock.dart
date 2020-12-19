@@ -68,10 +68,10 @@ class db_test_mock extends StatelessWidget {
               child: Text('add help request'),
               onPressed: (){
                 date = DateTime.now();
-                dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food', date, '123456789'));
-                dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food but more', DateTime.now(), '123456789'));
-                dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('money'), 'lots of lots of money', date, '2'));
-                dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('fighting'), 'lots of lots of fights', date, '3'));
+                dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food', date, '123456789',''));
+                dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food but more', DateTime.now(), '123456789',''));
+                dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('money'), 'lots of lots of money', date, '2',''));
+                dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('fighting'), 'lots of lots of fights', date, '3',''));
 
               },
             ),
@@ -81,8 +81,8 @@ class db_test_mock extends StatelessWidget {
                 List<HelpRequestType> list1 = List<HelpRequestType>();
                 list1.add(HelpRequestType('food'));
                 list1.add(HelpRequestType('money'));
-                dataBaseServiceMock.assignHelpRequestForVolunteer(Volunteer('hsen', 'sa', '123', false, '4', list1), HelpRequest(HelpRequestType('food'), 'lots of lots of food', date, '123456789'));
-                dataBaseServiceMock.assignHelpRequestForVolunteer(Volunteer('lolly', 'sa', '123', false, '5', list1), HelpRequest(HelpRequestType('money'), 'lots of lots of money',date, '2'));
+                dataBaseServiceMock.assignHelpRequestForVolunteer(Volunteer('hsen', 'sa', '123', false, '4', list1), HelpRequest(HelpRequestType('food'), 'lots of lots of food', date, '123456789',''));
+                dataBaseServiceMock.assignHelpRequestForVolunteer(Volunteer('lolly', 'sa', '123', false, '5', list1), HelpRequest(HelpRequestType('money'), 'lots of lots of money',date, '2',''));
 
 
               },

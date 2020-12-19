@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:hadar/services/authentication/ReigsterPage.dart';
 import 'package:hadar/services/authentication/validators.dart';
@@ -90,17 +91,17 @@ class _LogInPageState extends State<LogInPage> {
             ),
             Container(
               margin: EdgeInsets.only(top: 80),
-              child:Form(key:nameKey,child: Custom_Text_feild('שם משתמש',Icon(Icons.email),Color(0xff494CF5),Colors.black,Email_Validator.Validate,email_control,false)),
+              child:Form(key:nameKey,child: Custom_Text_feild('שם משתמש',Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false)),
             ),
             Container(
               margin: EdgeInsets.only(top: 20),
-              child: Form(key: paswwordKey , child: Custom_Text_feild('סיסמה',Icon(Icons.lock),Color(0xff494CF5),Colors.black,password_Validator.Validate,pw_control,true)),
+              child: Form(key: paswwordKey , child: Custom_Text_feild('סיסמה',Icon(Icons.lock),BasicColor.clr,Colors.black,password_Validator.Validate,pw_control,true)),
             ),
 
             Container(
               margin: EdgeInsets.only(top: 60),
               child: RaisedButton(
-                color: Color(0xff494CF5),
+                color: BasicColor.clr,
                 splashColor: Colors.white,
                 child: Text('כניסה',style: TextStyle(fontSize: 18 , color: Colors.white),),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -119,7 +120,7 @@ class _LogInPageState extends State<LogInPage> {
                     pw_control.clear();
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => weork_right()),
+                      MaterialPageRoute(builder: (context) => Log_In_Screen()),
                     );
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
@@ -156,8 +157,8 @@ class _LogInPageState extends State<LogInPage> {
 
 
 class Sign_up_here_text extends StatelessWidget {
-  TextStyle defaultStyle = TextStyle(color: Color(0xff494CF5), fontSize: 15 );
-  TextStyle linkStyle = TextStyle(color: Color(0xff494CF5) , fontSize: 15 , fontWeight: FontWeight.bold , decoration: TextDecoration.underline);
+  TextStyle defaultStyle = TextStyle(color: BasicColor.clr, fontSize: 15 );
+  TextStyle linkStyle = TextStyle(color: BasicColor.clr , fontSize: 15 , fontWeight: FontWeight.bold , decoration: TextDecoration.underline);
   @override
   Widget build(BuildContext context) {
     return RichText(

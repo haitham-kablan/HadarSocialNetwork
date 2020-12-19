@@ -78,7 +78,7 @@ class testing_stream extends StatelessWidget {
 
   List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
     return snapshot.docs.map((doc) =>
-        HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '')).toList();
+        HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '')).toList();
   }
 
   Stream<List<HelpRequest>> getVolAceeptedRequests(Volunteer volunteer) {

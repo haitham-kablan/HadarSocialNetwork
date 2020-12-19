@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hadar/lang/HebrewText.dart';
@@ -51,27 +52,27 @@ class _ReigesterPageState extends State<ReigesterPage> {
                   Container(margin: EdgeInsets.only(top: 20),),
                   Container(margin: EdgeInsets.all(35),child: showAlert()),
                         Form(
-                          child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded ),Color(0xff494CF5),Colors.black,name_Validator.Validate,name_Controller,false),
+                          child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded ),BasicColor.clr,Colors.black,name_Validator.Validate,name_Controller,false),
                           key: nameKey,
                         ),
                         Form(
-                          child: Custom_Text_feild('תעודת זהות',Icon(Icons.arrow_left_outlined),Color(0xff494CF5),Colors.black,Id_Validator.Validate,id_Controller,false),
+                          child: Custom_Text_feild('תעודת זהות',Icon(Icons.arrow_left_outlined),BasicColor.clr,Colors.black,Id_Validator.Validate,id_Controller,false),
                           key: idKey,
                         ),
                         Form(
-                          child: Custom_Text_feild('מספר טלפון',Icon(Icons.phone),Color(0xff494CF5),Colors.black,number_Validator.Validate,phone_Controller,false),
+                          child: Custom_Text_feild('מספר טלפון',Icon(Icons.phone),BasicColor.clr,Colors.black,number_Validator.Validate,phone_Controller,false),
                           key: phoneKey,
                         ),
                         Form(
-                          child: Custom_Text_feild('כתובת אימיל',Icon(Icons.email),Color(0xff494CF5),Colors.black,Email_Validator.Validate,email_Controller,false),
+                          child: Custom_Text_feild('כתובת אימיל',Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_Controller,false),
                           key: emailKey,
                         ),
                         Form(
-                          child: Custom_Text_feild('סיסמה',Icon(Icons.lock, size: 20),Color(0xff494CF5),Colors.black,password_Validator.Validate,first_pw_Controller,true),
+                          child: Custom_Text_feild('סיסמה',Icon(Icons.lock, size: 20),BasicColor.clr,Colors.black,password_Validator.Validate,first_pw_Controller,true),
                           key: paswwordKey,
                         ),
                         Form(
-                          child: Custom_Text_feild('אימות סיסמה',Icon(Icons.lock),Color(0xff494CF5),Colors.black,second_pw_Validator.Validate,second_pw_Controller,true),
+                          child: Custom_Text_feild('אימות סיסמה',Icon(Icons.lock),BasicColor.clr,Colors.black,second_pw_Validator.Validate,second_pw_Controller,true),
                           key: secnd_pass_Key,
                         ),
                   Container(
@@ -80,7 +81,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                       'נרשם בתור',
                       style: TextStyle(
                         fontSize: 18,
-                        color: Color(0xff494CF5),
+                        color: BasicColor.clr,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.right,
@@ -149,7 +150,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                   Container(
                     margin: EdgeInsets.all(30),
                     child: RaisedButton(
-                      color: Color(0xff494CF5),
+                      color: BasicColor.clr,
                       splashColor: Colors.white,
                       child: Text('הרשמה',style: TextStyle(fontSize: 18 , color: Colors.white),),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
@@ -167,13 +168,17 @@ class _ReigesterPageState extends State<ReigesterPage> {
                           setState(() {
                             alert=true;
                             _error_msg = 'תעודת הזהות כבר תפוסה';
+
                           });
+                          return;
                         }
                         if(clicked == false){
                           setState(() {
                             alert=true;
                             _error_msg = 'אנא בחר את התור שלך';
+
                           });
+                          return;
                         }
                         assert (clicked_priv != null);
                         try {
@@ -213,16 +218,16 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
   Map<String, Icon> update_list(int index) {
 
-    List<Color> new_clrs = [index == 0 ? Color(0xff494CF5) : Colors.grey ,
-      index == 1 ? Color(0xff494CF5) : Colors.grey,
-      index == 2 ? Color(0xff494CF5) : Colors.grey];
+    List<Color> new_clrs = [index == 0 ? BasicColor.clr : Colors.grey ,
+      index == 1 ? BasicColor.clr : Colors.grey,
+      index == 2 ? BasicColor.clr : Colors.grey];
     return user_types(new_clrs);
   }
 
   Widget showAlert() {
     if (alert) {
       return Container(
-        color: Color(0xff494CF5),
+        color: BasicColor.clr,
         width: double.infinity,
         padding: EdgeInsets.all(8.0),
         child: Row(

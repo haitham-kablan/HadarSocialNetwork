@@ -4,7 +4,9 @@ import 'package:hadar/Design/basicTools.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/feeds/helper_feed.dart';
+import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/user_inneed_feed.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +15,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'lang/HebrewText.dart';
 
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await CurrentUser.init_user();
+
   runApp(MaterialApp(
-    home: Log_In_Screen(),
+    home: LogInPage(),
   ));
 }
 

@@ -30,9 +30,9 @@ void main() {
     final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
     await dataBaseServiceMock.addVolunteerToDataBase(Volunteer('haitham', '123', 'email@com', false , '1', [HelpRequestType('food'),HelpRequestType('money')]));
     await dataBaseServiceMock.addHelpRequestTypeDataBase(HelpRequestType('food'));
-    await dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food', DateTime.now(), '123456789'));
-    await dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food', DateTime.now(), '1234567811239'));
-    await dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('money'), 'lots of lots of food', DateTime.now(), '123456789'));
+    await dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food', DateTime.now(), '123456789',''));
+    await dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('food'), 'lots of lots of food', DateTime.now(), '1234567811239',''));
+    await dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(HelpRequest(HelpRequestType('money'), 'lots of lots of food', DateTime.now(), '123456789',''));
 
     // Render the widget.
     await tester.pumpWidget(MaterialApp(
@@ -88,7 +88,7 @@ void main() {
   testWidgets('assign volunteer for specific request', (WidgetTester tester) async {
 
     Volunteer volunteer = Volunteer('haitham', '123', 'email@com', false , '1', [HelpRequestType('food'),HelpRequestType('money')]);
-    HelpRequest helpRequest = HelpRequest(HelpRequestType('food'), 'lots of lots of food', DateTime.now(), '123456789');
+    HelpRequest helpRequest = HelpRequest(HelpRequestType('food'), 'lots of lots of food', DateTime.now(), '123456789','');
     // init mock db.
     final firestore = MockFirestoreInstance();
     await firestore.clearPersistence();

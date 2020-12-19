@@ -1,5 +1,6 @@
 
 
+
 enum Privilege {Admin, UserInNeed, Volunteer, UnregisterUser}
 
 class User{
