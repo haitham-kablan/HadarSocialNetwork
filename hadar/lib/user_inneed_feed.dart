@@ -92,7 +92,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
-              delegate: MySliverAppBar(expandedHeight: 150, title: 'USER'),
+              delegate: MySliverAppBar(expandedHeight: 150, title: CurrentUser.curr_user.name),
               pinned: true,
             ),
 
@@ -266,7 +266,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                         }
                         //print("height: " + (MediaQuery.of(context).size.height /2).toString());
                       },
-                      child: Text('renew request'),
+                      child: Text('חידוש בקשה'),
                     ),
                   ),
                 ),
