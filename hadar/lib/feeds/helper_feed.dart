@@ -3,6 +3,7 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/feeds/feed_items/help_request_tile.dart';
@@ -59,7 +60,7 @@ class VolunteerFeed extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
-              delegate: MySliverAppBar(expandedHeight: 150, title: 'USER'),
+              delegate: MySliverAppBar(expandedHeight: 150, title: CurrentUser.curr_user.name),
               pinned: true,
             ),
             SliverFillRemaining( child: HelperFeed(),

@@ -60,7 +60,7 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
     Color color = widget.helpRequest.handler_id == '' ? Colors.white : BasicColor.stam;
     return ListTile(
       tileColor: color,
-      onTap: () => print("wowwww!!!!"),//showHelpRequestStatus(helpRequest),
+      onTap: () => print("List tile pressed!"),//showHelpRequestStatus(helpRequest),
       isThreeLine: false,
       title: Row(children: <Widget>[
         Container(
