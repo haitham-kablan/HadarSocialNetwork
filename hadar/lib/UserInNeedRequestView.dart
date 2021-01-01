@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/lang/HebrewText.dart';
-import 'package:hadar/user_inneed_feed.dart';
+
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
@@ -13,6 +13,7 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import 'Design/mainDesign.dart';
+import 'feeds/user_inneed_feed.dart';
 
 class RequestWindow extends StatelessWidget {
   HelpRequestFeedState parent;

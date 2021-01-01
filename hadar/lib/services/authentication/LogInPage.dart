@@ -83,7 +83,7 @@ class _LogInPageState extends State<LogInPage> {
             Container(
               margin: EdgeInsets.only(top: 50),
               child: Text(
-                'ברכוים הבאים',
+                'ברוכים הבאים',
                 textDirection: TextDirection.rtl,
                 style: TextStyle(
                   fontSize: 30

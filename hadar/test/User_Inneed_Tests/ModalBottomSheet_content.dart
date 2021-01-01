@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hadar/feeds/feed_items/help_request_tile.dart' as HRTile;
 
-import 'package:hadar/user_inneed_feed.dart' as UIF;
+import 'file:///D:/Hussein/Technion/234311%20-%20yearly%20project/Yearly_project/hadar/lib/feeds/user_inneed_feed.dart' as UIF;
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 
@@ -44,7 +44,7 @@ Future<void> main() async {
       MaterialApp(
         home: Scaffold(
           body: ListView(
-            children: [HRTile.HelpRequestTile(helpRequestWidget: UIF.HelpRequestItem(
+            children: [HRTile.FeedTile(helpRequestWidget: UIF.HelpRequestItem(
               helpRequest: helpRequest1, parent: null,
             ),)],
           ),

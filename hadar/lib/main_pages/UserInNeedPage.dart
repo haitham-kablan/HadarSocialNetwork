@@ -7,7 +7,7 @@ import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:provider/provider.dart';
 
-import '../user_inneed_feed.dart';
+import '../feeds/user_inneed_feed.dart';
 
 
 class UserInNeedPage extends StatelessWidget {
