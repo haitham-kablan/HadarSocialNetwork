@@ -114,7 +114,7 @@ class _LogInPageState extends State<LogInPage> {
                   if(!nameKey.currentState.validate() || !paswwordKey.currentState.validate() ){
                         return;
                   }
-
+                  //TDOD : SWITCH PLACES
                   bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
                   if(!is_verfied){
                     setState(() {
