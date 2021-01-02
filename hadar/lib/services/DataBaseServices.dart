@@ -28,6 +28,7 @@ class DataBaseService{
   final CollectionReference registrationRequestsCollection = FirebaseFirestore.instance.collection('REGISTRATION_REQUESTS');
   final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
   final CollectionReference verificationsRequestsCollection = FirebaseFirestore.instance.collection(verification_requests);
+  final CollectionReference allHelpsRequestsCollection = FirebaseFirestore.instance.collection('ALL_HELP_REQUESTS');
 
 
   Future<bool> checkIfVerfied(String email) async{
@@ -263,6 +264,13 @@ class DataBaseService{
     return userInNeedCollection.doc(user.id).collection(user_in_need_requests).orderBy('time',descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
+  }
+
+  Stream<List<HelpRequest>> getAllRequests() {
+
+    final Query all_req = FirebaseFirestore.instance.collectionGroup(user_in_need_requests).orderBy('time',descending: true);
+    return all_req.snapshots().map(helpRequestListFromSnapShot);
+
   }
 
   Stream<List<HelpRequest>> getVolPendingRequests(Volunteer volunteer) {
