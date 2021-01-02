@@ -12,9 +12,7 @@ import 'Design/basicTools.dart';
 void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
 
   showModalBottomSheet(context: context, builder: (BuildContext bc){
-    return FractionallySizedBox(
-      heightFactor: 1,
-      child: Container(
+    return  Container(
         color: BasicColor.backgroundClr,
               child: Column(
                 children: [
@@ -95,7 +93,7 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                    )
                   ),
                   Container(
-                    margin: EdgeInsets.all(20),
+                    margin: EdgeInsets.all(10),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -128,13 +126,13 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.all(20),
+                    margin: EdgeInsets.all(10),
                   ),
 
                 ],
               ),
-          ),
+          );
 
-    );
+
   });
 }
