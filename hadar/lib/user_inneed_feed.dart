@@ -174,7 +174,7 @@ class HelpRequestItem extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8, left: 8),
           ),
           Spacer(),
-          null != helpRequest.handler_id ? GestureDetector(
+          ("" != helpRequest.handler_id) ? GestureDetector(
             onTap: ()=>{
 
                       _launchCaller(),

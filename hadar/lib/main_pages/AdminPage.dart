@@ -1,6 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/Design/mainDesign.dart';
+import 'package:hadar/feeds/admin_feed.dart';
+import 'package:hadar/feeds/feed_items/help_request_tile.dart';
+import 'package:hadar/feeds/helper_feed.dart';
+import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/utils/HelpRequest.dart';
+import 'package:provider/provider.dart';
 
 class AdminPage extends StatelessWidget {
 
@@ -25,6 +34,16 @@ class AdminPage extends StatelessWidget {
                     Navigator.pop(context);
                   },
                 ),
+                RaisedButton(
+                  child: Text('All requests'),
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => showAllRequests()),
+                    );
+                  }
+                )
               ],
           ),
         ),
@@ -32,3 +51,5 @@ class AdminPage extends StatelessWidget {
     );
   }
 }
+
+
