@@ -21,40 +21,40 @@ import 'main_pages/AdminPage.dart';
 
 
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(MaterialApp(
-//     home: LogInPage(),
-//   ));
-// }
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
-    home: tmp(),
+    home: LogInPage(),
   ));
 }
 
-
-class tmp extends StatefulWidget {
-  @override
-  _tmpState createState() => _tmpState();
-}
-
-class _tmpState extends State<tmp> {
-  @override
-  Widget build(BuildContext context) {
-    String long = '2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222';
-    return Container(
-      child: RaisedButton(
-        child: Text('fk me'),
-        onPressed: (){
-          HelpRequestAdminDialuge(context, HelpRequest(HelpRequestType('בועז'), long, DateTime.now(), 'sender_id', 'handler_id'));
-        },
-      ),
-    );
-  }
-}
+//
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   runApp(MaterialApp(
+//     home: tmp(),
+//   ));
+// }
+//
+//
+// class tmp extends StatefulWidget {
+//   @override
+//   _tmpState createState() => _tmpState();
+// }
+//
+// class _tmpState extends State<tmp> {
+//   @override
+//   Widget build(BuildContext context) {
+//     String long = '2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222';
+//     return Container(
+//       child: RaisedButton(
+//         child: Text('fk me'),
+//         onPressed: (){
+//           HelpRequestAdminDialuge(context, HelpRequest(HelpRequestType('בועז'), long, DateTime.now(), 'sender_id', 'handler_id'));
+//         },
+//       ),
+//     );
+//   }
+// }
