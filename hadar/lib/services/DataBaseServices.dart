@@ -8,24 +8,87 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/material.dart';
 import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart' as hadar;
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
+import 'package:hadar/utils/VerificationRequest.dart';
 
 class DataBaseService{
 
   static final String user_in_need_requests = 'REQUESTS';
   static final String volunteer_pending_requests = 'PENDING_REQUESTS';
+  static final String verification_requests = 'VERIFICATION_REQUESTS';
 
   final CollectionReference helpersCollection = FirebaseFirestore.instance.collection('HELPERS');
   final CollectionReference userInNeedCollection = FirebaseFirestore.instance.collection('USERS_IN_NEED');
   final CollectionReference adminsCollection = FirebaseFirestore.instance.collection('ADMINS');
   final CollectionReference registrationRequestsCollection = FirebaseFirestore.instance.collection('REGISTRATION_REQUESTS');
   final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
+  final CollectionReference verificationsRequestsCollection = FirebaseFirestore.instance.collection(verification_requests);
+
+  
+  Future addVerficationRequestToDb(VerificationRequest verificationRequest) async{
+
+    Map<String,dynamic> to_add = Map();
+    to_add['sender_id'] = verificationRequest.sender.id;
+    to_add['email'] = verificationRequest.sender.email;
+    to_add['name'] = verificationRequest.sender.name;
+    to_add['phoneNumber'] = verificationRequest.sender.phoneNumber;
+    to_add['accepted'] = verificationRequest.accepted;
+    to_add['date'] = verificationRequest.date.toString();
+    to_add['type'] = verificationRequest.type.toString().substring(10);
+    to_add['time'] = verificationRequest.time;
+
+    return await verificationsRequestsCollection.doc(verificationRequest.sender.id).set(to_add);
+    
+  }
+
+  /*/
+    this function will also add the user to db and delte its request
+    in case of admin or user in need catoergires are null
+
+   */
+  Future AcceptVerificationRequest(VerificationRequest verificationRequest , List<HelpRequestType> categories){
+
+    switch (verificationRequest.type){
+
+      case hadar.Privilege.Admin:
+        Admin admin_to_add = Admin(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id);
+        addAdminToDataBase(admin_to_add);
+        verificationsRequestsCollection.doc(admin_to_add.id).delete();
+        break;
+      case hadar.Privilege.UserInNeed:
+        UserInNeed UserInNeed_to_add = UserInNeed(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id);
+        addUserInNeedToDataBase(UserInNeed_to_add);
+        verificationsRequestsCollection.doc(UserInNeed_to_add.id).delete();
+        break;
+      case hadar.Privilege.Volunteer:
+        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id,categories);
+        addVolunteerToDataBase(Volunteer_to_add);
+        verificationsRequestsCollection.doc(Volunteer_to_add.id).delete();
+        break;
+      case hadar.Privilege.UnregisterUser:
+        assert(false);
+        break;
+    }
+
+  }
+
+  Stream<List<VerificationRequest>> getVerificationRequests() {
+
+    return verificationsRequestsCollection.orderBy('time',descending: true)
+        .snapshots()
+        .map(VerficationRequestListFromSnapShot);
+  }
 
 
+
+ 
+  
+  
   /*
   THIS FUNCTION WILL AUTOMATICALLY ADD THE REQUEST TO ALL THE RELEVANT
   VOULNTEERS
@@ -217,6 +280,26 @@ class DataBaseService{
         .map(VolunteerListFromSnapShot);
   }
 
+  Stream<List<Volunteer>> getAllVolunteers(){
+
+    return helpersCollection
+        .snapshots()
+        .map(VolunteerListFromSnapShot);
+  }
+
+  Stream<List<Admin>> getAllAdmins(){
+
+    return adminsCollection
+        .snapshots()
+        .map(AdminListFromSnapShot);
+  }
+
+  Stream<List<hadar.User>> getAllUsersInNeed(){
+
+    return userInNeedCollection
+        .snapshots()
+        .map(UserInNeedListFromSnapShot);
+  }
 
   Future<List<HelpRequestType>> helpRequestAsAlist() async {
 
@@ -318,6 +401,31 @@ class DataBaseService{
 }
 
 
+
+hadar.Privilege getTypeFromString(String type){
+
+  if (type == 'Admin'){
+    return hadar.Privilege.Admin;
+  }
+  if (type == 'UserInNeed'){
+    return hadar.Privilege.UserInNeed;
+  }
+  if (type == 'Volunteer'){
+    return hadar.Privilege.Volunteer;
+  }
+  if (type == 'UnregisterUser'){
+    return hadar.Privilege.UnregisterUser;
+  }
+
+  assert(false);
+
+}
+
+List<VerificationRequest> VerficationRequestListFromSnapShot(QuerySnapshot snapshot){
+  return snapshot.docs.map((doc) =>
+      VerificationRequest(UnregisteredUser(doc.data()['name'] ?? '' , doc.data()['phoneNumber'] ?? '' , doc.data()['email'] ?? '' , doc.data()['sender_id'] ?? ''), getTypeFromString(doc.data()['type'] ?? '') ,DateTime.parse(doc.data()['date']) ?? '' )).toList();
+}
+
 List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
       HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '')).toList();
@@ -333,6 +441,20 @@ List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
       Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
           doc.data()['String id'] ?? '' , get_categoreis(doc)));
+}
+
+List<Admin> AdminListFromSnapShot(QuerySnapshot snapshot){
+
+  return snapshot.docs.map((doc) =>
+      Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['String id'] ?? ''));
+}
+
+List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
+
+  return snapshot.docs.map((doc) =>
+      UserInNeed(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['String id'] ?? ''));
 }
 
 List<HelpRequestType> get_categoreis(DocumentSnapshot doc){
