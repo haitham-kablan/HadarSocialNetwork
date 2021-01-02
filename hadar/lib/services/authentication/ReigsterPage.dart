@@ -291,7 +291,12 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         password: first_pw_Controller.text
                     );
 
-                    DataBaseService().addVerficationRequestToDb(VerificationRequest(UnregisteredUser(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text),  clicked_priv, DateTime.now()));
+                    if(clicked_priv == Privilege.UserInNeed){
+                      DataBaseService().addUserInNeedToDataBase(UserInNeed(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text));
+                    }else{
+                      DataBaseService().addVerficationRequestToDb(VerificationRequest(UnregisteredUser(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text),  clicked_priv, DateTime.now()));
+                    }
+
                     Navigator.pop(context);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
@@ -339,5 +344,31 @@ bool Check_user(name, String id, String phone_number, String email, String pw, S
 
 
 
+class demo_bg extends StatelessWidget {
+  Widget son;
+  demo_bg(this.son);
+  @override
+  Widget build(BuildContext context) {
+    return  Column(
+      children: [
+        Container(
 
+          color: Colors.transparent,
+          child: new Container(
+            padding: EdgeInsets.only(bottom: 50),
+            decoration: new BoxDecoration(
+                color: BasicColor.clr,
+                borderRadius: new BorderRadius.only(
+                  bottomLeft: const Radius.circular(150),
+                  bottomRight: const Radius.circular(150),
+                )
+            ),
+            child: son,
+          ),
+        ),
+
+      ],
+    );
+  }
+}
 

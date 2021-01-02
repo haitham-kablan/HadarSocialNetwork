@@ -11,7 +11,10 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/ReigsterPage.dart';
 import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/utils/HelpRequest.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
 
+import '../../HelpRequestAdminDialouge.dart';
 import '../../main.dart';
 
 class LogInPage extends StatefulWidget {

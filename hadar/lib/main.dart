@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/HelpRequestAdminDialouge.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/feeds/helper_feed.dart';
@@ -11,6 +12,7 @@ import 'package:hadar/user_inneed_feed.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/utils/HelpRequest.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -19,38 +21,40 @@ import 'main_pages/AdminPage.dart';
 
 
 
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   runApp(MaterialApp(
+//     home: LogInPage(),
+//   ));
+// }
+
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
-    home: LogInPage(),
+    home: tmp(),
   ));
 }
 
-class demo_bg extends StatelessWidget {
-  Widget son;
-  demo_bg(this.son);
+
+class tmp extends StatefulWidget {
+  @override
+  _tmpState createState() => _tmpState();
+}
+
+class _tmpState extends State<tmp> {
   @override
   Widget build(BuildContext context) {
-    return  Column(
-      children: [
-      Container(
-
-      color: Colors.transparent,
-      child: new Container(
-        padding: EdgeInsets.only(bottom: 50),
-          decoration: new BoxDecoration(
-              color: BasicColor.clr,
-              borderRadius: new BorderRadius.only(
-                bottomLeft: const Radius.circular(150),
-                bottomRight: const Radius.circular(150),
-              )
-          ),
-          child: son,
+    String long = '2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222';
+    return Container(
+      child: RaisedButton(
+        child: Text('fk me'),
+        onPressed: (){
+          HelpRequestAdminDialuge(context, HelpRequest(HelpRequestType('בועז'), long, DateTime.now(), 'sender_id', 'handler_id'));
+        },
       ),
-    ),
-
-      ],
     );
   }
 }
