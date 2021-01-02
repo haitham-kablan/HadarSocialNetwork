@@ -1,7 +1,6 @@
 
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/feeds/feed_items/help_request_tile.dart';
@@ -11,6 +10,7 @@ import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 
 class showAllRequests extends StatefulWidget {
@@ -70,5 +70,29 @@ class _AdminFeed extends State<HelperFeed> {
     );
 
   }
+}
 
+class HelpRequestTile extends StatefulWidget {
+  final Widget helpRequestWidget;
+  HelpRequestTile({this.helpRequestWidget});
+
+  @override
+  _HelpRequestTileState createState() => _HelpRequestTileState();
+}
+
+class _HelpRequestTileState extends State<HelpRequestTile> {
+  _HelpRequestTileState();
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Card(
+        margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
+        color: Colors.brown[30],
+        child: widget.helpRequestWidget,
+      ),
+    );
+  }
 }
