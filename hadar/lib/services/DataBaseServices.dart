@@ -29,7 +29,14 @@ class DataBaseService{
   final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
   final CollectionReference verificationsRequestsCollection = FirebaseFirestore.instance.collection(verification_requests);
 
-  
+
+  Future<bool> checkIfVerfied(String email) async{
+
+    bool ans;
+    await verificationsRequestsCollection.doc(email).get().then((value) => ans = !value.exists);
+    return ans;
+
+  }
   Future addVerficationRequestToDb(VerificationRequest verificationRequest) async{
 
     Map<String,dynamic> to_add = Map();
@@ -42,7 +49,7 @@ class DataBaseService{
     to_add['type'] = verificationRequest.type.toString().substring(10);
     to_add['time'] = verificationRequest.time;
 
-    return await verificationsRequestsCollection.doc(verificationRequest.sender.id).set(to_add);
+    return await verificationsRequestsCollection.doc(verificationRequest.sender.email).set(to_add);
     
   }
 
@@ -58,17 +65,17 @@ class DataBaseService{
       case hadar.Privilege.Admin:
         Admin admin_to_add = Admin(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id);
         addAdminToDataBase(admin_to_add);
-        verificationsRequestsCollection.doc(admin_to_add.id).delete();
+        verificationsRequestsCollection.doc(admin_to_add.email).delete();
         break;
       case hadar.Privilege.UserInNeed:
         UserInNeed UserInNeed_to_add = UserInNeed(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id);
         addUserInNeedToDataBase(UserInNeed_to_add);
-        verificationsRequestsCollection.doc(UserInNeed_to_add.id).delete();
+        verificationsRequestsCollection.doc(UserInNeed_to_add.email).delete();
         break;
       case hadar.Privilege.Volunteer:
         Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id,categories);
         addVolunteerToDataBase(Volunteer_to_add);
-        verificationsRequestsCollection.doc(Volunteer_to_add.id).delete();
+        verificationsRequestsCollection.doc(Volunteer_to_add.email).delete();
         break;
       case hadar.Privilege.UnregisterUser:
         assert(false);

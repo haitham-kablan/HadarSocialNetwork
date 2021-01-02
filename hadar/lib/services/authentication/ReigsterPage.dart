@@ -7,9 +7,11 @@ import 'package:hadar/main.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
+import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:intl/intl.dart';
 
 
@@ -289,7 +291,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         password: first_pw_Controller.text
                     );
 
-                    addUserToDb(name_Controller.text, id_Controller.text, phone_Controller.text, email_Controller.text, clicked_priv);
+                    DataBaseService().addVerficationRequestToDb(VerificationRequest(UnregisteredUser(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text),  clicked_priv, DateTime.now()));
                     Navigator.pop(context);
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
@@ -336,26 +338,6 @@ bool Check_user(name, String id, String phone_number, String email, String pw, S
 }
 
 
-void addUserToDb(String name , String id,String phoneNumber,String email,Privilege privilege){
 
-  switch (privilege){
-    case Privilege.UserInNeed :
-      DataBaseService().addUserInNeedToDataBase(UserInNeed(name, phoneNumber, email, false, id));
-      break;
-    case Privilege.Admin:
-      DataBaseService().addAdminToDataBase(Admin(name, phoneNumber, email, false, id));
-      break;
-      //TODO UPDATE CATOEGOREIS
-    case Privilege.Volunteer:
-      DataBaseService().addVolunteerToDataBase(Volunteer(name, phoneNumber, email, false, id, []));
-      break;
-    case Privilege.UnregisterUser:
-      print('error in unregiesterd user in regienstaron');
-      break;
-    default:
-      print('error in reg page');
-  }
-
-}
 
 

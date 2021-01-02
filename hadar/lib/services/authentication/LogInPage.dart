@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
+import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/ReigsterPage.dart';
 import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/CurrentUser.dart';
@@ -109,6 +110,14 @@ class _LogInPageState extends State<LogInPage> {
                 onPressed: () async {
                   if(!nameKey.currentState.validate() || !paswwordKey.currentState.validate() ){
                         return;
+                  }
+
+                  bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
+                  if(!is_verfied){
+                    setState(() {
+                      _error = 'החשבון שלך עדיין לא אומת';
+                    });
+                    return;
                   }
                   try {
                     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
