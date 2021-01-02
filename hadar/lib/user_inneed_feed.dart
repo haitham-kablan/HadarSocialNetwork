@@ -3,11 +3,14 @@ import 'package:flutter/widgets.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
+import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'dart:developer';
 
@@ -17,21 +20,16 @@ import 'UserInNeedRequestView.dart';
 
 import 'feeds/feed_items/help_request_tile.dart';
 
-
 bool debug = true;
 
-class UserInNeedHelpRequestsFeed extends StatefulWidget{
-
-
-  UserInNeedHelpRequestsFeed({Key key}): super(key: key);
+class UserInNeedHelpRequestsFeed extends StatefulWidget {
+  UserInNeedHelpRequestsFeed({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => HelpRequestFeedState();
-
 }
 
-
-class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
+class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
   List<HelpRequest> feed;
 
   HelpRequestFeedState();
@@ -46,10 +44,8 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
       if (addedRequest) {
         feed.add(helpRequest);
         DataBaseService().addHelpRequestToDataBaseForUserInNeed(helpRequest);
-        if(debug)
-          log("feed size = " + feed.length.toString());
-      }
-      else
+        if (debug) log("feed size = " + feed.length.toString());
+      } else
         feed.remove(helpRequest);
       //todo: remove from database
 
@@ -70,18 +66,19 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
 
   @override
   Widget build(BuildContext context) {
-
     feed = Provider.of<List<HelpRequest>>(context);
     List<HelpRequestTile> feedTiles = List();
 
-    if(feed != null) {
+    if (feed != null) {
       feedTiles = feed.map((HelpRequest helpRequest) {
-        return HelpRequestTile(helpRequestWidget: HelpRequestItem(
-          helpRequest: helpRequest, parent: this,
-        ),);
+        return HelpRequestTile(
+          helpRequestWidget: HelpRequestItem(
+            helpRequest: helpRequest,
+            parent: this,
+          ),
+        );
       }).toList();
     }
-
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -92,10 +89,10 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
-              delegate: MySliverAppBar(expandedHeight: 150, title: CurrentUser.curr_user.name),
+              delegate: MySliverAppBar(
+                  expandedHeight: 150, title: CurrentUser.curr_user.name),
               pinned: true,
             ),
-
             SliverFillRemaining(
               child: Directionality(
                 textDirection: TextDirection.rtl,
@@ -113,12 +110,14 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
           padding: EdgeInsets.only(bottom: 20.0, right: 5),
           child: FloatingActionButton.extended(
             onPressed: () async {
-              List<HelpRequestType> types = await DataBaseService().helpRequestAsAlist();
+              List<HelpRequestType> types =
+                  await DataBaseService().helpRequestAsAlist();
               types.add(HelpRequestType('אחר..'));
               //we must add אחר so it always appears on the last of the list
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RequestWindow(this,types)),
+                MaterialPageRoute(
+                    builder: (context) => RequestWindow(this, types)),
               );
             },
             label: HebrewText("בקש עזרה"),
@@ -129,10 +128,8 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
         ),
       ),
     );
-
   }
 }
-
 
 class HelpRequestItem extends StatelessWidget {
   HelpRequestItem({this.helpRequest, this.parent})
@@ -140,36 +137,63 @@ class HelpRequestItem extends StatelessWidget {
 
   final HelpRequest helpRequest;
   final HelpRequestFeedState parent;
-
+  _launchCaller() async {
+    Volunteer usr = await (DataBaseService().getUserById(
+        helpRequest.handler_id, Privilege.Volunteer)) as Volunteer;
+    String number = usr.phoneNumber;
+    var url = "tel:" + number;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final Intl.DateFormat dateFormat = Intl.DateFormat.yMd().add_Hm();
     return ListTile(
       onTap: () => parent.showHelpRequestStatus(helpRequest),
       isThreeLine: true,
-      title: Row(
-          children: <Widget> [
-            Container(
-              child:Text(helpRequest.category.description, style:TextStyle(color: BasicColor.clr)) ,
-              //alignment: Alignment.topLeft,
+      title: Row(children: <Widget>[
+        Container(
+          child: Text(helpRequest.category.description,
+              style: TextStyle(color: BasicColor.clr)),
+          //alignment: Alignment.topLeft,
+        ),
+        Spacer(),
+        Container(
+          child: Text(dateFormat.format(helpRequest.date)),
+          alignment: Alignment.topLeft,
+        ),
+      ]),
+      subtitle: Row(
+        children: <Widget>[
+          Container(
+            child: HebrewText(helpRequest.description),
+            //alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(top: 8, left: 8),
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: ()=>{
+              if(helpRequest.handler_id != null) {
+                      _launchCaller(),
+              },
+            } ,
+              child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Icon(
+                    Icons.call,
+                    size: 20.0,
+                    color: BasicColor.clr,
+                  )),
             ),
-            Spacer(),
-            Container(
-              child:Text(dateFormat.format(helpRequest.date)),
-              alignment: Alignment.topLeft,
-            ),
-          ]
-      ),
-      subtitle: Container(
-        child: HebrewText(helpRequest.description),
-        //alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(top: 8, left: 8),
-      ),
 
+        ],
+      ),
     );
   }
 }
-
 
 class HelpRequestStatusWidget extends StatelessWidget {
   HelpRequestStatusWidget(this.helpRequest, this.feedWidgetObject)
@@ -182,100 +206,94 @@ class HelpRequestStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       //this color is to make the corners look transparent to the main screen: Color(0xFF696969)
-        color: Color(0xFF696969),
-        height: MediaQuery.of(context).size.height /2,
-        child: Container(
-          decoration:  BoxDecoration(
-            color: BasicColor.backgroundClr,
-            borderRadius: BorderRadius.only(
-              topRight: const Radius.circular(20),
-              topLeft: const Radius.circular(20),
-            ),
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child:Column(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  //width: MediaQuery.of(context).size.width,
-                  child:Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
-                      helpRequest.date.toString().substring(0, 16),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: BasicColor.clr,
-                        fontFamily: "Arial",
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      helpRequest.category.description + ":",
-                      style: TextStyle(
-                          fontSize: 30,
-                          color:BasicColor.clr,
-                          fontFamily: "Arial"
-                      ),
-                    ),
-                  ),
-                ),
-
-                Container(
-                  padding: const EdgeInsets.only(left: 20, bottom: 20, top: 20),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      helpRequest.description,
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontFamily: "Arial"
-                      ),
-                      maxLines: 10,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-
-                Expanded(//height: 100,
-  //              padding: const EdgeInsets.only(left: 20),
-
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child:RaisedButton(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                      onPressed: (){
-                        feedWidgetObject.handleFeedChange(HelpRequest.copy(helpRequest), true);
-                        if (Navigator.canPop(context)) {
-                          Navigator.pop(
-                            context,
-                          );
-                        }
-                        else{
-                          log("error: couldn't pop the ModalBottomSheet context from the navigator!");
-                        }
-                        //print("height: " + (MediaQuery.of(context).size.height /2).toString());
-                      },
-                      child: Text('חידוש בקשה'),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      color: Color(0xFF696969),
+      height: MediaQuery.of(context).size.height / 2,
+      child: Container(
+        decoration: BoxDecoration(
+          color: BasicColor.backgroundClr,
+          borderRadius: BorderRadius.only(
+            topRight: const Radius.circular(20),
+            topLeft: const Radius.circular(20),
           ),
         ),
+        padding: const EdgeInsets.all(20),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                //width: MediaQuery.of(context).size.width,
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    helpRequest.date.toString().substring(0, 16),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: BasicColor.clr,
+                      fontFamily: "Arial",
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    helpRequest.category.description + ":",
+                    style: TextStyle(
+                        fontSize: 30,
+                        color: BasicColor.clr,
+                        fontFamily: "Arial"),
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 20, bottom: 20, top: 20),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    helpRequest.description,
+                    style: TextStyle(
+                        fontSize: 20, color: Colors.black, fontFamily: "Arial"),
+                    maxLines: 10,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Expanded(
+                //height: 100,
+                //              padding: const EdgeInsets.only(left: 20),
+
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    onPressed: () {
+                      feedWidgetObject.handleFeedChange(
+                          HelpRequest.copy(helpRequest), true);
+                      if (Navigator.canPop(context)) {
+                        Navigator.pop(
+                          context,
+                        );
+                      } else {
+                        log("error: couldn't pop the ModalBottomSheet context from the navigator!");
+                      }
+                      //print("height: " + (MediaQuery.of(context).size.height /2).toString());
+                    },
+                    child: Text('חידוש בקשה'),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
-
 }
-
