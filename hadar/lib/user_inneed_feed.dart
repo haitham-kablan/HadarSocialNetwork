@@ -174,11 +174,11 @@ class HelpRequestItem extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8, left: 8),
           ),
           Spacer(),
-          GestureDetector(
+          null != helpRequest.handler_id ? GestureDetector(
             onTap: ()=>{
-              if(helpRequest.handler_id != null) {
+
                       _launchCaller(),
-              },
+
             } ,
               child: Padding(
                   padding: EdgeInsets.all(16.0),
@@ -187,7 +187,7 @@ class HelpRequestItem extends StatelessWidget {
                     size: 20.0,
                     color: BasicColor.clr,
                   )),
-            ),
+            ): SizedBox(),
 
         ],
       ),
