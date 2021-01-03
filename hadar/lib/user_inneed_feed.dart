@@ -11,7 +11,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'dart:developer';
 
 import 'Design/basicTools.dart';
@@ -262,6 +262,21 @@ class HelpRequestStatusWidget extends StatelessWidget {
                   ),
                 ),
               ),
+              ("" != helpRequest.handler_id) ? RatingBar.builder(
+                initialRating: 3,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
+                  print(rating);
+                },
+              ): SizedBox(),
               SizedBox(
                 height: 40,
               ),

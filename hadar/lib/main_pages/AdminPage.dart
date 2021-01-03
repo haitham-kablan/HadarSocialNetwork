@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/mainDesign.dart';
-import 'package:hadar/feeds/admin_feed.dart';
+import 'package:hadar/feeds/adminfeedtile.dart';
 import 'package:hadar/feeds/feed_items/help_request_tile.dart';
 import 'package:hadar/feeds/helper_feed.dart';
 import 'package:hadar/services/DataBaseServices.dart';
@@ -40,7 +40,7 @@ class AdminPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => showAllRequests()),
+                          builder: (context) => showAllRequests(curr_user)),
                     );
                   }
                 )

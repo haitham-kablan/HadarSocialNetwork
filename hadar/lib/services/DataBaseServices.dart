@@ -268,8 +268,10 @@ class DataBaseService{
 
   Stream<List<HelpRequest>> getAllRequests() {
 
-    final Query all_req = FirebaseFirestore.instance.collectionGroup(user_in_need_requests).orderBy('time',descending: true);
-    return all_req.snapshots().map(helpRequestListFromSnapShot);
+
+    return FirebaseFirestore.instance.collectionGroup(user_in_need_requests)
+        .snapshots()
+        .map(helpRequestListFromSnapShot);
 
   }
 

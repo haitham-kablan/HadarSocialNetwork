@@ -36,6 +36,7 @@ dependencies:
   provider: ^3.1.0
   intl: ^0.16.1
   jiffy: ^3.0.1
+  flutter_rating_bar: ^3.2.0+1
 
   string_validator: ^0.1.4
   firebase_auth: ^0.18.4+1
