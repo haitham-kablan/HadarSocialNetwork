@@ -22,6 +22,7 @@ class DataBaseService{
   static final String volunteer_pending_requests = 'PENDING_REQUESTS';
   static final String verification_requests = 'VERIFICATION_REQUESTS';
 
+
   final CollectionReference helpersCollection = FirebaseFirestore.instance.collection('HELPERS');
   final CollectionReference userInNeedCollection = FirebaseFirestore.instance.collection('USERS_IN_NEED');
   final CollectionReference adminsCollection = FirebaseFirestore.instance.collection('ADMINS');
@@ -31,6 +32,9 @@ class DataBaseService{
   final CollectionReference allHelpsRequestsCollection = FirebaseFirestore.instance.collection('ALL_HELP_REQUESTS');
 
 
+  /*/
+    this will check if the user is verifeid
+   */
   Future<bool> checkIfVerfied(String email) async{
 
     bool ans;
@@ -38,6 +42,7 @@ class DataBaseService{
     return ans;
 
   }
+
   Future addVerficationRequestToDb(VerificationRequest verificationRequest) async{
 
     Map<String,dynamic> to_add = Map();
@@ -69,9 +74,10 @@ class DataBaseService{
         verificationsRequestsCollection.doc(admin_to_add.email).delete();
         break;
       case hadar.Privilege.UserInNeed:
-        UserInNeed UserInNeed_to_add = UserInNeed(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id);
-        addUserInNeedToDataBase(UserInNeed_to_add);
-        verificationsRequestsCollection.doc(UserInNeed_to_add.email).delete();
+        // UserInNeed UserInNeed_to_add = UserInNeed(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id);
+        // addUserInNeedToDataBase(UserInNeed_to_add);
+        // verificationsRequestsCollection.doc(UserInNeed_to_add.email).delete();
+        assert(false);
         break;
       case hadar.Privilege.Volunteer:
         Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id,categories);
@@ -92,14 +98,11 @@ class DataBaseService{
         .map(VerficationRequestListFromSnapShot);
   }
 
-
-
- 
-  
   
   /*
   THIS FUNCTION WILL AUTOMATICALLY ADD THE REQUEST TO ALL THE RELEVANT
-  VOULNTEERS
+  VOULNTEERS -- nooooooooooo !!!
+  it now add them to pending request collection
    */
   Future addHelpRequestToDataBaseForUserInNeed(HelpRequest helpRequest) async{
 
@@ -110,18 +113,55 @@ class DataBaseService{
     to_add['date'] = helpRequest.date.toString();
     to_add['time'] = helpRequest.time;
     to_add['handler_id'] = helpRequest.handler_id;
+    to_add['verfied'] = helpRequest.verfied;
 
 
-    await userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id)
+     userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id)
         .set(to_add).catchError((error) => print("problem in addHelpRequestToDataBaseForUserInNeed"));
 
-    return await helpersCollection.where('helpRequestsCategories' , arrayContains: helpRequest.category.description )
+     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
+
+
+
+
+  }
+
+  /*/
+    this function will also put the reqeust to the relvenat voulnteers
+   */
+  Future verify_help_request(HelpRequest helpRequest) async{
+
+    Map<String,dynamic> to_add = Map();
+    to_add['category'] = helpRequest.category.description;
+    to_add['sender_id'] = helpRequest.sender_id;
+    to_add['description'] = helpRequest.description;
+    to_add['date'] = helpRequest.date.toString();
+    to_add['time'] = helpRequest.time;
+    to_add['handler_id'] = helpRequest.handler_id;
+    to_add['verfied'] = true;
+
+    allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
+
+    helpersCollection.where('helpRequestsCategories' , arrayContains: helpRequest.category.description )
         .get().then((QuerySnapshot querySnapshot) => {
       querySnapshot.docs.forEach((doc) {
         doc.reference.collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add).catchError((error) => print("failed to add for this voulnteer"));
       })
     } );
 
+    Map<String,dynamic> to_update = Map();
+    to_update['verfied'] = true;
+
+    userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).update(to_update);
+
+
+
+  }
+
+  Future cancel_help_reqeust(HelpRequest helpRequest) async {
+
+    allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
+    userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
 
   }
 

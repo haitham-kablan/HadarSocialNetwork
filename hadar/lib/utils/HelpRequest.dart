@@ -12,8 +12,10 @@ class HelpRequest{
   String handler_id;
   static int indexer = 0;
   int time;
+  bool verfied;
   HelpRequest( this.category, this.description, this.date , this.sender_id,this.handler_id){
     time = date.millisecondsSinceEpoch;
+    verfied = false;
   }
   //DateTime date;
 
