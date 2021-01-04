@@ -275,7 +275,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                 ),
                 onRatingUpdate: (rating) {
                   //print(rating);
-                  
+                  DataBaseService().rateVolunteer(helpRequest.handler_id, rating);
                 },
               ): SizedBox(),
               SizedBox(
