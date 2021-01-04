@@ -32,9 +32,9 @@ class DataBaseService{
   final CollectionReference allHelpsRequestsCollection = FirebaseFirestore.instance.collection('ALL_HELP_REQUESTS');
 
 
-  Future rateVolunteer(int to_rate_id , int number_of_stars) async{
+  Future rateVolunteer(String to_rate_id , double number_of_stars) async{
 
-    
+
     DocumentReference documentReference = helpersCollection.doc(to_rate_id.toString());
     return FirebaseFirestore.instance.runTransaction((transaction) async {
       // Get the document
