@@ -32,6 +32,32 @@ class DataBaseService{
   final CollectionReference allHelpsRequestsCollection = FirebaseFirestore.instance.collection('ALL_HELP_REQUESTS');
 
 
+  Future rateVolunteer(Volunteer to_rate , int number_of_stars) async{
+
+    DocumentReference documentReference = helpersCollection.doc(to_rate.id);
+    return FirebaseFirestore.instance.runTransaction((transaction) async {
+      // Get the document
+      DocumentSnapshot snapshot = await transaction.get(documentReference);
+
+      if (!snapshot.exists) {
+        throw Exception("User does not exist!");
+      }
+
+      // Update the follower count based on the current count
+      // Note: this could be done without a transaction
+      // by updating the population using FieldValue.increment()
+
+      int newCount = snapshot.data()['count'] + 1;
+      int newStars = snapshot.data()['stars'] + number_of_stars;
+
+      // Perform an update on the document
+      transaction.update(documentReference, {'count': newCount});
+      transaction.update(documentReference, {'stars': newStars});
+
+    })
+        .then((value) => print("added stars $value"))
+        .catchError((error) => print("Failed to add stars: $error"));
+  }
   /*/
     this will check if the user is verifeid
    */
@@ -80,7 +106,7 @@ class DataBaseService{
         assert(false);
         break;
       case hadar.Privilege.Volunteer:
-        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id,categories);
+        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id,categories,0,0);
         addVolunteerToDataBase(Volunteer_to_add);
         verificationsRequestsCollection.doc(Volunteer_to_add.email).delete();
         break;
@@ -199,6 +225,8 @@ class DataBaseService{
     to_add['phoneNumber'] = user.phoneNumber;
     to_add['email'] = user.email;
     to_add['id'] = user.id;
+    to_add['count'] = user.count;
+    to_add['stars'] = user.stars;
     to_add['privilege'] = user.privilege.toString().substring(10);
     to_add['helpRequestsCategories'] = user.helpRequestsCategories.map((e) => e.description).toList();
 
@@ -294,8 +322,9 @@ class DataBaseService{
         return null;
       }
 
+
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' , get_categoreis(doc));
+          doc.data()['id'] ?? '' , get_categoreis(doc) ,doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 );
     }
   }
 
@@ -421,7 +450,7 @@ class DataBaseService{
       }
 
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' , get_categoreis(doc));
+          doc.data()['id'] ?? '' , get_categoreis(doc) , doc.data()['stars'] ?? 0 , doc.data()['count'] ?? 0);
     }
   }
 
@@ -498,7 +527,7 @@ List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
 
   return snapshot.docs.map((doc) =>
       Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '' , get_categoreis(doc)));
+          doc.data()['String id'] ?? '' , get_categoreis(doc) ,doc.data()['stars'] ?? 0 , doc.data()['count'] ?? 0));
 }
 
 List<Admin> AdminListFromSnapShot(QuerySnapshot snapshot){
