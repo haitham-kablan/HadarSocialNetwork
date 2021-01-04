@@ -16,6 +16,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../HelpRequestAdminDialouge.dart';
+
 
 
 
@@ -120,7 +122,8 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
     Color color =  Colors.white ;
     return ListTile(
       tileColor: color,
-      onTap: () => print("List tile pressed!"),//showHelpRequestStatus(helpRequest),
+     // onTap: () => print("List tile pressed!"),//showHelpRequestStatus(helpRequest),
+      onTap: () => HelpRequestAdminDialuge(context,widget.helpRequest)   ,
       isThreeLine: false,
       title: Row(children: <Widget>[
         Container(
