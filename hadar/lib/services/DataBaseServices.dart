@@ -49,11 +49,12 @@ class DataBaseService{
       // by updating the population using FieldValue.increment()
 
       int newCount = snapshot.data()['count'] + 1;
-      int newStars = snapshot.data()['stars'] + number_of_stars;
+      String old_stars = snapshot.data()['stars'];
+      String new_stars = (double.parse(old_stars) + number_of_stars).toStringAsFixed(1);
 
       // Perform an update on the document
       transaction.update(documentReference, {'count': newCount});
-      transaction.update(documentReference, {'stars': newStars});
+      transaction.update(documentReference, {'stars': new_stars});
 
     })
         .then((value) => print("added stars $value"))
@@ -107,7 +108,7 @@ class DataBaseService{
         assert(false);
         break;
       case hadar.Privilege.Volunteer:
-        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id,categories,0,0);
+        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id,categories,'0',0);
         addVolunteerToDataBase(Volunteer_to_add);
         verificationsRequestsCollection.doc(Volunteer_to_add.email).delete();
         break;
