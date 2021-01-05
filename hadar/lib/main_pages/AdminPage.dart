@@ -13,6 +13,7 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/utils/HelpRequest.dart';
+import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:provider/provider.dart';
 
 class AdminPage extends StatelessWidget {
@@ -22,14 +23,13 @@ class AdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AdminJoinRequestsFeed(admin: curr_user,);
-    /*return Scaffold(
+
+    return Scaffold(
       appBar: AppBar(
         title: Text('Admin page'),
         centerTitle: true,
       ),
-      body: AdminJoinRequestsFeed(admin: curr_user,),
-      /*body: Container(
+      body: Container(
         child: Center(
           child: Column(
               children: [
@@ -50,12 +50,23 @@ class AdminPage extends StatelessWidget {
                           builder: (context) => showAllRequests(curr_user)),
                     );
                   }
-                )
+                ),
+                RaisedButton(
+                    child:Text('join requests'), onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => StreamProvider<List<VerificationRequest>>.value(
+                          value: DataBaseService().getVerificationRequests(),
+                          child: AdminJoinRequestsFeed(admin: curr_user,),),
+                  )
+                  );
+                }),
               ],
           ),
         ),
-      ),*/
-    );*/
+      ),
+    );
   }
 }
 

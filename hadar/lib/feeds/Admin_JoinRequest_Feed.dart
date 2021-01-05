@@ -8,6 +8,8 @@ import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
+import 'package:hadar/users/User.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart' as Intl;
@@ -32,11 +34,11 @@ class AdminJoinRequestsFeedState extends State<AdminJoinRequestsFeed>{
 
   AdminJoinRequestsFeedState(){
     //**test** todo: remove this
-    feed = List();
+    /*feed = List();
     UnregisteredUser testUser1 = UnregisteredUser("מורסי", "0526419285", "morsi@gmail.com", "789456");
     UnregisteredUser testUser2 = UnregisteredUser("סיראג", "0523636921", "siraj@gmail.com", "456123");
     feed.add(VerificationRequest(testUser1, "Volunteer", DateTime.now()));
-    feed.add(VerificationRequest(testUser2, "Admin", DateTime.now()));
+    feed.add(VerificationRequest(testUser2, "Admin", DateTime.now()));*/
   }
 
   // adding or removing items from the _feed should go through this function in
@@ -56,9 +58,17 @@ class AdminJoinRequestsFeedState extends State<AdminJoinRequestsFeed>{
         //feed.removeWhere((element) => element.sender.id == joinRequest.sender.id);
         log("feed size = " + feed.length.toString());
         //todo: remove from database
+
       }
 
       //feed.removeWhere((element) => element.category.description == "money");
+    });
+  }
+
+  void handleAcceptVerificationRequest(VerificationRequest joinRequest, List<HelpRequestType> categories){
+    setState(() {
+      feed.remove(joinRequest);
+      DataBaseService().AcceptVerificationRequest(joinRequest, categories);
     });
   }
 
@@ -76,7 +86,7 @@ class AdminJoinRequestsFeedState extends State<AdminJoinRequestsFeed>{
   @override
   Widget build(BuildContext context) {
 
-    //feed = Provider.of<List<VerificationRequest>>(context);
+    feed = Provider.of<List<VerificationRequest>>(context);
     List<FeedTile> feedTiles = List();
 
     if(feed != null) {
@@ -138,9 +148,9 @@ class JoinRequestItem extends StatelessWidget {
             Container(
               child:(){
                 String userType = "מבקש עזרה";
-                if(joinRequest.type == "Volunteer")
+                if(joinRequest.type == Privilege.Volunteer)
                   userType = "מתנדב";
-                else if(joinRequest.type == "Admin")
+                else if(joinRequest.type == Privilege.Admin)
                   userType = "מנהל";
                 return Text(joinRequest.sender.name + " רוצה להירשם כ" + userType , style:TextStyle(color: BasicColor.clr));
               }() ,
@@ -256,9 +266,9 @@ class JoinRequestStatusWidget extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: (){
                     String userType = "מבקש עזרה";
-                    if(joinRequest.type == "Volunteer")
+                    if(joinRequest.type == Privilege.Volunteer)
                       userType = "מתנדב";
-                    else if(joinRequest.type == "Admin")
+                    else if(joinRequest.type == Privilege.Admin)
                       userType = "מנהל";
                     return Text(joinRequest.sender.name + " רוצה להירשם כ" + userType ,
                       style: TextStyle(
@@ -313,8 +323,8 @@ class JoinRequestStatusWidget extends StatelessWidget {
                             or remove the request if rejected..
 
                           */
-
-                          feedWidgetObject.handleFeedChange(joinRequest, false);
+                          //TODO:CHANGE CATEGORES
+                          feedWidgetObject.handleAcceptVerificationRequest(joinRequest, null);
                           if (Navigator.canPop(context)) {
                             Navigator.pop(
                               context,
@@ -332,8 +342,8 @@ class JoinRequestStatusWidget extends StatelessWidget {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
                         onPressed: () {
                           UnregisteredUser user = joinRequest.sender;
-                          //todo: remove join request and the user from database
-                          feedWidgetObject.handleFeedChange(joinRequest, false);
+                          //todo: pass a list of the categories if the user is a volunteer
+                          DataBaseService().DenyVerficationRequest(joinRequest);
                           if (Navigator.canPop(context)) {
                             Navigator.pop(
                               context,

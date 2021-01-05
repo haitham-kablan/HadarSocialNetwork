@@ -109,6 +109,7 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                           onPressed: () {
                             DataBaseService().cancel_help_reqeust(helpRequest);
+                            Navigator.pop(context);
                           },
                           child: Text('דחה בקשה' , style: TextStyle(color: Colors.white),),
                         ),
@@ -124,6 +125,7 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                           onPressed: () {
                             DataBaseService().verify_help_request(helpRequest);
+                            Navigator.pop(context);
                           },
                           child: Text('אשר בקשה', style: TextStyle(color: Colors.white),),
                         ),

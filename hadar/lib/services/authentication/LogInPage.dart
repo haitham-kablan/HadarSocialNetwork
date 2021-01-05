@@ -131,13 +131,16 @@ class _LogInPageState extends State<LogInPage> {
                      // FirebaseAuth.instance.signOut();
                       setState(() {
                         _error = 'החשבון שלך עדיין לא אומת';
+                        show_spinner = false;
                       });
                       return;
                     }
 
                     print(FirebaseAuth.instance.currentUser);
 
-
+                    setState(() {
+                      show_spinner = false;
+                    });
                     Widget curr_widget = await CurrentUser.init_user();
                     Navigator.push(
                       context,

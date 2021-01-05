@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
@@ -87,6 +88,12 @@ class DataBaseService{
     
   }
 
+  //todo : add deny verfication request
+
+  Future DenyVerficationRequest(VerificationRequest verificationRequest){
+    verificationsRequestsCollection.doc(verificationRequest.sender.email).delete();
+
+  }
   /*/
     this function will also add the user to db and delte its request
     in case of admin or user in need catoergires are null
@@ -186,6 +193,7 @@ class DataBaseService{
 
   }
 
+  //TODO ALSO CHECK HOW TO REMOVE THE USER FROM THE AUTH
   Future cancel_help_reqeust(HelpRequest helpRequest) async {
 
     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
@@ -230,7 +238,7 @@ class DataBaseService{
     to_add['count'] = user.count;
     to_add['stars'] = user.stars;
     to_add['privilege'] = user.privilege.toString().substring(10);
-    to_add['helpRequestsCategories'] = user.helpRequestsCategories.map((e) => e.description).toList();
+    to_add['helpRequestsCategories'] = user.helpRequestsCategories == null ? List(): user.helpRequestsCategories.map((e) => e.description).toList();
 
     return await helpersCollection.doc(user.id).set(to_add);
   }
@@ -340,7 +348,7 @@ class DataBaseService{
   Stream<List<HelpRequest>> getAllRequests() {
 
 
-    return FirebaseFirestore.instance.collectionGroup(user_in_need_requests)
+    return allHelpsRequestsCollection.orderBy('time' , descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
 
