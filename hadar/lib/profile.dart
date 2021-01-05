@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/users/User.dart';
 import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
@@ -43,7 +46,7 @@ class ProfileBanner extends StatelessWidget {
 
 
 class ProfilePage extends StatelessWidget {
-  User user;
+  a.User user;
   String privilege;
 
   ProfilePage() {
@@ -185,6 +188,25 @@ class ProfilePage extends StatelessWidget {
                         letterSpacing: 2.0,
                         fontWeight: FontWeight.w400),
                   ),
+                  SizedBox(
+                    height:40,
+                  ),
+                  FlatButton(
+                    child: Text(
+                      'Sign out',
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          decoration: TextDecoration.underline,
+                          color: BasicColor.clr,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  onPressed:() {
+                    FirebaseAuth.instance.signOut();
+                    Navigator.push(context,MaterialPageRoute(
+                        builder: (context) =>LogInPage()) );
+                  },),
+
                 ],
               ),
             ),
