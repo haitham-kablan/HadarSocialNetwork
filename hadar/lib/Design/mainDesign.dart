@@ -1,8 +1,7 @@
 import 'dart:ui';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:hadar/profile.dart';
 import 'package:hadar/users/CurrentUser.dart';
 
+import '../profile.dart';
 import 'basicTools.dart';
 import 'package:flutter/material.dart';
 
@@ -14,8 +13,8 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
   MySliverAppBar({@required this.expandedHeight, this.title});
 
   @override
-  Widget build(BuildContext context, double shrinkOffset,
-      bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Stack(
       fit: StackFit.expand,
       overflow: Overflow.visible,
@@ -42,21 +41,15 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
         ),
         Positioned(
           top: expandedHeight / 2 - shrinkOffset,
-          left: MediaQuery
-              .of(context)
-              .size
-              .width / 4,
+          left: MediaQuery.of(context).size.width / 4,
           child: Opacity(
             opacity: (1 - shrinkOffset / expandedHeight),
             child: Card(
 
-              elevation: 0, color: Colors.transparent,
+              elevation:0 ,color: Colors.transparent,
               child: SizedBox(
                 height: expandedHeight,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width / 2,
+                width: MediaQuery.of(context).size.width / 2,
                 child: UserCircle(),
               ),
             ),
@@ -89,10 +82,7 @@ class BottomBar extends StatelessWidget {
       PreferredSize(
         preferredSize: Size(double.infinity, 50),
         child: Container(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           height: 50,
           child: Container(
             decoration: BoxDecoration(
@@ -130,7 +120,13 @@ class BottomBar extends StatelessWidget {
                       size: 30,
                       color: BasicColor.clr,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      Widget curr_widget = await CurrentUser.init_user();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => curr_widget),
+                      );
+                    },
                   ),
                   // FlatButton(
                   //   child: Icon(
@@ -145,8 +141,8 @@ class BottomBar extends StatelessWidget {
             ),
           ),
         ),
-        // ),
-      );
+      // ),
+    );
   }
 }
 
