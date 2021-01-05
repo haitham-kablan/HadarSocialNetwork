@@ -1,4 +1,7 @@
 import 'dart:ui';
+import 'package:hadar/users/CurrentUser.dart';
+
+import '../profile.dart';
 import 'basicTools.dart';
 import 'package:flutter/material.dart';
 
@@ -104,7 +107,12 @@ class BottomBar extends StatelessWidget {
                       size: 30,
                       color: BasicColor.clr,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfilePage()));
+                    },
                   ),
                   FlatButton(
                     child: Icon(
@@ -112,7 +120,13 @@ class BottomBar extends StatelessWidget {
                       size: 30,
                       color: BasicColor.clr,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      Widget curr_widget = await CurrentUser.init_user();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => curr_widget),
+                      );
+                    },
                   ),
                   // FlatButton(
                   //   child: Icon(
