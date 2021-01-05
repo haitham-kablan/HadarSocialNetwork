@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,6 +43,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
   final phone_Controller = TextEditingController();
   final first_pw_Controller = TextEditingController();
   final second_pw_Controller = TextEditingController();
+  bool show_spinner = false;
   @override
   Widget build(BuildContext context) {
 
@@ -253,7 +255,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
             Container(
               margin: EdgeInsets.all(10),
-              child: RaisedButton(
+              child: show_spinner ? SpinKitCircle(color: BasicColor.clr,) :RaisedButton(
                 color: BasicColor.clr,
                 splashColor: Colors.white,
                 child: Text('הרשמה',style: TextStyle(fontSize: 18 , color: Colors.white),),
@@ -266,11 +268,14 @@ class _ReigesterPageState extends State<ReigesterPage> {
                   ){
                     return;
                   }
-
+                  setState(() {
+                    show_spinner = true;
+                  });
                   bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text);
                   if(id_check_if_exsist){
                     setState(() {
                       alert=true;
+                      show_spinner = false;
                       _error_msg = 'תעודת הזהות כבר תפוסה';
 
                     });
@@ -279,6 +284,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                   if(clicked == false){
                     setState(() {
                       alert=true;
+                      show_spinner = false;
                       _error_msg = 'אנא בחר את התור שלך';
 
                     });
@@ -302,18 +308,24 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     if (e.code == 'weak-password') {
                       setState(() {
                         alert=true;
+                        show_spinner = false;
                         _error_msg = 'הסיסמה שלך חלשה';
                       });
                       print('The password provided is too weak.');
                     } else if (e.code == 'email-already-in-use') {
                       setState(() {
                         alert=true;
+                        show_spinner = false;
                         _error_msg = 'האימיל שלך כבר תפוס';
                       });
                       print('The account already exists for that email.');
                     }
                   } catch (e) {
-                    print(e);
+                    setState(() {
+                      alert=true;
+                      show_spinner = false;
+                      _error_msg = 'error in the system';
+                    });
                   }
                 },
               ),

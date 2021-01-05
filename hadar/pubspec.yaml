@@ -36,7 +36,7 @@ dependencies:
   provider: ^3.1.0
   intl: ^0.16.1
   jiffy: ^3.0.1
-
+  flutter_spinkit: ^4.1.2
   string_validator: ^0.1.4
   firebase_auth: ^0.18.4+1
   google_sign_in: ^4.5.6

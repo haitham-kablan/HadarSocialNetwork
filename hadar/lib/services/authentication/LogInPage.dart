@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:hadar/services/DataBaseServices.dart';
@@ -28,6 +29,7 @@ class _LogInPageState extends State<LogInPage> {
   var pw_control = TextEditingController();
   final paswwordKey = GlobalKey<FormState>();
   final nameKey = GlobalKey<FormState>();
+  bool show_spinner = false;
   String _error = null;
 
   Widget showAlert() {
@@ -80,6 +82,7 @@ class _LogInPageState extends State<LogInPage> {
       body: Center(
         child: Column(
           children: [
+
             Container(
               child: this.showAlert(),
               margin: EdgeInsets.all(40),
@@ -105,7 +108,7 @@ class _LogInPageState extends State<LogInPage> {
 
             Container(
               margin: EdgeInsets.only(top: 60),
-              child: RaisedButton(
+              child: show_spinner ? SpinKitCircle(color: BasicColor.clr,) : RaisedButton(
                 color: BasicColor.clr,
                 splashColor: Colors.white,
                 child: Text('כניסה',style: TextStyle(fontSize: 18 , color: Colors.white),),
@@ -115,22 +118,26 @@ class _LogInPageState extends State<LogInPage> {
                         return;
                   }
                   //TDOD : SWITCH PLACES
-                  bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
-                  if(!is_verfied){
-                    setState(() {
-                      _error = 'החשבון שלך עדיין לא אומת';
-                    });
-                    return;
-                  }
                   try {
+                    setState(() {
+                      show_spinner = true;
+                    });
                     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: email_control.text,
-                        password: pw_control.text
-                    );
+                        password: pw_control.text);
+                    bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
+                    if(!is_verfied){
+                      //TODO ADD THIS
+                     // FirebaseAuth.instance.signOut();
+                      setState(() {
+                        _error = 'החשבון שלך עדיין לא אומת';
+                      });
+                      return;
+                    }
+
                     print(FirebaseAuth.instance.currentUser);
 
-                    email_control.clear();
-                    pw_control.clear();
+
                     Widget curr_widget = await CurrentUser.init_user();
                     Navigator.push(
                       context,
@@ -140,13 +147,19 @@ class _LogInPageState extends State<LogInPage> {
                     if (e.code == 'user-not-found') {
                       print('No user found for that email.');
                       setState(() {
+                        email_control.clear();
+                        pw_control.clear();
                         _error = 'לא נמצא שם משתמש כזה';
+                        show_spinner = false;
                       });
 
                     } else if (e.code == 'wrong-password') {
                       print('Wrong password provided for that user.');
                       setState(() {
+                        email_control.clear();
+                        pw_control.clear();
                         _error = 'הסיסמה אינה מתאימה';
+                        show_spinner = false;
                       });
 
                     }
