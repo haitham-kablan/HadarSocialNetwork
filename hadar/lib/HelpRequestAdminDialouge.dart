@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/services/DataBaseServices.dart';
 
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:marquee/marquee.dart';
@@ -106,7 +107,9 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                           color: BasicColor.clr,
                           splashColor: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                          onPressed: () {  },
+                          onPressed: () {
+                            DataBaseService().cancel_help_reqeust(helpRequest);
+                          },
                           child: Text('דחה בקשה' , style: TextStyle(color: Colors.white),),
                         ),
                       ),
@@ -119,7 +122,9 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                           splashColor: Colors.white,
                           color: BasicColor.clr,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                          onPressed: () {  },
+                          onPressed: () {
+                            DataBaseService().verify_help_request(helpRequest);
+                          },
                           child: Text('אשר בקשה', style: TextStyle(color: Colors.white),),
                         ),
                       ),
