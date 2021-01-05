@@ -3,6 +3,7 @@
 import 'package:hadar/main_pages/AdminPage.dart';
 import 'package:hadar/main_pages/UserInNeedPage.dart';
 import 'package:hadar/main_pages/VolunteerPage.dart';
+import 'package:hadar/profile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/UserInNeed.dart';
@@ -13,6 +14,10 @@ import 'User.dart';
 class CurrentUser{
 
   static User curr_user;
+
+  User getCurrent() {
+    return curr_user;
+  }
 
   static Future init_user() async{
     curr_user = await DataBaseService().getCurrentUser();
@@ -34,6 +39,7 @@ class CurrentUser{
         print('error in curr user');
         break;
     }
+
 
   }
 }
