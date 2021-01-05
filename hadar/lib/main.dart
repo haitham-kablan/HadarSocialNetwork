@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/profile.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/feeds/helper_feed.dart';
@@ -23,6 +24,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
+    // home: ProfilePage(),
     home: LogInPage(),
   ));
 }
