@@ -11,11 +11,11 @@ import 'package:provider/provider.dart';
 
 import 'dart:developer';
 
-import 'Design/basicTools.dart';
-import 'Design/mainDesign.dart';
-import 'UserInNeedRequestView.dart';
+import '../Design/basicTools.dart';
+import '../Design/mainDesign.dart';
+import '../UserInNeedRequestView.dart';
 
-import 'feeds/feed_items/help_request_tile.dart';
+import 'feed_items/help_request_tile.dart';
 
 
 bool debug = true;
@@ -72,11 +72,11 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed>{
   Widget build(BuildContext context) {
 
     feed = Provider.of<List<HelpRequest>>(context);
-    List<HelpRequestTile> feedTiles = List();
+    List<FeedTile> feedTiles = List();
 
     if(feed != null) {
       feedTiles = feed.map((HelpRequest helpRequest) {
-        return HelpRequestTile(helpRequestWidget: HelpRequestItem(
+        return FeedTile(helpRequestWidget: HelpRequestItem(
           helpRequest: helpRequest, parent: this,
         ),);
       }).toList();

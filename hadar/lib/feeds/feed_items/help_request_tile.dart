@@ -16,16 +16,16 @@ import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HelpRequestTile extends StatefulWidget {
+class FeedTile extends StatefulWidget {
   final Widget helpRequestWidget;
-  HelpRequestTile({this.helpRequestWidget});
+  FeedTile({this.helpRequestWidget});
 
   @override
-  _HelpRequestTileState createState() => _HelpRequestTileState();
+  _FeedTileState createState() => _FeedTileState();
 }
 
-class _HelpRequestTileState extends State<HelpRequestTile> {
-  _HelpRequestTileState();
+class _FeedTileState extends State<FeedTile> {
+  _FeedTileState();
 
   @override
   Widget build(BuildContext context) {
