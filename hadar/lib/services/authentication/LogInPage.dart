@@ -138,14 +138,16 @@ class _LogInPageState extends State<LogInPage> {
 
                     print(FirebaseAuth.instance.currentUser);
 
-                    setState(() {
-                      show_spinner = false;
-                    });
+
                     Widget curr_widget = await CurrentUser.init_user();
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => curr_widget),
                     );
+                    setState(() {
+                      show_spinner = false;
+                    });
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       print('No user found for that email.');

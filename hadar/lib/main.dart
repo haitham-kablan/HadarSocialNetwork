@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
@@ -10,7 +12,7 @@ import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/services/authentication/ReigsterPage.dart';
 
 import 'package:hadar/users/CurrentUser.dart';
-import 'package:hadar/users/User.dart';
+import 'package:hadar/users/User.dart' as hadar;
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:provider/provider.dart';
@@ -24,37 +26,11 @@ import 'main_pages/AdminPage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Widget curr_user_page = await CurrentUser.init_user();
+
   runApp(MaterialApp(
-    home: LogInPage(),
+    home: curr_user_page == null ? LogInPage() : curr_user_page,
   ));
 }
 
-//
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(MaterialApp(
-//     home: tmp(),
-//   ));
-// }
-//
-//
-// class tmp extends StatefulWidget {
-//   @override
-//   _tmpState createState() => _tmpState();
-// }
-//
-// class _tmpState extends State<tmp> {
-//   @override
-//   Widget build(BuildContext context) {
-//     String long = '2222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222';
-//     return Container(
-//       child: RaisedButton(
-//         child: Text('click me'),
-//         onPressed: (){
-//           HelpRequestAdminDialuge(context, HelpRequest(HelpRequestType('בועז'), long, DateTime.now(), 'sender_id', 'handler_id'));
-//         },
-//       ),
-//     );
-//   }
-// }
+

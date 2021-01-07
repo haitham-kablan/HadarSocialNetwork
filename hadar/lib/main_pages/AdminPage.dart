@@ -37,8 +37,7 @@ class AdminPage extends StatelessWidget {
                 RaisedButton(
                   child: Text('sign out'),
                   onPressed: (){
-                    FirebaseAuth.instance.signOut();
-                    Navigator.pop(context);
+                    DataBaseService().Sign_out(context);
                   },
                 ),
                 RaisedButton(

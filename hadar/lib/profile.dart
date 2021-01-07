@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart' as a;
@@ -31,7 +32,10 @@ class ProfileBanner extends StatelessWidget {
           caption: 'Logout',
           color: Colors.blue,
           icon: Icons.assignment_return,
-          onTap: () {},
+          onTap: () {
+            //TODO check out not getting out from all the stack
+            DataBaseService().Sign_out(context);
+          },
         ),
         IconSlideAction(
           caption: 'Edit Profile',

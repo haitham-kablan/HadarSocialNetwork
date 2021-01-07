@@ -8,7 +8,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart' as hadar;
 import 'package:hadar/users/UserInNeed.dart';
@@ -484,6 +486,16 @@ class DataBaseService{
     return user;
   }
 
+  void Sign_out(var context){
+    fb_auth.FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => LogInPage(),
+      ),
+          (route) => false,
+    );
+  }
   Future<bool> is_id_taken(String id)async{
 
     DocumentSnapshot snapShot_helper = await helpersCollection.doc(id).get();
