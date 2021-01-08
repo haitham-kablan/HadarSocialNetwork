@@ -140,6 +140,7 @@ class _LogInPageState extends State<LogInPage> {
 
 
                     Widget curr_widget = await CurrentUser.init_user();
+                    DataBaseService().add_user_token_to_db();
                     Navigator.pop(context);
                     Navigator.push(
                       context,

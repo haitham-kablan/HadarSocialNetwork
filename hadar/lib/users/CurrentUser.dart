@@ -14,7 +14,7 @@ import 'User.dart';
 
 class CurrentUser{
 
-  static User curr_user;
+  static User curr_user = null;
 
   User getCurrent() {
     return curr_user;

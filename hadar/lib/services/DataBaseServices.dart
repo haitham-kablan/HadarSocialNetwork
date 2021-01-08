@@ -2,10 +2,13 @@
 
 //import 'dart:html';
 
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
@@ -33,6 +36,7 @@ class DataBaseService{
   final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
   final CollectionReference verificationsRequestsCollection = FirebaseFirestore.instance.collection(verification_requests);
   final CollectionReference allHelpsRequestsCollection = FirebaseFirestore.instance.collection('ALL_HELP_REQUESTS');
+  final CollectionReference tokens = FirebaseFirestore.instance.collection('TOKENS');
 
 
   Future rateVolunteer(String to_rate_id , double number_of_stars) async{
@@ -484,6 +488,28 @@ class DataBaseService{
     }
 
     return user;
+  }
+
+  Future get_token(String email) async{
+
+    String token_to_return = null;
+    await tokens.doc(email).get().then((value) => token_to_return = value.exists ? value.get('token') : null);
+    return token_to_return;
+  }
+
+  Future add_user_token_to_db() async{
+
+    if (CurrentUser.curr_user == null){
+      return;
+    }
+    String token = await FirebaseMessaging().getToken();
+    if(token != null){
+      Map<String,dynamic> to_add = new Map();
+      to_add['token'] = token;
+      to_add['email'] = CurrentUser.curr_user.email;
+      tokens.doc(CurrentUser.curr_user.email).set(to_add);
+    }
+
   }
 
   void Sign_out(var context){
