@@ -476,7 +476,7 @@ class DataBaseService{
    */
   Future getCurrentUser() async {
     fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
-    hadar.User user;
+    hadar.User user = null;
     if(curr_db_user == null){
       return null;
     }
@@ -490,14 +490,12 @@ class DataBaseService{
 
     return user;
   }
-
   Future get_token(String email) async{
 
     String token_to_return = null;
     await tokens.doc(email).get().then((value) => token_to_return = value.exists ? value.get('token') : null);
     return token_to_return;
   }
-
   Future add_user_token_to_db() async{
 
     if (CurrentUser.curr_user == null){
@@ -512,7 +510,6 @@ class DataBaseService{
     }
 
   }
-
   Future Sign_out(var context) async{
     await fb_auth.FirebaseAuth.instance.signOut();
 
@@ -524,7 +521,7 @@ class DataBaseService{
           (route) => false,
     );
 
-   
+
   }
   Future<bool> is_id_taken(String id)async{
 

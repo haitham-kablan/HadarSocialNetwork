@@ -223,37 +223,3 @@ class Sign_up_here_text extends StatelessWidget {
 
 
 
-class HomePage extends StatelessWidget {
-
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    body: ChangeNotifierProvider(
-      create: (context) => GoogleSignInProvider(),
-      child: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot)  {
-          final provider = Provider.of<GoogleSignInProvider>(context);
-          if (provider.isSigningIn) {
-            return buildLoading();
-          } else if (snapshot.hasData) {
-          //  Widget curr_widget = await CurrentUser.init_user();
-           // DataBaseService().add_user_token_to_db();
-            Navigator.pop(context);
-            return null;
-          } else {
-            return LogInPage();
-          }
-        },
-      ),
-    ),
-  );
-
-  Widget buildLoading() => Stack(
-    fit: StackFit.expand,
-    children: [
-      //CustomPaint(painter: BackgroundPainter()),
-      Center(child: SpinKitCircle(color: BasicColor.clr,)),
-    ],
-  );
-}
