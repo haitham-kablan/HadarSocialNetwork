@@ -32,9 +32,8 @@ class ProfileBanner extends StatelessWidget {
           caption: 'Logout',
           color: Colors.blue,
           icon: Icons.assignment_return,
-          onTap: () {
-            //TODO check out not getting out from all the stack
-            DataBaseService().Sign_out(context);
+          onTap: () async {
+            await DataBaseService().Sign_out(context);
           },
         ),
         IconSlideAction(

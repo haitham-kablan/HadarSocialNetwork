@@ -10,10 +10,13 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/ReigsterPage.dart';
+import 'package:hadar/services/authentication/google_sign_in_button.dart';
+import 'package:hadar/services/authentication/provider/google_sign_in_provider.dart';
 import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
+import 'package:provider/provider.dart';
 
 import '../../HelpRequestAdminDialouge.dart';
 import '../../main.dart';
@@ -177,6 +180,7 @@ class _LogInPageState extends State<LogInPage> {
               margin: EdgeInsets.all(5),
               child: Sign_up_here_text(),
             ),
+         //   GoogleSignupButtonWidget(),
           ],
         ),
       ),
@@ -219,3 +223,37 @@ class Sign_up_here_text extends StatelessWidget {
 
 
 
+class HomePage extends StatelessWidget {
+
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: ChangeNotifierProvider(
+      create: (context) => GoogleSignInProvider(),
+      child: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot)  {
+          final provider = Provider.of<GoogleSignInProvider>(context);
+          if (provider.isSigningIn) {
+            return buildLoading();
+          } else if (snapshot.hasData) {
+          //  Widget curr_widget = await CurrentUser.init_user();
+           // DataBaseService().add_user_token_to_db();
+            Navigator.pop(context);
+            return null;
+          } else {
+            return LogInPage();
+          }
+        },
+      ),
+    ),
+  );
+
+  Widget buildLoading() => Stack(
+    fit: StackFit.expand,
+    children: [
+      //CustomPaint(painter: BackgroundPainter()),
+      Center(child: SpinKitCircle(color: BasicColor.clr,)),
+    ],
+  );
+}

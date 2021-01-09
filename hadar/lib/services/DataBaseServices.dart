@@ -11,6 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/CurrentUser.dart';
@@ -512,15 +513,18 @@ class DataBaseService{
 
   }
 
-  void Sign_out(var context){
-    fb_auth.FirebaseAuth.instance.signOut();
-    Navigator.pushAndRemoveUntil(
+  Future Sign_out(var context) async{
+    await fb_auth.FirebaseAuth.instance.signOut();
+
+    await Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (BuildContext context) => LogInPage(),
       ),
           (route) => false,
     );
+
+   
   }
   Future<bool> is_id_taken(String id)async{
 
