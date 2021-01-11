@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,10 +7,8 @@ import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
 
 class HelpRequestTile extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Card(
@@ -23,41 +20,68 @@ class HelpRequestTile extends StatelessWidget {
   }
 }
 
-class AllUsersView extends StatelessWidget{
-  List<User> allUsers;
+class AllUsersView extends StatelessWidget {
+  // List<User> allUsers;
 
   @override
   Widget build(BuildContext context) {
-    allUsers = Provider.of<List<User>>(context);
-    List<HelpRequestTile> feedTiles = List();
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Users In need',
-      home: Scaffold(
-        bottomNavigationBar: BottomBar(),
-        backgroundColor: BasicColor.backgroundClr,
-        body: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-              delegate: MySliverAppBar(expandedHeight: 150, title: 'Users in need'),
-              pinned: true,
-            ),
-
-            SliverFillRemaining(
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: ListView(
-                  semanticChildCount: (allUsers == null) ? 0 : allUsers.length,
-                  padding: const EdgeInsets.only(bottom: 70.0, top: 100),
-                  // children: feedTiles,
+    return Scaffold(
+      body: DefaultTabController(
+        length: 3,
+        child: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              adminViewRequestsBar("משתמשים"),
+              new SliverPadding(
+                padding: new EdgeInsets.all(16.0),
+                sliver: new SliverList(
+                  delegate: new SliverChildListDelegate([
+                    TabBar(
+                      labelColor: Colors.black87,
+                      unselectedLabelColor: Colors.grey,
+                      tabs: [
+                        new Tab(
+                            icon: Icon(Icons.account_circle_outlined,
+                                size: 25),
+                            text: " מבקשים עזרה"),
+                        new Tab(
+                            icon: Icon(Icons.supervisor_account_sharp, size: 25),
+                            text: "מתנדבים"),
+                        new Tab(
+                            icon: Icon(Icons.admin_panel_settings_outlined,
+                                size: 25),
+                            text: "מנהלים"),
+                      ],
+                    ),
+                  ]),
                 ),
               ),
-            ),
-          ],
+            ];
+          },
+          body: TabBarView(
+            children: [
+              Center(
+                  child: Text(
+                "0",
+                style: TextStyle(fontSize: 20),
+              )),
+              Center(
+                  child: Text(
+                "1",
+                style: TextStyle(fontSize: 20),
+              )),
+              Center(
+                  child: Text(
+                "3",
+                style: TextStyle(fontSize: 20),
+              )),
+            ],
+          ),
+          // Center(
+          //   child: Text("Sample text"),
         ),
       ),
+      // ),
     );
-
   }
 }

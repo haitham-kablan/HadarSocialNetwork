@@ -64,13 +64,20 @@ class ProfilePage extends StatelessWidget {
     }
   }
 
+  Widget adminOrReg(){
+    if(user.privilege==Privilege.Admin)
+      return AdminBottomBar();
+    else
+      return BottomBar();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Profile',
       home: Scaffold(
-        bottomNavigationBar: BottomBar(),
+        bottomNavigationBar: adminOrReg(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
           slivers: [

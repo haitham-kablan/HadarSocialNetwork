@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flappy_search_bar: ^1.4.1
   gradient_app_bar: ^0.0.1
   flutter_slidable:
   flutter:

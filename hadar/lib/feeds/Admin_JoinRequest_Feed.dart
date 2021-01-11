@@ -102,7 +102,7 @@ class AdminJoinRequestsFeedState extends State<AdminJoinRequestsFeed>{
       debugShowCheckedModeBanner: false,
       title: 'Admin JoinRequests Feed',
       home: Scaffold(
-        bottomNavigationBar: BottomBar(),
+        bottomNavigationBar: AdminBottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
           slivers: [

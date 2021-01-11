@@ -30,7 +30,7 @@ class showAllRequests extends StatelessWidget {
     return StreamProvider<List<HelpRequest>>.value(
       value: DataBaseService().getAllRequests(),
       child: Scaffold(
-        bottomNavigationBar: BottomBar(),
+        bottomNavigationBar: AdminBottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
             slivers: [
