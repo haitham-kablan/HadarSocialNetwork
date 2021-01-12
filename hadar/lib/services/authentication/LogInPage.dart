@@ -128,12 +128,21 @@ class _LogInPageState extends State<LogInPage> {
                     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: email_control.text,
                         password: pw_control.text);
+
+                    // if (!FirebaseAuth.instance.currentUser.emailVerified) {
+                    //   await FirebaseAuth.instance.currentUser.sendEmailVerification();
+                    //   FirebaseAuth.instance.signOut();
+                    //   setState(() {
+                    //     _error = 'נא לאמת את הקישור שנשלח לך במיל';
+                    //     show_spinner = false;
+                    //   });
+                    //   return;
+                    // }
                     bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
                     if(!is_verfied){
-                      //TODO ADD THIS
-                     // FirebaseAuth.instance.signOut();
+                      FirebaseAuth.instance.signOut();
                       setState(() {
-                        _error = 'החשבון שלך עדיין לא אומת';
+                        _error = ' החשבון שלך עדיין לא אומת על יד המנהל';
                         show_spinner = false;
                       });
                       return;

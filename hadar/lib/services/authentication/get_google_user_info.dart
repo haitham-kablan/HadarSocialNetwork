@@ -256,16 +256,16 @@ class _GoogleReigesterPageState extends State<GoogleReigesterPage> {
               setState(() {
                 show_spinner = true;
               });
-              bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text);
-              if(id_check_if_exsist){
-                setState(() {
-                  alert=true;
-                  show_spinner = false;
-                  _error_msg = 'תעודת הזהות כבר תפוסה';
-
-                });
-                return;
-              }
+         //     bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text);
+         //      if(id_check_if_exsist){
+         //        setState(() {
+         //          alert=true;
+         //          show_spinner = false;
+         //          _error_msg = 'תעודת הזהות כבר תפוסה';
+         //
+         //        });
+         //        return;
+         //      }
               if(clicked == false){
                 setState(() {
                   alert=true;

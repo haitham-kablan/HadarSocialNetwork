@@ -271,7 +271,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                   setState(() {
                     show_spinner = true;
                   });
-                  bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text);
+                  bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text,email_Controller.text);
                   if(id_check_if_exsist){
                     setState(() {
                       alert=true;
