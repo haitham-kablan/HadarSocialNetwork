@@ -468,6 +468,9 @@ class DataBaseService{
     return userInNeedCollection
         .snapshots()
         .map(UserInNeedListFromSnapShot);
+
+    /*return allHelpsRequestsCollection.where('sender_id' , isEqualTo: user.id).orderBy('time',descending: true)
+        .snapshots().map(helpRequestListFromSnapShot);*/
   }
 
   Future<List<HelpRequestType>> helpRequestAsAlist() async {
@@ -644,21 +647,21 @@ List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
 
   return snapshot.docs.map((doc) =>
       Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '' , get_categoreis(doc) ,doc.data()['stars'] ?? 0 , doc.data()['count'] ?? 0));
+          doc.data()['String id'] ?? '' , get_categoreis(doc) ,doc.data()['stars'] ?? 0 , doc.data()['count'] ?? 0)).toList();
 }
 
 List<Admin> AdminListFromSnapShot(QuerySnapshot snapshot){
 
   return snapshot.docs.map((doc) =>
       Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? ''));
+          doc.data()['String id'] ?? '')).toList();
 }
 
 List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
 
   return snapshot.docs.map((doc) =>
       UserInNeed(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? ''));
+          doc.data()['String id'] ?? '')).toList();
 }
 
 List<HelpRequestType> get_categoreis(DocumentSnapshot doc){

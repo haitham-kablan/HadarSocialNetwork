@@ -31,7 +31,7 @@ class _HelperFeedState extends State<HelperFeed> {
 			 padding: const EdgeInsets.only(bottom: 70.0, top: 100),
               itemCount: (requests == null) ? 0 : requests.length,
               itemBuilder: (context,index){
-                return FeedTile(helpRequestWidget: VolunteerFeedTile(requests[index]));
+                return FeedTile(tileWidget: VolunteerFeedTile(requests[index]));
               },
             );
           },

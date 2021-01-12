@@ -21,7 +21,7 @@ Future<void> main() async {
         MaterialApp(
           home: Scaffold(
             body: ListView(
-              children: [HRTile.FeedTile(helpRequestWidget: HRTile.VolunteerFeedTile(helpRequest1),)],
+              children: [HRTile.FeedTile(tileWidget: HRTile.VolunteerFeedTile(helpRequest1),)],
             ),
           ),
         )

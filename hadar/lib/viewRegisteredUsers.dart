@@ -1,96 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hadar/users/UserInNeed.dart';
+import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/Volunteer.dart';
 import 'package:provider/provider.dart';
 import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
-import 'package:hadar/users/User.dart';
-
-
-
-class UserItem extends StatelessWidget {
-  UserItem({this.user, this.parent})
-      : super(key: ObjectKey(user));
-
-  final User user;
-  final AllUsersView parent;
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Row(children: <Widget>[
-        Container(
-          child: Text(user.name,
-              style: TextStyle(color: BasicColor.clr)),
-        ),
-        Spacer(),
-        Container(
-          child: Text(user.email),
-          alignment: Alignment.topLeft,
-        ),
-      ]),
-      subtitle: Row(
-        children: <Widget>[
-          Container(
-            child: Text(user.phoneNumber),
-            padding: const EdgeInsets.only(top: 8, left: 8),
-          ),
-          Spacer(),
-        ],
-      ),
-    );
-  }
-}
-
-
-class FeedTile extends StatefulWidget {
-  final Widget userWidget;
-  FeedTile({this.userWidget});
-
-  @override
-  _FeedTileState createState() => _FeedTileState();
-}
-
-class _FeedTileState extends State<FeedTile> {
-  _FeedTileState();
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Card(
-        margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-        color: Colors.brown[30],
-        child: widget.userWidget,
-      ),
-    );
-  }
-}
-
+import 'feeds/Admin_UsersView.dart';
 
 
 class AllUsersView extends StatelessWidget {
-  List<UserInNeed> usersInNeed;
-  // List<User> volunteers;
-  // List<User> admins;
+  final Admin admin;
+
+  AllUsersView({Key key, this.admin}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
-    usersInNeed = Provider.of<List<UserInNeed>>(context);
-    List<FeedTile> feedTiles = List();
-
-    if (usersInNeed != null) {
-      feedTiles = usersInNeed.map((UserInNeed user) {
-
-        return FeedTile(userWidget: UserItem(
-          user: user, parent: this,
-        ),);
-
-      }).toList();
-    }
-
-
-
     return Scaffold(
       bottomNavigationBar: AdminBottomBar(),
       backgroundColor: BasicColor.backgroundClr,
@@ -109,6 +35,7 @@ class AllUsersView extends StatelessWidget {
                       unselectedLabelColor: Colors.grey,
                       tabs: [
                         new Tab(
+
                             icon: Icon(Icons.account_circle_outlined,
                                 size: 25),
                             text: " מבקשים עזרה"),
@@ -128,11 +55,9 @@ class AllUsersView extends StatelessWidget {
           },
           body: TabBarView(
             children: [
-              Center(child: ListView(
-                semanticChildCount: (usersInNeed == null) ? 0 : usersInNeed.length,
-                padding: const EdgeInsets.only(bottom: 70.0, top: 100),
-                children: feedTiles,
-              ),),
+              Center(
+                child: AdminAllUsersView(admin),
+              ),
               Center(
                   child: Text(
                 "1",

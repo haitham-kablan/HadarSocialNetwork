@@ -44,7 +44,7 @@ Future<void> main() async {
       MaterialApp(
         home: Scaffold(
           body: ListView(
-            children: [HRTile.FeedTile(helpRequestWidget: UIF.HelpRequestItem(
+            children: [HRTile.FeedTile(tileWidget: UIF.HelpRequestItem(
               helpRequest: helpRequest1, parent: null,
             ),)],
           ),
