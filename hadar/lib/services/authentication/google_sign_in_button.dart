@@ -4,7 +4,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/services/authentication/get_google_user_info.dart';
 import 'package:hadar/services/authentication/provider/google_sign_in_provider.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:provider/provider.dart';
 import 'package:hadar/users/User.dart' as hadar;
 import 'LogInPage.dart';
@@ -33,7 +35,7 @@ class GoogleSignupButtonWidget extends StatelessWidget {
   );
 }
 
-class LoginPage extends StatelessWidget {
+class NewLoginPage extends StatelessWidget {
 
 
   @override
@@ -42,14 +44,27 @@ class LoginPage extends StatelessWidget {
       create: (context) => GoogleSignInProvider(),
       child: StreamBuilder(
         stream: auth.FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot)  {
+        builder: (context, snapshot)   {
           final provider = Provider.of<GoogleSignInProvider>(context);
           if (provider.isSigningIn) {
             return buildLoading();
           } else if (snapshot.hasData) {
             auth.User user = auth.FirebaseAuth.instance.currentUser;
-            getRightWidgetForUser(user);
-            return null;
+            return Scaffold(
+              body: Center(
+                child: Column(
+                  children: [
+                    Text(user.email),
+                    RaisedButton(
+                      child: Text('sign out'),
+                      onPressed: (){
+                        provider.logout(false);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
           } else {
             return LogInPage();
           }
@@ -65,23 +80,24 @@ class LoginPage extends StatelessWidget {
       Center(child: SpinKitCircle(color: BasicColor.clr,)),
     ],
   );
-  
+
+  Future<Widget> go_to_home_page(auth.User user) async {
+    return await getRightWidgetForUser(user);
+  }
   Future<Widget> getRightWidgetForUser(auth.User user) async{
       
     hadar.User curr_user = await DataBaseService().getCurrentUser();
     if (curr_user != null){
-      //TODO : GO TO RELVENAT PAGE
+      return await CurrentUser.init_user();
     }else{
-      //2 options
-      //isnot verfivied
-      //MIGHT BE PROBLEM HERE , IF THIS IS HIS FIRST TIME HE WILL BE VERFIED SO FIRST CHECK
+      //first time log in from google
       if (await DataBaseService().checkIfVerfied(curr_user.email)){
-        //add to to verfication request
-        //take his pratem
+        return GoogleReigesterPage(user.email);
       }else{
         // show alert the user unverifed yet
+        return Scaffold();
       }
-      //firdst log in
+
     }
   }
 }

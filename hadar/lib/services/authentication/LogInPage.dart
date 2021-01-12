@@ -180,7 +180,7 @@ class _LogInPageState extends State<LogInPage> {
               margin: EdgeInsets.all(5),
               child: Sign_up_here_text(),
             ),
-         //   GoogleSignupButtonWidget(),
+           //GoogleSignupButtonWidget(),
           ],
         ),
       ),

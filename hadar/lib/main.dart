@@ -27,6 +27,18 @@ import 'main_pages/AdminPage.dart';
 
 
 
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   Widget curr_user_page = await CurrentUser.init_user();
+//   DataBaseService().add_user_token_to_db();
+//
+//   runApp(MaterialApp(
+//     home: curr_user_page == null ? LogInPage() : curr_user_page,
+//     debugShowCheckedModeBanner: false,
+//   ));
+// }
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -34,7 +46,7 @@ void main() async {
   DataBaseService().add_user_token_to_db();
 
   runApp(MaterialApp(
-    home: curr_user_page == null ? LogInPage() : curr_user_page,
+    home: LogInPage(),
     debugShowCheckedModeBanner: false,
   ));
 }
