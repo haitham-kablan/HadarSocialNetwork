@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:hadar/feeds/adminfeedtile.dart';
+import 'package:hadar/main_pages/AdminPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
 
 import '../profile.dart';
+import '../viewRegisteredUsers.dart';
 import 'basicTools.dart';
 import 'package:flutter/material.dart';
 
@@ -178,9 +180,11 @@ class AdminBottomBar extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfilePage()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfilePage()
+                        ),
+                      );
                     },
                   ),
                   FlatButton(
@@ -188,21 +192,29 @@ class AdminBottomBar extends StatelessWidget {
                       size: 30,
                       color: BasicColor.clr,
                     ),
-                    onPressed: () async {
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => showAllRequests(CurrentUser.curr_user)),
+                            builder: (context) => AdminPage(CurrentUser.curr_user)
+                        ),
                       );
                     },
                   ),
                   FlatButton(
                     child: Icon(
-                        Icons.admin_panel_settings_outlined,
+                      Icons.admin_panel_settings_outlined,
                       size: 30,
                       color: BasicColor.clr,
                     ),
-                    onPressed: () {},
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AllUsersView()
+                        )
+                      );
+                    }
                   ),
                 ],
               ),
@@ -246,7 +258,8 @@ class adminViewRequestsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-        expandedHeight: 80.0,
+      automaticallyImplyLeading: false,
+      expandedHeight: 80.0,
       floating: false,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(

@@ -14,6 +14,7 @@ import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
+import 'package:provider/provider.dart';
 
 import '../../HelpRequestAdminDialouge.dart';
 import '../../main.dart';
@@ -125,12 +126,21 @@ class _LogInPageState extends State<LogInPage> {
                     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
                         email: email_control.text,
                         password: pw_control.text);
+
+                    // if (!FirebaseAuth.instance.currentUser.emailVerified) {
+                    //   await FirebaseAuth.instance.currentUser.sendEmailVerification();
+                    //   FirebaseAuth.instance.signOut();
+                    //   setState(() {
+                    //     _error = 'נא לאמת את הקישור שנשלח לך במיל';
+                    //     show_spinner = false;
+                    //   });
+                    //   return;
+                    // }
                     bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
                     if(!is_verfied){
-                      //TODO ADD THIS
-                     // FirebaseAuth.instance.signOut();
+                      FirebaseAuth.instance.signOut();
                       setState(() {
-                        _error = 'החשבון שלך עדיין לא אומת';
+                        _error = ' החשבון שלך עדיין לא אומת על יד המנהל';
                         show_spinner = false;
                       });
                       return;
@@ -138,14 +148,17 @@ class _LogInPageState extends State<LogInPage> {
 
                     print(FirebaseAuth.instance.currentUser);
 
-                    setState(() {
-                      show_spinner = false;
-                    });
+
                     Widget curr_widget = await CurrentUser.init_user();
+                    DataBaseService().add_user_token_to_db();
+                    Navigator.pop(context);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => curr_widget),
                     );
+                    setState(() {
+                      show_spinner = false;
+                    });
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'user-not-found') {
                       print('No user found for that email.');
@@ -174,6 +187,7 @@ class _LogInPageState extends State<LogInPage> {
               margin: EdgeInsets.all(5),
               child: Sign_up_here_text(),
             ),
+           //GoogleSignupButtonWidget(),
           ],
         ),
       ),

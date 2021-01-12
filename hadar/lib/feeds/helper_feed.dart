@@ -53,7 +53,7 @@ class VolunteerFeed extends StatelessWidget {
     list1.add(HelpRequestType('money'));
 
     return StreamProvider<List<HelpRequest>>.value(
-      value: DataBaseService().getVolPendingRequests(curr_user),
+      value: DataBaseService().get_requests_for_category(HelpRequestType('תרופות')),
       child: Scaffold(
         bottomNavigationBar: BottomBar(),
         backgroundColor: BasicColor.backgroundClr,

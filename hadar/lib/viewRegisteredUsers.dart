@@ -92,6 +92,8 @@ class AllUsersView extends StatelessWidget {
 
 
     return Scaffold(
+      bottomNavigationBar: AdminBottomBar(),
+      backgroundColor: BasicColor.backgroundClr,
       body: DefaultTabController(
         length: 3,
         child: NestedScrollView(
