@@ -16,7 +16,7 @@ import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:provider/provider.dart';
 
-import '../viewRegisteredUsers.dart';
+import '../feeds/viewRegisteredUsers.dart';
 
 class AdminPage extends StatelessWidget {
   final Admin curr_user;

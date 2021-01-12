@@ -1,51 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/profile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
-import 'package:hadar/users/UserInNeed.dart';
+import 'package:hadar/users/Volunteer.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hadar/users/User.dart';
 
 import 'feed_items/help_request_tile.dart';
 
-class AdminAllUsersView extends StatelessWidget{
-  final Admin admin;
-  AdminAllUsersView(this.admin);
+class AdminsView extends StatelessWidget{
+  AdminsView();
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<List<UserInNeed>>.value(
-      value: DataBaseService().getAllUsersInNeed(),
-      child: _AdminAllUsersView(admin: admin),
+    return StreamProvider<List<Admin>>.value(
+      value: DataBaseService().getAllAdmins(),
+      child: AllAdminsView(),
     );
   }
 
 }
 
-class _AdminAllUsersView extends StatefulWidget {
-  final Admin admin;
-
-  _AdminAllUsersView({Key key, this.admin}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _AllUsersViewState();
-
-}
-
-class _AllUsersViewState extends State<_AdminAllUsersView> {
-  List<UserInNeed> usersInNeed;
-  // List<User> volunteers;
-  // List<User> admins;
+class AllAdminsView extends StatelessWidget{
+  List<Admin> admins;
 
   @override
   Widget build(BuildContext context) {
-    usersInNeed = Provider.of<List<UserInNeed>>(context);
+    admins = Provider.of<List<Admin>>(context);
     List<FeedTile> feedTiles = [];
 
-    if (usersInNeed != null) {
-      feedTiles = usersInNeed.map((UserInNeed user) {
+    if (admins != null) {
+      feedTiles = admins.map((Admin user) {
 
         return FeedTile(tileWidget: UserItem(
           user: user, parent: this,
@@ -57,8 +45,8 @@ class _AllUsersViewState extends State<_AdminAllUsersView> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: ListView(
-        semanticChildCount: (usersInNeed == null) ? 0 : usersInNeed.length,
-        padding: const EdgeInsets.only(bottom: 70.0, top: 10),
+        semanticChildCount: (admins == null) ? 0 : admins.length,
+        padding: const EdgeInsets.only(bottom: 70.0, top: 40),
         children: feedTiles,
       ),
     );
@@ -72,13 +60,14 @@ class UserItem extends StatelessWidget {
       : super(key: ObjectKey(user));
 
   final User user;
-  final _AllUsersViewState parent;
+  final AllAdminsView parent;
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      isThreeLine: true,
       title: Row(children: <Widget>[
         Container(
-          child: Text(user.name,
+          child: Text("שם:  " + user.name,
               style: TextStyle(color: BasicColor.clr)),
         ),
         Spacer(),
@@ -90,7 +79,7 @@ class UserItem extends StatelessWidget {
       subtitle: Row(
         children: <Widget>[
           Container(
-            child: Text(user.phoneNumber),
+            child: Text("מספר טלפון:  " + user.phoneNumber),
             padding: const EdgeInsets.only(top: 8, left: 8),
           ),
           Spacer(),

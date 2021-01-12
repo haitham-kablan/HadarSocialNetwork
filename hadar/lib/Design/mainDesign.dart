@@ -5,7 +5,7 @@ import 'package:hadar/main_pages/AdminPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
 
 import '../profile.dart';
-import '../viewRegisteredUsers.dart';
+import '../feeds/viewRegisteredUsers.dart';
 import 'basicTools.dart';
 import 'package:flutter/material.dart';
 
@@ -81,9 +81,6 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      // Scaffold(
-      // backgroundColor: Colors.transparent,
-      // bottomNavigationBar:
       PreferredSize(
         preferredSize: Size(double.infinity, 50),
         child: Container(
@@ -91,7 +88,7 @@ class BottomBar extends StatelessWidget {
           height: 50,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: BasicColor.backgroundClr,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black45,
@@ -147,9 +144,6 @@ class AdminBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      // Scaffold(
-      // backgroundColor: Colors.transparent,
-      // bottomNavigationBar:
       PreferredSize(
         preferredSize: Size(double.infinity, 50),
         child: Container(
@@ -157,7 +151,7 @@ class AdminBottomBar extends StatelessWidget {
           height: 50,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: BasicColor.backgroundClr,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black45,
