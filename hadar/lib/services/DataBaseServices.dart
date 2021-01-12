@@ -176,8 +176,8 @@ class DataBaseService{
     to_add['date'] = helpRequest.date.toString();
     to_add['time'] = helpRequest.time;
     to_add['handler_id'] = helpRequest.handler_id;
-    to_add['verfied'] = helpRequest.verfied;
-    
+    to_add['status'] = helpRequest.status.toString().substring(7);
+
     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
 
   }
@@ -217,7 +217,7 @@ class DataBaseService{
   Future verify_help_request(HelpRequest helpRequest) async{
 
     Map<String,dynamic> to_add = Map();
-    to_add['verfied'] = true;
+    to_add['status'] = Status.AVAILABLE.toString().substring(7);
 
     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).update(to_add);
 
@@ -313,6 +313,7 @@ class DataBaseService{
 
     Map<String,dynamic> to_update = Map();
     to_update['handler_id'] = volunteer.id;
+    to_update['status'] = Status.APPROVED.toString().substring(7);
     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).update(to_update);
   }
   /*
@@ -392,11 +393,27 @@ class DataBaseService{
       .snapshots().map(helpRequestListFromSnapShot);
     //TODO - u might need to delete order by time
   }
+  Stream<List<HelpRequest>> getAll_waiting_Requests() {
 
-  Stream<List<HelpRequest>> getAllRequests() {
+
+    return allHelpsRequestsCollection.where('status' , isEqualTo: Status.AVAILABLE.toString().substring(7)).orderBy('time' , descending: true)
+        .snapshots()
+        .map(helpRequestListFromSnapShot);
+
+  }
+
+  Stream<List<HelpRequest>> getAll_unverfied_requests_Requests() {
 
 
-    return allHelpsRequestsCollection.orderBy('time' , descending: true)
+    return allHelpsRequestsCollection.where('status' , isEqualTo: Status.UNVERFIED.toString().substring(7)).orderBy('time' , descending: true)
+        .snapshots()
+        .map(helpRequestListFromSnapShot);
+
+  }
+  Stream<List<HelpRequest>> getAll_approved_Requests() {
+
+
+    return allHelpsRequestsCollection.where('status' , isNotEqualTo: Status.APPROVED.toString().substring(7)).orderBy('time' , descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
 
@@ -409,7 +426,7 @@ class DataBaseService{
   //       .map(helpRequestListFromSnapShot);
   // }
 
-  Stream<List<HelpRequest>> getVolPendingRequests(Volunteer volunteer) {
+  Stream<List<HelpRequest>> getVolAcceptedRequestsRequests(Volunteer volunteer) {
 
     return allHelpsRequestsCollection.where('handler_id' , isEqualTo:volunteer.id).orderBy('time',descending: true)
         .snapshots().map(helpRequestListFromSnapShot);
@@ -440,14 +457,7 @@ class DataBaseService{
         .map(helpRequestListFromSnapShot);
 
   }
-  Stream<List<HelpRequest>> get_pending_requests(){
 
-    //TODO - u might delete time
-    return allHelpsRequestsCollection.where('handler_id' , isEqualTo: '').orderBy('time' , descending: true)
-        .snapshots()
-        .map(helpRequestListFromSnapShot);
-
-  }
 
   Stream<List<Volunteer>> getAllVolunteers(){
 
@@ -604,7 +614,22 @@ class DataBaseService{
 
 }
 
+Status getStatusFromString(String type){
 
+  if (type == 'APPROVED'){
+    return Status.APPROVED;
+  }
+  if (type == 'UNVERFIED'){
+    return Status.UNVERFIED;
+  }
+  if (type == 'AVAILABLE'){
+    return Status.AVAILABLE;
+  }
+
+
+  assert(false);
+
+}
 
 hadar.Privilege getTypeFromString(String type){
 
@@ -632,7 +657,7 @@ List<VerificationRequest> VerficationRequestListFromSnapShot(QuerySnapshot snaps
 
 List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '')).toList();
+      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ))).toList();
 }
 
 List<HelpRequestType> helpRequestTypeListFromSnapShot(QuerySnapshot snapshot){
