@@ -10,8 +10,6 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/ReigsterPage.dart';
-import 'package:hadar/services/authentication/google_sign_in_button.dart';
-import 'package:hadar/services/authentication/provider/google_sign_in_provider.dart';
 import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/utils/HelpRequest.dart';
