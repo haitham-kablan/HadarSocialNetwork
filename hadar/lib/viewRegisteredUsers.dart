@@ -1,27 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:provider/provider.dart';
 import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
+import 'feeds/Admin_UsersView.dart';
 
-class HelpRequestTile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Card(
-        margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-        color: Colors.brown[30],
-        // child: widget.helpRequestWidget,
-      ),
-    );
-  }
-}
 
 class AllUsersView extends StatelessWidget {
-  // List<User> allUsers;
+  final Admin admin;
+
+  AllUsersView({Key key, this.admin}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +35,7 @@ class AllUsersView extends StatelessWidget {
                       unselectedLabelColor: Colors.grey,
                       tabs: [
                         new Tab(
+
                             icon: Icon(Icons.account_circle_outlined,
                                 size: 25),
                             text: " מבקשים עזרה"),
@@ -63,10 +56,8 @@ class AllUsersView extends StatelessWidget {
           body: TabBarView(
             children: [
               Center(
-                  child: Text(
-                "0",
-                style: TextStyle(fontSize: 20),
-              )),
+                child: AdminAllUsersView(admin),
+              ),
               Center(
                   child: Text(
                 "1",

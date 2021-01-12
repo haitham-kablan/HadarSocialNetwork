@@ -55,7 +55,7 @@ class _AdminHelpRequestsFeedState extends State<_AdminHelpRequestsFeed> {
             padding: const EdgeInsets.only(bottom: 70.0, top: 10),
             itemCount: (requests == null) ? 0 : requests.length,
             itemBuilder: (context,index){
-              return FeedTile(helpRequestWidget: AdminHelpRequestFeedTile(requests[index]));
+              return FeedTile(tileWidget: AdminHelpRequestFeedTile(requests[index]));
             },
           );
         },

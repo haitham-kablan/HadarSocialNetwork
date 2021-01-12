@@ -99,7 +99,7 @@ class _AdminJoinRequestsFeedState extends State<_AdminJoinRequestsFeed>{
 
     if(feed != null) {
       feedTiles = feed.map((VerificationRequest joinRequest) {
-        return FeedTile(helpRequestWidget: JoinRequestItem(
+        return FeedTile(tileWidget: JoinRequestItem(
           joinRequest: joinRequest, parent: this,
         ),);
       }).toList();

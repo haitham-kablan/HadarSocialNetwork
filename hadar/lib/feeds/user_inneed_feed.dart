@@ -72,7 +72,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
     if (feed != null) {
       feedTiles = feed.map((HelpRequest helpRequest) {
 
-        return FeedTile(helpRequestWidget: HelpRequestItem(
+        return FeedTile(tileWidget: HelpRequestItem(
           helpRequest: helpRequest, parent: this,
         ),);
 

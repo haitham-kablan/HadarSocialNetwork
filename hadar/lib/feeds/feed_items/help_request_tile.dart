@@ -17,8 +17,8 @@ import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FeedTile extends StatefulWidget {
-  final Widget helpRequestWidget;
-  FeedTile({this.helpRequestWidget});
+  final Widget tileWidget;
+  FeedTile({this.tileWidget});
 
   @override
   _FeedTileState createState() => _FeedTileState();
@@ -35,7 +35,7 @@ class _FeedTileState extends State<FeedTile> {
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         color: Colors.brown[30],
-        child: widget.helpRequestWidget,
+        child: widget.tileWidget,
       ),
     );
   }
