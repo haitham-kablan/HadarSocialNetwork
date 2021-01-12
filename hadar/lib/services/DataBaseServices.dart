@@ -2,13 +2,19 @@
 
 //import 'dart:html';
 
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart' as hadar;
 import 'package:hadar/users/UserInNeed.dart';
@@ -19,8 +25,8 @@ import 'package:hadar/utils/VerificationRequest.dart';
 
 class DataBaseService{
 
-  static final String user_in_need_requests = 'REQUESTS';
-  static final String volunteer_pending_requests = 'PENDING_REQUESTS';
+  //static final String user_in_need_requests = 'REQUESTS';
+  //static final String volunteer_pending_requests = 'PENDING_REQUESTS';
   static final String verification_requests = 'VERIFICATION_REQUESTS';
 
 
@@ -31,8 +37,10 @@ class DataBaseService{
   final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
   final CollectionReference verificationsRequestsCollection = FirebaseFirestore.instance.collection(verification_requests);
   final CollectionReference allHelpsRequestsCollection = FirebaseFirestore.instance.collection('ALL_HELP_REQUESTS');
+  final CollectionReference tokens = FirebaseFirestore.instance.collection('TOKENS');
 
 
+  
   Future rateVolunteer(String to_rate_id , double number_of_stars) async{
 
 
@@ -87,8 +95,7 @@ class DataBaseService{
     return await verificationsRequestsCollection.doc(verificationRequest.sender.email).set(to_add);
     
   }
-
-  //todo : add deny verfication request
+  
 
   Future DenyVerficationRequest(VerificationRequest verificationRequest){
     verificationsRequestsCollection.doc(verificationRequest.sender.email).delete();
@@ -139,6 +146,27 @@ class DataBaseService{
   VOULNTEERS -- nooooooooooo !!!
   it now add them to pending request collection
    */
+  // Future addHelpRequestToDataBaseForUserInNeed(HelpRequest helpRequest) async{
+  //
+  //   Map<String,dynamic> to_add = Map();
+  //   to_add['category'] = helpRequest.category.description;
+  //   to_add['sender_id'] = helpRequest.sender_id;
+  //   to_add['description'] = helpRequest.description;
+  //   to_add['date'] = helpRequest.date.toString();
+  //   to_add['time'] = helpRequest.time;
+  //   to_add['handler_id'] = helpRequest.handler_id;
+  //   to_add['verfied'] = helpRequest.verfied;
+  //
+  //
+  //    userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id)
+  //       .set(to_add).catchError((error) => print("problem in addHelpRequestToDataBaseForUserInNeed"));
+  //
+  //    allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
+  //
+  //
+  //
+  //
+  // }
   Future addHelpRequestToDataBaseForUserInNeed(HelpRequest helpRequest) async{
 
     Map<String,dynamic> to_add = Map();
@@ -149,56 +177,64 @@ class DataBaseService{
     to_add['time'] = helpRequest.time;
     to_add['handler_id'] = helpRequest.handler_id;
     to_add['verfied'] = helpRequest.verfied;
-
-
-     userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id)
-        .set(to_add).catchError((error) => print("problem in addHelpRequestToDataBaseForUserInNeed"));
-
-     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
-
-
-
+    
+    allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
 
   }
 
   /*/
     this function will also put the reqeust to the relvenat voulnteers
    */
+  // Future verify_help_request(HelpRequest helpRequest) async{
+  //
+  //   Map<String,dynamic> to_add = Map();
+  //   to_add['category'] = helpRequest.category.description;
+  //   to_add['sender_id'] = helpRequest.sender_id;
+  //   to_add['description'] = helpRequest.description;
+  //   to_add['date'] = helpRequest.date.toString();
+  //   to_add['time'] = helpRequest.time;
+  //   to_add['handler_id'] = helpRequest.handler_id;
+  //   to_add['verfied'] = true;
+  //
+  //   allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
+  //
+  //   helpersCollection.where('helpRequestsCategories' , arrayContains: helpRequest.category.description )
+  //       .get().then((QuerySnapshot querySnapshot) => {
+  //     querySnapshot.docs.forEach((doc) {
+  //       doc.reference.collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add).catchError((error) => print("failed to add for this voulnteer"));
+  //     })
+  //   } );
+  //
+  //   Map<String,dynamic> to_update = Map();
+  //   to_update['verfied'] = true;
+  //
+  //   userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).update(to_update);
+  //
+  //
+  //
+  // }
+
   Future verify_help_request(HelpRequest helpRequest) async{
 
     Map<String,dynamic> to_add = Map();
-    to_add['category'] = helpRequest.category.description;
-    to_add['sender_id'] = helpRequest.sender_id;
-    to_add['description'] = helpRequest.description;
-    to_add['date'] = helpRequest.date.toString();
-    to_add['time'] = helpRequest.time;
-    to_add['handler_id'] = helpRequest.handler_id;
     to_add['verfied'] = true;
 
-    allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
-
-    helpersCollection.where('helpRequestsCategories' , arrayContains: helpRequest.category.description )
-        .get().then((QuerySnapshot querySnapshot) => {
-      querySnapshot.docs.forEach((doc) {
-        doc.reference.collection(volunteer_pending_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add).catchError((error) => print("failed to add for this voulnteer"));
-      })
-    } );
-
-    Map<String,dynamic> to_update = Map();
-    to_update['verfied'] = true;
-
-    userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).update(to_update);
-
+    allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).update(to_add);
 
 
   }
 
+  // //TODO ALSO CHECK HOW TO REMOVE THE USER FROM THE AUTH
+  // Future cancel_help_reqeust(HelpRequest helpRequest) async {
+  //
+  //   allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
+  //   userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
+  //
+  // }
   //TODO ALSO CHECK HOW TO REMOVE THE USER FROM THE AUTH
   Future cancel_help_reqeust(HelpRequest helpRequest) async {
 
     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
-    userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
-
   }
 
   Future addUserInNeedToDataBase(hadar.User user) async{
@@ -255,25 +291,30 @@ class DataBaseService{
   this function move the request from pending to accepted collection.
   make sure to put the exact date of the request and not the current date
    */
+  // Future assignHelpRequestForVolunteer(Volunteer volunteer,HelpRequest helpRequest) async{
+  //
+  //   Map<String,dynamic> to_update = Map();
+  //   to_update['handler_id'] = volunteer.id;
+  //
+  //   QuerySnapshot docs = await helpersCollection.get();
+  //
+  //   for (QueryDocumentSnapshot doc_snap_shot in docs.docs){
+  //     DocumentReference curr_doc = doc_snap_shot.reference;
+  //     if(curr_doc.id != volunteer.id) {
+  //       curr_doc.collection(volunteer_pending_requests).doc(
+  //           helpRequest.date.toString() + "-" + helpRequest.sender_id).delete();
+  //     }
+  //   }
+  //
+  //   helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(helpRequest.date.toString() + "-" + helpRequest.sender_id).update(to_update);
+  //   userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString() + "-" + helpRequest.sender_id).update(to_update);
+  // }
   Future assignHelpRequestForVolunteer(Volunteer volunteer,HelpRequest helpRequest) async{
 
     Map<String,dynamic> to_update = Map();
     to_update['handler_id'] = volunteer.id;
-
-    QuerySnapshot docs = await helpersCollection.get();
-
-    for (QueryDocumentSnapshot doc_snap_shot in docs.docs){
-      DocumentReference curr_doc = doc_snap_shot.reference;
-      if(curr_doc.id != volunteer.id) {
-        curr_doc.collection(volunteer_pending_requests).doc(
-            helpRequest.date.toString() + "-" + helpRequest.sender_id).delete();
-      }
-    }
-
-    helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).doc(helpRequest.date.toString() + "-" + helpRequest.sender_id).update(to_update);
-    userInNeedCollection.doc(helpRequest.sender_id).collection(user_in_need_requests).doc(helpRequest.date.toString() + "-" + helpRequest.sender_id).update(to_update);
+    allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).update(to_update);
   }
-
   /*
   before u call this function u must type await . so u only use the returned value when the function  ends
   and also u should check if the returned  value is not null (if it is null it means the user hasnt been found)
@@ -338,11 +379,18 @@ class DataBaseService{
     }
   }
 
+  // Stream<List<HelpRequest>> getUserHelpRequests(hadar.User user) {
+  //
+  //   return userInNeedCollection.doc(user.id).collection(user_in_need_requests).orderBy('time',descending: true)
+  //       .snapshots()
+  //       .map(helpRequestListFromSnapShot);
+  // }
+
   Stream<List<HelpRequest>> getUserHelpRequests(hadar.User user) {
 
-    return userInNeedCollection.doc(user.id).collection(user_in_need_requests).orderBy('time',descending: true)
-        .snapshots()
-        .map(helpRequestListFromSnapShot);
+    return allHelpsRequestsCollection.where('sender_id' , isEqualTo: user.id).orderBy('time',descending: true)
+      .snapshots().map(helpRequestListFromSnapShot);
+    //TODO - u might need to delete order by time
   }
 
   Stream<List<HelpRequest>> getAllRequests() {
@@ -354,11 +402,18 @@ class DataBaseService{
 
   }
 
+  // Stream<List<HelpRequest>> getVolPendingRequests(Volunteer volunteer) {
+  //
+  //   return helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).orderBy('time',descending: true)
+  //       .snapshots()
+  //       .map(helpRequestListFromSnapShot);
+  // }
+
   Stream<List<HelpRequest>> getVolPendingRequests(Volunteer volunteer) {
 
-    return helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).orderBy('time',descending: true)
-        .snapshots()
-        .map(helpRequestListFromSnapShot);
+    return allHelpsRequestsCollection.where('handler_id' , isEqualTo:volunteer.id).orderBy('time',descending: true)
+        .snapshots().map(helpRequestListFromSnapShot);
+    //TODO - might delete time
   }
 
 
@@ -369,12 +424,29 @@ class DataBaseService{
         .map(helpRequestTypeListFromSnapShot);
   }
 
-  Stream<List<Volunteer>> getAllVolunteersForSpecificRequest(HelpRequestType helpRequestType){
+  // Stream<List<Volunteer>> getAllVolunteersForSpecificRequest(HelpRequestType helpRequestType){
+  //
+  //   CollectionReference col = helpersCollection.where('helpRequestsCategories' , arrayContains: helpRequestType.description );
+  //   return col
+  //       .snapshots()
+  //       .map(VolunteerListFromSnapShot);
+  // }
 
-    CollectionReference col = helpersCollection.where('helpRequestsCategories' , arrayContains: helpRequestType.description );
-    return col
+  Stream<List<HelpRequest>> get_requests_for_category(HelpRequestType helpRequestType){
+
+    //TODO - u might delete time
+    return allHelpsRequestsCollection.where('category' , isEqualTo: helpRequestType.description).orderBy('time' , descending: true)
         .snapshots()
-        .map(VolunteerListFromSnapShot);
+        .map(helpRequestListFromSnapShot);
+
+  }
+  Stream<List<HelpRequest>> get_pending_requests(){
+
+    //TODO - u might delete time
+    return allHelpsRequestsCollection.where('handler_id' , isEqualTo: '').orderBy('time' , descending: true)
+        .snapshots()
+        .map(helpRequestListFromSnapShot);
+
   }
 
   Stream<List<Volunteer>> getAllVolunteers(){
@@ -469,7 +541,7 @@ class DataBaseService{
    */
   Future getCurrentUser() async {
     fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
-    hadar.User user;
+    hadar.User user = null;
     if(curr_db_user == null){
       return null;
     }
@@ -483,17 +555,52 @@ class DataBaseService{
 
     return user;
   }
+  Future get_token(String email) async{
 
-  Future<bool> is_id_taken(String id)async{
+    String token_to_return = null;
+    await tokens.doc(email).get().then((value) => token_to_return = value.exists ? value.get('token') : null);
+    return token_to_return;
+  }
+  Future add_user_token_to_db() async{
+
+    if (CurrentUser.curr_user == null){
+      return;
+    }
+    String token = await FirebaseMessaging().getToken();
+    if(token != null){
+      Map<String,dynamic> to_add = new Map();
+      to_add['token'] = token;
+      to_add['email'] = CurrentUser.curr_user.email;
+      tokens.doc(CurrentUser.curr_user.email).set(to_add);
+    }
+
+  }
+  Future Sign_out(var context) async{
+    await fb_auth.FirebaseAuth.instance.signOut();
+
+    await Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => LogInPage(),
+      ),
+          (route) => false,
+    );
+
+
+  }
+  Future<bool> is_id_taken(String id,String email)async{
 
     DocumentSnapshot snapShot_helper = await helpersCollection.doc(id).get();
     DocumentSnapshot snapShot_need = await userInNeedCollection.doc(id).get();
     DocumentSnapshot snapShot_admin = await adminsCollection.doc(id).get();
-    if (snapShot_helper.exists || snapShot_need.exists || snapShot_admin.exists ) {
+    DocumentSnapshot snapShot_unverfied_users = await verificationsRequestsCollection.doc(email).get();
+    if (snapShot_helper.exists || snapShot_need.exists || snapShot_admin.exists ||snapShot_unverfied_users.exists ) {
       return true;
     }
     return false;
   }
+
+  
 
 }
 

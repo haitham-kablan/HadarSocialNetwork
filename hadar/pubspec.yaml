@@ -40,19 +40,18 @@ dependencies:
   jiffy: ^3.0.1
 
   flutter_spinkit: ^4.1.2
-
+  firebase_messaging: ^7.0.3
   flutter_rating_bar: ^3.2.0+1
-
-
   string_validator: ^0.1.4
   firebase_auth: ^0.18.4+1
-  google_sign_in: ^4.5.6
+  google_sign_in: ^4.5.9
   item_selector: ^0.1.1
 
   url_launcher: ^5.7.10
 
 
   cloud_firestore_mocks: ^0.5.2+1
+  font_awesome_flutter: ^8.10.0
 
 
 
@@ -75,6 +74,7 @@ flutter:
   assets:
     - assets/images/barPic.png
     - assets/images/color.jpg
+    - assets/images/google_logo.png
 #  assets:
 #    - assets/images/barPic.png
   #   - images/a_dot_ham.jpeg
