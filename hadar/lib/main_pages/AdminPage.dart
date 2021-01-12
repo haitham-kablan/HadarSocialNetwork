@@ -26,7 +26,57 @@ class AdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-      return Scaffold(
+    return Scaffold(
+      bottomNavigationBar: AdminBottomBar(),
+      backgroundColor: BasicColor.backgroundClr,
+      body: DefaultTabController(
+              length: 2,
+              child: NestedScrollView(
+                headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    adminViewRequestsBar("בקשות"),
+                    new SliverPadding(
+                      padding: new EdgeInsets.all(16.0),
+                      sliver: new SliverList(
+                        delegate: new SliverChildListDelegate([
+                          TabBar(
+                            labelColor: Colors.black87,
+                            unselectedLabelColor: Colors.grey,
+                            tabs: [
+                              new Tab(
+                                  icon: Icon(Icons.account_circle_outlined,
+                                  size: 25),
+                                  text: "בקשות הצטרפות"
+                              ),
+                              new Tab(
+                                  icon: Icon(Icons.supervisor_account_sharp,
+                                  size: 25),
+                                  text: "בקשות עזרה"
+                              ),
+                            ],
+                          ),
+                        ]),
+                      ),
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: [
+                    Center(
+                      child: AdminJoinRequestsFeed(curr_user),
+                    ),
+                    Center(
+                      child: AdminHelpRequestsFeed(curr_user),
+                    ),
+                  ],
+                ),
+                // Center(
+
+              ),
+            ),
+      );
+
+      /*return Scaffold(
         appBar: AppBar(
           title: Text('Admin page'),
           centerTitle: true,
@@ -49,7 +99,7 @@ class AdminPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => showAllRequests(curr_user)),
+                            builder: (context) => AdminHelpRequestsFeed(curr_user)),
                       );
                     }
                   ),
@@ -77,6 +127,6 @@ class AdminPage extends StatelessWidget {
             ),
           ),
         ),
-      );
+      );*/
   }
 }

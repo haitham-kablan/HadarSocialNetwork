@@ -9,37 +9,44 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart';
+import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:url_launcher/url_launcher.dart';
 
+import 'adminfeedtile.dart';
 import 'feed_items/help_request_tile.dart';
 
-class AdminJoinRequestsFeed extends StatefulWidget{
-
+class AdminJoinRequestsFeed extends StatelessWidget{
   final Admin admin;
-  AdminJoinRequestsFeed({Key key, this.admin}): super(key: key);
+  AdminJoinRequestsFeed(this.admin);
 
   @override
-  State<StatefulWidget> createState() => AdminJoinRequestsFeedState();
+  Widget build(BuildContext context) {
+    return StreamProvider<List<VerificationRequest>>.value(
+      value: DataBaseService().getVerificationRequests(),
+      child: _AdminJoinRequestsFeed(admin: admin,),
+    );
+  }
+
+}
+
+class _AdminJoinRequestsFeed extends StatefulWidget{
+
+  final Admin admin;
+  _AdminJoinRequestsFeed({Key key, this.admin}): super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _AdminJoinRequestsFeedState();
 
 }
 
 
-class AdminJoinRequestsFeedState extends State<AdminJoinRequestsFeed>{
+class _AdminJoinRequestsFeedState extends State<_AdminJoinRequestsFeed>{
 
   List<VerificationRequest> feed;
-
-  AdminJoinRequestsFeedState(){
-    //**test** todo: remove this
-    /*feed = List();
-    UnregisteredUser testUser1 = UnregisteredUser("מורסי", "0526419285", "morsi@gmail.com", "789456");
-    UnregisteredUser testUser2 = UnregisteredUser("סיראג", "0523636921", "siraj@gmail.com", "456123");
-    feed.add(VerificationRequest(testUser1, "Volunteer", DateTime.now()));
-    feed.add(VerificationRequest(testUser2, "Admin", DateTime.now()));*/
-  }
 
   // adding or removing items from the _feed should go through this function in
   // order for the widget state to be updated
@@ -87,7 +94,8 @@ class AdminJoinRequestsFeedState extends State<AdminJoinRequestsFeed>{
   Widget build(BuildContext context) {
 
     feed = Provider.of<List<VerificationRequest>>(context);
-    List<FeedTile> feedTiles = List();
+    //final requests = Provider.of<List<HelpRequest>>(context);
+    List<FeedTile> feedTiles = [];
 
     if(feed != null) {
       feedTiles = feed.map((VerificationRequest joinRequest) {
@@ -97,33 +105,12 @@ class AdminJoinRequestsFeedState extends State<AdminJoinRequestsFeed>{
       }).toList();
     }
 
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Admin JoinRequests Feed',
-      home: Scaffold(
-        bottomNavigationBar: AdminBottomBar(),
-        backgroundColor: BasicColor.backgroundClr,
-        body: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-              delegate: MySliverAppBar(expandedHeight: 150, title: widget.admin.name),
-              pinned: true,
-            ),
-
-            SliverFillRemaining(
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: ListView(
-                  semanticChildCount: (feed == null) ? 0 : feed.length,
-                  padding: const EdgeInsets.only(bottom: 70.0, top: 100),
-                  children: feedTiles,
-                ),
-              ),
-            ),
-          ],
-        ),
-
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: ListView(
+        semanticChildCount: (feed == null) ? 0 : feed.length,
+        padding: const EdgeInsets.only(bottom: 70.0, top: 10),
+        children: feedTiles,
       ),
     );
 
@@ -135,7 +122,7 @@ class JoinRequestItem extends StatelessWidget {
       : super(key: ObjectKey(joinRequest));
 
   final VerificationRequest joinRequest;
-  final AdminJoinRequestsFeedState parent;
+  final _AdminJoinRequestsFeedState parent;
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +209,7 @@ class JoinRequestStatusWidget extends StatelessWidget {
       : super(key: ObjectKey(joinRequest));
 
   final VerificationRequest joinRequest;
-  final AdminJoinRequestsFeedState feedWidgetObject;
+  final _AdminJoinRequestsFeedState feedWidgetObject;
 
   @override
   Widget build(BuildContext context) {
@@ -315,14 +302,6 @@ class JoinRequestStatusWidget extends StatelessWidget {
                               password: "123456"
                           );*/
 
-                          /*
-                            todo: here we don't know what the password is, therefore
-                            we should keep the user registration at the sign up screen.
-                            here, we should only update a flag which implies that the
-                            user has been authorized or the request is still pending,
-                            or remove the request if rejected..
-
-                          */
                           //TODO:CHANGE CATEGORES
                           feedWidgetObject.handleAcceptVerificationRequest(joinRequest, null);
                           if (Navigator.canPop(context)) {

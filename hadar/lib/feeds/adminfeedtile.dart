@@ -1,6 +1,7 @@
 
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/mainDesign.dart';
+import 'package:hadar/feeds/feed_items/help_request_tile.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/getters/getUserName.dart';
@@ -22,54 +23,39 @@ import '../HelpRequestAdminDialouge.dart';
 
 
 
-class showAllRequests extends StatelessWidget {
+class AdminHelpRequestsFeed extends StatelessWidget {
   final Admin curr_user;
-  showAllRequests(this.curr_user);
+  AdminHelpRequestsFeed(this.curr_user);
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<HelpRequest>>.value(
       value: DataBaseService().getAllRequests(),
-      child: Scaffold(
-        bottomNavigationBar: AdminBottomBar(),
-        backgroundColor: BasicColor.backgroundClr,
-        body: CustomScrollView(
-            slivers: [
-              SliverPersistentHeader(
-                delegate: MySliverAppBar(expandedHeight: 150, title: CurrentUser.curr_user.name),
-                pinned: true,
-              ),
-              SliverFillRemaining( child: AdminFeed(),
-              ),
-            ]
-        ),
-      ),
+      child: _AdminHelpRequestsFeed(),
     );
   }
 }
 
 
 
-class AdminFeed extends StatefulWidget {
+class _AdminHelpRequestsFeed extends StatefulWidget {
   @override
-  _AdminFeedState createState() => _AdminFeedState();
+  _AdminHelpRequestsFeedState createState() => _AdminHelpRequestsFeedState();
 }
 
-class _AdminFeedState extends State<AdminFeed> {
+class _AdminHelpRequestsFeedState extends State<_AdminHelpRequestsFeed> {
   @override
   Widget build(BuildContext context) {
     final requests = Provider.of<List<HelpRequest>>(context);
-
-
 
     return new Directionality(
       textDirection: TextDirection.rtl,
       child: new Builder(
         builder: (BuildContext context) {
           return ListView.builder(
-            padding: const EdgeInsets.only(bottom: 70.0, top: 100),
+            padding: const EdgeInsets.only(bottom: 70.0, top: 10),
             itemCount: (requests == null) ? 0 : requests.length,
             itemBuilder: (context,index){
-              return HelpRequestTile(helpRequestWidget: VolunteerFeedTile(requests[index]));
+              return FeedTile(helpRequestWidget: AdminHelpRequestFeedTile(requests[index]));
             },
           );
         },
@@ -79,41 +65,18 @@ class _AdminFeedState extends State<AdminFeed> {
   }
 }
 
-class HelpRequestTile extends StatefulWidget {
-  final Widget helpRequestWidget;
-  HelpRequestTile({this.helpRequestWidget});
 
-  @override
-  _HelpRequestTileState createState() => _HelpRequestTileState();
-}
 
-class _HelpRequestTileState extends State<HelpRequestTile> {
-  _HelpRequestTileState();
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: Card(
-        margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
-        color: Colors.brown[30],
-        child: widget.helpRequestWidget,
-      ),
-    );
-  }
-}
-
-class VolunteerFeedTile extends StatefulWidget {
+class AdminHelpRequestFeedTile extends StatefulWidget {
   final HelpRequest helpRequest;
 
-  VolunteerFeedTile(this.helpRequest);
+  AdminHelpRequestFeedTile(this.helpRequest);
   @override
-  _VolunteerFeedTileState createState() => _VolunteerFeedTileState();
+  _AdminHelpRequestFeedTileState createState() => _AdminHelpRequestFeedTileState();
 }
 
 
-class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
+class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
 
   @override
   Widget build(BuildContext context) {

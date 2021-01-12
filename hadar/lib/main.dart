@@ -1,3 +1,7 @@
+
+
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +28,12 @@ import 'main_pages/AdminPage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  const double marginSize = kIsWeb ? 300.0 : 0.0;
   runApp(MaterialApp(
-    home: LogInPage(),
+    home: Container(
+        margin: const EdgeInsets.only(left: marginSize, right: marginSize),
+        child: LogInPage(),
+    ),
   ));
 }
 
