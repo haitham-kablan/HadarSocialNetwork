@@ -36,7 +36,7 @@ class AdminPage extends StatelessWidget {
                   return <Widget>[
                     adminViewRequestsBar("בקשות"),
                     new SliverPadding(
-                      padding: new EdgeInsets.all(16.0),
+                      padding: new EdgeInsets.all(2.0),
                       sliver: new SliverList(
                         delegate: new SliverChildListDelegate([
                           TabBar(

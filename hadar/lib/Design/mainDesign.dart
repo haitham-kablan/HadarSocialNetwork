@@ -258,7 +258,8 @@ class adminViewRequestsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-        expandedHeight: 80.0,
+      automaticallyImplyLeading: false,
+      expandedHeight: 80.0,
       floating: false,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
