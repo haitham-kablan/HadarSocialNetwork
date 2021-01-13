@@ -31,7 +31,7 @@ import 'main_pages/AdminPage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  const double marginSize = kIsWeb ? 300.0 : 0.0;
+  const double marginSize = kIsWeb ? 0.0 : 0.0;
   runApp(MaterialApp(
     home: Container(
         margin: const EdgeInsets.only(left: marginSize, right: marginSize),
