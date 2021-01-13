@@ -16,6 +16,8 @@ class father_state{
 
 
 
+
+
 class MyListView extends StatelessWidget {
 
   String Help_request_type;
@@ -33,6 +35,9 @@ class MyListView extends StatelessWidget {
          father_state.father.setState(() {
            father_state.father.provider = DataBaseService().get_requests_for_category(HelpRequestType(Help_request_type),CurrentUser.curr_user.id);
            father_state.father.category = Help_request_type;
+         });
+         volunteer_feed_pafe_state.state.setState(() {
+           volunteer_feed_pafe_state.state.title = Help_request_type;
          });
 
           },
@@ -65,13 +70,13 @@ class _StateFullCategoreisListState extends State<StateFullCategoreisList> {
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(top: 25),
+            margin: EdgeInsets.only(top: 2),
             child: Column(
               children: [
                 Container(height: 1,color: BasicColor.clr,),
                 Container(
                   height: 60,
-                  margin: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(5),
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: categores,
@@ -81,7 +86,7 @@ class _StateFullCategoreisListState extends State<StateFullCategoreisList> {
               ],
             ),
           ),
-          Container(margin: EdgeInsets.only(top: 20),child: Text(category,style: TextStyle(fontSize: 30,color: BasicColor.clr,fontWeight: FontWeight.bold),),),
+         // Container(margin: EdgeInsets.only(top: 20),child: Text(category,style: TextStyle(fontSize: 25,color: BasicColor.clr,fontWeight: FontWeight.bold),),),
           Expanded(child: HelperFeed())
         ],
 

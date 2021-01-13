@@ -30,7 +30,7 @@ class AdminPage extends StatelessWidget {
       bottomNavigationBar: AdminBottomBar(),
       backgroundColor: BasicColor.backgroundClr,
       body: DefaultTabController(
-              length: 2,
+              length: 3,
               child: NestedScrollView(
                 headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
@@ -51,7 +51,12 @@ class AdminPage extends StatelessWidget {
                               new Tab(
                                   icon: Icon(Icons.supervisor_account_sharp,
                                   size: 25),
-                                  text: "בקשות עזרה"
+                                  text: "בקשות ממתינות"
+                              ),
+                              new Tab(
+                                  icon: Icon(Icons.verified_user_outlined,
+                                      size: 25),
+                                  text: "בקשות מאושרות"
                               ),
                             ],
                           ),
@@ -67,6 +72,9 @@ class AdminPage extends StatelessWidget {
                     ),
                     Center(
                       child: AdminHelpRequestsFeed(curr_user),
+                    ),
+                    Center(
+                      // child:,
                     ),
                   ],
                 ),

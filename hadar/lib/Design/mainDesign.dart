@@ -190,7 +190,7 @@ class AdminBottomBar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AdminPage(CurrentUser.curr_user)
+                            builder: (context) => AllUsersView()
                         ),
                       );
                     },
@@ -205,7 +205,8 @@ class AdminBottomBar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AllUsersView()
+                            builder: (context) => AdminPage(CurrentUser.curr_user)
+
                         )
                       );
                     }

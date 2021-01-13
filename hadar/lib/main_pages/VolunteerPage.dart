@@ -12,6 +12,6 @@ class VolunteerPage extends StatelessWidget {
   VolunteerPage(this.curr_user,this.categoers);
   @override
   Widget build(BuildContext context) {
-    return VolunteerFeed(curr_user,categoers);
+    return VolunteerFeedStatefull(curr_user,categoers,categoers[0].Help_request_type);
   }
 }
