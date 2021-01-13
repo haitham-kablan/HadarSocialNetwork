@@ -1,6 +1,7 @@
 
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart';
+import 'package:hadar/users/UserInNeed.dart';
 
 class VerificationRequest{
   UnregisteredUser sender;
@@ -8,9 +9,24 @@ class VerificationRequest{
   DateTime date;
   bool accepted;
   int time;
+  String birthdate;
+  String location;
+  String status;
+  String work ;
+  String birthplace;
+  String spokenlangs ;
+  String firstaidcourse;
+  String mobility;
 
-  VerificationRequest(this.sender, this.type, this.date ){
+
+
+  VerificationRequest(UnregisteredUser sender, Privilege type,DateTime date, {String birthdate = '' ,
+    String location = '',String status = '',String work = '',String birthplace = '',String spokenlangs = '' , String firstaidcourse = '' ,String mobility = ''}) {
     accepted = false;
     time = date.millisecondsSinceEpoch;
   }
+
+
+
+
 }

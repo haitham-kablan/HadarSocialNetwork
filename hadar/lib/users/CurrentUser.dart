@@ -11,6 +11,7 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:provider/provider.dart';
 
@@ -38,6 +39,8 @@ class CurrentUser{
         return UserInNeedPage(curr_user as UserInNeed);
         break;
       case Privilege.Volunteer:
+        List<HelpRequestType> categoreis = await DataBaseService().helpRequestAsAlist();
+        categoreis.add(HelpRequestType('אחר..'));
         return VolunteerPage(curr_user as Volunteer);
         break;
       case Privilege.UnregisterUser:
