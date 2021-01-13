@@ -33,7 +33,7 @@ class CurrentUser{
     for(var i = 0; i < categoers.length; i++){
       categoers_list_items.add(MyListView(categoers[i].description));
     }
-
+    categoers_list_items.add(MyListView('אחר'));
     if(curr_user == null){
       return null;
     }
@@ -46,8 +46,6 @@ class CurrentUser{
         return UserInNeedPage(curr_user as UserInNeed);
         break;
       case Privilege.Volunteer:
-        List<HelpRequestType> categoreis = await DataBaseService().helpRequestAsAlist();
-        categoreis.add(HelpRequestType('אחר..'));
         return VolunteerPage(curr_user as Volunteer , categoers_list_items);
         break;
       case Privilege.UnregisterUser:

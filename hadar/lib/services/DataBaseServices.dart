@@ -484,7 +484,8 @@ class DataBaseService{
   //       .map(VolunteerListFromSnapShot);
   // }
 
-  Stream<List<HelpRequest>> get_requests_for_category(HelpRequestType helpRequestType){
+  Stream<List<HelpRequest>> get_requests_for_category(HelpRequestType helpRequestType , String id){
+    current_vol_id = id;
 
     //TODO - u might delete time
     return allHelpsRequestsCollection.where('category' , isEqualTo: helpRequestType.description).orderBy('time' , descending: true)
@@ -659,6 +660,17 @@ class DataBaseService{
 
   }
 
+  List<HelpRequest> helpRequestListFromSnapShotVerified(QuerySnapshot snapshot){
+    List<HelpRequest> all_req_for_category =  snapshot.docs.map((doc) => HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ))).toList();
+    List<HelpRequest> all_req_for_category_verfied = List();
+    for(var i = 0; i < all_req_for_category.length; i++){
+      if(all_req_for_category[i].status == Status.AVAILABLE || all_req_for_category[i].handler_id == current_vol_id ){
+        all_req_for_category_verfied.add(all_req_for_category[i]);
+      }
+    }
+    return all_req_for_category_verfied;
+  }
+
 }
 
 Status getStatusFromString(String type){
@@ -711,16 +723,7 @@ List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
 
 
 
-List<HelpRequest> helpRequestListFromSnapShotVerified(QuerySnapshot snapshot){
-  List<HelpRequest> all_req_for_category =  snapshot.docs.map((doc) => HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ))).toList();
-  List<HelpRequest> all_req_for_category_verfied = List();
-  for(var i = 0; i < all_req_for_category.length; i++){
-    if(all_req_for_category[i].status == Status.AVAILABLE){
-      all_req_for_category_verfied.add(all_req_for_category[i]);
-    }
-  }
-  return all_req_for_category_verfied;
-}
+
 
 List<HelpRequestType> helpRequestTypeListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>

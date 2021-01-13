@@ -15,6 +15,7 @@ import 'feed_items/category_scrol.dart';
 
 
 class HelperFeed extends StatefulWidget {
+
   @override
   _HelperFeedState createState() => _HelperFeedState();
 }
@@ -55,13 +56,10 @@ class VolunteerFeed extends StatelessWidget {
     List<HelpRequestType> list1 = List<HelpRequestType>();
     list1.add(HelpRequestType('food'));
     list1.add(HelpRequestType('money'));
-
-    return StreamProvider<List<HelpRequest>>.value(
-      value: DataBaseService().getAll_waiting_Requests_for_volunteer(curr_user.id),
-      child: Scaffold(
-        bottomNavigationBar: BottomBar(),
-        backgroundColor: BasicColor.backgroundClr,
-        body: CustomScrollView(
+    return Scaffold(
+      bottomNavigationBar: BottomBar(),
+      backgroundColor: BasicColor.backgroundClr,
+      body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
               delegate: MySliverAppBar(
@@ -73,17 +71,17 @@ class VolunteerFeed extends StatelessWidget {
                 margin: EdgeInsets.only(top: 40),
                 child: Column(
                   children: [
-                    Expanded(child: Categories_list(categoers)),
+                    Expanded(child: StateFullCategoreisList(categoers,DataBaseService().get_requests_for_category(HelpRequestType(categoers[0].Help_request_type),curr_user.id))),
                     //Expanded(child: HelperFeed()),
                   ],
                 ),
               ),
 
             ),
-        ]),
-        // body: HelperFeed(),
-      ),
+          ]),
+      // body: HelperFeed(),
     );
+   
   }
 }
 
