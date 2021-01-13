@@ -23,6 +23,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'feeds/feed_items/category_scrol.dart';
 import 'lang/HebrewText.dart';
 import 'main_pages/AdminPage.dart';
 
@@ -35,7 +36,9 @@ void main() async {
   runApp(MaterialApp(
     home: Container(
         margin: const EdgeInsets.only(left: marginSize, right: marginSize),
-        child: LogInPage(),
+        child: Scaffold(
+          body: LogInPage(),
+        ),
     ),
   ));
 }

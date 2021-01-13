@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/mainDesign.dart';
+import 'package:hadar/feeds/feed_items/VolFeedDropDown.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/CurrentUser.dart';
@@ -9,6 +10,8 @@ import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/feeds/feed_items/help_request_tile.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:provider/provider.dart';
+
+import 'feed_items/category_scrol.dart';
 
 
 class HelperFeed extends StatefulWidget {
@@ -45,7 +48,8 @@ class _HelperFeedState extends State<HelperFeed> {
 
 class VolunteerFeed extends StatelessWidget {
   Volunteer curr_user;
-  VolunteerFeed(this.curr_user);
+  VolunteerFeed(this.curr_user , this.categoers);
+  List<MyListView> categoers;
   @override
   Widget build(BuildContext context) {
     List<HelpRequestType> list1 = List<HelpRequestType>();
@@ -60,10 +64,21 @@ class VolunteerFeed extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
-              delegate: MySliverAppBar(expandedHeight: 150, title: CurrentUser.curr_user.name),
+              delegate: MySliverAppBar(
+                  expandedHeight: 120, title: CurrentUser.curr_user.name),
               pinned: true,
             ),
-            SliverFillRemaining( child: HelperFeed(),
+            SliverFillRemaining(
+              child: Container(
+                margin: EdgeInsets.only(top: 40),
+                child: Column(
+                  children: [
+                    Expanded(child: Categories_list(categoers)),
+                    //Expanded(child: HelperFeed()),
+                  ],
+                ),
+              ),
+
             ),
         ]),
         // body: HelperFeed(),
