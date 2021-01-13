@@ -71,7 +71,7 @@ class VolunteerFeed extends StatelessWidget {
                 margin: EdgeInsets.only(top: 40),
                 child: Column(
                   children: [
-                    Expanded(child: StateFullCategoreisList(categoers,DataBaseService().get_requests_for_category(HelpRequestType(categoers[0].Help_request_type),curr_user.id))),
+                    Expanded(child: StateFullCategoreisList(categoers,DataBaseService().get_requests_for_category(HelpRequestType(categoers[0].Help_request_type),curr_user.id),categoers[0].Help_request_type)),
                     //Expanded(child: HelperFeed()),
                   ],
                 ),

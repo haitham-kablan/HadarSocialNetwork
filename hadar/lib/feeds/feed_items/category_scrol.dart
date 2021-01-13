@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
@@ -31,6 +32,7 @@ class MyListView extends StatelessWidget {
           onTap: (){
          father_state.father.setState(() {
            father_state.father.provider = DataBaseService().get_requests_for_category(HelpRequestType(Help_request_type),CurrentUser.curr_user.id);
+           father_state.father.category = Help_request_type;
          });
 
           },
@@ -43,16 +45,18 @@ class MyListView extends StatelessWidget {
 class StateFullCategoreisList extends StatefulWidget {
   List<MyListView> categores;
   var provider;
-  StateFullCategoreisList(this.categores,this.provider);
+  String category;
+  StateFullCategoreisList(this.categores,this.provider , this.category);
   @override
-  _StateFullCategoreisListState createState() => _StateFullCategoreisListState(categores,provider);
+  _StateFullCategoreisListState createState() => _StateFullCategoreisListState(categores,provider,category);
 }
 
 class _StateFullCategoreisListState extends State<StateFullCategoreisList> {
 
   List<MyListView> categores;
   var provider;
-  _StateFullCategoreisListState(this.categores,this.provider);
+  String category;
+  _StateFullCategoreisListState(this.categores,this.provider,this.category);
   @override
   Widget build(BuildContext context) {
     father_state.father = this;
@@ -77,6 +81,7 @@ class _StateFullCategoreisListState extends State<StateFullCategoreisList> {
               ],
             ),
           ),
+          Container(margin: EdgeInsets.all(20),child: Text(category,style: TextStyle(fontSize: 30,color: BasicColor.clr,fontWeight: FontWeight.bold),),),
           Expanded(child: HelperFeed())
         ],
 
