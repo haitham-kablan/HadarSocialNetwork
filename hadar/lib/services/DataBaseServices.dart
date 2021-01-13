@@ -448,7 +448,7 @@ class DataBaseService{
   Stream<List<HelpRequest>> getAll_approved_Requests() {
 
 
-    return allHelpsRequestsCollection.where('status' , isNotEqualTo: Status.APPROVED.toString().substring(7)).orderBy('time' , descending: true)
+    return allHelpsRequestsCollection.where('status' , isEqualTo: Status.APPROVED.toString().substring(7)).orderBy('time' , descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
 

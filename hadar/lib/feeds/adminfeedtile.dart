@@ -25,12 +25,13 @@ import '../HelpRequestAdminDialouge.dart';
 
 class AdminHelpRequestsFeed extends StatelessWidget {
   final Admin curr_user;
-  AdminHelpRequestsFeed(this.curr_user);
+  final Status status;
+  AdminHelpRequestsFeed(this.curr_user,this.status);
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<HelpRequest>>.value(
-      value: DataBaseService().getAll_unverfied_requests_Requests(),
-      child: _AdminHelpRequestsFeed(),
+      value: status == Status.UNVERFIED ?DataBaseService().getAll_unverfied_requests_Requests() : DataBaseService().getAll_approved_Requests(),
+      child:_AdminHelpRequestsFeed(),
     );
   }
 }
@@ -233,3 +234,5 @@ class ThreeDotsWidget extends StatelessWidget {
     );
   }
 }
+
+

@@ -71,10 +71,13 @@ class AdminPage extends StatelessWidget {
                       child: AdminJoinRequestsFeed(curr_user),
                     ),
                     Center(
-                      child: AdminHelpRequestsFeed(curr_user),
+                      child: AdminHelpRequestsFeed(curr_user,Status.UNVERFIED),
                     ),
                     Center(
-                      // child:,
+                      child:
+                      //Center(child: Text('asd'),)
+                      AdminHelpRequestsFeed(curr_user,Status.APPROVED),
+
                     ),
                   ],
                 ),
