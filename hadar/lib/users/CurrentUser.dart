@@ -1,10 +1,9 @@
 
 
-import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/feeds/Admin_JoinRequest_Feed.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hadar/feeds/feed_items/category_scrol.dart';
-import 'package:flutter/material.dart';
+
 import 'package:hadar/main_pages/AdminPage.dart';
 import 'package:hadar/main_pages/UserInNeedPage.dart';
 import 'package:hadar/main_pages/VolunteerPage.dart';
@@ -22,8 +21,6 @@ import 'User.dart';
 class CurrentUser{
 
   static User curr_user = null;
-  static List<MyListViewStatefull> categoers_list_items = List();
-
 
   User getCurrent() {
     return curr_user;
@@ -32,11 +29,11 @@ class CurrentUser{
   static Future init_user() async{
     curr_user = await DataBaseService().getCurrentUser();
     List<HelpRequestType> categoers = await DataBaseService().helpRequestAsAlist();
+    List<MyListView> categoers_list_items = List();
     for(var i = 0; i < categoers.length; i++){
-      categoers_list_items.add(MyListViewStatefull(categoers[i].description ,i == 0 ? Colors.white : BasicColor.backgroundClr,i));
+      categoers_list_items.add(MyListView(categoers[i].description));
     }
-
-    categoers_list_items.add(MyListViewStatefull('אחר',BasicColor.backgroundClr,categoers_list_items.length));
+    categoers_list_items.add(MyListView('אחר'));
     if(curr_user == null){
       return null;
     }
@@ -49,7 +46,7 @@ class CurrentUser{
         return UserInNeedPage(curr_user as UserInNeed);
         break;
       case Privilege.Volunteer:
-        return VolunteerPage(curr_user as Volunteer);
+        return VolunteerPage(curr_user as Volunteer , categoers_list_items);
         break;
       case Privilege.UnregisterUser:
         print('error in curr user');

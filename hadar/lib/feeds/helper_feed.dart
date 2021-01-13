@@ -49,9 +49,13 @@ class _HelperFeedState extends State<HelperFeed> {
 
 class VolunteerFeed extends StatelessWidget {
   Volunteer curr_user;
-  VolunteerFeed(this.curr_user);
+  VolunteerFeed(this.curr_user , this.categoers);
+  List<MyListView> categoers;
   @override
   Widget build(BuildContext context) {
+    List<HelpRequestType> list1 = List<HelpRequestType>();
+    list1.add(HelpRequestType('food'));
+    list1.add(HelpRequestType('money'));
     return Scaffold(
       bottomNavigationBar: BottomBar(),
       backgroundColor: BasicColor.backgroundClr,
@@ -67,7 +71,7 @@ class VolunteerFeed extends StatelessWidget {
                 margin: EdgeInsets.only(top: 40),
                 child: Column(
                   children: [
-                    Expanded(child: StateFullCategoreisList(DataBaseService().get_requests_for_category(HelpRequestType(CurrentUser.categoers_list_items[0].Help_request_type),curr_user.id))),
+                    Expanded(child: StateFullCategoreisList(categoers,DataBaseService().get_requests_for_category(HelpRequestType(categoers[0].Help_request_type),curr_user.id))),
                     //Expanded(child: HelperFeed()),
                   ],
                 ),
