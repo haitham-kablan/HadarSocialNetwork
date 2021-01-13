@@ -81,7 +81,7 @@ class _StateFullCategoreisListState extends State<StateFullCategoreisList> {
               ],
             ),
           ),
-          Container(margin: EdgeInsets.all(20),child: Text(category,style: TextStyle(fontSize: 30,color: BasicColor.clr,fontWeight: FontWeight.bold),),),
+          Container(margin: EdgeInsets.only(top: 20),child: Text(category,style: TextStyle(fontSize: 30,color: BasicColor.clr,fontWeight: FontWeight.bold),),),
           Expanded(child: HelperFeed())
         ],
 
