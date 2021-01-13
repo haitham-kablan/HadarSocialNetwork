@@ -6,14 +6,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/main.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+
 import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
+import 'package:hadar/users/User.dart' as hadar;
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:intl/intl.dart';
+
+import 'forms/UserInNeedRegPage.dart';
+import 'forms/VolunteerRegPage.dart';
 
 
 class ReigesterPage extends StatefulWidget {
@@ -206,7 +211,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         tripTypes = update_list(0);
                         alert = false;
                         clicked=true;
-                        clicked_priv = Privilege.Admin;
+                        clicked_priv = hadar.Privilege.Admin;
                       });
                     },
                     child: Column(
@@ -222,7 +227,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         tripTypes = update_list(1);
                         alert = false;
                         clicked=true;
-                        clicked_priv = Privilege.UserInNeed;
+                        clicked_priv = hadar.Privilege.UserInNeed;
                       });
                     },
                     child: Column(
@@ -238,7 +243,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         tripTypes = update_list(2);
                         alert = false;
                         clicked=true;
-                        clicked_priv = Privilege.Volunteer;
+                        clicked_priv = hadar.Privilege.Volunteer;
                       });
                     },
                     child: Column(
@@ -296,14 +301,20 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         email: email_Controller.text,
                         password: first_pw_Controller.text
                     );
-
-                    if(clicked_priv == Privilege.UserInNeed){
-                      DataBaseService().addUserInNeedToDataBase(UserInNeed(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text));
-                    }else{
+                    UserInNeed user_in_need;
+                    Volunteer volunteer;
+                    if(clicked_priv == hadar.Privilege.UserInNeed){
+                      user_in_need = UserInNeed(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,0,'','',0,'','','','');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => userInNeedRegisterPage(user_in_need)));
+                    }else if (clicked_priv == hadar.Privilege.Admin){
                       DataBaseService().addVerficationRequestToDb(VerificationRequest(UnregisteredUser(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text),  clicked_priv, DateTime.now()));
+                      Navigator.pop(context);
+                    }else{
+                      volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,'',0,'','','','','','','','');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => volunteerRegisterPage(volunteer)));
                     }
 
-                    Navigator.pop(context);
+
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       setState(() {

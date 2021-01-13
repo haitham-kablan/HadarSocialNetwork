@@ -29,7 +29,7 @@ class AdminHelpRequestsFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<HelpRequest>>.value(
-      value: DataBaseService().getAllRequests(),
+      value: DataBaseService().getAll_unverfied_requests_Requests(),
       child: _AdminHelpRequestsFeed(),
     );
   }
