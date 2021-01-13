@@ -8,10 +8,9 @@ import 'package:hadar/users/Volunteer.dart';
 class VolunteerPage extends StatelessWidget {
 
   final Volunteer curr_user;
-  List<MyListView> categoers;
-  VolunteerPage(this.curr_user,this.categoers);
+  VolunteerPage(this.curr_user);
   @override
   Widget build(BuildContext context) {
-    return VolunteerFeed(curr_user,categoers);
+    return VolunteerFeed(curr_user);
   }
 }
