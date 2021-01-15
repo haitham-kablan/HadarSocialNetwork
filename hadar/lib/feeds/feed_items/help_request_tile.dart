@@ -83,7 +83,7 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
                           Spacer(),
                           Spacer(),
                           CallWidget(widget.helpRequest),
-                          ThreeDotsWidget(widget.helpRequest)]
+                  widget.helpRequest.handler_id == ''  ? ThreeDotsWidget(widget.helpRequest): Container()]
                 ),
                 HebrewText(widget.helpRequest.description),
               ]
