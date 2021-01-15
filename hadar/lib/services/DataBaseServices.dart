@@ -23,6 +23,8 @@ import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 
+import '../main.dart';
+
 class DataBaseService{
 
   //static final String user_in_need_requests = 'REQUESTS';
@@ -624,13 +626,7 @@ class DataBaseService{
   Future Sign_out(var context) async{
     await fb_auth.FirebaseAuth.instance.signOut();
 
-    await Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => LogInPage(),
-      ),
-          (route) => false,
-    );
+    main();
 
 
   }
