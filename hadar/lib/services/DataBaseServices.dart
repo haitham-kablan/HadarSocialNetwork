@@ -625,6 +625,10 @@ class DataBaseService{
   }
   Future Sign_out(var context) async{
     await fb_auth.FirebaseAuth.instance.signOut();
+    //print('length is :' , Navigator.)
+    // while (Navigator.canPop(context)){
+    //   Navigator.pop(context);
+    // }
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
