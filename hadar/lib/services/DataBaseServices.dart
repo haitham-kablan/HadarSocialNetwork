@@ -625,8 +625,13 @@ class DataBaseService{
   }
   Future Sign_out(var context) async{
     await fb_auth.FirebaseAuth.instance.signOut();
-
-    main();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => LogInPage(),
+      ),
+          (route) => false,
+    );
 
 
   }

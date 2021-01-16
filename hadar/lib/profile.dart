@@ -211,10 +211,8 @@ class ProfilePage extends StatelessWidget {
                           letterSpacing: 2.0,
                           fontWeight: FontWeight.w400),
                     ),
-                  onPressed:() {
-                    FirebaseAuth.instance.signOut();
-                    Navigator.push(context,MaterialPageRoute(
-                        builder: (context) =>LogInPage()) );
+                  onPressed:() async {
+                    await DataBaseService().Sign_out(context);
                   },),
 
                 ],
