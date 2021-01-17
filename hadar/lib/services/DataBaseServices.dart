@@ -41,7 +41,7 @@ class DataBaseService{
   final CollectionReference verificationsRequestsCollection = FirebaseFirestore.instance.collection(verification_requests);
   final CollectionReference allHelpsRequestsCollection = FirebaseFirestore.instance.collection('ALL_HELP_REQUESTS');
   final CollectionReference tokens = FirebaseFirestore.instance.collection('TOKENS');
-
+  final CollectionReference annoymous_users = FirebaseFirestore.instance.collection('annoymous_users');
 
   
   Future rateVolunteer(String to_rate_id , double number_of_stars) async{
@@ -195,6 +195,44 @@ class DataBaseService{
 
   }
 
+  Future addHelpRequestToDataBaseForUserInNeedAsAdmin(HelpRequest helpRequest , UserInNeed user) async{
+
+    Map<String,dynamic> help_req_to_add = Map();
+    help_req_to_add['category'] = helpRequest.category.description;
+    help_req_to_add['sender_id'] = helpRequest.sender_id;
+    help_req_to_add['description'] = helpRequest.description;
+    help_req_to_add['date'] = helpRequest.date.toString();
+    help_req_to_add['time'] = helpRequest.time;
+    help_req_to_add['handler_id'] = helpRequest.handler_id;
+    help_req_to_add['status'] = Status.AVAILABLE.toString().substring(7);
+
+
+
+    allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(help_req_to_add);
+
+    Map<String,dynamic> to_add = Map();
+
+    to_add['name'] = user.name;
+    to_add['phoneNumber'] = user.phoneNumber;
+    to_add['email'] = user.email;
+    to_add['id'] = user.id;
+    to_add['privilege'] = user.privilege.toString().substring(10);
+
+    to_add['Age'] = user.Age;
+    to_add['Location'] = user.Location;
+    to_add['Status'] = user.Status;
+    to_add['numKids'] = user.numKids;
+    to_add['eduStatus'] = user.eduStatus;
+    to_add['homePhone'] = user.homePhone;
+    to_add['specialStatus'] = user.specialStatus;
+    to_add['Rav7a'] = user.Rav7a;
+
+    annoymous_users.doc(user.id).set(to_add);
+
+    //TODO : add already user in need to db with given bratem
+
+  }
+
   /*/
     this function will also put the reqeust to the relvenat voulnteers
    */
@@ -314,8 +352,10 @@ class DataBaseService{
     Map<String,dynamic> to_add = Map();
 
     to_add['description'] = helpRequestType.description;
-    return await helpRequestsTypeCollection.doc().set(to_add);
+    return await helpRequestsTypeCollection.doc(helpRequestType.description).set(to_add);
   }
+
+
 
   /*
   this function move the request from pending to accepted collection.
