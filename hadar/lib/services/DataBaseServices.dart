@@ -508,7 +508,7 @@ class DataBaseService{
         .map(AdminListFromSnapShot);
   }
 
-  Stream<List<hadar.User>> getAllUsersInNeed(){
+  Stream<List<UserInNeed>> getAllUsersInNeed(){
 
     return userInNeedCollection
         .snapshots()
