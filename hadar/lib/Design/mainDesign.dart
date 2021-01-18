@@ -4,6 +4,7 @@ import 'package:hadar/feeds/adminfeedtile.dart';
 import 'package:hadar/main_pages/AdminPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
 
+import '../adminProfile.dart';
 import '../profile.dart';
 import '../feeds/viewRegisteredUsers.dart';
 import 'basicTools.dart';
@@ -176,7 +177,7 @@ class AdminBottomBar extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProfilePage()
+                            builder: (context) => AdminProfile()
                         ),
                       );
                     },
