@@ -32,7 +32,7 @@ class AdminRequestWindow extends StatelessWidget {
 
   void init() {
     this.desBox = DescriptonBox(title: 'פירוט', parent: parent);
-    this.desUser = DescriptonBox(title: 'תיאור משתמש', parent: parent);
+    this.desUser = DescriptonBox(title: 'שם', parent: parent);
     this.desId = DescriptonBox(title: 'תעודת זהות', parent: parent);
     this.drop = Dropdown(desBox, types);
   }
@@ -77,6 +77,7 @@ class AdminRequestWindow extends StatelessWidget {
                   RaisedButton(
                     onPressed: () {
                       desBox.processText();
+
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => AdminProfile()),

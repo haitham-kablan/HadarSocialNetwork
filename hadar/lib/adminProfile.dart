@@ -218,9 +218,7 @@ class AdminProfile extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       onPressed:() {
-                        FirebaseAuth.instance.signOut();
-                        Navigator.push(context,MaterialPageRoute(
-                            builder: (context) =>LogInPage()) );
+                        DataBaseService().Sign_out(context);
                       },),
                   ],
                 ),
