@@ -13,15 +13,18 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import 'Design/mainDesign.dart';
+import 'adminProfile.dart';
 import 'feeds/user_inneed_feed.dart';
 
-class RequestWindow extends StatelessWidget {
-  HelpRequestFeedState parent;
+class AdminRequestWindow extends StatelessWidget {
+  AdminProfile parent;
   DescriptonBox desBox;
+  DescriptonBox desUser;
+  DescriptonBox desId;
   Dropdown drop;
   List<HelpRequestType> types;
 
-  RequestWindow(HelpRequestFeedState parent, List<HelpRequestType> types) {
+  AdminRequestWindow(AdminProfile parent, List<HelpRequestType> types) {
     this.parent = parent;
     this.types = types;
     init();
@@ -29,6 +32,8 @@ class RequestWindow extends StatelessWidget {
 
   void init() {
     this.desBox = DescriptonBox(title: 'פירוט', parent: parent);
+    this.desUser = DescriptonBox(title: 'תיאור משתמש', parent: parent);
+    this.desId = DescriptonBox(title: 'תעודת זהות', parent: parent);
     this.drop = Dropdown(desBox, types);
   }
 
@@ -36,7 +41,7 @@ class RequestWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        bottomNavigationBar: BottomBar(),
+        bottomNavigationBar: AdminBottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
@@ -46,19 +51,39 @@ class RequestWindow extends StatelessWidget {
             ),
             SliverFillRemaining(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 120,
-                    ),
+                child: Column( children:[
+                  SizedBox(
+                    height: 100,
+                  ),
+                  Container(
+                    height: 100,
+                    child: desUser,
+                  ),
+                  Container(
+                    height: 100,
+                    child: desId,
+                  ),
                     Container(
-                      height: 100,
+                      height: 50,
                       child: drop,
                     ),
                     Container(
-                      height: 140,
+                      height: 100,
                       child: desBox,
                     ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  RaisedButton(
+                    onPressed: () {
+                      desBox.processText();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AdminProfile()),
+                      );
+                    },
+                    child: Text('אישור'),
+                  ),
                   ],
                 ),
               ),
@@ -149,11 +174,16 @@ class DescriptonBox extends StatefulWidget {
   DescriptonBox({Key key, this.title, this.parent}) : super(key: key);
   _DescriptonBox desBoxState = _DescriptonBox();
   final String title;
-  final HelpRequestFeedState parent;
+  final AdminProfile parent;
 
   void setSelectedType(HelpRequestType selectedType) {
     desBoxState.setSelectedType(selectedType);
   }
+
+  void processText() {
+    desBoxState.processText();
+  }
+
 
   @override
   _DescriptonBox createState() => desBoxState;
@@ -171,33 +201,21 @@ class _DescriptonBox extends State<DescriptonBox> {
     });
   }
 
-  void _processText() {
+  void processText() {
     setState(() {
-      helpRequestType = HelpRequestType(_inputtext);
-      _inputtext = inputtextField.text;
-      helpRequest =
-          HelpRequest(helpRequestType, _inputtext, DateTime.now(), CurrentUser.curr_user.id,'',Status.UNVERFIED);
-      print("input text" + _inputtext);
-      print("helpRequest" + helpRequestType.description);
-
-      widget.parent.handleFeedChange(helpRequest, true);
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => UserInNeedHelpRequestsFeed()),);
-      // if (Navigator.canPop(context)) {
-      //   Navigator.pop(
-      //     context,
-      //   );
-      // }
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) {
-          return StreamProvider<List<HelpRequest>>.value(
-            value: DataBaseService().getUserHelpRequests(CurrentUser.curr_user as UserInNeed),
-            child: UserInNeedHelpRequestsFeed(),
-          );
-        }),
-      );
-    }
-    );
+      // helpRequestType = HelpRequestType(_inputtext);
+      // _inputtext = inputtextField.text;
+      // helpRequest = HelpRequest(helpRequestType, _inputtext, DateTime.now(),
+      //     CurrentUser.curr_user.id, '', Status.UNVERFIED);
+      // print("input text" + _inputtext);
+      // print("helpRequest" + helpRequestType.description);
+      // //todo add request to data base
+      //
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => AdminProfile()),
+      // );
+    });
   }
 
   @override
@@ -208,7 +226,7 @@ class _DescriptonBox extends State<DescriptonBox> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(18.0),
                 child: Directionality(
                     textDirection: TextDirection.rtl,
                     child: TextField(
@@ -220,12 +238,12 @@ class _DescriptonBox extends State<DescriptonBox> {
                         labelText: widget.title,
                       ),
                     ))),
-            RaisedButton(
-              onPressed: () {
-                _processText();
-              },
-              child: Text('אישור'),
-            )
+            // RaisedButton(
+            //   onPressed: () {
+            //     _processText();
+            //   },
+            //   child: Text('אישור'),
+            // )
           ],
         ),
       ),

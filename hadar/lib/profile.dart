@@ -55,9 +55,6 @@ class ProfilePage extends StatelessWidget {
   ProfilePage() {
     user = CurrentUser.curr_user;
     switch(user.privilege){
-      case Privilege.Admin:
-        privilege= 'Admin';
-        break;
       case Privilege.UserInNeed:
         privilege= 'User in need';
         break;
@@ -67,12 +64,6 @@ class ProfilePage extends StatelessWidget {
     }
   }
 
-  Widget adminOrReg(){
-    if(user.privilege==Privilege.Admin)
-      return AdminBottomBar();
-    else
-      return BottomBar();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +71,7 @@ class ProfilePage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Profile',
       home: Scaffold(
-        bottomNavigationBar: adminOrReg(),
+        bottomNavigationBar: BottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
           slivers: [
