@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/Annoymous_user.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart' as hadar;
@@ -43,7 +44,19 @@ class DataBaseService{
   final CollectionReference tokens = FirebaseFirestore.instance.collection('TOKENS');
   final CollectionReference annoymous_users = FirebaseFirestore.instance.collection('annoymous_users');
 
-  
+
+  Future add_anonmous_user_to_db(Annoymous_user user){
+
+    Map<String,dynamic> to_add = Map();
+
+    to_add['name'] = user.name;
+    to_add['phoneNumber'] = user.phoneNumber;
+    to_add['email'] = user.email;
+    to_add['id'] = user.id;
+    to_add['privilege'] = user.privilege.toString().substring(10);
+
+    annoymous_users.doc(user.id).set(to_add);
+  }
   Future rateVolunteer(String to_rate_id , double number_of_stars) async{
 
 
@@ -195,7 +208,7 @@ class DataBaseService{
 
   }
 
-  Future addHelpRequestToDataBaseForUserInNeedAsAdmin(HelpRequest helpRequest , UserInNeed user) async{
+  Future addHelpRequestToDataBaseForUserInNeedAsAdmin(HelpRequest helpRequest , Annoymous_user user) async{
 
     Map<String,dynamic> help_req_to_add = Map();
     help_req_to_add['category'] = helpRequest.category.description;
@@ -218,18 +231,8 @@ class DataBaseService{
     to_add['id'] = user.id;
     to_add['privilege'] = user.privilege.toString().substring(10);
 
-    to_add['Age'] = user.Age;
-    to_add['Location'] = user.Location;
-    to_add['Status'] = user.Status;
-    to_add['numKids'] = user.numKids;
-    to_add['eduStatus'] = user.eduStatus;
-    to_add['homePhone'] = user.homePhone;
-    to_add['specialStatus'] = user.specialStatus;
-    to_add['Rav7a'] = user.Rav7a;
-
     annoymous_users.doc(user.id).set(to_add);
 
-    //TODO : add already user in need to db with given bratem
 
   }
 
@@ -405,6 +408,7 @@ class DataBaseService{
       here i know that i want user in need , therfore i put as user in need , so i can
       reach its fields
    */
+  //TODO tell hsenn
   Future getUserById(String id,hadar.Privilege privilege) async{
 
     DocumentSnapshot doc;
@@ -446,6 +450,20 @@ class DataBaseService{
 
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
           doc.data()['id'] ?? ''  ,doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
+    }
+
+    if(privilege == hadar.Privilege.Annoymous){
+
+      await annoymous_users.doc(id).get()
+          .then((document) => doc = document);
+
+      if (doc == null){
+        return null;
+      }
+
+      return  Annoymous_user(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['id'] ?? '' );
+
     }
   }
 
