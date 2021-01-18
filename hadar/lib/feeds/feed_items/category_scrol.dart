@@ -73,7 +73,7 @@ class _StateFullCategoreisListState extends State<StateFullCategoreisList> {
             margin: EdgeInsets.only(top: 2),
             child: Column(
               children: [
-                Container(height: 1,color: BasicColor.clr,),
+                //Container(height: 1,color: BasicColor.clr,),
                 Container(
                   height: 60,
                   margin: EdgeInsets.all(5),
