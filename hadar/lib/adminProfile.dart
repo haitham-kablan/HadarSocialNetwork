@@ -74,7 +74,7 @@ class _DescriptonBox extends State<DescriptonBox> {
 
 class AdminProfile extends StatelessWidget {
   a.User user=CurrentUser.curr_user;
-  DescriptonBox desBox =DescriptonBox();
+  DescriptonBox desBox;
 
   Widget addCategory(BuildContext context) {
     return new AlertDialog( backgroundColor: BasicColor.backgroundClr,
@@ -84,8 +84,6 @@ class AdminProfile extends StatelessWidget {
         new FlatButton(
           onPressed: () {
             desBox.processText();
-            desBox=null;
-            desBox = DescriptonBox();
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('אישור'),
@@ -172,6 +170,7 @@ class AdminProfile extends StatelessWidget {
                               ),
                               RaisedButton(
                                 onPressed: () {
+                                  desBox = DescriptonBox();
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) => addCategory(context),

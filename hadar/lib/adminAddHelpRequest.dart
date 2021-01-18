@@ -23,6 +23,10 @@ class AdminRequestWindow extends StatelessWidget {
   DescriptonBox desId;
   Dropdown drop;
   List<HelpRequestType> types;
+  String userDescription;
+  String userId;
+  String requestDescription;
+  HelpRequestType helpRequestType;
 
   AdminRequestWindow(AdminProfile parent, List<HelpRequestType> types) {
     this.parent = parent;
@@ -31,7 +35,7 @@ class AdminRequestWindow extends StatelessWidget {
   }
 
   void init() {
-    this.desBox = DescriptonBox(title: 'פירוט', parent: parent);
+    this.desBox = DescriptonBox(title: 'תיאור בקשה', parent: parent);
     this.desUser = DescriptonBox(title: 'תיאור משתמש', parent: parent);
     this.desId = DescriptonBox(title: 'תעודת זהות', parent: parent);
     this.drop = Dropdown(desBox, types);
@@ -76,7 +80,12 @@ class AdminRequestWindow extends StatelessWidget {
                   ),
                   RaisedButton(
                     onPressed: () {
-                      desBox.processText();
+                      userDescription = desUser.getDataEntered();
+                      userId = desId.getDataEntered();
+                      requestDescription = desBox.getDataEntered();
+                      helpRequestType=drop.getSelectedType();
+                      //TODO: Add to data base
+                      
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => AdminProfile()),
@@ -180,10 +189,17 @@ class DescriptonBox extends StatefulWidget {
     desBoxState.setSelectedType(selectedType);
   }
 
+  String getDataEntered(){
+    return desBoxState.getDataEntered();
+  }
+
   void processText() {
     desBoxState.processText();
   }
 
+  HelpRequestType getHelpRequestType() {
+    return desBoxState.getHelpRequestType();
+  }
 
   @override
   _DescriptonBox createState() => desBoxState;
@@ -195,15 +211,25 @@ class _DescriptonBox extends State<DescriptonBox> {
   TextEditingController inputtextField = TextEditingController();
   HelpRequestType helpRequestType;
 
+
+
   void setSelectedType(HelpRequestType selectedType) {
     setState(() {
       _inputtext = selectedType.description;
     });
   }
 
+  HelpRequestType getHelpRequestType() {
+    return helpRequestType;
+  }
+
+  String getDataEntered(){
+    return _inputtext;
+  }
+
   void processText() {
     setState(() {
-      // helpRequestType = HelpRequestType(_inputtext);
+      helpRequestType = HelpRequestType(_inputtext);
       // _inputtext = inputtextField.text;
       // helpRequest = HelpRequest(helpRequestType, _inputtext, DateTime.now(),
       //     CurrentUser.curr_user.id, '', Status.UNVERFIED);

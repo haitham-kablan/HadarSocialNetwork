@@ -80,135 +80,137 @@ class ProfilePage extends StatelessWidget {
               pinned: true,
             ),
             SliverFillRemaining(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 120,
-                  ),
-                  Text(
-                    user.name,
-                    style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.blueGrey,
-                        letterSpacing: 2.0,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    privilege ,
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.black45,
-                        letterSpacing: 2.0,
-                        fontWeight: FontWeight.w300),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  // ProfileBanner(),
-                  // SizedBox(
-                  //   height: 30,
-                  // ),
-                  Card(
-                    margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Text("דירוג",
-                                  style: TextStyle(
-                                      color: Colors.blueAccent,
-                                      fontSize: 22.0,
-                                      fontWeight: FontWeight.w600
-                                  ),),
-                                SizedBox(
-                                  height: 7,
-                                ),
-                                //ToDo add rank to database and user class
-                                Text('20',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 22.0,
-                                      fontWeight: FontWeight.w300
-                                  ),)
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child:
-                            Column(
-                              children: [
-                                Text("בקשות",
-                                  style: TextStyle(
-                                      color: Colors.blueAccent,
-                                      fontSize: 22.0,
-                                      fontWeight: FontWeight.w600
-                                  ),),
-                                SizedBox(
-                                  height: 7,
-                                ),
-                                Text("1",
-                                  //Todo get the number of requests added by this user
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 22.0,
-                                      fontWeight: FontWeight.w300
-                                  ),),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 120,
                     ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    user.phoneNumber+'  :' + 'מספר טלפון',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.blueGrey,
-                        letterSpacing: 2.0,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  SizedBox(
-                    height:20,
-                  ),
-                  Text(
-                    user.email +'  :' + 'אימיל',
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.blueGrey,
-                        letterSpacing: 2.0,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  SizedBox(
-                    height:40,
-                  ),
-                  FlatButton(
-                    child: Text(
-                      'Sign out',
+                    Text(
+                      user.name,
                       style: TextStyle(
-                          fontSize: 20.0,
-                          decoration: TextDecoration.underline,
-                          color: BasicColor.clr,
+                          fontSize: 25.0,
+                          color: Colors.blueGrey,
                           letterSpacing: 2.0,
                           fontWeight: FontWeight.w400),
                     ),
-                  onPressed:() {
-                    FirebaseAuth.instance.signOut();
-                    Navigator.push(context,MaterialPageRoute(
-                        builder: (context) =>LogInPage()) );
-                  },),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      privilege ,
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.black45,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w300),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    // ProfileBanner(),
+                    // SizedBox(
+                    //   height: 30,
+                    // ),
+                    Card(
+                      margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Text("דירוג",
+                                    style: TextStyle(
+                                        color: Colors.blueAccent,
+                                        fontSize: 22.0,
+                                        fontWeight: FontWeight.w600
+                                    ),),
+                                  SizedBox(
+                                    height: 7,
+                                  ),
+                                  //ToDo add rank to database and user class
+                                  Text('20',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 22.0,
+                                        fontWeight: FontWeight.w300
+                                    ),)
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child:
+                              Column(
+                                children: [
+                                  Text("בקשות",
+                                    style: TextStyle(
+                                        color: Colors.blueAccent,
+                                        fontSize: 22.0,
+                                        fontWeight: FontWeight.w600
+                                    ),),
+                                  SizedBox(
+                                    height: 7,
+                                  ),
+                                  Text("1",
+                                    //Todo get the number of requests added by this user
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 22.0,
+                                        fontWeight: FontWeight.w300
+                                    ),),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Text(
+                      user.phoneNumber+'  :' + 'מספר טלפון',
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.blueGrey,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height:20,
+                    ),
+                    Text(
+                      user.email +'  :' + 'אימיל',
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.blueGrey,
+                          letterSpacing: 2.0,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height:40,
+                    ),
+                    FlatButton(
+                      child: Text(
+                        'Sign out',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            decoration: TextDecoration.underline,
+                            color: BasicColor.clr,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    onPressed:() {
+                      FirebaseAuth.instance.signOut();
+                      Navigator.push(context,MaterialPageRoute(
+                          builder: (context) =>LogInPage()) );
+                    },),
 
-                ],
+                  ],
+                ),
               ),
             ),
           ],
