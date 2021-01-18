@@ -1,7 +1,7 @@
 
 
 
-enum Privilege {Admin, UserInNeed, Volunteer, UnregisterUser}
+enum Privilege {Admin, UserInNeed, Volunteer, UnregisterUser,Annoymous}
 
 class User{
   String name;
