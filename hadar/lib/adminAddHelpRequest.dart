@@ -77,11 +77,13 @@ class AdminRequestWindow extends StatelessWidget {
                   RaisedButton(
                     onPressed: () {
                       desBox.processText();
-
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AdminProfile()),
-                      );
+                      //TODO : ask  hannen
+                      //user_to_add = UserInNeed(Privilege.Annoymous, name, phoneNumber, email, isSignedIn, id, Age, Location, Status, numKids, eduStatus, homePhone, specialStatus, Rav7a)
+                      Navigator.pop(context);
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => AdminProfile()),
+                      // );
                     },
                     child: Text('אישור'),
                   ),

@@ -304,7 +304,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     UserInNeed user_in_need;
                     Volunteer volunteer;
                     if(clicked_priv == hadar.Privilege.UserInNeed){
-                      user_in_need = UserInNeed(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,0,'','',0,'','','','');
+                      user_in_need = UserInNeed(hadar.Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,0,'','',0,'','','','');
 
                       Navigator.push(context, MaterialPageRoute(builder: (context) => userInNeedRegisterPage(user_in_need)));
                     }else if (clicked_priv == hadar.Privilege.Admin){

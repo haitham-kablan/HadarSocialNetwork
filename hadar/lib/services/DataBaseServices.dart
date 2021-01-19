@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/Admin.dart';
-import 'package:hadar/users/Annoymous_user.dart';
+
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart' as hadar;
@@ -42,21 +42,10 @@ class DataBaseService{
   final CollectionReference verificationsRequestsCollection = FirebaseFirestore.instance.collection(verification_requests);
   final CollectionReference allHelpsRequestsCollection = FirebaseFirestore.instance.collection('ALL_HELP_REQUESTS');
   final CollectionReference tokens = FirebaseFirestore.instance.collection('TOKENS');
-  final CollectionReference annoymous_users = FirebaseFirestore.instance.collection('annoymous_users');
 
 
-  Future add_anonmous_user_to_db(Annoymous_user user){
 
-    Map<String,dynamic> to_add = Map();
 
-    to_add['name'] = user.name;
-    to_add['phoneNumber'] = user.phoneNumber;
-    to_add['email'] = user.email;
-    to_add['id'] = user.id;
-    to_add['privilege'] = user.privilege.toString().substring(10);
-
-    annoymous_users.doc(user.id).set(to_add);
-  }
   Future rateVolunteer(String to_rate_id , double number_of_stars) async{
 
 
@@ -208,33 +197,7 @@ class DataBaseService{
 
   }
 
-  Future addHelpRequestToDataBaseForUserInNeedAsAdmin(HelpRequest helpRequest , Annoymous_user user) async{
 
-    Map<String,dynamic> help_req_to_add = Map();
-    help_req_to_add['category'] = helpRequest.category.description;
-    help_req_to_add['sender_id'] = helpRequest.sender_id;
-    help_req_to_add['description'] = helpRequest.description;
-    help_req_to_add['date'] = helpRequest.date.toString();
-    help_req_to_add['time'] = helpRequest.time;
-    help_req_to_add['handler_id'] = helpRequest.handler_id;
-    help_req_to_add['status'] = Status.AVAILABLE.toString().substring(7);
-
-
-
-    allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(help_req_to_add);
-
-    Map<String,dynamic> to_add = Map();
-
-    to_add['name'] = user.name;
-    to_add['phoneNumber'] = user.phoneNumber;
-    to_add['email'] = user.email;
-    to_add['id'] = user.id;
-    to_add['privilege'] = user.privilege.toString().substring(10);
-
-    annoymous_users.doc(user.id).set(to_add);
-
-
-  }
 
   /*/
     this function will also put the reqeust to the relvenat voulnteers
@@ -422,7 +385,7 @@ class DataBaseService{
         return null;
       }
 
-      return UserInNeed(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+      return UserInNeed(getTypeFromString(doc.data()['privilege']) ,doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
           doc.data()['id'] ?? '' ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
     }
 
@@ -452,19 +415,7 @@ class DataBaseService{
           doc.data()['id'] ?? ''  ,doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
     }
 
-    if(privilege == hadar.Privilege.Annoymous){
 
-      await annoymous_users.doc(id).get()
-          .then((document) => doc = document);
-
-      if (doc == null){
-        return null;
-      }
-
-      return  Annoymous_user(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' );
-
-    }
   }
 
   // Stream<List<HelpRequest>> getUserHelpRequests(hadar.User user) {
@@ -607,7 +558,7 @@ class DataBaseService{
         doc = querySnapshot.docs[i];
       }
 
-      return UserInNeed(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+      return UserInNeed(hadar.Privilege.UserInNeed , doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
           doc.data()['id'] ?? '' ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
     }
 
@@ -809,9 +760,18 @@ List<Admin> AdminListFromSnapShot(QuerySnapshot snapshot){
 
 List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
 
-  return snapshot.docs.map((doc) =>
-      UserInNeed(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+  List<UserInNeed> all_users =  snapshot.docs.map((doc) =>
+      UserInNeed( getTypeFromString(doc.data()['privilege']), doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
   doc.data()['id'] ?? '' ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' )).toList();
+  List<UserInNeed> all_users_without_annoy = List();
+  for(var i = 0; i < all_users.length; i++){
+    if(all_users[i].privilege == hadar.Privilege.UserInNeed){
+      all_users_without_annoy.add(all_users[i]);
+    }
+  }
+  return all_users_without_annoy;
+
+
 }
 
 
