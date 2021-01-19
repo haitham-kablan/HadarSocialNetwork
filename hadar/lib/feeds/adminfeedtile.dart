@@ -110,7 +110,8 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
                   Spacer(),
                   Spacer(),
                   CallWidget(widget.helpRequest),
-                  ThreeDotsWidget(widget.helpRequest)]
+                  //ThreeDotsWidget(widget.helpRequest)
+                ]
                 ),
                 HebrewText(widget.helpRequest.description),
               ]
