@@ -128,15 +128,15 @@ class _LogInPageState extends State<LogInPage> {
                           email: email_control.text,
                           password: pw_control.text);
 
-                       if (!FirebaseAuth.instance.currentUser.emailVerified) {
-                         await FirebaseAuth.instance.currentUser.sendEmailVerification();
-                         await FirebaseAuth.instance.signOut();
-                         setState(() {
-                           _error = 'נא לאמת את הקישור שנשלח לך במיל';
-                           show_spinner = false;
-                         });
-                         return;
-                       }
+                       // if (!FirebaseAuth.instance.currentUser.emailVerified) {
+                       //   await FirebaseAuth.instance.currentUser.sendEmailVerification();
+                       //   await FirebaseAuth.instance.signOut();
+                       //   setState(() {
+                       //     _error = 'נא לאמת את הקישור שנשלח לך במיל';
+                       //     show_spinner = false;
+                       //   });
+                       //   return;
+                       // }
                       bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
                       if(!is_verfied){
                         await FirebaseAuth.instance.signOut();

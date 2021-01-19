@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/feeds/AdminVerifiedHelpRequestsFeed.dart';
 
 import 'package:hadar/feeds/Admin_JoinRequest_Feed.dart';
 
@@ -76,7 +77,7 @@ class AdminPage extends StatelessWidget {
                     Center(
                       child:
                       //Center(child: Text('asd'),)
-                      AdminHelpRequestsFeed(curr_user,Status.APPROVED),
+                      AdminVerifiedHelpRequestsFeed(curr_user,Status.APPROVED),
 
                     ),
                   ],

@@ -6,7 +6,7 @@ import 'UnregisteredUser.dart';
 class Annoymous_user extends RegisteredUser{
   List users;
 
-  Admin(String name, String phoneNumber, String email, bool isSignedIn , String id)
+  Annoymous_user(String name, String phoneNumber, String email, bool isSignedIn , String id)
       : super(name, phoneNumber, email, Privilege.Admin, isSignedIn,id) {
 
     users = new List<RegisteredUser>();
