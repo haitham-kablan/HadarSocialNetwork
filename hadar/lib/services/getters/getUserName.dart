@@ -146,7 +146,8 @@ class GetHelpRequestTileUserInfo extends StatelessWidget {
               SizedBox(
                 height: 7,
               ),
-              Text("${data['Location']}"
+              Text("הדר, הרצל 9"
+              // Text("${data['Location']}"
                 , style: TextStyle(
                     color: Colors.black,
                     fontSize: fontSize,
