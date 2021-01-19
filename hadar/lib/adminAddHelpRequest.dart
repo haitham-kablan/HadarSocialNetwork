@@ -75,10 +75,13 @@ class AdminRequestWindow extends StatelessWidget {
                     height: 40,
                   ),
                   RaisedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       desBox.processText();
                       //TODO : ask  hannen
-                      //user_to_add = UserInNeed(Privilege.Annoymous, name, phoneNumber, email, isSignedIn, id, Age, Location, Status, numKids, eduStatus, homePhone, specialStatus, Rav7a)
+                      UserInNeed user_to_add = UserInNeed(Privilege.Annoymous, 'name', 'phoneNumber', 'email', false, 'id', 0, 'Location', 'Status', 0, 'eduStatus', 'homePhone', 'specialStatus', 'Rav7a');
+                      HelpRequest help_req= HelpRequest(HelpRequestType('3de'), 'description', DateTime.now(), 'id', '', Status.AVAILABLE);
+                      await DataBaseService().addUserInNeedToDataBase(user_to_add);
+                      DataBaseService().addHelpRequestToDataBaseForUserInNeed(help_req);
                       Navigator.pop(context);
                       // Navigator.push(
                       //   context,
