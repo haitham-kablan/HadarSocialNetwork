@@ -19,10 +19,20 @@ import 'feeds/user_inneed_feed.dart';
 class AdminRequestWindow extends StatelessWidget {
   AdminProfile parent;
   DescriptonBox desBox;
-  DescriptonBox desUser;
+  DescriptonBox desAge;
   DescriptonBox desId;
+  DescriptonBox desLocation;
+  DescriptonBox desName;
+  DescriptonBox desPhone;
   Dropdown drop;
   List<HelpRequestType> types;
+  String userAge;
+  String userId;
+  String requestDescription;
+  String locationDescription;
+  String userName;
+  String userPhone;
+  HelpRequestType helpRequestType;
 
   AdminRequestWindow(AdminProfile parent, List<HelpRequestType> types) {
     this.parent = parent;
@@ -31,9 +41,12 @@ class AdminRequestWindow extends StatelessWidget {
   }
 
   void init() {
-    this.desBox = DescriptonBox(title: 'פירוט', parent: parent);
-    this.desUser = DescriptonBox(title: 'שם', parent: parent);
+    this.desBox = DescriptonBox(title: 'תיאור בקשה', parent: parent);
+    this.desAge = DescriptonBox(title: 'גיל', parent: parent);
     this.desId = DescriptonBox(title: 'תעודת זהות', parent: parent);
+    this.desLocation = DescriptonBox(title: 'מיקום', parent: parent);
+    this.desName = DescriptonBox(title: 'שם', parent: parent);
+    this.desPhone = DescriptonBox(title: 'מספר טלפון', parent: parent);
     this.drop = Dropdown(desBox, types);
   }
 
@@ -57,11 +70,23 @@ class AdminRequestWindow extends StatelessWidget {
                   ),
                   Container(
                     height: 100,
-                    child: desUser,
+                    child: desName,
                   ),
                   Container(
                     height: 100,
                     child: desId,
+                  ),
+                  Container(
+                    height: 100,
+                    child: desPhone,
+                  ),
+                  Container(
+                    height: 100,
+                    child: desAge,
+                  ),
+                  Container(
+                    height: 100,
+                    child: desLocation,
                   ),
                     Container(
                       height: 50,
@@ -75,18 +100,30 @@ class AdminRequestWindow extends StatelessWidget {
                     height: 40,
                   ),
                   RaisedButton(
-                    onPressed: () async {
-                      desBox.processText();
-                      //TODO : ask  hannen
-                      UserInNeed user_to_add = UserInNeed(Privilege.Annoymous, 'name', 'phoneNumber', 'email', false, 'id', 0, 'Location', 'Status', 0, 'eduStatus', 'homePhone', 'specialStatus', 'Rav7a');
-                      HelpRequest help_req= HelpRequest(HelpRequestType('kk'), 'description', DateTime.now(), 'id', '', Status.AVAILABLE);
-                      await DataBaseService().addUserInNeedToDataBase(user_to_add);
-                      DataBaseService().addHelpRequestToDataBaseForUserInNeed(help_req);
-                      Navigator.pop(context);
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => AdminProfile()),
-                      // );
+                    onPressed: () async{
+                      userId = desId.getDataEntered();
+                      userName = desName.getDataEntered();
+                      userAge = desAge.getDataEntered();
+                      locationDescription = desLocation.getDataEntered();
+                      userPhone = desPhone.getDataEntered();
+                      requestDescription = desBox.getDataEntered();
+                      helpRequestType=drop.getSelectedType();
+                      int val = int.tryParse(userAge) ?? 0;
+                      String dummy = 'אנונימי';
+                      print(userId);
+                      print(userAge);
+                      print(userName);
+                      print(userPhone);
+                      HelpRequest req = HelpRequest(helpRequestType, requestDescription, DateTime.now(), userId, '', Status.AVAILABLE);
+                      UserInNeed to_add = UserInNeed(Privilege.Annoymous, userName, userPhone, dummy, false, userId, val, locationDescription, dummy, 0, dummy, dummy, dummy, dummy);
+                      await DataBaseService().addUserInNeedToDataBase(to_add);
+                      DataBaseService().addHelpRequestToDataBaseForUserInNeed(req);
+
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AdminProfile()),
+                      );
                     },
                     child: Text('אישור'),
                   ),
@@ -186,10 +223,15 @@ class DescriptonBox extends StatefulWidget {
     desBoxState.setSelectedType(selectedType);
   }
 
-  void processText() {
-    desBoxState.processText();
+  String getDataEntered(){
+    return desBoxState.getDataEntered();
   }
 
+
+
+  HelpRequestType getHelpRequestType() {
+    return desBoxState.getHelpRequestType();
+  }
 
   @override
   _DescriptonBox createState() => desBoxState;
@@ -201,28 +243,27 @@ class _DescriptonBox extends State<DescriptonBox> {
   TextEditingController inputtextField = TextEditingController();
   HelpRequestType helpRequestType;
 
+
+
   void setSelectedType(HelpRequestType selectedType) {
     setState(() {
       _inputtext = selectedType.description;
     });
   }
 
-  void processText() {
-    setState(() {
-      // helpRequestType = HelpRequestType(_inputtext);
-      // _inputtext = inputtextField.text;
-      // helpRequest = HelpRequest(helpRequestType, _inputtext, DateTime.now(),
-      //     CurrentUser.curr_user.id, '', Status.UNVERFIED);
-      // print("input text" + _inputtext);
-      // print("helpRequest" + helpRequestType.description);
-      // //todo add request to data base
-      //
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => AdminProfile()),
-      // );
-    });
+  HelpRequestType getHelpRequestType() {
+    return helpRequestType;
   }
+
+  String getDataEntered(){
+    return inputtextField.text;
+  }
+
+  // void processText() {
+  //   setState(() {
+  //     helpRequestType = HelpRequestType(_inputtext);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
