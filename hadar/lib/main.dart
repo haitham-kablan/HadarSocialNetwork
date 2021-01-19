@@ -19,6 +19,7 @@ void main() async {
   await Firebase.initializeApp();
   const double marginSize = kIsWeb ? 0.0 : 0.0;
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: Container(
         margin: const EdgeInsets.only(left: marginSize, right: marginSize),
         child: Scaffold(

@@ -719,6 +719,9 @@ hadar.Privilege getTypeFromString(String type){
     return hadar.Privilege.UnregisterUser;
   }
 
+  if (type == 'Annoymous'){
+    return hadar.Privilege.Annoymous;
+  }
   assert(false);
 
 }
