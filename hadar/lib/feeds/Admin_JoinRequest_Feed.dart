@@ -130,25 +130,35 @@ class JoinRequestItem extends StatelessWidget {
     return ListTile(
       onTap: () => parent.showJoinRequestStatus(joinRequest),
       isThreeLine: true,
-      title: Row(
-          children: <Widget> [
-            Container(
-              child:(){
-                String userType = "מבקש עזרה";
-                if(joinRequest.type == Privilege.Volunteer)
-                  userType = "מתנדב";
-                else if(joinRequest.type == Privilege.Admin)
-                  userType = "מנהל";
-                return Text(joinRequest.sender.name + " רוצה להירשם כ" + userType , style:TextStyle(color: BasicColor.clr));
-              }() ,
-              //alignment: Alignment.topLeft,
-            ),
-            Spacer(),
-            Container(
-              child:Text(dateFormat.format(joinRequest.date)),
-              alignment: Alignment.topLeft,
-            ),
-          ]
+      title: Column(
+        children: [
+
+          Row(
+              children: <Widget> [
+                Container(
+                  child: Text(joinRequest.sender.name),
+                  alignment: Alignment.topRight,
+                ),
+                Spacer(),
+                Container(
+                  child:Text(dateFormat.format(joinRequest.date)),
+                  alignment: Alignment.topLeft,
+                ),
+
+              ]
+          ),
+          Container(
+            child:(){
+              String userType = "מבקש עזרה";
+              if(joinRequest.type == Privilege.Volunteer)
+                userType = "מתנדב";
+              else if(joinRequest.type == Privilege.Admin)
+                userType = "מנהל";
+              return Text( " רוצה להירשם כ" + userType , style:TextStyle(color: BasicColor.clr));
+            }() ,
+            alignment: Alignment.topRight,
+          ),
+        ],
       ),
       subtitle: Container(
           child:
