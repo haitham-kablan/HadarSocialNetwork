@@ -7,7 +7,7 @@ import 'package:hadar/feeds/feed_items/help_request_tile.dart';
 import 'package:hadar/main_pages/UserInNeedPage.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 
-import 'package:hadar/user_inneed_feed.dart';
+import 'file:///D:/Hussein/Technion/234311%20-%20yearly%20project/Yearly_project/hadar/lib/feeds/user_inneed_feed.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
@@ -45,7 +45,7 @@ Future<void> main() async {
       child: UserInNeedHelpRequestsFeed(),
     ));
 
-    expect(find.byType(HelpRequestTile), findsNWidgets(4));
+    expect(find.byType(FeedTile), findsNWidgets(4));
     expect(find.widgetWithText(Text, "dentist"), findsOneWidget);
     expect(find.widgetWithText(Text, "other"), findsNWidgets(2));
 

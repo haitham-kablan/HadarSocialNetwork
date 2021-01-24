@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/lang/HebrewText.dart';
-import 'package:hadar/user_inneed_feed.dart';
+
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
@@ -13,6 +13,7 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import 'Design/mainDesign.dart';
+import 'feeds/user_inneed_feed.dart';
 
 class RequestWindow extends StatelessWidget {
   HelpRequestFeedState parent;
@@ -44,20 +45,22 @@ class RequestWindow extends StatelessWidget {
               pinned: true,
             ),
             SliverFillRemaining(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 120,
-                  ),
-                  Container(
-                    height: 100,
-                    child: drop,
-                  ),
-                  Container(
-                    height: 140,
-                    child: desBox,
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 120,
+                    ),
+                    Container(
+                      height: 100,
+                      child: drop,
+                    ),
+                    Container(
+                      height: 140,
+                      child: desBox,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -173,7 +176,7 @@ class _DescriptonBox extends State<DescriptonBox> {
       helpRequestType = HelpRequestType(_inputtext);
       _inputtext = inputtextField.text;
       helpRequest =
-          HelpRequest(helpRequestType, _inputtext, DateTime.now(), CurrentUser.curr_user.id,"");
+          HelpRequest(helpRequestType, _inputtext, DateTime.now(), CurrentUser.curr_user.id,'',Status.UNVERFIED);
       print("input text" + _inputtext);
       print("helpRequest" + helpRequestType.description);
 

@@ -1,4 +1,12 @@
 import 'dart:ui';
+import 'package:flappy_search_bar/flappy_search_bar.dart';
+import 'package:hadar/feeds/adminfeedtile.dart';
+import 'package:hadar/main_pages/AdminPage.dart';
+import 'package:hadar/users/CurrentUser.dart';
+
+import '../adminProfile.dart';
+import '../profile.dart';
+import '../feeds/viewRegisteredUsers.dart';
 import 'basicTools.dart';
 import 'package:flutter/material.dart';
 
@@ -48,6 +56,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                 height: expandedHeight,
                 width: MediaQuery.of(context).size.width / 2,
                 child: UserCircle(),
+                // child: UserCircle(),
               ),
             ),
           ),
@@ -73,9 +82,6 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      // Scaffold(
-      // backgroundColor: Colors.transparent,
-      // bottomNavigationBar:
       PreferredSize(
         preferredSize: Size(double.infinity, 50),
         child: Container(
@@ -83,7 +89,7 @@ class BottomBar extends StatelessWidget {
           height: 50,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: BasicColor.backgroundClr,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black45,
@@ -104,7 +110,12 @@ class BottomBar extends StatelessWidget {
                       size: 30,
                       color: BasicColor.clr,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfilePage()));
+                    },
                   ),
                   FlatButton(
                     child: Icon(
@@ -112,16 +123,14 @@ class BottomBar extends StatelessWidget {
                       size: 30,
                       color: BasicColor.clr,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      Widget curr_widget = await CurrentUser.init_user();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => curr_widget),
+                      );
+                    },
                   ),
-                  // FlatButton(
-                  //   child: Icon(
-                  //     Icons.notifications_on_rounded,
-                  //     size: 30,
-                  //     color: BasicColor.clr,
-                  //   ),
-                  //   onPressed: () {},
-                  // ),
                 ],
               ),
             ),
@@ -129,6 +138,87 @@ class BottomBar extends StatelessWidget {
         ),
       // ),
     );
+  }
+}
+
+class AdminBottomBar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return
+      PreferredSize(
+        preferredSize: Size(double.infinity, 50),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 50,
+          child: Container(
+            decoration: BoxDecoration(
+              color: BasicColor.backgroundClr,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black45,
+                  offset: Offset(-3, -3),
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            child: Container(
+              margin: EdgeInsets.fromLTRB(60, 10, 60, 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  FlatButton(
+                    child: Icon(
+                      Icons.person_rounded,
+                      size: 30,
+                      color: BasicColor.clr,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AdminProfile()
+                        ),
+                      );
+                    },
+                  ),
+                  FlatButton(
+                    child: Icon(Icons.supervisor_account_sharp,
+                      size: 30,
+                      color: BasicColor.clr,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AllUsersView()
+                        ),
+                      );
+                    },
+                  ),
+                  FlatButton(
+                    child: Icon(
+                      Icons.admin_panel_settings_outlined,
+                      size: 30,
+                      color: BasicColor.clr,
+                    ),
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AdminPage(CurrentUser.curr_user)
+
+                        )
+                      );
+                    }
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        // ),
+      );
   }
 }
 
@@ -155,4 +245,33 @@ class UserCircle extends StatelessWidget {
     );
   }
 }
+
+
+class adminViewRequestsBar extends StatelessWidget {
+  String title;
+  adminViewRequestsBar(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      automaticallyImplyLeading: false,
+      expandedHeight: 80.0,
+      floating: false,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+          centerTitle: true,
+          title: Text(title,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16.0,
+              )),
+          background: Image.asset(
+        "assets/images/color.jpg",
+        fit: BoxFit.cover,
+      ),),
+    );
+  }
+}
+
+
 

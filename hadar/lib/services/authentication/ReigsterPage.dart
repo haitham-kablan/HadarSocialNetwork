@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/main.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+
 import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/UnregisteredUser.dart';
+import 'package:hadar/users/User.dart' as hadar;
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
+import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:intl/intl.dart';
+
+import 'forms/UserInNeedRegPage.dart';
+import 'forms/VolunteerRegPage.dart';
 
 
 class ReigesterPage extends StatefulWidget {
@@ -40,6 +48,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
   final phone_Controller = TextEditingController();
   final first_pw_Controller = TextEditingController();
   final second_pw_Controller = TextEditingController();
+  bool show_spinner = false;
   @override
   Widget build(BuildContext context) {
 
@@ -202,7 +211,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         tripTypes = update_list(0);
                         alert = false;
                         clicked=true;
-                        clicked_priv = Privilege.Admin;
+                        clicked_priv = hadar.Privilege.Admin;
                       });
                     },
                     child: Column(
@@ -218,7 +227,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         tripTypes = update_list(1);
                         alert = false;
                         clicked=true;
-                        clicked_priv = Privilege.UserInNeed;
+                        clicked_priv = hadar.Privilege.UserInNeed;
                       });
                     },
                     child: Column(
@@ -234,7 +243,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         tripTypes = update_list(2);
                         alert = false;
                         clicked=true;
-                        clicked_priv = Privilege.Volunteer;
+                        clicked_priv = hadar.Privilege.Volunteer;
                       });
                     },
                     child: Column(
@@ -251,7 +260,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
             Container(
               margin: EdgeInsets.all(10),
-              child: RaisedButton(
+              child: show_spinner ? SpinKitCircle(color: BasicColor.clr,) :RaisedButton(
                 color: BasicColor.clr,
                 splashColor: Colors.white,
                 child: Text('הרשמה',style: TextStyle(fontSize: 18 , color: Colors.white),),
@@ -264,11 +273,14 @@ class _ReigesterPageState extends State<ReigesterPage> {
                   ){
                     return;
                   }
-
-                  bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text);
+                  setState(() {
+                    show_spinner = true;
+                  });
+                  bool id_check_if_exsist = await DataBaseService().is_id_taken(id_Controller.text,email_Controller.text);
                   if(id_check_if_exsist){
                     setState(() {
                       alert=true;
+                      show_spinner = false;
                       _error_msg = 'תעודת הזהות כבר תפוסה';
 
                     });
@@ -277,6 +289,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                   if(clicked == false){
                     setState(() {
                       alert=true;
+                      show_spinner = false;
                       _error_msg = 'אנא בחר את התור שלך';
 
                     });
@@ -288,25 +301,44 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         email: email_Controller.text,
                         password: first_pw_Controller.text
                     );
+                    UserInNeed user_in_need;
+                    Volunteer volunteer;
+                    if(clicked_priv == hadar.Privilege.UserInNeed){
+                      user_in_need = UserInNeed(hadar.Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,0,'','',0,'','','','');
 
-                    addUserToDb(name_Controller.text, id_Controller.text, phone_Controller.text, email_Controller.text, clicked_priv);
-                    Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => userInNeedRegisterPage(user_in_need)));
+                    }else if (clicked_priv == hadar.Privilege.Admin){
+                      DataBaseService().addVerficationRequestToDb(VerificationRequest(UnregisteredUser(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text),  clicked_priv, DateTime.now()));
+                      Navigator.pop(context);
+                    }else{
+                      volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,'',0,'','','','','','','','');
+
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => volunteerRegisterPage(volunteer)));
+                    }
+
+
                   } on FirebaseAuthException catch (e) {
                     if (e.code == 'weak-password') {
                       setState(() {
                         alert=true;
+                        show_spinner = false;
                         _error_msg = 'הסיסמה שלך חלשה';
                       });
                       print('The password provided is too weak.');
                     } else if (e.code == 'email-already-in-use') {
                       setState(() {
                         alert=true;
+                        show_spinner = false;
                         _error_msg = 'האימיל שלך כבר תפוס';
                       });
                       print('The account already exists for that email.');
                     }
                   } catch (e) {
-                    print(e);
+                    setState(() {
+                      alert=true;
+                      show_spinner = false;
+                      _error_msg = 'error in the system';
+                    });
                   }
                 },
               ),
@@ -336,26 +368,32 @@ bool Check_user(name, String id, String phone_number, String email, String pw, S
 }
 
 
-void addUserToDb(String name , String id,String phoneNumber,String email,Privilege privilege){
 
-  switch (privilege){
-    case Privilege.UserInNeed :
-      DataBaseService().addUserInNeedToDataBase(UserInNeed(name, phoneNumber, email, false, id));
-      break;
-    case Privilege.Admin:
-      DataBaseService().addAdminToDataBase(Admin(name, phoneNumber, email, false, id));
-      break;
-      //TODO UPDATE CATOEGOREIS
-    case Privilege.Volunteer:
-      DataBaseService().addVolunteerToDataBase(Volunteer(name, phoneNumber, email, false, id, []));
-      break;
-    case Privilege.UnregisterUser:
-      print('error in unregiesterd user in regienstaron');
-      break;
-    default:
-      print('error in reg page');
+class demo_bg extends StatelessWidget {
+  Widget son;
+  demo_bg(this.son);
+  @override
+  Widget build(BuildContext context) {
+    return  Column(
+      children: [
+        Container(
+
+          color: Colors.transparent,
+          child: new Container(
+            padding: EdgeInsets.only(bottom: 50),
+            decoration: new BoxDecoration(
+                color: BasicColor.clr,
+                borderRadius: new BorderRadius.only(
+                  bottomLeft: const Radius.circular(150),
+                  bottomRight: const Radius.circular(150),
+                )
+            ),
+            child: son,
+          ),
+        ),
+
+      ],
+    );
   }
-
 }
-
 

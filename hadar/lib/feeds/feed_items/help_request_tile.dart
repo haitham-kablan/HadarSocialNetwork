@@ -16,16 +16,16 @@ import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HelpRequestTile extends StatefulWidget {
-  final Widget helpRequestWidget;
-  HelpRequestTile({this.helpRequestWidget});
+class FeedTile extends StatefulWidget {
+  final Widget tileWidget;
+  FeedTile({this.tileWidget});
 
   @override
-  _HelpRequestTileState createState() => _HelpRequestTileState();
+  _FeedTileState createState() => _FeedTileState();
 }
 
-class _HelpRequestTileState extends State<HelpRequestTile> {
-  _HelpRequestTileState();
+class _FeedTileState extends State<FeedTile> {
+  _FeedTileState();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _HelpRequestTileState extends State<HelpRequestTile> {
       child: Card(
         margin: EdgeInsets.fromLTRB(20.0, 6.0, 20.0, 0.0),
         color: Colors.brown[30],
-        child: widget.helpRequestWidget,
+        child: widget.tileWidget,
       ),
     );
   }
@@ -55,9 +55,11 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
 
   @override
   Widget build(BuildContext context) {
+
     final DateTime now = widget.helpRequest.date;
     final DateFormat formatter = DateFormat.yMd().add_Hm();
     Color color = widget.helpRequest.handler_id == '' ? Colors.white : BasicColor.stam;
+
     return ListTile(
       tileColor: color,
       onTap: () => print("List tile pressed!"),//showHelpRequestStatus(helpRequest),
@@ -65,7 +67,7 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
       title: Row(children: <Widget>[
         Container(
           // child: Text(widget.helpRequest.category.description),
-          child: GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
+          child: GetUserInNeedInfo(widget.helpRequest.sender_id,DataBaseService().userInNeedCollection),
           alignment: Alignment.topRight,
         ),
         Spacer(),
@@ -82,8 +84,8 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
                           Text(widget.helpRequest.category.description),
                           Spacer(),
                           Spacer(),
-                          CallWidget(widget.helpRequest),
-                          ThreeDotsWidget(widget.helpRequest)]
+                          //CallWidget(widget.helpRequest),
+                  widget.helpRequest.handler_id == ''  ? ThreeDotsWidget(widget.helpRequest): Container()]
                 ),
                 HebrewText(widget.helpRequest.description),
               ]
@@ -102,8 +104,6 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
     );
   }
 }
-
-
 
 
 class CallWidget extends StatelessWidget {
@@ -180,7 +180,7 @@ class ThreeDotsWidget extends StatelessWidget {
 //                  const Icon(Icons.clear, color: Colors.red),
 //                  const Text("   Deny"),
 //                ])),
-            PopupMenuItem(
+            /*PopupMenuItem(
               value: 3,
               child: Row(
                 children: <Widget>[
@@ -188,7 +188,7 @@ class ThreeDotsWidget extends StatelessWidget {
                   HebrewText("משתמש     "),
                 ],
               ),
-            )
+            )*/
           ],
           context: context,
           position: RelativeRect.fromRect(
