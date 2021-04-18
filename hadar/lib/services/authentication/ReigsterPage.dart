@@ -9,11 +9,14 @@ import 'package:hadar/services/DataBaseServices.dart';
 
 import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/Organization.dart';
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart' as hadar;
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:intl/intl.dart';
 
@@ -39,7 +42,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
   bool alert = false;
   bool clicked=false;
   Privilege clicked_priv = null;
-  Map<String, Icon> tripTypes = user_types([Colors.grey , Colors.grey , Colors.grey]);
+  Map<String, Icon> tripTypes = user_types([Colors.grey , Colors.grey , Colors.grey, Colors.grey]);
   List<String> tripKeys ;
 
   final name_Controller = TextEditingController();
@@ -66,7 +69,8 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
     List<Color> new_clrs = [index == 0 ? BasicColor.clr : Colors.grey ,
       index == 1 ? BasicColor.clr : Colors.grey,
-      index == 2 ? BasicColor.clr : Colors.grey];
+      index == 2 ? BasicColor.clr : Colors.grey,
+      index == 3 ? BasicColor.clr : Colors.grey];
     return user_types(new_clrs);
   }
 
@@ -211,7 +215,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         tripTypes = update_list(0);
                         alert = false;
                         clicked=true;
-                        clicked_priv = hadar.Privilege.Admin;
+                        clicked_priv = Privilege.Admin;
                       });
                     },
                     child: Column(
@@ -227,7 +231,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         tripTypes = update_list(1);
                         alert = false;
                         clicked=true;
-                        clicked_priv = hadar.Privilege.UserInNeed;
+                        clicked_priv = Privilege.UserInNeed;
                       });
                     },
                     child: Column(
@@ -243,13 +247,29 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         tripTypes = update_list(2);
                         alert = false;
                         clicked=true;
-                        clicked_priv = hadar.Privilege.Volunteer;
+                        clicked_priv = Privilege.Volunteer;
                       });
                     },
                     child: Column(
                       children: [
                         tripTypes["עוזר"],
                         Text('עוזר'),
+                      ],
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        tripTypes = update_list(3);
+                        alert = false;
+                        clicked=true;
+                        clicked_priv = Privilege.Organization;
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        tripTypes["עמותה"],
+                        Text('עמותה'),
                       ],
                     ),
                   ),
@@ -303,17 +323,39 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     );
                     UserInNeed user_in_need;
                     Volunteer volunteer;
-                    if(clicked_priv == hadar.Privilege.UserInNeed){
-                      user_in_need = UserInNeed(hadar.Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,0,'','',0,'','','','');
+                    Organization organization;
+                    switch(clicked_priv){
+                      case Privilege.UserInNeed:
+                        user_in_need = UserInNeed(Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,0,'','',0,'','','','');
 
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => userInNeedRegisterPage(user_in_need)));
-                    }else if (clicked_priv == hadar.Privilege.Admin){
-                      DataBaseService().addVerficationRequestToDb(VerificationRequest(UnregisteredUser(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text),  clicked_priv, DateTime.now()));
-                      Navigator.pop(context);
-                    }else{
-                      volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,'',0,'','','','','','','','');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => userInNeedRegisterPage(user_in_need)));
+                        break;
+                      case Privilege.Admin:
+                        DataBaseService().addVerficationRequestToDb(VerificationRequest(UnregisteredUser(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text),  clicked_priv, DateTime.now()));
+                        Navigator.pop(context);
+                        break;
+                      case Privilege.Volunteer:
+                        volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,'',0,'','','','','','','','');
 
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => volunteerRegisterPage(volunteer)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => volunteerRegisterPage(volunteer)));
+                        break;
+                      case Privilege.Organization:
+                        String location = "מזרח הדר";
+                        List<HelpRequestType> services = [
+                          HelpRequestType("תרופות"),
+                          HelpRequestType("טיפול שיניים"),
+                        ];
+                        organization = Organization(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,location,services);
+                        //in the mean time, for testing purposes, add the organization directly to the database
+                        //the following line should be removed later
+                        DataBaseService().addOrganizationToDataBase(organization);
+                        //todo: implement OrganizationRegisterPage and navigate to it
+                        //Navigator.push(context, MaterialPageRoute(builder: (context) => OrganizationRegisterPage(organization)));
+                        Navigator.pop(context);
+                        break;
+                      default:
+                        Navigator.pop(context);
+                        break;
                     }
 
 
@@ -358,6 +400,7 @@ Map<String, Icon> user_types(List<Color> colors) => {
   "מנהל": Icon(Icons.admin_panel_settings_outlined, size: 25 ,color: colors[0]),
   "מבקש עזרה": Icon(Icons.account_circle_outlined, size: 25,color: colors[1]),
   "עוזר": Icon(Icons.supervisor_account_sharp, size: 25,color: colors[2] ),
+  "עמותה": Icon(Icons.house_siding_sharp, size: 25,color: colors[3] ),
  // "צד שלישי": Icon(Icons.app_registration, size: 27,color: colors[3] ),
 };
 

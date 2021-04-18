@@ -12,12 +12,12 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:provider/provider.dart';
 
 import 'feed_items/category_scrol.dart';
-class volunteer_feed_pafe_state{
+
+class volunteer_feed_pafe_state {
   static _VolunteerFeedStatefullState state = null;
 }
 
 class HelperFeed extends StatefulWidget {
-
   @override
   _HelperFeedState createState() => _HelperFeedState();
 }
@@ -27,100 +27,109 @@ class _HelperFeedState extends State<HelperFeed> {
   Widget build(BuildContext context) {
     final requests = Provider.of<List<HelpRequest>>(context);
 
-
-
-      return new Directionality(
-          textDirection: TextDirection.rtl,
-        child: new Builder(
-          builder: (BuildContext context) {
-            return ListView.builder(
-			 padding: const EdgeInsets.only(bottom: 70.0, top: 20),
-              itemCount: (requests == null) ? 0 : requests.length,
-              itemBuilder: (context,index){
-                return FeedTile(tileWidget: VolunteerFeedTile(requests[index]));
-              },
-            );
-          },
-        ),
-      );
-
+    return new Directionality(
+      textDirection: TextDirection.rtl,
+      child: new Builder(
+        builder: (BuildContext context) {
+          return ListView.builder(
+            padding: const EdgeInsets.only(bottom: 70.0, top: 20),
+            itemCount: (requests == null) ? 0 : requests.length,
+            itemBuilder: (context, index) {
+              return FeedTile(tileWidget: VolunteerFeedTile(requests[index]));
+            },
+          );
+        },
+      ),
+    );
   }
-
 }
 
 class VolunteerFeedStatefull extends StatefulWidget {
   Volunteer curr_user;
-  String title ='';
-  VolunteerFeedStatefull(this.curr_user , this.categoers,this.title);
-  List<MyListView> categoers;
+  String title = '';
+
+  VolunteerFeedStatefull(this.curr_user, this.categories, this.title);
+
+  List<MyListView> categories;
+
   @override
-  _VolunteerFeedStatefullState createState() => _VolunteerFeedStatefullState(curr_user,categoers,title);
+  _VolunteerFeedStatefullState createState() =>
+      _VolunteerFeedStatefullState(curr_user, categories, title);
 }
 
 class _VolunteerFeedStatefullState extends State<VolunteerFeedStatefull> {
   Volunteer curr_user;
-  String title ='';
-  _VolunteerFeedStatefullState(this.curr_user , this.categoers,this.title);
-  List<MyListView> categoers;
+  String title = '';
+
+  _VolunteerFeedStatefullState(this.curr_user, this.categories, this.title);
+
+  List<MyListView> categories;
+
   @override
   Widget build(BuildContext context) {
     volunteer_feed_pafe_state.state = this;
     return Scaffold(
       bottomNavigationBar: BottomBar(),
       backgroundColor: BasicColor.backgroundClr,
-      body: CustomScrollView(
-          slivers: [
-            adminViewRequestsBar( title),
-            SliverFillRemaining(
-              child: Container(
-                // margin: EdgeInsets.only(top: 40),
-                child: Column(
-                  children: [
-                    Expanded(child: StateFullCategoreisList(categoers,DataBaseService().get_requests_for_category(HelpRequestType(categoers[0].Help_request_type),curr_user.id),categoers[0].Help_request_type)),
-                    //Expanded(child: HelperFeed()),
-                  ],
-                ),
-              ),
-
+      body: CustomScrollView(slivers: [
+        adminViewRequestsBar(title),
+        SliverFillRemaining(
+          child: Container(
+            // margin: EdgeInsets.only(top: 40),
+            child: Column(
+              children: [
+                Expanded(
+                    child: StatefulCategoriesList(
+                        categories,
+                        DataBaseService().get_requests_for_category(
+                            HelpRequestType(categories[0].Help_request_type),
+                            curr_user.id),
+                        categories[0].Help_request_type)),
+                //Expanded(child: HelperFeed()),
+              ],
             ),
-          ]),
+          ),
+        ),
+      ]),
       // body: HelperFeed(),
     );
   }
 }
 
-
-
 class VolunteerFeed extends StatelessWidget {
   Volunteer curr_user;
-  String title ='';
-  VolunteerFeed(this.curr_user , this.categoers,this.title);
+  String title = '';
+
+  VolunteerFeed(this.curr_user, this.categoers, this.title);
+
   List<MyListView> categoers;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomBar(),
       backgroundColor: BasicColor.backgroundClr,
-      body: CustomScrollView(
-          slivers: [
-            adminViewRequestsBar( title),
-            SliverFillRemaining(
-              child: Container(
-                // margin: EdgeInsets.only(top: 40),
-                child: Column(
-                  children: [
-                    Expanded(child: StateFullCategoreisList(categoers,DataBaseService().get_requests_for_category(HelpRequestType(categoers[0].Help_request_type),curr_user.id),categoers[0].Help_request_type)),
-                    //Expanded(child: HelperFeed()),
-                  ],
-                ),
-              ),
-
+      body: CustomScrollView(slivers: [
+        adminViewRequestsBar(title),
+        SliverFillRemaining(
+          child: Container(
+            // margin: EdgeInsets.only(top: 40),
+            child: Column(
+              children: [
+                Expanded(
+                    child: StatefulCategoriesList(
+                        categoers,
+                        DataBaseService().get_requests_for_category(
+                            HelpRequestType(categoers[0].Help_request_type),
+                            curr_user.id),
+                        categoers[0].Help_request_type)),
+                //Expanded(child: HelperFeed()),
+              ],
             ),
-          ]),
+          ),
+        ),
+      ]),
       // body: HelperFeed(),
     );
-   
   }
 }
-
-

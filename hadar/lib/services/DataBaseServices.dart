@@ -16,6 +16,8 @@ import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/Admin.dart';
 
 import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/users/Organization.dart';
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart' as hadar;
 import 'package:hadar/users/UserInNeed.dart';
@@ -37,6 +39,7 @@ class DataBaseService{
   final CollectionReference helpersCollection = FirebaseFirestore.instance.collection('HELPERS');
   final CollectionReference userInNeedCollection = FirebaseFirestore.instance.collection('USERS_IN_NEED');
   final CollectionReference adminsCollection = FirebaseFirestore.instance.collection('ADMINS');
+  final CollectionReference organizationsCollection = FirebaseFirestore.instance.collection('ORGANIZATIONS');
   final CollectionReference registrationRequestsCollection = FirebaseFirestore.instance.collection('REGISTRATION_REQUESTS');
   final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
   final CollectionReference verificationsRequestsCollection = FirebaseFirestore.instance.collection(verification_requests);
@@ -105,7 +108,15 @@ class DataBaseService{
     to_add['firstaidcourse'] = verificationRequest.firstaidcourse;
     to_add['mobility'] = verificationRequest.mobility;
 
-
+    //manage services for organizations
+    List<String> services = [];
+    if(verificationRequest.type != Privilege.Organization){
+      services.add('');
+    }
+    else{
+      services = verificationRequest.services.map((helpRequestType) => helpRequestType.description).toList();
+    }
+    to_add['services'] = services;
     return await verificationsRequestsCollection.doc(verificationRequest.sender.email).set(to_add);
     
   }
@@ -124,24 +135,29 @@ class DataBaseService{
 
     switch (verificationRequest.type){
 
-      case hadar.Privilege.Admin:
+      case Privilege.Admin:
         Admin admin_to_add = Admin(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id);
         addAdminToDataBase(admin_to_add);
         verificationsRequestsCollection.doc(admin_to_add.email).delete();
         break;
-      case hadar.Privilege.UserInNeed:
+      case Privilege.UserInNeed:
         // UserInNeed UserInNeed_to_add = UserInNeed(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id);
         // addUserInNeedToDataBase(UserInNeed_to_add);
         // verificationsRequestsCollection.doc(UserInNeed_to_add.email).delete();
         assert(false);
         break;
-      case hadar.Privilege.Volunteer:
+      case Privilege.Volunteer:
 
         Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id,'0',0,verificationRequest.birthdate,verificationRequest.location,verificationRequest.status,verificationRequest.work,verificationRequest.birthplace,verificationRequest.spokenlangs,verificationRequest.mobility,verificationRequest.firstaidcourse);
         addVolunteerToDataBase(Volunteer_to_add);
         verificationsRequestsCollection.doc(Volunteer_to_add.email).delete();
         break;
-      case hadar.Privilege.UnregisterUser:
+      case Privilege.Organization:
+        Organization organization_to_add = Organization(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id, verificationRequest.location, verificationRequest.services);
+        addOrganizationToDataBase(organization_to_add);
+        verificationsRequestsCollection.doc(organization_to_add.email).delete();
+        break;
+      default:
         assert(false);
         break;
     }
@@ -309,9 +325,26 @@ class DataBaseService{
     to_add['firstaidcourse'] = user.firstaidcourse;
     to_add['mobility'] = user.mobility;
 
-
     return await helpersCollection.doc(user.id).set(to_add);
   }
+
+  Future addOrganizationToDataBase(Organization organization) async{
+    Map<String,dynamic> to_add = Map();
+
+    to_add['name'] = organization.name;
+    to_add['phoneNumber'] = organization.phoneNumber;
+    to_add['email'] = organization.email;
+    to_add['id'] = organization.id;
+    to_add['location'] = organization.location;
+
+    //convert from a list of HelpRequestType to a list of Strings
+    var services = organization.services.map((service) => service.description).toList();
+    to_add['services'] = services;
+
+
+    return await organizationsCollection.doc(organization.id).set(to_add);
+  }
+
 
   Future addHelpRequestTypeDataBase(HelpRequestType helpRequestType) async{
 
@@ -372,11 +405,11 @@ class DataBaseService{
       reach its fields
    */
   //TODO tell hsenn
-  Future getUserById(String id,hadar.Privilege privilege) async{
+  Future getUserById(String id,Privilege privilege) async{
 
     DocumentSnapshot doc;
 
-    if (privilege == hadar.Privilege.UserInNeed){
+    if (privilege == Privilege.UserInNeed){
 
       await userInNeedCollection.doc(id).get()
           .then((document) => doc = document.exists ? document : null);
@@ -389,7 +422,7 @@ class DataBaseService{
           doc.data()['id'] ?? '' ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
     }
 
-    if (privilege == hadar.Privilege.Admin){
+    if (privilege == Privilege.Admin){
 
       await adminsCollection.doc(id).get()
           .then((document) => doc = document);
@@ -402,7 +435,7 @@ class DataBaseService{
           doc.data()['id'] ?? '' );
     }
 
-    if (privilege == hadar.Privilege.Volunteer){
+    if (privilege == Privilege.Volunteer){
 
       await helpersCollection.doc(id).get()
           .then((document) => doc = document);
@@ -504,7 +537,29 @@ class DataBaseService{
         .map(helpRequestListFromSnapShotVerified);
 
   }
+/*
+  Future<List<HelpRequestType>> getOrganizationServices(Organization organization){
+    //todo: implement this
+    //returns the services that this organization provides
+    //implementation: get the field services from this organization in
+    //organizationsCollection and convert it from List<String> to List<HelpRequestType>
 
+  }
+
+  Future<List<HelpRequestType>> helpRequestTypesAsList() async {
+
+    List<HelpRequestType> list1 = List<HelpRequestType>();
+
+    await helpRequestsTypeCollection.get().then((querySnapshot){
+      querySnapshot.docs.forEach((element){
+        list1.add(HelpRequestType(element.data()['description']));
+      });
+    });
+
+    return list1;
+
+  }
+*/
 
   Stream<List<Volunteer>> getAllVolunteers(){
 
@@ -527,7 +582,7 @@ class DataBaseService{
         .map(UserInNeedListFromSnapShot);
   }
 
-  Future<List<HelpRequestType>> helpRequestAsAlist() async {
+  Future<List<HelpRequestType>> helpRequestTypesAsList() async {
 
     List<HelpRequestType> list1 = List<HelpRequestType>();
 
@@ -542,12 +597,13 @@ class DataBaseService{
   }
 
 
-  Future getUserByEmail(String email,hadar.Privilege privilege) async{
+
+  Future getUserByEmail(String email,Privilege privilege) async{
 
     QuerySnapshot querySnapshot = null;
     DocumentSnapshot doc = null;
 
-    if (privilege == hadar.Privilege.UserInNeed){
+    if (privilege == Privilege.UserInNeed){
 
       querySnapshot = await userInNeedCollection.where('email',isEqualTo: email).get();
 
@@ -558,11 +614,11 @@ class DataBaseService{
         doc = querySnapshot.docs[i];
       }
 
-      return UserInNeed(hadar.Privilege.UserInNeed , doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+      return UserInNeed(Privilege.UserInNeed , doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
           doc.data()['id'] ?? '' ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
     }
 
-    if (privilege == hadar.Privilege.Admin){
+    if (privilege == Privilege.Admin){
 
       querySnapshot = await adminsCollection.where('email',isEqualTo: email).get();
 
@@ -577,7 +633,7 @@ class DataBaseService{
           doc.data()['id'] ?? '' );
     }
 
-    if (privilege == hadar.Privilege.Volunteer){
+    if (privilege == Privilege.Volunteer){
 
       querySnapshot = await helpersCollection.where('email',isEqualTo: email).get();
 
@@ -591,6 +647,24 @@ class DataBaseService{
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
           doc.data()['id'] ?? ''  ,doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
     }
+
+    if (privilege == Privilege.Organization){
+
+      querySnapshot = await organizationsCollection.where('email',isEqualTo: email).get();
+
+      if (querySnapshot.size == 0){
+        return null;
+      }
+      for(int i = 0 ; i< querySnapshot.docs.length ; i++){
+        doc = querySnapshot.docs[i];
+      }
+      //fetch services
+      List<dynamic> servicesStringList = doc.data()['services']?? '';
+      List<HelpRequestType> services = servicesStringList.map((type) => HelpRequestType(type)).toList();
+
+      return Organization(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['id'] ?? '', doc.data()['location'], services);
+    }
   }
 
   /*/
@@ -602,11 +676,14 @@ class DataBaseService{
     if(curr_db_user == null){
       return null;
     }
-    user = await getUserByEmail(curr_db_user.email, hadar.Privilege.UserInNeed);
+    user = await getUserByEmail(curr_db_user.email, Privilege.UserInNeed);
     if(user == null){
-      user = await getUserByEmail(curr_db_user.email, hadar.Privilege.Admin);
+      user = await getUserByEmail(curr_db_user.email, Privilege.Admin);
       if(user == null){
-        user = await getUserByEmail(curr_db_user.email, hadar.Privilege.Volunteer);
+        user = await getUserByEmail(curr_db_user.email, Privilege.Volunteer);
+        if(user == null){
+          user = await getUserByEmail(curr_db_user.email, Privilege.Organization);
+        }
       }
     }
 
@@ -704,23 +781,23 @@ Status getStatusFromString(String type){
 
 }
 
-hadar.Privilege getTypeFromString(String type){
+Privilege getTypeFromString(String type){
 
   if (type == 'Admin'){
-    return hadar.Privilege.Admin;
+    return Privilege.Admin;
   }
   if (type == 'UserInNeed'){
-    return hadar.Privilege.UserInNeed;
+    return Privilege.UserInNeed;
   }
   if (type == 'Volunteer'){
-    return hadar.Privilege.Volunteer;
+    return Privilege.Volunteer;
   }
   if (type == 'UnregisterUser'){
-    return hadar.Privilege.UnregisterUser;
+    return Privilege.UnregisterUser;
   }
 
   if (type == 'Annoymous'){
-    return hadar.Privilege.Annoymous;
+    return Privilege.Anonymous;
   }
   assert(false);
 
@@ -768,7 +845,7 @@ List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
   doc.data()['id'] ?? '' ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' )).toList();
   List<UserInNeed> all_users_without_annoy = List();
   for(var i = 0; i < all_users.length; i++){
-    if(all_users[i].privilege == hadar.Privilege.UserInNeed){
+    if(all_users[i].privilege == Privilege.UserInNeed){
       all_users_without_annoy.add(all_users[i]);
     }
   }

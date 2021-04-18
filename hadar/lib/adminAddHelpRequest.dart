@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import 'Design/mainDesign.dart';
 import 'adminProfile.dart';
 import 'feeds/user_inneed_feed.dart';
+import 'users/Privilege.dart';
 
 class AdminRequestWindow extends StatelessWidget {
   AdminProfile parent;
@@ -115,7 +116,7 @@ class AdminRequestWindow extends StatelessWidget {
                       print(userName);
                       print(userPhone);
                       HelpRequest req = HelpRequest(helpRequestType, requestDescription, DateTime.now(), userId, '', Status.AVAILABLE);
-                      UserInNeed to_add = UserInNeed(Privilege.Annoymous, userName, userPhone, dummy, false, userId, val, locationDescription, dummy, 0, dummy, dummy, dummy, dummy);
+                      UserInNeed to_add = UserInNeed(Privilege.Anonymous, userName, userPhone, dummy, false, userId, val, locationDescription, dummy, 0, dummy, dummy, dummy, dummy);
                       await DataBaseService().addUserInNeedToDataBase(to_add);
                       DataBaseService().addHelpRequestToDataBaseForUserInNeed(req);
 

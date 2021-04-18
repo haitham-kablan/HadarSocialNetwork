@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
@@ -110,7 +111,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
           child: FloatingActionButton.extended(
             onPressed: () async {
               List<HelpRequestType> types =
-                  await DataBaseService().helpRequestAsAlist();
+                  await DataBaseService().helpRequestTypesAsList();
               types.add(HelpRequestType('אחר'));
               //we must add אחר so it always appears on the last of the list
               Navigator.push(

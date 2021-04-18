@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/users/User.dart';
 import 'Design/basicTools.dart';
@@ -56,10 +57,16 @@ class ProfilePage extends StatelessWidget {
     user = CurrentUser.curr_user;
     switch(user.privilege){
       case Privilege.UserInNeed:
-        privilege= 'User in need';
+        privilege = 'User in need';
         break;
       case Privilege.Volunteer:
-        privilege= 'Volunteer';
+        privilege = 'Volunteer';
+        break;
+      case Privilege.Organization:
+        privilege = 'Organization';
+        break;
+      default:
+        privilege = 'default';
         break;
     }
   }

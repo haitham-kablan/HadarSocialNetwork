@@ -1,14 +1,11 @@
 
 import 'dart:core';
-import 'dart:core';
-import 'dart:core';
 
 
 import 'package:hadar/utils/HelpRequest.dart';
-import 'package:hadar/utils/HelpRequestType.dart';
 
+import 'Privilege.dart';
 import 'RegisteredUser.dart';
-import 'User.dart';
 
 class Volunteer extends RegisteredUser{
   List helpRequests;
@@ -46,7 +43,4 @@ class Volunteer extends RegisteredUser{
     this.stars = stars;
   }
 
-
-
-  void addOffer(){} //todo: implement this
 }

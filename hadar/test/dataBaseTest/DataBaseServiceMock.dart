@@ -232,7 +232,7 @@ class DataBaseServiceMock{
   }
 
 
-  Future<List<HelpRequestType>> helpRequestAsAlist() async {
+  Future<List<HelpRequestType>> helpRequestTypesAsAlist() async {
 
     List<HelpRequestType> list1 = List<HelpRequestType>();
 

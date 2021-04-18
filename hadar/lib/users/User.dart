@@ -1,7 +1,7 @@
 
 
 
-enum Privilege {Admin, UserInNeed, Volunteer, UnregisterUser,Annoymous}
+import 'Privilege.dart';
 
 class User{
   String name;
@@ -10,6 +10,5 @@ class User{
   String id;
   Privilege privilege;
 
-  User(this.name, this.phoneNumber, this.email, this.privilege , this.id
-      );
+  User(this.name, this.phoneNumber, this.email, this.privilege , this.id);
 }

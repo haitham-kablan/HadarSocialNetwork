@@ -188,7 +188,7 @@ class AdminProfile extends StatelessWidget {
                               RaisedButton(
                                 onPressed: () async {
                                   List<HelpRequestType> types =
-                                  await DataBaseService().helpRequestAsAlist();
+                                  await DataBaseService().helpRequestTypesAsList();
                                   types.add(HelpRequestType('אחר..'));
                                   //we must add אחר so it always appears on the last of the list
                                   Navigator.push(

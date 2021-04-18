@@ -1,8 +1,9 @@
 
 
 import 'package:hadar/users/RegisteredUser.dart';
-import 'package:hadar/users/User.dart';
 
+
+import 'Privilege.dart';
 import 'UnregisteredUser.dart';
 
 class Admin extends RegisteredUser{

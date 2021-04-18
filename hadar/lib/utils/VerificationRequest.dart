@@ -1,9 +1,11 @@
-
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 
-class VerificationRequest{
+import 'HelpRequestType.dart';
+
+class VerificationRequest {
   UnregisteredUser sender;
   Privilege type;
   DateTime date;
@@ -12,16 +14,26 @@ class VerificationRequest{
   String birthdate;
   String location;
   String status;
-  String work ;
+  String work;
+
   String birthplace;
-  String spokenlangs ;
+  String spokenlangs;
+
   String firstaidcourse;
   String mobility;
 
+  List<HelpRequestType> services;
 
-
-  VerificationRequest(UnregisteredUser sender, Privilege type,DateTime date, {String birthdate = '' ,
-    String location = '',String status = '',String work = '',String birthplace = '',String spokenlangs = '' , String firstaidcourse = '' ,String mobility = ''}) {
+  VerificationRequest(UnregisteredUser sender, Privilege type, DateTime date,
+      {String birthdate = '',
+      String location = '',
+      String status = '',
+      String work = '',
+      String birthplace = '',
+      String spokenlangs = '',
+      String firstaidcourse = '',
+      String mobility = '',
+      List<HelpRequestType> services}) {
     accepted = false;
     time = date.millisecondsSinceEpoch;
     this.sender = sender;
@@ -36,9 +48,9 @@ class VerificationRequest{
     this.type = type;
     this.date = date;
 
+    this.services = services;
   }
 
-
-
-
+  VerificationRequest.organization(
+      this.sender, this.type, this.date, this.location, this.services);
 }
