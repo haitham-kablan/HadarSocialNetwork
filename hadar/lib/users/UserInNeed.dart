@@ -1,7 +1,7 @@
 
-import 'package:hadar/users/User.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 
+import 'Privilege.dart';
 import 'RegisteredUser.dart';
 
 class UserInNeed extends RegisteredUser{

@@ -107,7 +107,7 @@ class db_test_mock extends StatelessWidget {
               child: Text('get help request as a list'),
               onPressed: () async {
                 List<HelpRequestType> x = await dataBaseServiceMock
-                    .helpRequestAsAlist();
+                    .helpRequestTypesAsAlist();
 
                 print_list(x);
               },

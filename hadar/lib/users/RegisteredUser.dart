@@ -1,6 +1,8 @@
 
 import 'package:hadar/users/User.dart';
 
+import 'Privilege.dart';
+
 abstract class RegisteredUser extends User{
   bool isSignedIn;
 

@@ -7,6 +7,7 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Admin.dart';
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/utils/HelpRequest.dart';

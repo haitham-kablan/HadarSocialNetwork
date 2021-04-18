@@ -1,4 +1,5 @@
 
+import 'Privilege.dart';
 import 'User.dart';
 
 class UnregisteredUser extends User{

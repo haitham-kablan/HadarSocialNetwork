@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/mainDesign.dart';
-import 'package:hadar/feeds/feed_items/VolFeedDropDown.dart';
-import 'package:hadar/lang/HebrewText.dart';
+
 import 'package:hadar/services/DataBaseServices.dart';
-import 'package:hadar/users/CurrentUser.dart';
-import 'package:hadar/users/Volunteer.dart';
+import 'package:hadar/users/Organization.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/feeds/feed_items/help_request_tile.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
@@ -13,16 +11,16 @@ import 'package:provider/provider.dart';
 
 import 'feed_items/category_scrol.dart';
 
-class volunteer_feed_pafe_state {
-  static _VolunteerFeedStatefullState state = null;
+class organization_feed_pafe_state {
+  static _OrganizationFeedStatefulState state = null;
 }
 
-class HelperFeed extends StatefulWidget {
+class OrganizationFeed extends StatefulWidget {
   @override
-  _HelperFeedState createState() => _HelperFeedState();
+  _OrganizationFeedState createState() => _OrganizationFeedState();
 }
 
-class _HelperFeedState extends State<HelperFeed> {
+class _OrganizationFeedState extends State<OrganizationFeed> {
   @override
   Widget build(BuildContext context) {
     final requests = Provider.of<List<HelpRequest>>(context);
@@ -44,30 +42,30 @@ class _HelperFeedState extends State<HelperFeed> {
   }
 }
 
-class VolunteerFeedStatefull extends StatefulWidget {
-  Volunteer curr_user;
+class OrganizationFeedStateful extends StatefulWidget {
+  Organization curr_user;
   String title = '';
 
-  VolunteerFeedStatefull(this.curr_user, this.categories, this.title);
+  OrganizationFeedStateful(this.curr_user, this.categories, this.title);
 
   List<MyListView> categories;
 
   @override
-  _VolunteerFeedStatefullState createState() =>
-      _VolunteerFeedStatefullState(curr_user, categories, title);
+  _OrganizationFeedStatefulState createState() =>
+      _OrganizationFeedStatefulState(curr_user, categories, title);
 }
 
-class _VolunteerFeedStatefullState extends State<VolunteerFeedStatefull> {
-  Volunteer curr_user;
+class _OrganizationFeedStatefulState extends State<OrganizationFeedStateful> {
+  Organization curr_user;
   String title = '';
 
-  _VolunteerFeedStatefullState(this.curr_user, this.categories, this.title);
+  _OrganizationFeedStatefulState(this.curr_user, this.categories, this.title);
 
   List<MyListView> categories;
 
   @override
   Widget build(BuildContext context) {
-    volunteer_feed_pafe_state.state = this;
+    organization_feed_pafe_state.state = this;
     return Scaffold(
       bottomNavigationBar: BottomBar(),
       backgroundColor: BasicColor.backgroundClr,
@@ -85,44 +83,6 @@ class _VolunteerFeedStatefullState extends State<VolunteerFeedStatefull> {
                             HelpRequestType(categories[0].Help_request_type),
                             curr_user.id),
                         categories[0].Help_request_type)),
-                //Expanded(child: HelperFeed()),
-              ],
-            ),
-          ),
-        ),
-      ]),
-      // body: HelperFeed(),
-    );
-  }
-}
-
-class VolunteerFeed extends StatelessWidget {
-  Volunteer curr_user;
-  String title = '';
-
-  VolunteerFeed(this.curr_user, this.categoers, this.title);
-
-  List<MyListView> categoers;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomBar(),
-      backgroundColor: BasicColor.backgroundClr,
-      body: CustomScrollView(slivers: [
-        adminViewRequestsBar(title),
-        SliverFillRemaining(
-          child: Container(
-            // margin: EdgeInsets.only(top: 40),
-            child: Column(
-              children: [
-                Expanded(
-                    child: StatefulCategoriesList(
-                        categoers,
-                        DataBaseService().get_requests_for_category(
-                            HelpRequestType(categoers[0].Help_request_type),
-                            curr_user.id),
-                        categoers[0].Help_request_type)),
                 //Expanded(child: HelperFeed()),
               ],
             ),

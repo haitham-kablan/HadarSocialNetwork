@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:provider/provider.dart';
 
 import '../helper_feed.dart';
+import '../OrganizationFeed.dart';
 
 
 class father_state{
-  static _StateFullCategoreisListState father = null;
+  static _StatefulCategoriesListState father = null;
 }
 
 
@@ -36,9 +38,16 @@ class MyListView extends StatelessWidget {
            father_state.father.provider = DataBaseService().get_requests_for_category(HelpRequestType(Help_request_type),CurrentUser.curr_user.id);
            father_state.father.category = Help_request_type;
          });
-         volunteer_feed_pafe_state.state.setState(() {
-           volunteer_feed_pafe_state.state.title = Help_request_type;
-         });
+         if(CurrentUser.curr_user.privilege == Privilege.Volunteer) {
+           volunteer_feed_pafe_state.state.setState(() {
+             volunteer_feed_pafe_state.state.title = Help_request_type;
+           });
+         }
+         else if(CurrentUser.curr_user.privilege == Privilege.Organization) {
+           organization_feed_pafe_state.state.setState(() {
+             organization_feed_pafe_state.state.title = Help_request_type;
+           });
+         }
 
           },
         ),
@@ -47,21 +56,21 @@ class MyListView extends StatelessWidget {
   }
 }
 
-class StateFullCategoreisList extends StatefulWidget {
-  List<MyListView> categores;
+class StatefulCategoriesList extends StatefulWidget {
+  List<MyListView> categories;
   var provider;
   String category;
-  StateFullCategoreisList(this.categores,this.provider , this.category);
+  StatefulCategoriesList(this.categories,this.provider , this.category);
   @override
-  _StateFullCategoreisListState createState() => _StateFullCategoreisListState(categores,provider,category);
+  _StatefulCategoriesListState createState() => _StatefulCategoriesListState(categories,provider,category);
 }
 
-class _StateFullCategoreisListState extends State<StateFullCategoreisList> {
+class _StatefulCategoriesListState extends State<StatefulCategoriesList> {
 
-  List<MyListView> categores;
+  List<MyListView> categories;
   var provider;
   String category;
-  _StateFullCategoreisListState(this.categores,this.provider,this.category);
+  _StatefulCategoriesListState(this.categories,this.provider,this.category);
   @override
   Widget build(BuildContext context) {
     father_state.father = this;
@@ -79,7 +88,7 @@ class _StateFullCategoreisListState extends State<StateFullCategoreisList> {
                   margin: EdgeInsets.all(5),
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    children: categores,
+                    children: categories,
                   ),
                 ),
                 Container(height: 1,color: BasicColor.clr,),
