@@ -114,7 +114,7 @@ class BottomBar extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProfilePage()));
+                              builder: (context) => ProfilePage(CurrentUser.curr_user)));
                     },
                   ),
                   FlatButton(

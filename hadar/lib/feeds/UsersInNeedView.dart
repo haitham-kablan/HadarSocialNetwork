@@ -6,7 +6,7 @@ import 'package:hadar/users/UserInNeed.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hadar/users/User.dart';
-
+import '../profile.dart';
 import 'feed_items/help_request_tile.dart';
 
 class UsersInNeedView extends StatelessWidget{
@@ -62,6 +62,14 @@ class UserItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap:(){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProfilePage(user)
+          ),
+        );
+      },
       isThreeLine: true,
       title: Row(children: <Widget>[
         Container(

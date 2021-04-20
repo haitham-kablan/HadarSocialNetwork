@@ -48,14 +48,14 @@ class ProfileBanner extends StatelessWidget {
   }
 }
 
-
 class ProfilePage extends StatelessWidget {
   a.User user;
+  a.User adminAccess;
   String privilege;
 
-  ProfilePage() {
+  ProfilePage(a.User currUser) {
     user = CurrentUser.curr_user;
-    switch(user.privilege){
+    switch (user.privilege) {
       case Privilege.UserInNeed:
         privilege = 'User in need';
         break;
@@ -65,12 +65,71 @@ class ProfilePage extends StatelessWidget {
       case Privilege.Organization:
         privilege = 'Organization';
         break;
+      case Privilege.Admin:
+        privilege = 'Admin';
+        adminAccess = user;
+        user = currUser;
+        break;
       default:
         privilege = 'default';
         break;
     }
   }
 
+  Widget removeUser(BuildContext context) {
+    return new AlertDialog( backgroundColor: BasicColor.backgroundClr,
+      title: Center(child: const Text('למחוק המשתמש? ')),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () {
+          //  TODO: remove this user
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('אישור'),
+        ),
+      ],
+    );
+  }
+
+  Widget checkBottomBar() {
+    if (privilege == 'Admin') return AdminBottomBar();
+    return BottomBar();
+  }
+
+  Widget SignOutOrRemoveUser(BuildContext context) {
+    if (privilege == 'Admin')
+      return FlatButton(
+        child: Text(
+          'Remove this user',
+          style: TextStyle(
+              fontSize: 20.0,
+              decoration: TextDecoration.underline,
+              color: BasicColor.clr,
+              letterSpacing: 2.0,
+              fontWeight: FontWeight.w400),
+        ),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => removeUser(context),
+          );
+        },
+      );
+    return FlatButton(
+      child: Text(
+        'Sign out',
+        style: TextStyle(
+            fontSize: 20.0,
+            decoration: TextDecoration.underline,
+            color: BasicColor.clr,
+            letterSpacing: 2.0,
+            fontWeight: FontWeight.w400),
+      ),
+      onPressed: () {
+        DataBaseService().Sign_out(context);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +137,7 @@ class ProfilePage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Profile',
       home: Scaffold(
-        bottomNavigationBar: BottomBar(),
+        bottomNavigationBar: checkBottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
           slivers: [
@@ -105,7 +164,7 @@ class ProfilePage extends StatelessWidget {
                       height: 10,
                     ),
                     Text(
-                      privilege ,
+                      privilege,
                       style: TextStyle(
                           fontSize: 18.0,
                           color: Colors.black45,
@@ -120,7 +179,8 @@ class ProfilePage extends StatelessWidget {
                     //   height: 30,
                     // ),
                     Card(
-                      margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 8.0),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -129,45 +189,48 @@ class ProfilePage extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 children: [
-                                  Text("דירוג",
+                                  Text(
+                                    "דירוג",
                                     style: TextStyle(
                                         color: Colors.blueAccent,
                                         fontSize: 22.0,
-                                        fontWeight: FontWeight.w600
-                                    ),),
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                   SizedBox(
                                     height: 7,
                                   ),
                                   //ToDo add rank to database and user class
-                                  Text('20',
+                                  Text(
+                                    '20',
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 22.0,
-                                        fontWeight: FontWeight.w300
-                                    ),)
+                                        fontWeight: FontWeight.w300),
+                                  )
                                 ],
                               ),
                             ),
                             Expanded(
-                              child:
-                              Column(
+                              child: Column(
                                 children: [
-                                  Text("בקשות",
+                                  Text(
+                                    "בקשות",
                                     style: TextStyle(
                                         color: Colors.blueAccent,
                                         fontSize: 22.0,
-                                        fontWeight: FontWeight.w600
-                                    ),),
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                   SizedBox(
                                     height: 7,
                                   ),
-                                  Text("1",
+                                  Text(
+                                    "1",
                                     //Todo get the number of requests added by this user
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 22.0,
-                                        fontWeight: FontWeight.w300
-                                    ),),
+                                        fontWeight: FontWeight.w300),
+                                  ),
                                 ],
                               ),
                             ),
@@ -179,7 +242,7 @@ class ProfilePage extends StatelessWidget {
                       height: 30,
                     ),
                     Text(
-                      user.phoneNumber+'  :' + 'מספר טלפון',
+                      user.phoneNumber + '  :' + 'מספר טלפון',
                       style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.blueGrey,
@@ -187,10 +250,10 @@ class ProfilePage extends StatelessWidget {
                           fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
-                      height:20,
+                      height: 20,
                     ),
                     Text(
-                      user.email +'  :' + 'אימיל',
+                      user.email + '  :' + 'אימיל',
                       style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.blueGrey,
@@ -198,22 +261,22 @@ class ProfilePage extends StatelessWidget {
                           fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
-                      height:40,
+                      height: 40,
                     ),
-                    FlatButton(
-                      child: Text(
-                        'Sign out',
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            decoration: TextDecoration.underline,
-                            color: BasicColor.clr,
-                            letterSpacing: 2.0,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      onPressed:() {
-                        DataBaseService().Sign_out(context);
-                      },),
-
+                    SignOutOrRemoveUser(context),
+                    // FlatButton(
+                    //   child: Text(
+                    //     'Sign out',
+                    //     style: TextStyle(
+                    //         fontSize: 20.0,
+                    //         decoration: TextDecoration.underline,
+                    //         color: BasicColor.clr,
+                    //         letterSpacing: 2.0,
+                    //         fontWeight: FontWeight.w400),
+                    //   ),
+                    //   onPressed:() {
+                    //     DataBaseService().Sign_out(context);
+                    //   },),
                   ],
                 ),
               ),
