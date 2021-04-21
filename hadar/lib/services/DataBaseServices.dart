@@ -582,6 +582,13 @@ class DataBaseService{
         .map(UserInNeedListFromSnapShot);
   }
 
+  Stream<List<Organization>> getAllOrganizations(){
+
+    return organizationsCollection
+        .snapshots()
+        .map(OrganizationListFromSnapShot);
+  }
+
   Future<List<HelpRequestType>> helpRequestTypesAsList() async {
 
     List<HelpRequestType> list1 = List<HelpRequestType>();
@@ -835,7 +842,15 @@ List<Admin> AdminListFromSnapShot(QuerySnapshot snapshot){
 
   return snapshot.docs.map((doc) =>
       Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '')).toList();
+          doc.data()['id'] ?? '')).toList();
+}
+//TODO: the list of services for each organization...
+List<Organization> OrganizationListFromSnapShot(QuerySnapshot snapshot){
+
+  List<Organization> temp = snapshot.docs.map<Organization>((doc) =>
+      Organization(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
+          doc.data()['id'] ?? '', doc.data()['location'] ?? '', List(), )).toList();
+  return temp;
 }
 
 List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){

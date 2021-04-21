@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hadar/feeds/OrganizationView.dart';
 import '../Design/basicTools.dart';
 import '../Design/mainDesign.dart';
 import 'AdminsView.dart';
@@ -14,7 +15,7 @@ class AllUsersView extends StatelessWidget {
       bottomNavigationBar: AdminBottomBar(),
       backgroundColor: BasicColor.backgroundClr,
       body: DefaultTabController(
-        length: 3,
+        length: 4,
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -35,6 +36,10 @@ class AllUsersView extends StatelessWidget {
                             Icon(Icons.supervisor_account_sharp, size: 25),
                             text: "מתנדבים"),
                         new Tab(
+                            icon:
+                            Icon(Icons.supervisor_account, size:25),
+                            text: "עמותת"),
+                        new Tab(
                             icon: Icon(Icons.admin_panel_settings_outlined,
                                 size: 25),
                             text: "מנהלים"),
@@ -52,6 +57,9 @@ class AllUsersView extends StatelessWidget {
               ),
               Center(
                 child: VolunteersView(),
+              ),
+              Center(
+                child: OrganizationView(),
               ),
               Center(
                 child: AdminsView(),
