@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/services/authentication/LogInPage.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
 
 
@@ -159,6 +162,35 @@ class GetHelpRequestTileUserInfo extends StatelessWidget {
         }
 
         return Text("loading");
+      },
+    );
+  }
+}
+
+
+class GetCurrentUserTry extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+
+
+    return FutureBuilder<Widget>(
+      future: CurrentUser.init_user(),
+      builder:
+          (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+
+        if (snapshot.hasError) {
+          return Container(color: Colors.yellow,);
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          return snapshot.data == null ? Container(color: Colors.red,): Container(color: Colors.green,);
+        }
+
+        return Container(
+          color: Colors.black,
+          child: Text("Loading"),
+        );
       },
     );
   }
