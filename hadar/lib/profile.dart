@@ -10,7 +10,7 @@ import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class ProfileBanner extends StatelessWidget {
+class ProfileBanner extends StatelessWidget {h
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -97,7 +97,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget SignOutOrRemoveUser(BuildContext context) {
-    if (privilege == 'Admin')
+    /*if (privilege == 'Admin')
       return FlatButton(
         child: Text(
           'Remove this user',
@@ -114,21 +114,29 @@ class ProfilePage extends StatelessWidget {
             builder: (BuildContext context) => removeUser(context),
           );
         },
+      );*/
+    if (privilege != 'Admin') {
+      return FlatButton(
+        child: Text(
+          'Sign out',
+          style: TextStyle(
+              fontSize: 20.0,
+              decoration: TextDecoration.underline,
+              color: BasicColor.clr,
+              letterSpacing: 2.0,
+              fontWeight: FontWeight.w400),
+        ),
+        onPressed: () {
+          DataBaseService().Sign_out(context);
+        },
       );
-    return FlatButton(
-      child: Text(
-        'Sign out',
-        style: TextStyle(
-            fontSize: 20.0,
-            decoration: TextDecoration.underline,
-            color: BasicColor.clr,
-            letterSpacing: 2.0,
-            fontWeight: FontWeight.w400),
-      ),
-      onPressed: () {
-        DataBaseService().Sign_out(context);
-      },
-    );
+    }
+    else{
+      return SizedBox(
+        width: 20,
+        height: 20,
+      );
+    }
   }
 
   @override
@@ -253,7 +261,7 @@ class ProfilePage extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      user.email + '  :' + 'אימיל',
+                      user.email + '  :' + 'אימייל',
                       style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.blueGrey,

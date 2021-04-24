@@ -149,7 +149,7 @@ class AdminProfile extends StatelessWidget {
                       height:20,
                     ),
                     Text(
-                      user.email +'  :' + 'אימיל',
+                      user.email +'  :' + 'אימייל',
                       style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.blueGrey,

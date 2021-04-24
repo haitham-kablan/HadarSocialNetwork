@@ -85,6 +85,7 @@ class _StatefulCategoriesListState extends State<StatefulCategoriesList> {
                 //Container(height: 1,color: BasicColor.clr,),
                 Container(
                   height: 60,
+
                   margin: EdgeInsets.all(5),
                   child: ListView(
                     scrollDirection: Axis.horizontal,

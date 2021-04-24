@@ -104,6 +104,7 @@ class BottomBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Spacer(flex: 1,),
                   FlatButton(
                     child: Icon(
                       Icons.person_rounded,
@@ -117,6 +118,8 @@ class BottomBar extends StatelessWidget {
                               builder: (context) => ProfilePage(CurrentUser.curr_user)));
                     },
                   ),
+                  Spacer(flex: 1,),
+
                   FlatButton(
                     child: Icon(
                       Icons.dynamic_feed_outlined,
@@ -131,6 +134,8 @@ class BottomBar extends StatelessWidget {
                       );
                     },
                   ),
+                  Spacer(flex: 1,),
+
                 ],
               ),
             ),
@@ -164,9 +169,10 @@ class AdminBottomBar extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.fromLTRB(60, 10, 60, 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Spacer(flex: 1,),
                   FlatButton(
                     child: Icon(
                       Icons.person_rounded,
@@ -182,6 +188,7 @@ class AdminBottomBar extends StatelessWidget {
                       );
                     },
                   ),
+                  Spacer(flex: 1,),
                   FlatButton(
                     child: Icon(Icons.supervisor_account_sharp,
                       size: 30,
@@ -196,6 +203,7 @@ class AdminBottomBar extends StatelessWidget {
                       );
                     },
                   ),
+                  Spacer(flex: 1,),
                   FlatButton(
                     child: Icon(
                       Icons.admin_panel_settings_outlined,
@@ -212,6 +220,7 @@ class AdminBottomBar extends StatelessWidget {
                       );
                     }
                   ),
+                  Spacer(flex: 1,),
                 ],
               ),
             ),
