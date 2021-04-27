@@ -1,52 +1,23 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
+import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/users/User.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class ProfileBanner extends StatelessWidget {h
-  @override
-  Widget build(BuildContext context) {
-    return Slidable(
-      actionPane: SlidableDrawerActionPane(),
-      actionExtentRatio: 0.25,
-      child: Container(
-        color: Colors.transparent,
-        child: ListTile(
-          leading: CircleAvatar(
-            backgroundColor: Colors.green,
-            child: Text('On'),
-            foregroundColor: Colors.white,
-          ),
-          title: Text('סטטוס'),
-          subtitle: Text('מחובר'),
-        ),
-      ),
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Logout',
-          color: Colors.blue,
-          icon: Icons.assignment_return,
-          onTap: () async {
-            await DataBaseService().Sign_out(context);
-          },
-        ),
-        IconSlideAction(
-          caption: 'Edit Profile',
-          color: BasicColor.clr,
-          icon: Icons.edit,
-          onTap: () {},
-        ),
-      ],
-    );
-  }
-}
+import 'TechSupportForm.dart';
+
+
 
 class ProfilePage extends StatelessWidget {
   a.User user;
@@ -77,12 +48,13 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget removeUser(BuildContext context) {
-    return new AlertDialog( backgroundColor: BasicColor.backgroundClr,
+    return new AlertDialog(
+      backgroundColor: BasicColor.backgroundClr,
       title: Center(child: const Text('למחוק המשתמש? ')),
       actions: <Widget>[
         new FlatButton(
           onPressed: () {
-          //  TODO: remove this user
+            //  TODO: remove this user
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('אישור'),
@@ -97,7 +69,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget SignOutOrRemoveUser(BuildContext context) {
-    /*if (privilege == 'Admin')
+    if (privilege == 'Admin')
       return FlatButton(
         child: Text(
           'Remove this user',
@@ -114,29 +86,83 @@ class ProfilePage extends StatelessWidget {
             builder: (BuildContext context) => removeUser(context),
           );
         },
-      );*/
-    if (privilege != 'Admin') {
-      return FlatButton(
-        child: Text(
-          'Sign out',
-          style: TextStyle(
-              fontSize: 20.0,
-              decoration: TextDecoration.underline,
-              color: BasicColor.clr,
-              letterSpacing: 2.0,
-              fontWeight: FontWeight.w400),
+      );
+    return FlatButton(
+      child: Text(
+        'Sign out',
+        style: TextStyle(
+            fontSize: 20.0,
+            decoration: TextDecoration.underline,
+            color: BasicColor.clr,
+            letterSpacing: 2.0,
+            fontWeight: FontWeight.w400),
+      ),
+      onPressed: () {
+        DataBaseService().Sign_out(context);
+      },
+    );
+  }
+
+  _launchCaller() async {
+    String number;
+    List<Admin> admins= await DataBaseService().getAllAdmins() as List<Admin>;
+    Random rnd = new Random();
+    Admin admin = admins[rnd.nextInt(admins.length)];
+    number = admin.phoneNumber;
+    var url = "tel:" + number;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+
+  }
+
+
+  Widget contactAdmin(BuildContext context) {
+    return new AlertDialog(
+      backgroundColor: BasicColor.backgroundClr,
+      title: Center(child: const Text('יצירת קשר')),
+      actions: <Widget>[
+        Center(
+          child: Column(
+            children: [
+                FlatButton(
+                  padding: EdgeInsets.only(right: 25.0),
+                  child: Row(
+                    children: [
+                      const Text('למלא טופס'),
+                      Icon(Icons.wysiwyg_rounded),
+                    ],
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TechSupportForm(this)),
+                    );
+                  },
+                  textColor: Theme.of(context).primaryColor,
+                ),
+
+                FlatButton(
+                  padding: EdgeInsets.only(right: 15.0),
+                  child: Row(
+                    children: [
+                      const Text('להתקשר'),
+                      Icon(Icons.phone),
+                    ],
+                  ),
+                  onPressed: () {
+                    _launchCaller();
+                  },
+                  textColor: Theme.of(context).primaryColor,
+                ),
+            ],
+          ),
         ),
-        onPressed: () {
-          DataBaseService().Sign_out(context);
-        },
-      );
-    }
-    else{
-      return SizedBox(
-        width: 20,
-        height: 20,
-      );
-    }
+      ],
+    );
   }
 
   @override
@@ -261,7 +287,7 @@ class ProfilePage extends StatelessWidget {
                       height: 20,
                     ),
                     Text(
-                      user.email + '  :' + 'אימייל',
+                      user.email + '  :' + 'אימיל',
                       style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.blueGrey,
@@ -269,22 +295,32 @@ class ProfilePage extends StatelessWidget {
                           fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
-                      height: 40,
+                      height: 30,
                     ),
                     SignOutOrRemoveUser(context),
-                    // FlatButton(
-                    //   child: Text(
-                    //     'Sign out',
-                    //     style: TextStyle(
-                    //         fontSize: 20.0,
-                    //         decoration: TextDecoration.underline,
-                    //         color: BasicColor.clr,
-                    //         letterSpacing: 2.0,
-                    //         fontWeight: FontWeight.w400),
-                    //   ),
-                    //   onPressed:() {
-                    //     DataBaseService().Sign_out(context);
-                    //   },),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: FlatButton(
+                        child: Text(
+                          'צור קשר',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.blueGrey,
+                              letterSpacing: 2.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                contactAdmin(context),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),
