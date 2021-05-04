@@ -187,8 +187,21 @@ class HelpRequestItem extends StatelessWidget {
                     size: 20.0,
                     color: BasicColor.clr,
                   )),
-            ): SizedBox(),
+            ): (helpRequest.status == Status.REJECTED ?
 
+            Column(
+              mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.info_outline,color: Colors.redAccent,),
+                onPressed: (){
+                  
+                },
+              ),
+              Container(margin:EdgeInsets.only(bottom: 5),child: Text('סיבת דחייה' , style: TextStyle(color: Colors.black),))
+                ],
+            )
+           :  SizedBox())
         ],
       ),
     );

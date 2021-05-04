@@ -3,7 +3,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 
 import 'HelpRequestType.dart';
 
-enum Status {AVAILABLE , UNVERFIED , APPROVED}
+enum Status {AVAILABLE , UNVERFIED , APPROVED , REJECTED}
 class HelpRequest{
 
   HelpRequestType category;
@@ -14,8 +14,10 @@ class HelpRequest{
   static int indexer = 0;
   int time;
   Status status;
-  HelpRequest( this.category, this.description, this.date , this.sender_id,this.handler_id,this.status){
+  String reject_reason;
+  HelpRequest( this.category, this.description, this.date , this.sender_id,this.handler_id,this.status , [String rejext_reason = '']){
     time = date.millisecondsSinceEpoch;
+    reject_reason = rejext_reason;
   }
   //DateTime date;
 

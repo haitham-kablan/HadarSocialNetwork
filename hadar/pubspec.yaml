@@ -75,6 +75,7 @@ flutter:
     - assets/images/barPic.png
     - assets/images/color.jpg
     - assets/images/google_logo.png
+    - assets/images/sad.png
 #  assets:
 #    - assets/images/barPic.png
   #   - images/a_dot_ham.jpeg

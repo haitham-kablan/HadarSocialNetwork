@@ -10,7 +10,7 @@ import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class ProfileBanner extends StatelessWidget {h
+class ProfileBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Slidable(

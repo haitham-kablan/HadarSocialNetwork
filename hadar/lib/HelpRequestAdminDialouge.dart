@@ -1,6 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/Dialouge/admin_reject_reqeust_dialogue.dart';
+import 'package:hadar/Dialouge/dialogue_helper_admin.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 
 import 'package:hadar/utils/HelpRequest.dart';
@@ -107,8 +109,8 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                           color: BasicColor.clr,
                           splashColor: Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                          onPressed: () {
-                            DataBaseService().cancel_help_reqeust(helpRequest);
+                          onPressed: () async {
+                            await DialogHelper.exit(context,helpRequest);
                             Navigator.pop(context);
                           },
                           child: Text('דחה בקשה' , style: TextStyle(color: Colors.white),),
