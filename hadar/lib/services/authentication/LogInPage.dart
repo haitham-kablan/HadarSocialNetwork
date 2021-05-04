@@ -80,117 +80,116 @@ class _LogInPageState extends State<LogInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
+       resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
 
-              Container(
-                child: this.showAlert(),
-                margin: EdgeInsets.all(40),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 50),
-                child: Text(
-                  'ברוכים הבאים',
-                  textDirection: TextDirection.rtl,
-                  style: TextStyle(
-                    fontSize: 30
-                  ),
+            Container(
+              child: this.showAlert(),
+              margin: EdgeInsets.all(40),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 50),
+              child: Text(
+                'ברוכים הבאים',
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  fontSize: 30
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(top: 80),
-                child:Form(key:nameKey,child: Custom_Text_feild('שם משתמש',Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false,Colors.grey)),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Form(key: paswwordKey , child: Custom_Text_feild('סיסמה',Icon(Icons.lock),BasicColor.clr,Colors.black,password_Validator.Validate,pw_control,true,Colors.grey)),
-              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 80),
+              child:Form(key:nameKey,child: Custom_Text_feild('שם משתמש',Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false,Colors.grey)),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Form(key: paswwordKey , child: Custom_Text_feild('סיסמה',Icon(Icons.lock),BasicColor.clr,Colors.black,password_Validator.Validate,pw_control,true,Colors.grey)),
+            ),
 
-              Container(
-                margin: EdgeInsets.only(top: 60),
-                child: show_spinner ? SpinKitCircle(color: BasicColor.clr,) : RaisedButton(
-                  color: BasicColor.clr,
-                  splashColor: Colors.white,
-                  child: Text('כניסה',style: TextStyle(fontSize: 18 , color: Colors.white),),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                  onPressed: () async {
-                    if(!nameKey.currentState.validate() || !paswwordKey.currentState.validate() ){
-                          return;
-                    }
-                    //TDOD : SWITCH PLACES
-                    try {
-                      setState(() {
-                        show_spinner = true;
-                      });
-                      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: email_control.text,
-                          password: pw_control.text);
-
-                       // if (!FirebaseAuth.instance.currentUser.emailVerified) {
-                       //   await FirebaseAuth.instance.currentUser.sendEmailVerification();
-                       //   await FirebaseAuth.instance.signOut();
-                       //   setState(() {
-                       //     _error = 'נא לאמת את הקישור שנשלח לך במיל';
-                       //     show_spinner = false;
-                       //   });
-                       //   return;
-                       // }
-                      bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
-                      if(!is_verfied){
-                        await FirebaseAuth.instance.signOut();
-                        setState(() {
-                          _error = ' החשבון שלך עדיין לא אומת על יד המנהל';
-                          show_spinner = false;
-                        });
+            Container(
+              margin: EdgeInsets.only(top: 60),
+              child: show_spinner ? SpinKitCircle(color: BasicColor.clr,) : RaisedButton(
+                color: BasicColor.clr,
+                splashColor: Colors.white,
+                child: Text('כניסה',style: TextStyle(fontSize: 18 , color: Colors.white),),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                onPressed: () async {
+                  if(!nameKey.currentState.validate() || !paswwordKey.currentState.validate() ){
                         return;
-                      }
+                  }
+                  //TDOD : SWITCH PLACES
+                  try {
+                    setState(() {
+                      show_spinner = true;
+                    });
+                    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: email_control.text,
+                        password: pw_control.text);
 
-                      print(FirebaseAuth.instance.currentUser);
-
-
-                      Widget curr_widget = await CurrentUser.init_user();
-                      DataBaseService().add_user_token_to_db();
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => curr_widget),
-                      );
+                     // if (!FirebaseAuth.instance.currentUser.emailVerified) {
+                     //   await FirebaseAuth.instance.currentUser.sendEmailVerification();
+                     //   await FirebaseAuth.instance.signOut();
+                     //   setState(() {
+                     //     _error = 'נא לאמת את הקישור שנשלח לך במיל';
+                     //     show_spinner = false;
+                     //   });
+                     //   return;
+                     // }
+                    bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
+                    if(!is_verfied){
+                      await FirebaseAuth.instance.signOut();
                       setState(() {
+                        _error = ' החשבון שלך עדיין לא אומת על יד המנהל';
                         show_spinner = false;
                       });
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        print('No user found for that email.');
-                        setState(() {
-                          email_control.clear();
-                          pw_control.clear();
-                          _error = 'לא נמצא שם משתמש כזה';
-                          show_spinner = false;
-                        });
-
-                      } else if (e.code == 'wrong-password') {
-                        print('Wrong password provided for that user.');
-                        setState(() {
-                          email_control.clear();
-                          pw_control.clear();
-                          _error = 'הסיסמה אינה מתאימה';
-                          show_spinner = false;
-                        });
-
-                      }
+                      return;
                     }
-                  },
-                ),
+
+                    print(FirebaseAuth.instance.currentUser);
+
+
+                    Widget curr_widget = await CurrentUser.init_user();
+                    DataBaseService().add_user_token_to_db();
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => curr_widget),
+                    );
+                    setState(() {
+                      show_spinner = false;
+                    });
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'user-not-found') {
+                      print('No user found for that email.');
+                      setState(() {
+                        email_control.clear();
+                        pw_control.clear();
+                        _error = 'לא נמצא שם משתמש כזה';
+                        show_spinner = false;
+                      });
+
+                    } else if (e.code == 'wrong-password') {
+                      print('Wrong password provided for that user.');
+                      setState(() {
+                        email_control.clear();
+                        pw_control.clear();
+                        _error = 'הסיסמה אינה מתאימה';
+                        show_spinner = false;
+                      });
+
+                    }
+                  }
+                },
               ),
-              Container(
-                margin: EdgeInsets.all(5),
-                child: Sign_up_here_text(),
-              ),
-             //GoogleSignupButtonWidget(),
-            ],
-          ),
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: Sign_up_here_text(),
+            ),
+           //GoogleSignupButtonWidget(),
+          ],
         ),
       ),
     );
@@ -226,8 +225,8 @@ class Sign_up_here_text extends StatelessWidget {
       ),
     );
   }
-  
- 
+
+
 }
 
 
