@@ -167,31 +167,3 @@ class GetHelpRequestTileUserInfo extends StatelessWidget {
   }
 }
 
-
-class GetCurrentUserTry extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-
-
-    return FutureBuilder<Widget>(
-      future: CurrentUser.init_user(),
-      builder:
-          (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-
-        if (snapshot.hasError) {
-          return Container(color: Colors.yellow,);
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          return snapshot.data == null ? Container(color: Colors.red,): Container(color: Colors.green,);
-        }
-
-        return Container(
-          color: Colors.black,
-          child: Text("Loading"),
-        );
-      },
-    );
-  }
-}
