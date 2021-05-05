@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/services/authentication/LogInPage.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
 
 
@@ -163,3 +166,4 @@ class GetHelpRequestTileUserInfo extends StatelessWidget {
     );
   }
 }
+

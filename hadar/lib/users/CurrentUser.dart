@@ -29,7 +29,7 @@ class CurrentUser{
     return curr_user;
   }
 
-  static Future init_user() async{
+  static Future<Widget> init_user() async{
     curr_user = await DataBaseService().getCurrentUser();
 
     if(curr_user == null){
