@@ -122,7 +122,7 @@ class DataBaseService{
   }
 
 
-  Future RemoveuserFromAuthentication(hadar.User user) async{
+  Future RemoveCurrentuserFromAuthentication(hadar.User user) async{
     fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
     curr_db_user.delete();
   }
