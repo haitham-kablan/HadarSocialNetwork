@@ -217,10 +217,24 @@ class AdminProfile extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       onPressed:() {
-                        FirebaseAuth.instance.signOut();
-                        Navigator.push(context,MaterialPageRoute(
-                            builder: (context) =>LogInPage()) );
+                        DataBaseService().Sign_out(context);
                       },),
+                    FlatButton(
+                      child: Text(
+                        'הסר אתי מהמערכת',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            decoration: TextDecoration.underline,
+                            color: BasicColor.clr,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      onPressed: () async {
+                        await DataBaseService().RemoveCurrentuserFromAuthentication();
+                        DataBaseService().RemoveUserfromdatabase(user);
+                        DataBaseService().Sign_out(context);
+                      },
+                    ),
                   ],
                 ),
               ),

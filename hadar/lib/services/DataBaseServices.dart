@@ -122,7 +122,7 @@ class DataBaseService{
   }
 
 
-  Future RemoveCurrentuserFromAuthentication(hadar.User user) async{
+  Future RemoveCurrentuserFromAuthentication() async{
     fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
     curr_db_user.delete();
   }
@@ -165,7 +165,7 @@ class DataBaseService{
       }
 
       for (int i = 0; i < querySnapshot.docs.length; i++) {
-        allHelpsRequestsCollection.doc(querySnapshot.docs[i].id)..update(to_update);
+        allHelpsRequestsCollection.doc(querySnapshot.docs[i].id).update(to_update);
       }
 
     }

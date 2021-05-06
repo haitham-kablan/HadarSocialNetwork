@@ -116,19 +116,41 @@ class ProfilePage extends StatelessWidget {
         },
       );*/
     if (privilege != 'Admin') {
-      return FlatButton(
-        child: Text(
-          'Sign out',
-          style: TextStyle(
-              fontSize: 20.0,
-              decoration: TextDecoration.underline,
-              color: BasicColor.clr,
-              letterSpacing: 2.0,
-              fontWeight: FontWeight.w400),
-        ),
-        onPressed: () {
-          DataBaseService().Sign_out(context);
-        },
+      return Column(
+        children: [
+              FlatButton(
+              child: Text(
+              'Sign out',
+              style: TextStyle(
+                    fontSize: 20.0,
+                    decoration: TextDecoration.underline,
+                    color: BasicColor.clr,
+                    letterSpacing: 2.0,
+                    fontWeight: FontWeight.w400),
+               ),
+              onPressed: () {
+              DataBaseService().Sign_out(context);
+              },
+            ),
+
+          FlatButton(
+            child: Text(
+              'הסר אתי מהמערכת',
+              style: TextStyle(
+                  fontSize: 20.0,
+                  decoration: TextDecoration.underline,
+                  color: BasicColor.clr,
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.w400),
+            ),
+            onPressed: () async {
+              await DataBaseService().RemoveCurrentuserFromAuthentication();
+              DataBaseService().RemoveUserfromdatabase(user);
+              DataBaseService().Sign_out(context);
+            },
+          ),
+
+        ],
       );
     }
     else{
