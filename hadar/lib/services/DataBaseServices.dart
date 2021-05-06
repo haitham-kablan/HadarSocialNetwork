@@ -120,8 +120,39 @@ class DataBaseService{
     return await verificationsRequestsCollection.doc(verificationRequest.sender.email).set(to_add);
     
   }
-  
 
+
+  Future RemoveuserFromAuthentication(hadar.User user) async{
+    fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
+    curr_db_user.delete();
+  }
+
+  Future RemoveUserfromdatabase(hadar.User user) async {
+
+
+    //REMOVE FROM ALL HLEP REQUEST
+    //REMOVE FROM SUITABLE COLLECTION
+    if (user.privilege == Privilege.Admin){
+      adminsCollection.doc(user.id).delete();
+    }else if (user.privilege == Privilege.Volunteer){
+      helpersCollection.doc(user.id).delete();
+    }else{
+      userInNeedCollection.doc(user.id).delete();
+    }
+
+
+    QuerySnapshot querySnapshot = await userInNeedCollection.where('sender_id',isEqualTo: user.id).get();
+
+    if (querySnapshot.size == 0){
+      return null;
+    }
+
+    for(int i = 0 ; i< querySnapshot.docs.length ; i++){
+      allHelpsRequestsCollection.doc(querySnapshot.docs[i].id).delete();
+    }
+
+
+  }
   Future DenyVerficationRequest(VerificationRequest verificationRequest){
     verificationsRequestsCollection.doc(verificationRequest.sender.email).delete();
 
@@ -309,6 +340,7 @@ class DataBaseService{
 
     return await adminsCollection.doc(user.id).set(to_add);
   }
+
 
   Future addVolunteerToDataBase(Volunteer user) async{
 
