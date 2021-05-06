@@ -140,15 +140,34 @@ class DataBaseService{
       userInNeedCollection.doc(user.id).delete();
     }
 
+    if (user.privilege == Privilege.UserInNeed) {
+      QuerySnapshot querySnapshot = await allHelpsRequestsCollection.where(
+          'sender_id', isEqualTo: user.id).get();
 
-    QuerySnapshot querySnapshot = await userInNeedCollection.where('sender_id',isEqualTo: user.id).get();
+      if (querySnapshot.size == 0) {
+        return null;
+      }
 
-    if (querySnapshot.size == 0){
-      return null;
+      for (int i = 0; i < querySnapshot.docs.length; i++) {
+        allHelpsRequestsCollection.doc(querySnapshot.docs[i].id).delete();
+      }
     }
 
-    for(int i = 0 ; i< querySnapshot.docs.length ; i++){
-      allHelpsRequestsCollection.doc(querySnapshot.docs[i].id).delete();
+    if (user.privilege == Privilege.Volunteer){
+      Map<String,dynamic> to_update = Map();
+      to_update['handler_id'] = "";
+      to_update['status'] = Status.AVAILABLE.toString().substring(7);
+      QuerySnapshot querySnapshot = await allHelpsRequestsCollection.where(
+          'handler_id', isEqualTo: user.id).get();
+
+      if (querySnapshot.size == 0) {
+        return null;
+      }
+
+      for (int i = 0; i < querySnapshot.docs.length; i++) {
+        allHelpsRequestsCollection.doc(querySnapshot.docs[i].id)..update(to_update);
+      }
+
     }
 
 

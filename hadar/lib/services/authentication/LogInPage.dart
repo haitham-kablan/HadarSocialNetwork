@@ -137,6 +137,18 @@ class _LogInPageState extends State<LogInPage> {
                        //   });
                        //   return;
                        // }
+
+                      //in case of deleted user
+                      var is_deleted_by_admin = await DataBaseService().getCurrentUser();
+                      if(is_deleted_by_admin == null){
+                        await FirebaseAuth.instance.signOut();
+                        setState(() {
+                          _error = ' החשבון שלך עדיין הוסר על ידי המנהל';
+                          show_spinner = false;
+                        });
+                        return;
+                      }
+
                       bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
                       if(!is_verfied){
                         await FirebaseAuth.instance.signOut();
