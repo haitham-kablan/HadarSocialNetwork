@@ -161,7 +161,7 @@ class _LogInPageState extends State<LogInPage> {
                       if(is_deleted_by_admin == null){
                         await FirebaseAuth.instance.signOut();
                         setState(() {
-                          _error = ' החשבון שלך עדיין הוסר על ידי המנהל';
+                          _error = ' החשבון שלך הוסר על ידי המנהל';
                           show_spinner = false;
                         });
                         return;

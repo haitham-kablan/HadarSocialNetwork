@@ -208,7 +208,7 @@ class AdminProfile extends StatelessWidget {
                     ),
                     FlatButton(
                       child: Text(
-                        'Sign out',
+                        'יציאה',
                         style: TextStyle(
                             fontSize: 20.0,
                             decoration: TextDecoration.underline,
@@ -221,7 +221,7 @@ class AdminProfile extends StatelessWidget {
                       },),
                     FlatButton(
                       child: Text(
-                        'הסר אתי מהמערכת',
+                        'הסר אותי מהמערכת',
                         style: TextStyle(
                             fontSize: 20.0,
                             decoration: TextDecoration.underline,
