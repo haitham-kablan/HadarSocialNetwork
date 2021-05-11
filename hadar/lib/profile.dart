@@ -105,10 +105,10 @@ class ProfilePage extends StatelessWidget {
 
   _launchCaller() async {
     String number;
-    List<Admin> admins= await DataBaseService().getAllAdmins() as List<Admin>;
-    Random rnd = new Random();
-    Admin admin = admins[rnd.nextInt(admins.length)];
-    number = admin.phoneNumber;
+    // List<Admin> admins= await DataBaseService().getAllAdmins() as List<Admin>;
+    // Random rnd = new Random();
+    // Admin admin = admins[rnd.nextInt(admins.length)];
+    number = '0526736167';
     var url = "tel:" + number;
     if (await canLaunch(url)) {
       await launch(url);
