@@ -226,8 +226,7 @@ class Sign_up_here_text extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: <TextSpan>[
-          TextSpan(text: 'אין לך עדיין משתמש?',
-            style: defaultStyle,),
+          
           TextSpan(
               text: 'לחץ כאן להירשם',
               style: linkStyle,
