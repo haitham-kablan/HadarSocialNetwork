@@ -53,14 +53,10 @@ class RequestWindow extends StatelessWidget {
                     SizedBox(
                       height: 120,
                     ),
+
                     Container(
                       height: 100,
                       child: drop,
-                    ),
-
-                    Container(
-                      height: 140,
-                      child: desBox,
                     ),
                     Container(
                       margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
@@ -79,6 +75,12 @@ class RequestWindow extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Container(
+                      height: 140,
+                      child: desBox,
+                    ),
+
+
 
                   ],
                 ),
