@@ -18,6 +18,7 @@ import 'feeds/user_inneed_feed.dart';
 class RequestWindow extends StatelessWidget {
   HelpRequestFeedState parent;
   DescriptonBox desBox;
+
   Dropdown drop;
   List<HelpRequestType> types;
 
@@ -29,6 +30,7 @@ class RequestWindow extends StatelessWidget {
 
   void init() {
     this.desBox = DescriptonBox(title: 'פירוט', parent: parent);
+
     this.drop = Dropdown(desBox, types);
   }
 

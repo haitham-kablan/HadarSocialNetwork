@@ -836,7 +836,7 @@ Status getStatusFromString(String type){
   }
 
 
-  assert(false);
+  //assert(false);
 
 }
 
