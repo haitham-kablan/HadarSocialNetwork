@@ -191,7 +191,7 @@ class _LogInPageState extends State<LogInPage> {
                         setState(() {
                           email_control.clear();
                           pw_control.clear();
-                          _error = 'הסיסמה אינה מתאימה';
+                          _error = 'שם משתמש וסיסמה אינם תואמים';
                           show_spinner = false;
                         });
 

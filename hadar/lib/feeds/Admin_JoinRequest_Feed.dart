@@ -228,7 +228,7 @@ class JoinRequestStatusWidget extends StatelessWidget {
     return Container(
       //this color is to make the corners look transparent to the main screen: Color(0xFF696969)
       color: Color(0xFF696969),
-      height: MediaQuery.of(context).size.height /2,
+      height: MediaQuery.of(context).size.height /1.5,
       child: Container(
         decoration:  BoxDecoration(
           color: BasicColor.backgroundClr,
@@ -279,13 +279,58 @@ class JoinRequestStatusWidget extends StatelessWidget {
               ),
 
               Container(
-                padding: const EdgeInsets.only(left: 20, bottom: 20, top: 20),
+                padding: const EdgeInsets.only(left: 20, bottom: 5, top: 5),
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Text(
                     "שם: " + joinRequest.sender.name,
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontFamily: "Arial"
+                    ),
+                    maxLines: 10,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 20, bottom: 5, top: 5),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "אימייל: " + joinRequest.sender.email,
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontFamily: "Arial"
+                    ),
+                    maxLines: 10,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 20, bottom: 5, top: 5),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "ת.ז: " + joinRequest.sender.id,
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.black,
+                        fontFamily: "Arial"
+                    ),
+                    maxLines: 10,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 20, bottom: 5, top: 5),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "מספר: " + joinRequest.sender.phoneNumber,
+                    style: TextStyle(
+                        fontSize: 15,
                         color: Colors.black,
                         fontFamily: "Arial"
                     ),
