@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/lang/HebrewText.dart';
 
 import 'package:hadar/users/CurrentUser.dart';
@@ -21,6 +22,7 @@ class RequestWindow extends StatelessWidget {
 
   Dropdown drop;
   List<HelpRequestType> types;
+  static TextEditingController location_controller = TextEditingController();
 
   RequestWindow(HelpRequestFeedState parent, List<HelpRequestType> types) {
     this.parent = parent;
@@ -53,14 +55,35 @@ class RequestWindow extends StatelessWidget {
                     SizedBox(
                       height: 120,
                     ),
+
                     Container(
                       height: 100,
                       child: drop,
                     ),
                     Container(
+                      margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      child: TextFormField(
+                        textAlign: TextAlign.right,
+                        controller: RequestWindow.location_controller,
+                        decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: BasicColor.clr),
+                            ),
+
+                            hintText:  "שנה את מיקום הבקשה",
+                            hintStyle: TextStyle(
+                              color: Colors.grey,
+                            )
+                        ),
+                      ),
+                    ),
+                    Container(
                       height: 140,
                       child: desBox,
                     ),
+
+
+
                   ],
                 ),
               ),
@@ -178,7 +201,7 @@ class _DescriptonBox extends State<DescriptonBox> {
       helpRequestType = HelpRequestType(_inputtext);
       _inputtext = inputtextField.text;
       helpRequest =
-          HelpRequest(helpRequestType, _inputtext, DateTime.now(), CurrentUser.curr_user.id,'',Status.UNVERFIED);
+          HelpRequest(helpRequestType, _inputtext, DateTime.now(), CurrentUser.curr_user.id,'',Status.UNVERFIED,RequestWindow.location_controller.text.isEmpty ? (CurrentUser.curr_user as UserInNeed).Location: RequestWindow.location_controller.text);
       print("input text" + _inputtext);
       print("helpRequest" + helpRequestType.description);
 
@@ -222,6 +245,7 @@ class _DescriptonBox extends State<DescriptonBox> {
                         labelText: widget.title,
                       ),
                     ))),
+
             RaisedButton(
               onPressed: () {
                 _processText();

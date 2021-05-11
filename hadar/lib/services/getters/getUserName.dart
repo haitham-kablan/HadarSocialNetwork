@@ -5,6 +5,7 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
+import 'package:hadar/utils/HelpRequest.dart';
 
 
 /*
@@ -49,9 +50,10 @@ class GetUserName extends StatelessWidget {
 
 class GetUserInNeedInfo extends StatelessWidget {
   final String documentId;
+  final HelpRequest helpRequest;
   final CollectionReference collectionReference;
 
-  GetUserInNeedInfo(this.documentId , this.collectionReference);
+  GetUserInNeedInfo(this.documentId , this.collectionReference,this.helpRequest);
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class GetUserInNeedInfo extends StatelessWidget {
           Map<String, dynamic> data = snapshot.data.data();
           if(data == null){return Text('invalid id');}
           //"בן/בת " + userInNeed.Age.toString() + ", " + userInNeed.Location;
-          return Text("בן/בת " + "${data['Age']}" + ", " + "${data['Location']}"
+          return Text("בן/בת " + "${data['Age']}" + ", " + helpRequest.location
             , style: TextStyle(
               color: BasicColor.clr,
               fontWeight: FontWeight.bold,
@@ -86,12 +88,14 @@ class GetUserInNeedInfo extends StatelessWidget {
 
 class GetHelpRequestTileUserInfo extends StatelessWidget {
   final String documentId;
+  final HelpRequest helpRequest;
   final CollectionReference collectionReference;
 
-  GetHelpRequestTileUserInfo(this.documentId , this.collectionReference);
+  GetHelpRequestTileUserInfo(this.documentId , this.collectionReference,this.helpRequest);
 
   @override
   Widget build(BuildContext context) {
+
     CollectionReference users = collectionReference;
 
     return FutureBuilder<DocumentSnapshot>(
@@ -149,8 +153,8 @@ class GetHelpRequestTileUserInfo extends StatelessWidget {
               SizedBox(
                 height: 7,
               ),
-              Text("הדר, הרצל 9"
-              // Text("${data['Location']}"
+              //TODO
+              Text(helpRequest == null ? "${data['location']}" : helpRequest.location
                 , style: TextStyle(
                     color: Colors.black,
                     fontSize: fontSize,

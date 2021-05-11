@@ -15,7 +15,8 @@ class HelpRequest{
   int time;
   Status status;
   String reject_reason;
-  HelpRequest( this.category, this.description, this.date , this.sender_id,this.handler_id,this.status , [String rejext_reason = '']){
+  String location;
+  HelpRequest( this.category, this.description, this.date , this.sender_id,this.handler_id,this.status , this.location,[String rejext_reason = '']){
     time = date.millisecondsSinceEpoch;
     reject_reason = rejext_reason;
   }
