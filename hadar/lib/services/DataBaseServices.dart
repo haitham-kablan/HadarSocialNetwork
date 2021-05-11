@@ -259,6 +259,7 @@ class DataBaseService{
     to_add['handler_id'] = helpRequest.handler_id;
     to_add['status'] = helpRequest.status.toString().substring(7);
     to_add['reject_reason'] = helpRequest.reject_reason;
+    to_add['location'] = helpRequest.location;
 
     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
 
@@ -796,7 +797,7 @@ class DataBaseService{
   List<HelpRequest> helpRequestListFromSnapShotForSpecificVolunteer(QuerySnapshot snapshot ){
 
     List<HelpRequest> all_help_requests = snapshot.docs.map((doc) =>
-        HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['reject_reason'] ?? "")).toList();
+        HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
     List<HelpRequest> handled_or_avaible = List();
     for(var i = 0; i < all_help_requests.length; i++){
       if(all_help_requests[i].status == Status.AVAILABLE || all_help_requests[i].handler_id == this.current_vol_id){
@@ -808,7 +809,7 @@ class DataBaseService{
   }
 
   List<HelpRequest> helpRequestListFromSnapShotVerified(QuerySnapshot snapshot){
-    List<HelpRequest> all_req_for_category =  snapshot.docs.map((doc) => HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['reject_reason'] ?? "")).toList();
+    List<HelpRequest> all_req_for_category =  snapshot.docs.map((doc) => HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
     List<HelpRequest> all_req_for_category_verfied = List();
     for(var i = 0; i < all_req_for_category.length; i++){
       if(all_req_for_category[i].status == Status.AVAILABLE || all_req_for_category[i].handler_id == current_vol_id ){
@@ -869,7 +870,7 @@ List<VerificationRequest> VerficationRequestListFromSnapShot(QuerySnapshot snaps
 
 List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['reject_reason'] ?? "")).toList();
+      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
 }
 
 
