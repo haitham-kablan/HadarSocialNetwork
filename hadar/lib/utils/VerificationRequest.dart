@@ -25,15 +25,15 @@ class VerificationRequest {
   List<HelpRequestType> services;
 
   VerificationRequest(UnregisteredUser sender, Privilege type, DateTime date,
-      {String birthdate = '',
-      String location = '',
-      String status = '',
-      String work = '',
-      String birthplace = '',
-      String spokenlangs = '',
-      String firstaidcourse = '',
-      String mobility = '',
-      List<HelpRequestType> services}) {
+      String birthdate ,
+      String location ,
+      String status ,
+      String work ,
+      String birthplace ,
+      String spokenlangs ,
+      String firstaidcourse ,
+      String mobility ,
+      List<HelpRequestType> services) {
     accepted = false;
     time = date.millisecondsSinceEpoch;
     this.sender = sender;

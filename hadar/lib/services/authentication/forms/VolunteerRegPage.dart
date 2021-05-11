@@ -11,6 +11,7 @@ import 'package:hadar/users/UnregisteredUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
+import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 
 import '../../DataBaseServices.dart';
@@ -203,7 +204,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
                             UnregisteredUser sender = UnregisteredUser(user.name, user.phoneNumber, user.email, user.id);
 
                             DataBaseService().addVerficationRequestToDb(VerificationRequest(sender, Privilege.Volunteer, DateTime.now()
-                            ,birthdate:user.birthdate , location:user.location , status:user.status , work:user.work , birthplace:user.birthplace , spokenlangs:user.spokenlangs , mobility:user.mobility ,firstaidcourse:user.firstaidcourse));
+                            ,user.birthdate , user.location , user.status , user.work , user.birthplace , user.spokenlangs , user.mobility ,user.firstaidcourse,List<HelpRequestType>()));
                             Navigator.pop(context);
                             Navigator.pop(context);
 

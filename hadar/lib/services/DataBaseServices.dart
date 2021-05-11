@@ -865,7 +865,9 @@ Privilege getTypeFromString(String type){
 
 List<VerificationRequest> VerficationRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      VerificationRequest(UnregisteredUser(doc.data()['name'] ?? '' , doc.data()['phoneNumber'] ?? '' , doc.data()['email'] ?? '' , doc.data()['sender_id'] ?? ''), getTypeFromString(doc.data()['type'] ?? '') ,DateTime.parse(doc.data()['date']) ?? '' )).toList();
+      VerificationRequest(UnregisteredUser(doc.data()['name'] ?? '' , doc.data()['phoneNumber'] ?? '' , doc.data()['email'] ?? '' , doc.data()['sender_id'] ?? ''), getTypeFromString(doc.data()['type'] ?? '') ,DateTime.parse(doc.data()['date']) ?? '' , doc.data()['birthdate'] ?? '', doc.data()['location'] ?? '', doc.data()['status'] ?? '', doc.data()['work'] ?? ''
+  , doc.data()['birthplace'] ?? '', doc.data()['spokenlangs'] ?? '', doc.data()['firstaidcourse'] ?? ''
+  , doc.data()['mobility'] ?? '',List<HelpRequestType>())).toList();
 }
 
 List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){

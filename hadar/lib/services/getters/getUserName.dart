@@ -95,6 +95,7 @@ class GetHelpRequestTileUserInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     CollectionReference users = collectionReference;
 
     return FutureBuilder<DocumentSnapshot>(
@@ -152,7 +153,8 @@ class GetHelpRequestTileUserInfo extends StatelessWidget {
               SizedBox(
                 height: 7,
               ),
-              Text(helpRequest.location
+              //TODO
+              Text(helpRequest == null ? "${data['location']}" : helpRequest.location
                 , style: TextStyle(
                     color: Colors.black,
                     fontSize: fontSize,
