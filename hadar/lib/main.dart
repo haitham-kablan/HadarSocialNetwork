@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/cupertino.dart';
@@ -8,6 +6,7 @@ import 'package:hadar/services/DataBaseServices.dart';
 
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hadar/services/getters/GetCurrentUser.dart';
 
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
@@ -21,17 +20,12 @@ void main() async {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: Container(
-        margin: const EdgeInsets.only(left: marginSize, right: marginSize),
-        child: Scaffold(
-          body: LogInPage(),
-        ),
+      margin: const EdgeInsets.only(left: marginSize, right: marginSize),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: GetCurrentUser(),
+      ),
     ),
   ));
 }
-
-
-
-
-
-
 

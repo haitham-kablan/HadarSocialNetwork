@@ -217,7 +217,7 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 children: [
-                                  GetHelpRequestTileUserInfo(helpRequest.sender_id,DataBaseService().userInNeedCollection),
+                                  GetHelpRequestTileUserInfo(helpRequest.sender_id,DataBaseService().userInNeedCollection,helpRequest),
                                   CallWidget(helpRequest, true),
                                 ],
                               ),
@@ -225,7 +225,7 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 children: [
-                                  GetHelpRequestTileUserInfo(helpRequest.handler_id,DataBaseService().helpersCollection),
+                                  GetHelpRequestTileUserInfo(helpRequest.handler_id,DataBaseService().helpersCollection,null),
                                   CallWidget(helpRequest, false),
                                 ],
                               ),

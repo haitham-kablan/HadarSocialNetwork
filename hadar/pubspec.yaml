@@ -55,6 +55,7 @@ dependencies:
 
 
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -75,6 +76,8 @@ flutter:
     - assets/images/barPic.png
     - assets/images/color.jpg
     - assets/images/google_logo.png
+    - assets/images/sad.png
+    - assets/images/undraw_speed_test_wxl0.png
 #  assets:
 #    - assets/images/barPic.png
   #   - images/a_dot_ham.jpeg

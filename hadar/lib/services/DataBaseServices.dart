@@ -120,8 +120,58 @@ class DataBaseService{
     return await verificationsRequestsCollection.doc(verificationRequest.sender.email).set(to_add);
     
   }
-  
 
+
+  Future RemoveCurrentuserFromAuthentication() async{
+    fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
+    curr_db_user.delete();
+  }
+
+  Future RemoveUserfromdatabase(hadar.User user) async {
+
+
+    //REMOVE FROM ALL HLEP REQUEST
+    //REMOVE FROM SUITABLE COLLECTION
+    if (user.privilege == Privilege.Admin){
+      adminsCollection.doc(user.id).delete();
+    }else if (user.privilege == Privilege.Volunteer){
+      helpersCollection.doc(user.id).delete();
+    }else{
+      userInNeedCollection.doc(user.id).delete();
+    }
+
+    if (user.privilege == Privilege.UserInNeed) {
+      QuerySnapshot querySnapshot = await allHelpsRequestsCollection.where(
+          'sender_id', isEqualTo: user.id).get();
+
+      if (querySnapshot.size == 0) {
+        return null;
+      }
+
+      for (int i = 0; i < querySnapshot.docs.length; i++) {
+        allHelpsRequestsCollection.doc(querySnapshot.docs[i].id).delete();
+      }
+    }
+
+    if (user.privilege == Privilege.Volunteer){
+      Map<String,dynamic> to_update = Map();
+      to_update['handler_id'] = "";
+      to_update['status'] = Status.AVAILABLE.toString().substring(7);
+      QuerySnapshot querySnapshot = await allHelpsRequestsCollection.where(
+          'handler_id', isEqualTo: user.id).get();
+
+      if (querySnapshot.size == 0) {
+        return null;
+      }
+
+      for (int i = 0; i < querySnapshot.docs.length; i++) {
+        allHelpsRequestsCollection.doc(querySnapshot.docs[i].id).update(to_update);
+      }
+
+    }
+
+
+  }
   Future DenyVerficationRequest(VerificationRequest verificationRequest){
     verificationsRequestsCollection.doc(verificationRequest.sender.email).delete();
 
@@ -208,6 +258,8 @@ class DataBaseService{
     to_add['time'] = helpRequest.time;
     to_add['handler_id'] = helpRequest.handler_id;
     to_add['status'] = helpRequest.status.toString().substring(7);
+    to_add['reject_reason'] = helpRequest.reject_reason;
+    to_add['location'] = helpRequest.location;
 
     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
 
@@ -265,9 +317,13 @@ class DataBaseService{
   //
   // }
   //TODO ALSO CHECK HOW TO REMOVE THE USER FROM THE AUTH
-  Future cancel_help_reqeust(HelpRequest helpRequest) async {
-
+  Future delete_help_reqeust(HelpRequest helpRequest) async {
     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
+  }
+  Future cancel_help_reqeust(HelpRequest helpRequest) async {
+    helpRequest.status = Status.REJECTED;
+    addHelpRequestToDataBaseForUserInNeed(helpRequest);
+    //allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).delete();
   }
 
   Future addUserInNeedToDataBase(UserInNeed user) async{
@@ -304,6 +360,7 @@ class DataBaseService{
 
     return await adminsCollection.doc(user.id).set(to_add);
   }
+
 
   Future addVolunteerToDataBase(Volunteer user) async{
 
@@ -740,7 +797,7 @@ class DataBaseService{
   List<HelpRequest> helpRequestListFromSnapShotForSpecificVolunteer(QuerySnapshot snapshot ){
 
     List<HelpRequest> all_help_requests = snapshot.docs.map((doc) =>
-        HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ))).toList();
+        HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
     List<HelpRequest> handled_or_avaible = List();
     for(var i = 0; i < all_help_requests.length; i++){
       if(all_help_requests[i].status == Status.AVAILABLE || all_help_requests[i].handler_id == this.current_vol_id){
@@ -752,7 +809,7 @@ class DataBaseService{
   }
 
   List<HelpRequest> helpRequestListFromSnapShotVerified(QuerySnapshot snapshot){
-    List<HelpRequest> all_req_for_category =  snapshot.docs.map((doc) => HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ))).toList();
+    List<HelpRequest> all_req_for_category =  snapshot.docs.map((doc) => HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
     List<HelpRequest> all_req_for_category_verfied = List();
     for(var i = 0; i < all_req_for_category.length; i++){
       if(all_req_for_category[i].status == Status.AVAILABLE || all_req_for_category[i].handler_id == current_vol_id ){
@@ -775,9 +832,12 @@ Status getStatusFromString(String type){
   if (type == 'AVAILABLE'){
     return Status.AVAILABLE;
   }
+  if (type == 'REJECTED'){
+    return Status.REJECTED;
+  }
 
 
-  assert(false);
+  //assert(false);
 
 }
 
@@ -805,12 +865,14 @@ Privilege getTypeFromString(String type){
 
 List<VerificationRequest> VerficationRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      VerificationRequest(UnregisteredUser(doc.data()['name'] ?? '' , doc.data()['phoneNumber'] ?? '' , doc.data()['email'] ?? '' , doc.data()['sender_id'] ?? ''), getTypeFromString(doc.data()['type'] ?? '') ,DateTime.parse(doc.data()['date']) ?? '' )).toList();
+      VerificationRequest(UnregisteredUser(doc.data()['name'] ?? '' , doc.data()['phoneNumber'] ?? '' , doc.data()['email'] ?? '' , doc.data()['sender_id'] ?? ''), getTypeFromString(doc.data()['type'] ?? '') ,DateTime.parse(doc.data()['date']) ?? '' , doc.data()['birthdate'] ?? '', doc.data()['location'] ?? '', doc.data()['status'] ?? '', doc.data()['work'] ?? ''
+  , doc.data()['birthplace'] ?? '', doc.data()['spokenlangs'] ?? '', doc.data()['firstaidcourse'] ?? ''
+  , doc.data()['mobility'] ?? '',List<HelpRequestType>())).toList();
 }
 
 List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ))).toList();
+      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
 }
 
 

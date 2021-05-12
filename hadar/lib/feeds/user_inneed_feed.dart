@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hadar/Dialouge/dialogue_helper_userinneed.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/CurrentUser.dart';
@@ -187,8 +188,21 @@ class HelpRequestItem extends StatelessWidget {
                     size: 20.0,
                     color: BasicColor.clr,
                   )),
-            ): SizedBox(),
+            ): (helpRequest.status == Status.REJECTED ?
 
+            Column(
+              mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.info_outline,color: Colors.redAccent,),
+                onPressed: () async {
+                  await DialogHelpRequestHelper.exit(context,helpRequest);
+                },
+              ),
+              Container(margin:EdgeInsets.only(bottom: 5),child: Text('סיבת דחייה' , style: TextStyle(color: Colors.black),))
+                ],
+            )
+           :  SizedBox())
         ],
       ),
     );

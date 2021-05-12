@@ -209,7 +209,7 @@ class AdminProfile extends StatelessWidget {
                     ),
                     FlatButton(
                       child: Text(
-                        'Sign out',
+                        'יציאה',
                         style: TextStyle(
                             fontSize: 20.0,
                             decoration: TextDecoration.underline,
@@ -218,10 +218,9 @@ class AdminProfile extends StatelessWidget {
                             fontWeight: FontWeight.w400),
                       ),
                       onPressed:() {
-                        FirebaseAuth.instance.signOut();
-                        Navigator.push(context,MaterialPageRoute(
-                            builder: (context) =>LogInPage()) );
+                        DataBaseService().Sign_out(context);
                       },),
+
                     SizedBox(
                       height: 40,
                     ),
@@ -251,6 +250,23 @@ class AdminProfile extends StatelessWidget {
                           );
                         },
                       ),
+
+                    FlatButton(
+                      child: Text(
+                        'הסר אותי מהמערכת',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            decoration: TextDecoration.underline,
+                            color: BasicColor.clr,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      onPressed: () async {
+                        await DataBaseService().RemoveCurrentuserFromAuthentication();
+                        DataBaseService().RemoveUserfromdatabase(user);
+                        DataBaseService().Sign_out(context);
+                      },
+
                     ),
                   ],
                 ),

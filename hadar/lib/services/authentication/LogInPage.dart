@@ -137,6 +137,10 @@ class _LogInPageState extends State<LogInPage> {
                        //   });
                        //   return;
                        // }
+
+
+
+
                       bool is_verfied = await DataBaseService().checkIfVerfied(email_control.text);
                       if(!is_verfied){
                         await FirebaseAuth.instance.signOut();
@@ -151,6 +155,18 @@ class _LogInPageState extends State<LogInPage> {
 
 
                       Widget curr_widget = await CurrentUser.init_user();
+
+                      //in case of deleted user
+                      var is_deleted_by_admin = curr_widget;
+                      if(is_deleted_by_admin == null){
+                        await FirebaseAuth.instance.signOut();
+                        setState(() {
+                          _error = ' החשבון שלך הוסר על ידי המנהל';
+                          show_spinner = false;
+                        });
+                        return;
+                      }
+
                       DataBaseService().add_user_token_to_db();
                       Navigator.pop(context);
                       Navigator.push(
@@ -175,7 +191,7 @@ class _LogInPageState extends State<LogInPage> {
                         setState(() {
                           email_control.clear();
                           pw_control.clear();
-                          _error = 'הסיסמה אינה מתאימה';
+                          _error = 'שם משתמש וסיסמה אינם תואמים';
                           show_spinner = false;
                         });
 
@@ -210,8 +226,7 @@ class Sign_up_here_text extends StatelessWidget {
     return RichText(
       text: TextSpan(
         children: <TextSpan>[
-          TextSpan(text: 'אין לך עדיין משתמש?',
-            style: defaultStyle,),
+          
           TextSpan(
               text: 'לחץ כאן להירשם',
               style: linkStyle,

@@ -104,7 +104,7 @@ class AdminRequestWindow extends StatelessWidget {
                       print(userAge);
                       print(userName);
                       print(userPhone);
-                      HelpRequest req = HelpRequest(helpRequestType, requestDescription, DateTime.now(), userId, '', Status.AVAILABLE);
+                      HelpRequest req = HelpRequest(helpRequestType, requestDescription, DateTime.now(), userId, '', Status.AVAILABLE,locationDescription);
                       UserInNeed to_add = UserInNeed(Privilege.Anonymous, userName, userPhone, dummy, false, userId, val, locationDescription, dummy, 0, dummy, dummy, dummy, dummy);
                       await DataBaseService().addUserInNeedToDataBase(to_add);
                       DataBaseService().addHelpRequestToDataBaseForUserInNeed(req);

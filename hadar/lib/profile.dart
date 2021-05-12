@@ -15,8 +15,47 @@ import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+
 import 'TechSupportForm.dart';
 
+
+/*class ProfileBanner extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.25,
+      child: Container(
+        color: Colors.transparent,
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Colors.green,
+            child: Text('On'),
+            foregroundColor: Colors.white,
+          ),
+          title: Text('סטטוס'),
+          subtitle: Text('מחובר'),
+        ),
+      ),
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: 'Logout',
+          color: Colors.blue,
+          icon: Icons.assignment_return,
+          onTap: () async {
+            await DataBaseService().Sign_out(context);
+          },
+        ),
+        IconSlideAction(
+          caption: 'Edit Profile',
+          color: BasicColor.clr,
+          icon: Icons.edit,
+          onTap: () {},
+        ),
+      ],
+    );
+  }
+}*/
 
 
 class ProfilePage extends StatelessWidget {
@@ -86,8 +125,53 @@ class ProfilePage extends StatelessWidget {
             builder: (BuildContext context) => removeUser(context),
           );
         },
+
+      );*/
+    if (privilege != 'Admin') {
+      return Column(
+        children: [
+              FlatButton(
+              child: Text(
+              'יציאה',
+              style: TextStyle(
+                    fontSize: 20.0,
+                    decoration: TextDecoration.underline,
+                    color: BasicColor.clr,
+                    letterSpacing: 2.0,
+                    fontWeight: FontWeight.w400),
+               ),
+              onPressed: () {
+              DataBaseService().Sign_out(context);
+              },
+            ),
+
+          FlatButton(
+            child: Text(
+              'הסר אותי מהמערכת',
+              style: TextStyle(
+                  fontSize: 20.0,
+                  decoration: TextDecoration.underline,
+                  color: BasicColor.clr,
+                  letterSpacing: 2.0,
+                  fontWeight: FontWeight.w400),
+            ),
+            onPressed: () async {
+              await DataBaseService().RemoveCurrentuserFromAuthentication();
+              DataBaseService().RemoveUserfromdatabase(user);
+              DataBaseService().Sign_out(context);
+            },
+          ),
+
+        ],
       );
-    return FlatButton(
+    }
+    else{
+      return SizedBox(
+        width: 20,
+        height: 20,
+
+      );
+   /* return FlatButton(
       child: Text(
         'Sign out',
         style: TextStyle(
@@ -100,7 +184,7 @@ class ProfilePage extends StatelessWidget {
       onPressed: () {
         DataBaseService().Sign_out(context);
       },
-    );
+    );*/
   }
 
   _launchCaller() async {

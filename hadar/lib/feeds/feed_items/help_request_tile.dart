@@ -68,7 +68,7 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
       title: Row(children: <Widget>[
         Container(
           // child: Text(widget.helpRequest.category.description),
-          child: GetUserInNeedInfo(widget.helpRequest.sender_id,DataBaseService().userInNeedCollection),
+          child: GetUserInNeedInfo(widget.helpRequest.sender_id,DataBaseService().userInNeedCollection,widget.helpRequest),
           alignment: Alignment.topRight,
         ),
         Spacer(),

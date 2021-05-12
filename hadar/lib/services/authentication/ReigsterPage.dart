@@ -331,7 +331,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => userInNeedRegisterPage(user_in_need)));
                         break;
                       case Privilege.Admin:
-                        DataBaseService().addVerficationRequestToDb(VerificationRequest(UnregisteredUser(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text),  clicked_priv, DateTime.now()));
+                        DataBaseService().addVerficationRequestToDb(VerificationRequest(UnregisteredUser(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text),  clicked_priv, DateTime.now(),"","","","","","","","",List<HelpRequestType>()));
                         Navigator.pop(context);
                         break;
                       case Privilege.Volunteer:
