@@ -1,6 +1,7 @@
 
 
-enum Status {AVAILABLE , UNVERFIED , APPROVED}
+
+
 class UserInquiry{
 
 
@@ -9,7 +10,8 @@ class UserInquiry{
   String phoneNumber;
   String reasonForInquiry;
   String description;
+  String date;
   
-  UserInquiry( this.name,this.id, this.phoneNumber, this.reasonForInquiry , this.description);
+  UserInquiry( this.name,this.id, this.phoneNumber, this.reasonForInquiry , this.description,this.date);
 
 }

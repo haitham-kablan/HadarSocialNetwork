@@ -24,6 +24,7 @@ import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
+import 'package:hadar/utils/UsersInquiry.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 
 import '../main.dart';
@@ -39,6 +40,7 @@ class DataBaseService{
   final CollectionReference helpersCollection = FirebaseFirestore.instance.collection('HELPERS');
   final CollectionReference userInNeedCollection = FirebaseFirestore.instance.collection('USERS_IN_NEED');
   final CollectionReference adminsCollection = FirebaseFirestore.instance.collection('ADMINS');
+  final CollectionReference inquiryCollection = FirebaseFirestore.instance.collection('Inqury');
   final CollectionReference organizationsCollection = FirebaseFirestore.instance.collection('ORGANIZATIONS');
   final CollectionReference registrationRequestsCollection = FirebaseFirestore.instance.collection('REGISTRATION_REQUESTS');
   final CollectionReference helpRequestsTypeCollection = FirebaseFirestore.instance.collection('HELP_REQUESTS_TYPES');
@@ -262,6 +264,20 @@ class DataBaseService{
     to_add['location'] = helpRequest.location;
 
     allHelpsRequestsCollection.doc(helpRequest.date.toString()+"-"+helpRequest.sender_id).set(to_add);
+
+  }
+
+  Future addInquryToDataBase(UserInquiry userInquiry) async{
+
+    Map<String,dynamic> to_add = Map();
+    to_add['name'] = userInquiry.name;
+    to_add['id'] = userInquiry.id;
+    to_add['phoneNumber'] = userInquiry.phoneNumber;
+    to_add['reasonForInquiry'] = userInquiry.reasonForInquiry;
+    to_add['description'] = userInquiry.description;
+    to_add['date'] = userInquiry.date.toString();
+
+    inquiryCollection.doc(userInquiry.date.toString()+"-"+userInquiry.id).set(to_add);
 
   }
 
@@ -529,6 +545,7 @@ class DataBaseService{
         .map(helpRequestListFromSnapShotForSpecificVolunteer);
 
   }
+
   Stream<List<HelpRequest>> getAll_waiting_Requests() {
 
 
@@ -552,6 +569,15 @@ class DataBaseService{
     return allHelpsRequestsCollection.where('status' , isEqualTo: Status.APPROVED.toString().substring(7)).orderBy('time' , descending: true)
         .snapshots()
         .map(helpRequestListFromSnapShot);
+
+  }
+
+  Stream<List<UserInquiry>> getAll_inquires_for_user(String id) {
+
+
+    return inquiryCollection.where('id',isEqualTo: id).orderBy('date',descending: true)
+        .snapshots()
+        .map(UserInqurytListFromSnapShot);
 
   }
 
@@ -873,6 +899,12 @@ List<VerificationRequest> VerficationRequestListFromSnapShot(QuerySnapshot snaps
 List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
       HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
+}
+
+List<UserInquiry> UserInqurytListFromSnapShot(QuerySnapshot snapshot){
+
+  return snapshot.docs.map((doc) =>
+  UserInquiry(doc.data()['name'] ?? '',doc.data()['id'] ?? '',doc.data()['phoneNumber'] ?? '',doc.data()['reasonForInquiry'] ?? '',doc.data()['description'] ?? '',DateTime.parse(doc.data()['date']) ?? '')).toList();
 }
 
 
