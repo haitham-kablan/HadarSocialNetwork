@@ -51,6 +51,13 @@ class AdminRequestWindow extends StatelessWidget {
     this.drop = Dropdown(desBox, types);
   }
 
+  Widget getRelContainer(DescriptonBox des){
+    return                   Container(
+      height: 100,
+      child: des,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,7 +67,7 @@ class AdminRequestWindow extends StatelessWidget {
           slivers: [
             SliverPersistentHeader(
               delegate:
-                  MySliverAppBar(expandedHeight: 150, title: 'בחר קטיגוריה'),
+                  MySliverAppBar(expandedHeight: 150, title: 'הוספת בקשה'),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -69,34 +76,16 @@ class AdminRequestWindow extends StatelessWidget {
                   SizedBox(
                     height: 100,
                   ),
-                  Container(
-                    height: 100,
-                    child: desName,
-                  ),
-                  Container(
-                    height: 100,
-                    child: desId,
-                  ),
-                  Container(
-                    height: 100,
-                    child: desPhone,
-                  ),
-                  Container(
-                    height: 100,
-                    child: desAge,
-                  ),
-                  Container(
-                    height: 100,
-                    child: desLocation,
-                  ),
+                  getRelContainer(desName),
+                  getRelContainer(desId),
+                  getRelContainer(desPhone),
+                  getRelContainer(desAge),
+                  getRelContainer(desLocation),
                     Container(
                       height: 50,
                       child: drop,
                     ),
-                    Container(
-                      height: 100,
-                      child: desBox,
-                    ),
+                  getRelContainer(desBox),
                   SizedBox(
                     height: 40,
                   ),
@@ -260,12 +249,6 @@ class _DescriptonBox extends State<DescriptonBox> {
     return inputtextField.text;
   }
 
-  // void processText() {
-  //   setState(() {
-  //     helpRequestType = HelpRequestType(_inputtext);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -286,12 +269,6 @@ class _DescriptonBox extends State<DescriptonBox> {
                         labelText: widget.title,
                       ),
                     ))),
-            // RaisedButton(
-            //   onPressed: () {
-            //     _processText();
-            //   },
-            //   child: Text('אישור'),
-            // )
           ],
         ),
       ),

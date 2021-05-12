@@ -5,12 +5,10 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/lang/HebrewText.dart';
 
 import 'package:hadar/users/CurrentUser.dart';
-import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/services/DataBaseServices.dart';
-import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import 'Design/mainDesign.dart';

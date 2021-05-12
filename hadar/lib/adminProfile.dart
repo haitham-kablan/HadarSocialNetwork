@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
+import 'package:hadar/userInquiryView.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/users/User.dart';
@@ -149,7 +150,7 @@ class AdminProfile extends StatelessWidget {
                       height:20,
                     ),
                     Text(
-                      user.email +'  :' + 'אימייל',
+                      user.email +'  :' + 'אימיל',
                       style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.blueGrey,
@@ -219,6 +220,37 @@ class AdminProfile extends StatelessWidget {
                       onPressed:() {
                         DataBaseService().Sign_out(context);
                       },),
+
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Container(
+                      alignment: Alignment.bottomRight,
+                      child: FlatButton(
+                        child:
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Text(
+                          'פניות ממשתמשים',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.blueGrey,
+                              letterSpacing: 2.0,
+                              fontWeight: FontWeight.w400),
+                        ),
+                            Icon(Icons.warning_rounded, color: Colors.red,),
+                          ],
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => userInquiryView(this)),
+                          );
+                        },
+                      ),
+
                     FlatButton(
                       child: Text(
                         'הסר אותי מהמערכת',
@@ -234,6 +266,7 @@ class AdminProfile extends StatelessWidget {
                         DataBaseService().RemoveUserfromdatabase(user);
                         DataBaseService().Sign_out(context);
                       },
+
                     ),
                   ],
                 ),
