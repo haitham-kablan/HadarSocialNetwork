@@ -126,7 +126,7 @@ class ProfilePage extends StatelessWidget {
           );
         },
 
-      );*/
+      );
     if (privilege != 'Admin') {
       return Column(
         children: [
@@ -185,7 +185,7 @@ class ProfilePage extends StatelessWidget {
         DataBaseService().Sign_out(context);
       },
     );*/
-  }
+  }}
 
   _launchCaller() async {
     String number;

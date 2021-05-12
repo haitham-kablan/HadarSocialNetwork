@@ -250,7 +250,7 @@ class AdminProfile extends StatelessWidget {
                           );
                         },
                       ),
-
+                    ),
                     FlatButton(
                       child: Text(
                         'הסר אותי מהמערכת',
