@@ -581,6 +581,15 @@ class DataBaseService{
 
   }
 
+  Stream<List<UserInquiry>> getAll_inquiresr() {
+
+
+    return inquiryCollection.orderBy('date',descending: true)
+        .snapshots()
+        .map(UserInqurytListFromSnapShot);
+
+  }
+
   // Stream<List<HelpRequest>> getVolPendingRequests(Volunteer volunteer) {
   //
   //   return helpersCollection.doc(volunteer.id).collection(volunteer_pending_requests).orderBy('time',descending: true)
