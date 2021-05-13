@@ -4,7 +4,6 @@
 
 class UserInquiry{
 
-
   String name;
   String id;
   String phoneNumber;
