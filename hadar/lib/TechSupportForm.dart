@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/profile.dart';
+import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/CurrentUser.dart';
 
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
+import 'package:hadar/utils/UsersInquiry.dart';
 
 import 'Design/mainDesign.dart';
 
@@ -14,10 +17,12 @@ class TechSupportForm extends StatelessWidget {
   DescriptonBox desReason;
   DescriptonBox desBox;
   DescriptonBox desName;
+  DescriptonBox desId;
   DescriptonBox desPhone;
   String reason;
   String description;
   String userName;
+  String userId;
   String userPhone;
   HelpRequestType helpRequestType;
 
@@ -28,6 +33,7 @@ class TechSupportForm extends StatelessWidget {
 
   void init() {
     this.desName = DescriptonBox(title: 'שם', parent: parent);
+    this.desId = DescriptonBox(title: 'תעודת זהות', parent: parent);
     this.desPhone = DescriptonBox(title: 'מספר טלפון', parent: parent);
     this.desReason = DescriptonBox(title: 'סיבת הפנייה בקצרה', parent: parent);
     this.desBox = DescriptonBox(title: 'פירוט', parent: parent);
@@ -60,6 +66,7 @@ class TechSupportForm extends StatelessWidget {
                     height: 100,
                   ),
                   getRelContainer(desName),
+                  getRelContainer(desId),
                   getRelContainer(desPhone),
                   getRelContainer(desReason),
                   getRelContainer(desBox),
@@ -69,6 +76,7 @@ class TechSupportForm extends StatelessWidget {
                   RaisedButton(
                     onPressed: () async{
                       userName = desName.getDataEntered();
+                      userId = desId.getDataEntered();
                       userPhone = desPhone.getDataEntered();
                       reason = desReason.getDataEntered();
                       description = desBox.getDataEntered();
@@ -76,8 +84,14 @@ class TechSupportForm extends StatelessWidget {
                       print(userPhone);
                       print(reason);
                       print(description);
-                      //TODO: add the resuest to the database
-                      Navigator.canPop(context);
+                      UserInquiry userInquiry= UserInquiry(userName, userId, userPhone, reason, description, DateTime.now());
+                      DataBaseService().addInquryToDataBase(userInquiry);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfilePage(CurrentUser.curr_user)),
+                      );
+                      // Navigator.canPop(context);
                     },
                     child: Text('אישור'),
                   ),

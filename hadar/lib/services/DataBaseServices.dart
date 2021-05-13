@@ -581,7 +581,7 @@ class DataBaseService{
 
   }
 
-  Stream<List<UserInquiry>> getAll_inquiresr() {
+  Stream<List<UserInquiry>> getAll_inquires() {
 
 
     return inquiryCollection.orderBy('date',descending: true)
