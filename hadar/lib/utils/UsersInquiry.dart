@@ -10,7 +10,7 @@ class UserInquiry{
   String phoneNumber;
   String reasonForInquiry;
   String description;
-  String date;
+  DateTime date;
   
   UserInquiry( this.name,this.id, this.phoneNumber, this.reasonForInquiry , this.description,this.date);
 
