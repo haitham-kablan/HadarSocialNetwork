@@ -58,7 +58,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
     List<String> tripKeys = tripTypes.keys.toList();
 
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         body: Center(
           child: get_bg(),
         ),

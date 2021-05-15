@@ -44,7 +44,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
         textDirection: TextDirection.rtl,
         child: new Builder(builder: (BuildContext context) {
           return Scaffold(
-            resizeToAvoidBottomPadding: false,
+            resizeToAvoidBottomInset: false,
             body: Center(child: get_bg()),
           );
         }));
