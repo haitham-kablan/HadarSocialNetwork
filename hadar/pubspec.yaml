@@ -53,6 +53,10 @@ dependencies:
   cloud_firestore_mocks: ^0.5.2+1
   font_awesome_flutter: ^8.10.0
 
+  #local notifications package
+  flutter_local_notifications: ^4.0.1+2
+  workmanager: ^0.4.0
+
 
 
 

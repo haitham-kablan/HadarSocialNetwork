@@ -173,52 +173,58 @@ class AdminBottomBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Spacer(flex: 1,),
-                  FlatButton(
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: 30,
-                      color: BasicColor.clr,
+                  Expanded(
+                    child: FlatButton(
+                      child: Icon(
+                        Icons.person_rounded,
+                        size: 30,
+                        color: BasicColor.clr,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdminProfile()
+                          ),
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AdminProfile()
-                        ),
-                      );
-                    },
                   ),
                   Spacer(flex: 1,),
-                  FlatButton(
-                    child: Icon(Icons.supervisor_account_sharp,
-                      size: 30,
-                      color: BasicColor.clr,
+                  Expanded(
+                    child: FlatButton(
+                      child: Icon(Icons.supervisor_account_sharp,
+                        size: 30,
+                        color: BasicColor.clr,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AllUsersView()
+                          ),
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AllUsersView()
-                        ),
-                      );
-                    },
                   ),
                   Spacer(flex: 1,),
-                  FlatButton(
-                    child: Icon(
-                      Icons.admin_panel_settings_outlined,
-                      size: 30,
-                      color: BasicColor.clr,
-                    ),
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AdminPage(CurrentUser.curr_user)
+                  Expanded(
+                    child: FlatButton(
+                      child: Icon(
+                        Icons.admin_panel_settings_outlined,
+                        size: 30,
+                        color: BasicColor.clr,
+                      ),
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdminPage(CurrentUser.curr_user)
 
-                        )
-                      );
-                    }
+                          )
+                        );
+                      }
+                    ),
                   ),
                   Spacer(flex: 1,),
                 ],

@@ -188,7 +188,7 @@ class DataBaseService{
     switch (verificationRequest.type){
 
       case Privilege.Admin:
-        Admin admin_to_add = Admin(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id);
+        Admin admin_to_add = Admin(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id, verificationRequest.time);
         addAdminToDataBase(admin_to_add);
         verificationsRequestsCollection.doc(admin_to_add.email).delete();
         break;
@@ -200,12 +200,12 @@ class DataBaseService{
         break;
       case Privilege.Volunteer:
 
-        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id,'0',0,verificationRequest.birthdate,verificationRequest.location,verificationRequest.status,verificationRequest.work,verificationRequest.birthplace,verificationRequest.spokenlangs,verificationRequest.mobility,verificationRequest.firstaidcourse);
+        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id, verificationRequest.time,'0',0,verificationRequest.birthdate,verificationRequest.location,verificationRequest.status,verificationRequest.work,verificationRequest.birthplace,verificationRequest.spokenlangs,verificationRequest.mobility,verificationRequest.firstaidcourse);
         addVolunteerToDataBase(Volunteer_to_add);
         verificationsRequestsCollection.doc(Volunteer_to_add.email).delete();
         break;
       case Privilege.Organization:
-        Organization organization_to_add = Organization(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id, verificationRequest.location, verificationRequest.services);
+        Organization organization_to_add = Organization(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id, verificationRequest.time, verificationRequest.location, verificationRequest.services);
         addOrganizationToDataBase(organization_to_add);
         verificationsRequestsCollection.doc(organization_to_add.email).delete();
         break;
@@ -222,9 +222,40 @@ class DataBaseService{
         .snapshots()
         .map(VerficationRequestListFromSnapShot);
   }
-
   
-  /*
+  Future<bool> hasVerificationRequestsAfterTimestamp(int timestamp) async {
+    var requests = await verificationsRequestsCollection
+        .where('time', isGreaterThan: timestamp)
+        .get();
+
+    return requests.size > 0;
+  }
+
+  Future updateUserLastNotifiedTime(hadar.User user) async{
+
+    Map<String,dynamic> toUpdate = Map();
+    toUpdate['lastNotifiedTime'] = DateTime.now().millisecondsSinceEpoch;
+
+    switch (user.privilege){
+      case Privilege.Admin:
+        adminsCollection.doc(user.id).update(toUpdate);
+        break;
+      case Privilege.Volunteer:
+        helpersCollection.doc(user.id).update(toUpdate);
+        break;
+      case Privilege.UserInNeed:
+        userInNeedCollection.doc(user.id).update(toUpdate);
+        break;
+      case Privilege.Organization:
+        organizationsCollection.doc(user.id).update(toUpdate);
+        break;
+      default:
+        return;
+    }
+  }
+
+
+    /*
   THIS FUNCTION WILL AUTOMATICALLY ADD THE REQUEST TO ALL THE RELEVANT
   VOULNTEERS -- nooooooooooo !!!
   it now add them to pending request collection
@@ -481,7 +512,7 @@ class DataBaseService{
   Future getUserById(String id,Privilege privilege) async{
 
     DocumentSnapshot doc;
-
+    int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
     if (privilege == Privilege.UserInNeed){
 
       await userInNeedCollection.doc(id).get()
@@ -492,7 +523,7 @@ class DataBaseService{
       }
 
       return UserInNeed(getTypeFromString(doc.data()['privilege']) ,doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
+          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
     }
 
     if (privilege == Privilege.Admin){
@@ -505,7 +536,7 @@ class DataBaseService{
       }
 
       return  Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' );
+          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime );
     }
 
     if (privilege == Privilege.Volunteer){
@@ -518,7 +549,7 @@ class DataBaseService{
       }
 
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? ''  ,doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
+          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime  ,doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
     }
 
 
@@ -570,6 +601,34 @@ class DataBaseService{
         .snapshots()
         .map(helpRequestListFromSnapShot);
 
+  }
+
+  Future<bool> hasUnverifiedHelpRequestsAfter(int timestamp) async {
+
+    var requests = await allHelpsRequestsCollection
+        .where('status' , isEqualTo: Status.UNVERFIED.toString().substring(7))
+        .where('time', isGreaterThan: timestamp)
+        .get();
+
+    return requests.size > 0;
+  }
+
+  Future<bool> hasApprovedHelpRequestsAfter(int timestamp) async {
+
+    var requests = await allHelpsRequestsCollection
+        .where('status' , isEqualTo: Status.APPROVED.toString().substring(7))
+        .where('time', isGreaterThan: timestamp)
+        .get();
+    return requests.size > 0;
+  }
+
+  Future<bool> hasAvailableHelpRequestsAfter(int timestamp) async {
+
+    var requests = await allHelpsRequestsCollection
+        .where('status' , isEqualTo: Status.AVAILABLE.toString().substring(7))
+        .where('time', isGreaterThan: timestamp)
+        .get();
+    return requests.size > 0;
   }
 
   Stream<List<UserInquiry>> getAll_inquires_for_user(String id) {
@@ -694,6 +753,7 @@ class DataBaseService{
 
     QuerySnapshot querySnapshot = null;
     DocumentSnapshot doc = null;
+    int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
     if (privilege == Privilege.UserInNeed){
 
@@ -707,7 +767,7 @@ class DataBaseService{
       }
 
       return UserInNeed(Privilege.UserInNeed , doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
+          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
     }
 
     if (privilege == Privilege.Admin){
@@ -722,7 +782,7 @@ class DataBaseService{
       }
 
       return  Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '' );
+          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime );
     }
 
     if (privilege == Privilege.Volunteer){
@@ -737,7 +797,7 @@ class DataBaseService{
       }
 
       return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? ''  ,doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
+          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
     }
 
     if (privilege == Privilege.Organization){
@@ -755,7 +815,7 @@ class DataBaseService{
       List<HelpRequestType> services = servicesStringList.map((type) => HelpRequestType(type)).toList();
 
       return Organization(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['location'], services);
+          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['location'], services);
     }
   }
 
@@ -929,23 +989,25 @@ List<HelpRequestType> helpRequestTypeListFromSnapShot(QuerySnapshot snapshot){
 
 List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
 
+  int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
   return snapshot.docs.map((doc) =>
       Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-  doc.data()['id'] ?? ''  ,doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' )).toList();
+  doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' )).toList();
 }
 
 List<Admin> AdminListFromSnapShot(QuerySnapshot snapshot){
 
+  int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
   return snapshot.docs.map((doc) =>
       Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '')).toList();
+          doc.data()['String id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime)).toList();
 }
 
 List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
-
+  int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
   List<UserInNeed> all_users =  snapshot.docs.map((doc) =>
       UserInNeed( getTypeFromString(doc.data()['privilege']), doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-  doc.data()['id'] ?? '' ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' )).toList();
+  doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' )).toList();
   List<UserInNeed> all_users_without_annoy = List();
   for(var i = 0; i < all_users.length; i++){
     if(all_users[i].privilege == Privilege.UserInNeed){
