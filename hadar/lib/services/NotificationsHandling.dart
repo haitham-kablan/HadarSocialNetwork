@@ -24,18 +24,16 @@ class LocalNotifications{
 }
 
 Future initNotifications() async {
-  //LocalNotifications.instance = new FlutterLocalNotificationsPlugin();
-  // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+  // initialise the plugin.
   const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-  /*final IOSInitializationSettings initializationSettingsIOS =
-  IOSInitializationSettings(
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+  final IOSInitializationSettings initializationSettingsIOS =
+  IOSInitializationSettings();
   final MacOSInitializationSettings initializationSettingsMacOS =
-  MacOSInitializationSettings();*/
+  MacOSInitializationSettings();
   final InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
-    /*iOS: initializationSettingsIOS,
-    macOS: initializationSettingsMacOS*/);
+    iOS: initializationSettingsIOS,
+    macOS: initializationSettingsMacOS);
 
   await LocalNotifications.instance.initialize(initializationSettings,
       onSelectNotification: selectNotification);
@@ -49,22 +47,13 @@ Future selectNotification(String payload) async {
   if (payload != null) {
     debugPrint('notification payload: $payload');
   }
-  //todo: fix the navigation.. this context is just a dummy.
-  //todo: figure out what context should be used instead
-  //todo: also change the page to which we redirect
   main();
-  /*BuildContext buildContext;
-  await Navigator.push(
-    buildContext,
-    MaterialPageRoute<void>(builder: (context) => main()),
-  );*/
 }
 
 
 //Admin Notifications
 
 Future sendJoinRequestNotification() async {
-  //LocalNotifications.instance = new FlutterLocalNotificationsPlugin();
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails(
       'join request',
@@ -80,7 +69,6 @@ Future sendJoinRequestNotification() async {
 }
 
 Future sendUnverifiedHelpReqNotification() async {
-  //LocalNotifications.instance = new FlutterLocalNotificationsPlugin();
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
   AndroidNotificationDetails(
       'unverified help request',
@@ -96,7 +84,6 @@ Future sendUnverifiedHelpReqNotification() async {
 }
 
 Future sendApprovedHelpReqNotification() async {
-  //LocalNotifications.instance = new FlutterLocalNotificationsPlugin();
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
   AndroidNotificationDetails(
       'approved help request',
@@ -115,7 +102,6 @@ Future sendApprovedHelpReqNotification() async {
 //Volunteer Notifications
 
 Future sendVolHelpReqNotification() async {
-  //LocalNotifications.instance = new FlutterLocalNotificationsPlugin();
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
   AndroidNotificationDetails(
       'volunteer help request',
