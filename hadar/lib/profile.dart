@@ -93,7 +93,8 @@ class ProfilePage extends StatelessWidget {
       actions: <Widget>[
         new FlatButton(
           onPressed: () {
-
+            DataBaseService().RemoveUserfromdatabase(user);
+            Navigator.pop(context);
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('אישור'),
