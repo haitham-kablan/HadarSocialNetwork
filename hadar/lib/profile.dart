@@ -89,11 +89,11 @@ class ProfilePage extends StatelessWidget {
   Widget removeUser(BuildContext context) {
     return new AlertDialog(
       backgroundColor: BasicColor.backgroundClr,
-      title: Center(child: const Text('למחוק המשתמש? ')),
+      title: Center(child: const Text('למחוק המשתמש? ' , textDirection: TextDirection.rtl,)),
       actions: <Widget>[
         new FlatButton(
           onPressed: () {
-            //  TODO: remove this user
+
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('אישור'),
