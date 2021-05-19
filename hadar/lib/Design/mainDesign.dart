@@ -10,6 +10,8 @@ import '../feeds/viewRegisteredUsers.dart';
 import 'basicTools.dart';
 import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
+
 
 class MySliverAppBar extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -237,6 +239,7 @@ class UserCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: Colors.transparent,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +247,7 @@ class UserCircle extends StatelessWidget {
           Align(
             alignment: Alignment.topCenter,
             child: Image.asset(
-              'assets/images/barPic.png',
+              'assets/images/try.png',
               // width: 150,
               // height: 150,
             ),

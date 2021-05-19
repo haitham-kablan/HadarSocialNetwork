@@ -107,6 +107,32 @@ class ProfilePage extends StatelessWidget {
     return BottomBar();
   }
 
+  Widget ifUserContactAdmin(BuildContext context){
+    if (privilege == 'Admin')
+      return SizedBox(width: 10,height:10);
+    else
+    return Container(
+      alignment: Alignment.topRight,
+      child: FlatButton(
+        child: Text(
+          'צור קשר',
+          style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.blueGrey,
+              letterSpacing: 2.0,
+              fontWeight: FontWeight.w400),
+        ),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                contactAdmin(context),
+          );
+        },
+      ),
+    );
+  }
+
   Widget SignOutOrRemoveUser(BuildContext context) {
     if (privilege == 'Admin')
       return FlatButton(
@@ -385,26 +411,27 @@ class ProfilePage extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: FlatButton(
-                        child: Text(
-                          'צור קשר',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.blueGrey,
-                              letterSpacing: 2.0,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                contactAdmin(context),
-                          );
-                        },
-                      ),
-                    ),
+                    ifUserContactAdmin(context),
+                    // Container(
+                    //   alignment: Alignment.topRight,
+                    //   child: FlatButton(
+                    //     child: Text(
+                    //       'צור קשר',
+                    //       style: TextStyle(
+                    //           fontSize: 20.0,
+                    //           color: Colors.blueGrey,
+                    //           letterSpacing: 2.0,
+                    //           fontWeight: FontWeight.w400),
+                    //     ),
+                    //     onPressed: () {
+                    //       showDialog(
+                    //         context: context,
+                    //         builder: (BuildContext context) =>
+                    //             contactAdmin(context),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
