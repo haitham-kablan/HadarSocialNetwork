@@ -6,7 +6,7 @@ import 'package:hadar/Design/basicTools.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/feeds/helper_feed.dart';
-import 'file:///D:/Hussein/Technion/234311%20-%20yearly%20project/Yearly_project/hadar/lib/feeds/user_inneed_feed.dart';
+//import 'file:///D:/Hussein/Technion/234311%20-%20yearly%20project/Yearly_project/hadar/lib/feeds/user_inneed_feed.dart';
 import 'package:hadar/users/RegisteredUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/users/UserInNeed.dart';
@@ -52,10 +52,11 @@ class testing_stream extends StatelessWidget {
   Widget build(BuildContext context) {
     List<HelpRequestType> list1 = List<HelpRequestType>();
     list1.add(HelpRequestType('food'));
+    Volunteer vol = Volunteer('haitham', '123', 'email@com', false, '1', "stars", 2, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "firstaidcourse");
 
 
     return StreamProvider<List<HelpRequest>>.value(
-      value: accepted ? getVolAceeptedRequests(Volunteer('haitham', '123', 'email@com', false , '1', [HelpRequestType('food'),HelpRequestType('money')])) : getVolPendingRequests(Volunteer('haitham', '123', 'email@com', false , '1', [HelpRequestType('food'),HelpRequestType('money')])),
+      value: accepted ? getVolAceeptedRequests(vol) : getVolPendingRequests(vol),
       child: Scaffold(
         backgroundColor: Colors.brown[50],
 
@@ -78,7 +79,7 @@ class testing_stream extends StatelessWidget {
 
   List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
     return snapshot.docs.map((doc) =>
-        HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '')).toList();
+        HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
   }
 
   Stream<List<HelpRequest>> getVolAceeptedRequests(Volunteer volunteer) {
@@ -89,3 +90,22 @@ class testing_stream extends StatelessWidget {
   }
 }
 
+Status getStatusFromString(String type){
+
+  if (type == 'APPROVED'){
+    return Status.APPROVED;
+  }
+  if (type == 'UNVERFIED'){
+    return Status.UNVERFIED;
+  }
+  if (type == 'AVAILABLE'){
+    return Status.AVAILABLE;
+  }
+  if (type == 'REJECTED'){
+    return Status.REJECTED;
+  }
+
+
+  //assert(false);
+
+}

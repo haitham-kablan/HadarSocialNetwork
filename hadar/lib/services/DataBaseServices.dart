@@ -498,7 +498,7 @@ class DataBaseService{
     if (privilege == Privilege.Admin){
 
       await adminsCollection.doc(id).get()
-          .then((document) => doc = document);
+          .then((document) => doc = document.exists ? document : null);
 
       if (doc == null){
         return null;
@@ -511,7 +511,7 @@ class DataBaseService{
     if (privilege == Privilege.Volunteer){
 
       await helpersCollection.doc(id).get()
-          .then((document) => doc = document);
+          .then((document) => doc = document.exists ? document : null);
 
       if (doc == null){
         return null;
