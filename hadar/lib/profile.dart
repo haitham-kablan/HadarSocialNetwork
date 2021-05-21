@@ -79,24 +79,74 @@ class ManagePersonalInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Form(
-          child: Custom_Text_feild(
-            'שנה סיסמא',
-            Icon(Icons.account_circle_rounded, color: BasicColor.clr),
-            BasicColor.clr,
-            BasicColor.clr,
-            name_Validator.Validate,
-            name_Controller,
-            false,
-            BasicColor.clr,
+        FlatButton(
+          padding: EdgeInsets.only(right: 25.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Text('התראות'),
+              Icon(Icons.notifications),
+            ],
           ),
-          key: nameKey,
+          onPressed: () {
+            //  TODO: turn notifications ON/OFF
+          },
+          textColor: Theme.of(context).primaryColor,
         ),
-        SizedBox(
-          height: 10,
+        FlatButton(
+          padding: EdgeInsets.only(right: 25.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Text('שנה מיקום קבוע'),
+              Icon(Icons.location_on),
+            ],
+          ),
+          onPressed: () {
+            //  TODO: change location
+          },
+          textColor: Theme.of(context).primaryColor,
+        ),
+        FlatButton(
+          padding: EdgeInsets.only(right: 25.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Text('שנה סיסמא'),
+              Icon(Icons.lock),
+            ],
+          ),
+          onPressed: () {
+            //  TODO: change password
+          },
+          textColor: Theme.of(context).primaryColor,
         ),
       ],
     );
+    // return Column(
+    //   children: [
+
+    // Form(
+    //   child: Custom_Text_feild(
+    //     'שנה סיסמא',
+    //     Icon(Icons.account_circle_rounded, color: BasicColor.clr),
+    //     BasicColor.clr,
+    //     BasicColor.clr,
+    //     name_Validator.Validate,
+    //     name_Controller,
+    //     false,
+    //     BasicColor.clr,
+    //   ),
+    //   key: nameKey,
+    // ),
+    // SizedBox(
+    //   height: 10,
+    // ),
+    //   ],
+    // );
   }
 }
 
@@ -162,10 +212,10 @@ class ContactUs extends StatelessWidget {
   }
 }
 
-class Other extends StatelessWidget {
+class OtherUserAccess extends StatelessWidget {
   a.User user;
 
-  Other(a.User currUser) {
+  OtherUserAccess(a.User currUser) {
     this.user = currUser;
   }
 
@@ -195,25 +245,80 @@ class Other extends StatelessWidget {
   }
 }
 
-class SortByCat extends StatefulWidget {
+class OtherAdminAccess extends StatelessWidget {
+  a.User user;
+
+  OtherAdminAccess(a.User currUser) {
+    this.user = currUser;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        FlatButton(
+          padding: EdgeInsets.only(right: 25.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Text('הסר את המשתמש מהמערכת'),
+              Icon(Icons.person_remove),
+            ],
+          ),
+          onPressed: () async {
+            await DataBaseService().RemoveCurrentuserFromAuthentication();
+            DataBaseService().RemoveUserfromdatabase(user);
+            DataBaseService().Sign_out(context);
+          },
+          textColor: Theme.of(context).primaryColor,
+        ),
+      ],
+    );
+  }
+}
+
+class SignOut extends StatelessWidget {
+  const SignOut({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      child: Text(
+        'Sign out',
+        style: TextStyle(
+            fontSize: 20.0,
+            decoration: TextDecoration.underline,
+            color: BasicColor.clr,
+            letterSpacing: 2.0,
+            fontWeight: FontWeight.w400),
+      ),
+      onPressed: () {
+        DataBaseService().Sign_out(context);
+      },
+    );
+  }
+}
+
+class SortByCatUser extends StatefulWidget {
   ProfilePage parent;
   a.User user;
 
-  SortByCat(a.User currUser, ProfilePage parent) {
+  SortByCatUser(a.User currUser, ProfilePage parent) {
     this.user = currUser;
     this.parent = parent;
   }
 
   @override
-  _SortByCatState createState() => _SortByCatState(user, parent);
+  _SortByCatUserState createState() => _SortByCatUserState(user, parent);
 }
 
-class _SortByCatState extends State<SortByCat> {
+class _SortByCatUserState extends State<SortByCatUser> {
   a.User user;
   ProfilePage parent;
   List<Item> _items;
 
-  _SortByCatState(a.User currUser, ProfilePage parent) {
+  _SortByCatUserState(a.User currUser, ProfilePage parent) {
     this.user = currUser;
     this.parent = parent;
   }
@@ -243,7 +348,87 @@ class _SortByCatState extends State<SortByCat> {
       ),
       Item(
         name: 'אחר',
-        builder: Other(user),
+        builder: OtherUserAccess(user),
+      ),
+    ];
+    return temp;
+  }
+
+  ExpansionPanelRadio _buildExpansionPanelRadio(Item item) {
+    return ExpansionPanelRadio(
+      value: item.name,
+      backgroundColor: Colors.white,
+      canTapOnHeader: true,
+      headerBuilder: (BuildContext context, bool isExpanded) {
+        return Container(
+          child: ListTile(
+            title: Text(item.name),
+            // subtitle: Text(item.name),
+          ),
+        );
+      },
+      body: item.builder,
+      // ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpansionPanelList.radio(
+      expandedHeaderPadding: EdgeInsets.all(10),
+      dividerColor: BasicColor.backgroundClr,
+      elevation: 4,
+      expansionCallback: (int index, bool isExpanded) {
+        setState(() {
+          _items[index].isExpanded = !isExpanded;
+        });
+      },
+      children: _items.map((item) => _buildExpansionPanelRadio(item)).toList(),
+    );
+  }
+}
+
+class SortByCatAdmin extends StatefulWidget {
+  ProfilePage parent;
+  a.User user;
+
+  SortByCatAdmin(a.User currUser, ProfilePage parent) {
+    this.user = currUser;
+    this.parent = parent;
+  }
+
+  @override
+  _SortByCatAdminState createState() => _SortByCatAdminState(user, parent);
+}
+
+class _SortByCatAdminState extends State<SortByCatAdmin> {
+  a.User user;
+  ProfilePage parent;
+  List<Item> _items;
+
+  _SortByCatAdminState(a.User currUser, ProfilePage parent) {
+    this.user = currUser;
+    this.parent = parent;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _items = _generateItems();
+    });
+  }
+
+  List<Item> _generateItems() {
+    List<Item> temp;
+    temp = [
+      Item(
+        name: 'מידע על המשתמש',
+        builder: AboutMe(user),
+      ),
+      Item(
+        name: 'אחר',
+        builder: OtherAdminAccess(user),
       ),
     ];
     return temp;
@@ -287,28 +472,46 @@ class ProfilePage extends StatelessWidget {
   a.User user;
   a.User adminAccess;
   String privilege;
+  bool adminIsOnProfile = false;
 
   ProfilePage(a.User currUser) {
     user = CurrentUser.curr_user;
-    switch (user.privilege) {
-      case Privilege.UserInNeed:
-        privilege = 'User in need';
-        break;
-      case Privilege.Volunteer:
-        privilege = 'Volunteer';
-        break;
-      case Privilege.Organization:
-        privilege = 'Organization';
-        break;
-      case Privilege.Admin:
-        privilege = 'Admin';
-        adminAccess = user;
-        user = currUser;
-        break;
-      default:
-        privilege = 'default';
-        break;
+    if (user.privilege == Privilege.Admin) {
+      adminIsOnProfile = true;
+      privilege = 'Admin';
+      // adminAccess = user;
+      // user = currUser;
+
+      switch (user.privilege) {
+        case Privilege.UserInNeed:
+          privilege = 'User in need';
+          break;
+        case Privilege.Volunteer:
+          privilege = 'Volunteer';
+          break;
+        case Privilege.Organization:
+          privilege = 'Organization';
+          break;
+        default:
+          privilege = 'default';
+          break;
+      }
     }
+  }
+
+  Widget userOrAdminAccess() {
+    if (adminIsOnProfile) return SortByCatAdmin(user, this);
+    return SortByCatUser(user, this);
+  }
+
+  Widget checkBottomBar() {
+    if (adminIsOnProfile) return AdminBottomBar();
+    return BottomBar();
+  }
+
+  Widget ifUserShowSignOut() {
+    if (adminIsOnProfile) return SizedBox();
+    return SignOut();
   }
 
   @override
@@ -317,8 +520,7 @@ class ProfilePage extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Profile',
       home: Scaffold(
-        bottomNavigationBar: BottomBar(),
-        // bottomNavigationBar: checkBottomBar(),
+        bottomNavigationBar: checkBottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
           slivers: [
@@ -355,7 +557,11 @@ class ProfilePage extends StatelessWidget {
                     SizedBox(
                       height: 40,
                     ),
-                    SortByCat(user, this),
+                    userOrAdminAccess(),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    ifUserShowSignOut(),
                   ],
                 ),
               ),
