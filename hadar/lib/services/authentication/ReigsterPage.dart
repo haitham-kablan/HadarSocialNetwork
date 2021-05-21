@@ -58,7 +58,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
     List<String> tripKeys = tripTypes.keys.toList();
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: false,
         body: Center(
           child: get_bg(),
         ),
@@ -324,10 +324,9 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     UserInNeed user_in_need;
                     Volunteer volunteer;
                     Organization organization;
-                    int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
                     switch(clicked_priv){
                       case Privilege.UserInNeed:
-                        user_in_need = UserInNeed(Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,lastNotifiedTime, 0,'','',0,'','','','');
+                        user_in_need = UserInNeed(Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,0,'','',0,'','','','');
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => userInNeedRegisterPage(user_in_need)));
                         break;
@@ -336,7 +335,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         Navigator.pop(context);
                         break;
                       case Privilege.Volunteer:
-                        volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text, lastNotifiedTime,'',0,'','','','','','','','');
+                        volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,'',0,'','','','','','','','');
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => volunteerRegisterPage(volunteer)));
                         break;
@@ -346,7 +345,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                           HelpRequestType("תרופות"),
                           HelpRequestType("טיפול שיניים"),
                         ];
-                        organization = Organization(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text, lastNotifiedTime, location, services);
+                        organization = Organization(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,location,services);
                         //in the mean time, for testing purposes, add the organization directly to the database
                         //the following line should be removed later
                         DataBaseService().addOrganizationToDataBase(organization);

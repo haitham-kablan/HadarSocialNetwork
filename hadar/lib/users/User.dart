@@ -9,7 +9,6 @@ class User{
   String email;
   String id;
   Privilege privilege;
-  int lastNotifiedTime;
 
-  User(this.name, this.phoneNumber, this.email, this.privilege , this.id, {this.lastNotifiedTime = 0});
+  User(this.name, this.phoneNumber, this.email, this.privilege , this.id);
 }

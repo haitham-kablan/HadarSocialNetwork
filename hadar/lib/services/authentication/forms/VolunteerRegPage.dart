@@ -55,7 +55,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
         textDirection: TextDirection.rtl,
         child: new Builder(builder: (BuildContext context) {
           return Scaffold(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomPadding: false,
             body: Center(child: get_bg()),
           );
         }));

@@ -21,12 +21,12 @@ class Volunteer extends RegisteredUser{
   String mobility ;
   String firstaidcourse ;
 
-  Volunteer(String name, String phoneNumber, String email, bool isSignedIn , String id ,int lastNotifiedTime, String stars , int count
+  Volunteer(String name, String phoneNumber, String email, bool isSignedIn , String id , String stars , int count
       ,  String birthdate,    String location,String status,String work, String birthplace
       ,  String spokenlangs ,
       String mobility
       , String firstaidcourse  )
-      : super(name, phoneNumber, email, Privilege.Volunteer, isSignedIn, id, lastNotifiedTime){
+      : super(name, phoneNumber, email, Privilege.Volunteer, isSignedIn , id){
     this.birthplace =birthplace;
     this.birthdate = birthdate;
     this.location = location;

@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/services/DataBaseServices.dart';
-import 'package:hadar/services/WorkmanagerHandling.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/CurrentUser.dart';
@@ -143,10 +142,7 @@ class ProfilePage extends StatelessWidget {
                     fontWeight: FontWeight.w400),
                ),
               onPressed: () {
-                //cancel all tasks in WorkManager to stop checking for notifications
-                WorkManagerInst.instance.cancelAll();
-
-                DataBaseService().Sign_out(context);
+              DataBaseService().Sign_out(context);
               },
             ),
 
@@ -161,9 +157,6 @@ class ProfilePage extends StatelessWidget {
                   fontWeight: FontWeight.w400),
             ),
             onPressed: () async {
-              //cancel all tasks in WorkManager to stop checking for notifications
-              WorkManagerInst.instance.cancelAll();
-
               await DataBaseService().RemoveCurrentuserFromAuthentication();
               DataBaseService().RemoveUserfromdatabase(user);
               DataBaseService().Sign_out(context);
