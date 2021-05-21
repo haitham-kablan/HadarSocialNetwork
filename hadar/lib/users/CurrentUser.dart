@@ -8,7 +8,7 @@ import 'package:hadar/main_pages/AdminPage.dart';
 import 'package:hadar/main_pages/OrganizationPage.dart';
 import 'package:hadar/main_pages/UserInNeedPage.dart';
 import 'package:hadar/main_pages/VolunteerPage.dart';
-import 'package:hadar/profile.dart';
+import 'package:hadar/profiles/profile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/NotificationsHandling.dart';
 import 'package:hadar/services/WorkmanagerHandling.dart';

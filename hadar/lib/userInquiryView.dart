@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hadar/adminProfile.dart';
+
+import 'package:hadar/profiles/adminProfile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/specificInquiryView.dart';
 import 'package:hadar/utils/UsersInquiry.dart';

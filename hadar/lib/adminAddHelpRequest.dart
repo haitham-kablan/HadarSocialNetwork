@@ -13,7 +13,7 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import 'Design/mainDesign.dart';
-import 'adminProfile.dart';
+import 'profiles/adminProfile.dart';
 import 'feeds/user_inneed_feed.dart';
 import 'users/Privilege.dart';
 
