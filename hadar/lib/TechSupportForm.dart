@@ -51,7 +51,7 @@ class TechSupportForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        bottomNavigationBar: AdminBottomBar(),
+        bottomNavigationBar: BottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
