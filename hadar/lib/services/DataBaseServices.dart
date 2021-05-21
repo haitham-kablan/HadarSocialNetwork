@@ -281,6 +281,28 @@ class DataBaseService{
   //
   //
   // }
+
+  Future<int> getSizeOfHelpReqType(HelpRequestType helpRequestType,String id) async {
+    List<HelpRequest> list = await get_requests_for_category(helpRequestType,id).first;
+    return list.length;
+
+    // QuerySnapshot querySnapshot = await allHelpsRequestsCollection.where('category',isEqualTo: helpRequestType.description).get();
+    // int counter = 0;
+    //
+    // if (querySnapshot.size == 0){
+    //   return 0;
+    // }
+    //
+    // for(int i = 0 ; i< querySnapshot.docs.length ; i++){
+    //    DocumentSnapshot doc = querySnapshot.docs[i];
+    //    doc.data()['name'] ?? '';
+    //    if(doc.data()['']){
+    //
+    //    }
+    // }
+    //
+    // return counter;
+  }
   Future addHelpRequestToDataBaseForUserInNeed(HelpRequest helpRequest) async{
 
     Map<String,dynamic> to_add = Map();
