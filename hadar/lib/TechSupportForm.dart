@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hadar/profile.dart';
+import 'package:hadar/profiles/profile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/CurrentUser.dart';
 
