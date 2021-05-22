@@ -49,6 +49,24 @@ class Id_Validator{
 
 }
 
+class Age_Validator{
+
+  static String Validate(String value){
+    if(value.isEmpty){
+      return 'גיל לא יכול להיות ריק';
+    }
+    if(value.length > 3){
+      return 'גיל לא חוקי';
+    }
+    if(!isNumeric(value)){
+      return 'גיל לא חוקי';
+    }
+    return null;
+
+  }
+
+}
+
 class name_Validator{
 
   static String Validate(String value){
@@ -93,6 +111,40 @@ class second_pw_Validator{
     }else{
       return null;
     }
+  }
+
+}
+
+class place_Validator{
+
+  static String Validate(String value){
+    if(value.isEmpty){
+      return 'מיקום לא יכול להיות ריק';
+    }
+    if (value.length > 60){
+      return 'המיקום שלך ארוך מדי';
+    }
+    else{
+      return null;
+    }
+  }
+
+}
+
+class num_Of_Son_Validator{
+
+  static String Validate(String value){
+    if(value.isEmpty){
+      return 'מספר בנים יכול להיות ריק';
+    }
+    if(value.length > 2){
+      return 'מספר בנים לא חוקי';
+    }
+    if(!isNumeric(value)){
+      return 'מספר בנים לא חוקי';
+    }
+    return null;
+
   }
 
 }

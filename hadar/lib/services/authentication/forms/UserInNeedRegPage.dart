@@ -6,6 +6,7 @@ import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/UserInNeed.dart';
 
@@ -68,7 +69,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                           null,
                           Colors.white,
                           Colors.white,
-                          null,
+                          Age_Validator.Validate,
                           age_controller,
                           false,
                           Colors.white),
@@ -80,7 +81,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                           null,
                           Colors.white,
                           Colors.white,
-                          null,
+                          place_Validator.Validate,
                           location_controller,
                           false,
                           Colors.white),
@@ -104,7 +105,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                           null,
                           Colors.white,
                           Colors.white,
-                          null,
+                          num_Of_Son_Validator.Validate,
                           numKids_controller,
                           false,
                           Colors.white),
@@ -171,19 +172,25 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                             'הגש',
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
-                          onPressed: (){
-
-                          user.Age = age_controller.text == '' ? 0 : int.parse(age_controller.text);
-                          user.homePhone = homephone_controller.text;
-                          user.numKids = age_controller.text == '' ? 0 :int.parse(numKids_controller.text);
-                          user.eduStatus = eduStatus_controller.text;
-                          user.Status = status_controller.text;
-                          user.Location = location_controller.text;
-                          user.specialStatus = specialstatus_controller.text;
-                          user.Rav7a = rev7a_controller.text;
-                          DataBaseService().addUserInNeedToDataBase(user);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          onPressed: () async{
+                            if(!age.currentState.validate() || !location.currentState.validate() || numKids.currentState.validate() ){
+                              return;
+                            }
+                            user.Age = age_controller.text == ''
+                                ? 0
+                                : int.parse(age_controller.text);
+                            user.homePhone = homephone_controller.text;
+                            user.numKids = age_controller.text == ''
+                                ? 0
+                                : int.parse(numKids_controller.text);
+                            user.eduStatus = eduStatus_controller.text;
+                            user.Status = status_controller.text;
+                            user.Location = location_controller.text;
+                            user.specialStatus = specialstatus_controller.text;
+                            user.Rav7a = rev7a_controller.text;
+                            DataBaseService().addUserInNeedToDataBase(user);
+                            Navigator.pop(context);
+                            Navigator.pop(context);
                           },
                         ),
                       )),

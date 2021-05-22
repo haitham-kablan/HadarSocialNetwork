@@ -257,22 +257,22 @@ class _ReigesterPageState extends State<ReigesterPage> {
                       ],
                     ),
                   ),
-                  FlatButton(
-                    onPressed: () {
-                      setState(() {
-                        tripTypes = update_list(3);
-                        alert = false;
-                        clicked=true;
-                        clicked_priv = Privilege.Organization;
-                      });
-                    },
-                    child: Column(
-                      children: [
-                        tripTypes["עמותה"],
-                        Text('עמותה'),
-                      ],
-                    ),
-                  ),
+                  // FlatButton(
+                  //   onPressed: () {
+                  //     setState(() {
+                  //       tripTypes = update_list(3);
+                  //       alert = false;
+                  //       clicked=true;
+                  //       clicked_priv = Privilege.Organization;
+                  //     });
+                  //   },
+                  //   child: Column(
+                  //     children: [
+                  //       tripTypes["עמותה"],
+                  //       Text('עמותה'),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -339,20 +339,20 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => volunteerRegisterPage(volunteer)));
                         break;
-                      case Privilege.Organization:
-                        String location = "מזרח הדר";
-                        List<HelpRequestType> services = [
-                          HelpRequestType("תרופות"),
-                          HelpRequestType("טיפול שיניים"),
-                        ];
-                        organization = Organization(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,location,services);
-                        //in the mean time, for testing purposes, add the organization directly to the database
-                        //the following line should be removed later
-                        DataBaseService().addOrganizationToDataBase(organization);
-                        //todo: implement OrganizationRegisterPage and navigate to it
-                        //Navigator.push(context, MaterialPageRoute(builder: (context) => OrganizationRegisterPage(organization)));
-                        Navigator.pop(context);
-                        break;
+                      // case Privilege.Organization:
+                      //   String location = "מזרח הדר";
+                      //   List<HelpRequestType> services = [
+                      //     HelpRequestType("תרופות"),
+                      //     HelpRequestType("טיפול שיניים"),
+                      //   ];
+                      //   organization = Organization(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,location,services);
+                      //   //in the mean time, for testing purposes, add the organization directly to the database
+                      //   //the following line should be removed later
+                      //   DataBaseService().addOrganizationToDataBase(organization);
+                      //   //todo: implement OrganizationRegisterPage and navigate to it
+                      //   //Navigator.push(context, MaterialPageRoute(builder: (context) => OrganizationRegisterPage(organization)));
+                      //   Navigator.pop(context);
+                      //   break;
                       default:
                         Navigator.pop(context);
                         break;
