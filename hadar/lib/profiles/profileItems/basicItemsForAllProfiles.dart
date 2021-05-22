@@ -2,15 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
 import '../profile.dart';
+import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
 
 class MainInfo extends StatelessWidget {
   a.User user;
   String privilege;
 
-  MainInfo(a.User user,String privilege) {
+  MainInfo(a.User user, String privilege) {
     this.user = user;
     this.privilege = privilege;
   }
@@ -88,59 +90,38 @@ class ManagePersonalInfo extends StatelessWidget {
   a.User user;
   final nameKey = GlobalKey<FormState>();
   final name_Controller = TextEditingController();
+  ProfileButton buttonCreate;
 
   ManagePersonalInfo(a.User currUser) {
     this.user = currUser;
+    buttonCreate=ProfileButton ();
   }
 
   @override
   Widget build(BuildContext context) {
+    ButtonStyle style =buttonCreate.getStyle(context);
     return Column(
       children: [
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('התראות'),
-              Icon(Icons.notifications),
-            ],
-          ),
+        TextButton(
+          child: buttonCreate.getChild('למלא טופס', Icons.wysiwyg_rounded),
+          style: style,
           onPressed: () {
             //  TODO: turn notifications ON/OFF
           },
-          textColor: Theme.of(context).primaryColor,
         ),
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('שנה מיקום קבוע'),
-              Icon(Icons.location_on),
-            ],
-          ),
+        TextButton(
+          child: buttonCreate.getChild('שנה מיקום קבוע', Icons.location_on),
+          style: style,
           onPressed: () {
             //  TODO: change location
           },
-          textColor: Theme.of(context).primaryColor,
         ),
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('שנה סיסמא'),
-              Icon(Icons.lock),
-            ],
-          ),
+        TextButton(
+          child: buttonCreate.getChild('שנה סיסמא', Icons.lock),
+          style: style,
           onPressed: () {
             //  TODO: change password
           },
-          textColor: Theme.of(context).primaryColor,
         ),
       ],
     );
@@ -173,28 +154,32 @@ class SignOut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.only(left: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const Text(
-            'יציאה',
-            style: TextStyle(
-                fontSize: 17.0,
-                decoration: TextDecoration.underline,
-                fontWeight: FontWeight.bold),
-            // fontWeight: FontWeight.w400),
-          ),
-          Icon(Icons.logout),
-        ],
-      ),
-      onPressed: () {
-        DataBaseService().Sign_out(context);
-      },
-      textColor: Theme.of(context).primaryColor,
-    );
+    return
+      TextButton(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Text(
+              'יציאה',
+              style: TextStyle(
+                  fontSize: 17.0,
+                  decoration: TextDecoration.underline,
+                  fontWeight: FontWeight.bold),
+            ),
+            Icon(Icons.logout),
+          ],
+        ),
+        style: TextButton.styleFrom(
+          primary: Theme
+              .of(context)
+              .primaryColor,
+          padding: EdgeInsets.only(left: 10.0),
+        ),
+        onPressed: () {
+          DataBaseService().Sign_out(context);
+        },
+      );
   }
 }
 
@@ -204,7 +189,6 @@ class Item {
     this.builder,
     this.isExpanded = false,
   });
-
   String name;
   Widget builder;
   bool isExpanded;
@@ -212,69 +196,89 @@ class Item {
 
 class BasicLists {
   a.User user;
-  ProfilePage parent;
+  Widget parent;
   List<Item> listForUserView;
   List<Item> listForUserAdminView;
-  BasicLists(a.User user,ProfilePage parent){
+  List<Item> listForAdminView;
+
+  BasicLists(a.User user, Widget parent) {
     this.user = user;
     this.parent = parent;
-    listForUserView= [
-      Item(
-        name: 'מידע עלי',
-        builder: AboutMe(user),
-      ),
-      Item(
-        name: 'נהל פרטים אישיים',
-        builder: ManagePersonalInfo(user),
-      ),
-      Item(
-        name: 'צור קשר',
-        builder: ContactUs(user, parent),
-      ),
-      Item(
-        name: 'אחר',
-        builder: OtherUserAccess(user),
-      ),
-    ];
-    listForUserAdminView=[
-      Item(
-        name: 'מידע על המשתמש',
-        builder: AboutMe(user),
-      ),
-      Item(
-        name: 'אחר',
-        builder: OtherAdminAccess(user),
-      ),
-    ];
+      listForAdminView = [
+        Item(
+          name: 'מידע עלי',
+          builder: AboutMe(user),
+        ),
+        Item(
+          name: 'נהל פרטים אישיים',
+          builder: ManagePersonalInfo(user),
+        ),
+        Item(
+          name: 'נהל את המערכת',
+          builder: ManageTheSystem(),
+        ),
+        Item(
+          name: 'אחר',
+          builder: OtherUserAccess(user),
+        ),
+      ];
+        listForUserView = [
+          Item(
+            name: 'מידע עלי',
+            builder: AboutMe(user),
+          ),
+          Item(
+            name: 'נהל פרטים אישיים',
+            builder: ManagePersonalInfo(user),
+          ),
+          Item(
+            name: 'צור קשר',
+            builder: ContactUs(user, parent),
+          ),
+          Item(
+            name: 'אחר',
+            builder: OtherUserAccess(user),
+          ),
+        ];
+        listForUserAdminView = [
+          Item(
+            name: 'מידע על המשתמש',
+            builder: AboutMe(user),
+          ),
+          Item(
+            name: 'אחר',
+            builder: OtherAdminAccess(user),
+          ),
+        ];
   }
 }
 
 class SortByCatForAll extends StatefulWidget {
-  ProfilePage parent;
+  Widget parent;
   a.User user;
   List<Item> items;
 
-  SortByCatForAll(a.User currUser, ProfilePage parent,List<Item> items) {
+  SortByCatForAll(a.User currUser, Widget parent, List<Item> items) {
     this.user = currUser;
     this.parent = parent;
-    this.items=items;
+    this.items = items;
   }
 
   @override
-  _SortByCatForAllState createState() => _SortByCatForAllState(user, parent,items);
+  _SortByCatForAllState createState() =>
+      _SortByCatForAllState(user, parent, items);
 }
 
 class _SortByCatForAllState extends State<SortByCatForAll> {
   a.User user;
-  ProfilePage parent;
+  Widget parent;
   List<Item> _items;
 
-  _SortByCatForAllState(a.User currUser, ProfilePage parent,List<Item> items) {
+  _SortByCatForAllState(a.User currUser, Widget parent, List<Item> items) {
     this.user = currUser;
     this.parent = parent;
-    this._items=items;
+    this._items = items;
   }
-
 
   ExpansionPanelRadio _buildExpansionPanelRadio(Item item) {
     return ExpansionPanelRadio(
@@ -304,6 +308,27 @@ class _SortByCatForAllState extends State<SortByCatForAll> {
         });
       },
       children: _items.map((item) => _buildExpansionPanelRadio(item)).toList(),
+    );
+  }
+}
+
+class ProfileButton{
+  Widget getChild(String title,IconData icon){
+    return  Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(title),
+        Icon(icon),
+      ],
+    );
+  }
+  ButtonStyle getStyle(BuildContext context){
+    return TextButton.styleFrom(
+    primary: Theme
+        .of(context)
+        .primaryColor,
+    padding: EdgeInsets.only(right: 25.0),
     );
   }
 }
