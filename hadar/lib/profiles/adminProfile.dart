@@ -7,11 +7,11 @@ import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/users/User.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
-import 'Design/basicTools.dart';
-import 'Design/mainDesign.dart';
+import '../Design/basicTools.dart';
+import '../Design/mainDesign.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import 'adminAddHelpRequest.dart';
+import '../adminAddHelpRequest.dart';
 
 
 //when a user clicks on the category, he gets a description box,

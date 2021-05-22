@@ -4,10 +4,12 @@ import 'package:hadar/feeds/adminfeedtile.dart';
 import 'package:hadar/main_pages/AdminPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
 
-import '../adminProfile.dart';
-import '../profile.dart';
+import '../profiles/adminProfile.dart';
+import '../profiles/profile.dart';
 import '../feeds/viewRegisteredUsers.dart';
 import 'basicTools.dart';
+import 'package:flutter/material.dart';
+
 import 'package:flutter/material.dart';
 
 
@@ -237,6 +239,7 @@ class UserCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: Colors.transparent,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -244,7 +247,7 @@ class UserCircle extends StatelessWidget {
           Align(
             alignment: Alignment.topCenter,
             child: Image.asset(
-              'assets/images/barPic.png',
+              'assets/images/try.png',
               // width: 150,
               // height: 150,
             ),

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hadar/profile.dart';
+
+import 'package:hadar/profiles/profile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/CurrentUser.dart';
 
@@ -51,7 +52,7 @@ class TechSupportForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        bottomNavigationBar: AdminBottomBar(),
+        bottomNavigationBar: BottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(

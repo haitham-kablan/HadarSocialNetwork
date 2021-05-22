@@ -13,10 +13,10 @@ class Organization extends RegisteredUser {
   List<HelpRequestType> services;
 
   Organization(String name, String phoneNumber, String email, bool isSignedIn,
-      String id, String location, List<HelpRequestType> services)
+      String id, int lastNotifiedTime, String location, List<HelpRequestType> services)
       : this.location = location, this.services = services,
         super(
-            name, phoneNumber, email, Privilege.Organization, isSignedIn, id) {
+            name, phoneNumber, email, Privilege.Organization, isSignedIn, id, lastNotifiedTime) {
     helpRequests = new List<HelpRequest>();
   }
 }
