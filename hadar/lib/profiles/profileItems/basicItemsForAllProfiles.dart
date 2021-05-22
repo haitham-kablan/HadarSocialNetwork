@@ -4,9 +4,67 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
+import 'package:hadar/utils/HelpRequestType.dart';
 import '../profile.dart';
 import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
+
+//when a user clicks on the category, he gets a description box,
+// where he can describe his request
+class DescriptonBox extends StatefulWidget {
+  DescriptonBox({Key key, this.title}) : super(key: key);
+  _DescriptonBox desBoxState = _DescriptonBox();
+  final String title;
+
+  void processText() {
+    desBoxState.processText();
+  }
+
+  @override
+  _DescriptonBox createState() => desBoxState;
+}
+
+class _DescriptonBox extends State<DescriptonBox> {
+  String _inputtext = 'waiting..';
+  TextEditingController inputtextField = TextEditingController();
+
+  void processText() {
+    setState(() {
+      _inputtext = inputtextField.text;
+      HelpRequestType helpRequestType= HelpRequestType(_inputtext);
+      _inputtext=null;
+      DataBaseService().addHelpRequestTypeDataBase(helpRequestType);
+      Navigator.of(context).pop();
+    }
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(height: 110,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: TextField(
+                      controller: inputtextField,
+                      textAlign: TextAlign.right,
+                      autofocus: true,
+                      decoration: new InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: widget.title,
+                      ),
+                    ))),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class MainInfo extends StatelessWidget {
   a.User user;
@@ -103,7 +161,7 @@ class ManagePersonalInfo extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          child: buttonCreate.getChild('למלא טופס', Icons.wysiwyg_rounded),
+          child: buttonCreate.getChild('התראות', Icons.notifications_rounded),
           style: style,
           onPressed: () {
             //  TODO: turn notifications ON/OFF

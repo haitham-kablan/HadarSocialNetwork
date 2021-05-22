@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import 'package:hadar/profiles/adminProfile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+
 import 'package:hadar/specificInquiryView.dart';
 import 'package:hadar/utils/UsersInquiry.dart';
 import 'package:provider/provider.dart';
@@ -112,7 +111,7 @@ class InquiryItem extends StatelessWidget {
 
 
 class userInquiryView extends StatelessWidget {
-  userInquiryView(AdminProfile adminProfile);
+  userInquiryView();
 
   @override
   Widget build(BuildContext context) {
