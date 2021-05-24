@@ -18,7 +18,6 @@ import 'feeds/user_inneed_feed.dart';
 import 'users/Privilege.dart';
 
 class AdminRequestWindow extends StatelessWidget {
-  AdminProfile parent;
   DescriptonBox desBox;
   DescriptonBox desAge;
   DescriptonBox desId;
@@ -35,19 +34,18 @@ class AdminRequestWindow extends StatelessWidget {
   String userPhone;
   HelpRequestType helpRequestType;
 
-  AdminRequestWindow(AdminProfile parent, List<HelpRequestType> types) {
-    this.parent = parent;
+  AdminRequestWindow( List<HelpRequestType> types) {
     this.types = types;
     init();
   }
 
   void init() {
-    this.desBox = DescriptonBox(title: 'תיאור בקשה', parent: parent);
-    this.desAge = DescriptonBox(title: 'גיל', parent: parent);
-    this.desId = DescriptonBox(title: 'תעודת זהות', parent: parent);
-    this.desLocation = DescriptonBox(title: 'מיקום', parent: parent);
-    this.desName = DescriptonBox(title: 'שם', parent: parent);
-    this.desPhone = DescriptonBox(title: 'מספר טלפון', parent: parent);
+    this.desBox = DescriptonBox(title: 'תיאור בקשה');
+    this.desAge = DescriptonBox(title: 'גיל');
+    this.desId = DescriptonBox(title: 'תעודת זהות');
+    this.desLocation = DescriptonBox(title: 'מיקום');
+    this.desName = DescriptonBox(title: 'שם');
+    this.desPhone = DescriptonBox(title: 'מספר טלפון');
     this.drop = Dropdown(desBox, types);
   }
 
@@ -204,10 +202,10 @@ class DropDownState extends State<Dropdown> {
 //when a user clicks on the category, he gets a description box,
 // where he can describe his request
 class DescriptonBox extends StatefulWidget {
-  DescriptonBox({Key key, this.title, this.parent}) : super(key: key);
+  DescriptonBox({Key key, this.title}) : super(key: key);
   _DescriptonBox desBoxState = _DescriptonBox();
   final String title;
-  final AdminProfile parent;
+  // final AdminProfile parent;
 
   void setSelectedType(HelpRequestType selectedType) {
     desBoxState.setSelectedType(selectedType);

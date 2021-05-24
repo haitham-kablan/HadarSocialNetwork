@@ -5,14 +5,17 @@ import 'package:hadar/users/User.dart' as a;
 import 'package:url_launcher/url_launcher.dart';
 import '../../TechSupportForm.dart';
 import '../profile.dart';
+import 'basicItemsForAllProfiles.dart';
 
 class ContactUs extends StatelessWidget {
   a.User user;
-  ProfilePage parent;
+  Widget parent;
+  ProfileButton buttonCreate;
 
-  ContactUs(a.User currUser, ProfilePage parent) {
+  ContactUs(a.User currUser, Widget parent) {
     this.user = currUser;
     this.parent = parent;
+    buttonCreate = ProfileButton();
   }
 
   _launchCaller() async {
@@ -28,40 +31,25 @@ class ContactUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ButtonStyle style = buttonCreate.getStyle(context);
     return Column(
       children: [
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('למלא טופס'),
-              Icon(Icons.wysiwyg_rounded),
-            ],
-          ),
+        TextButton(
+          child: buttonCreate.getChild('למלא טופס', Icons.wysiwyg_rounded),
+          style: style,
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => TechSupportForm(parent)),
             );
           },
-          textColor: Theme.of(context).primaryColor,
         ),
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('להתקשר'),
-              Icon(Icons.phone),
-            ],
-          ),
+        TextButton(
+          child: buttonCreate.getChild('להתקשר', Icons.phone),
+          style: style,
           onPressed: () {
             _launchCaller();
           },
-          textColor: Theme.of(context).primaryColor,
         ),
       ],
     );
@@ -70,31 +58,26 @@ class ContactUs extends StatelessWidget {
 
 class OtherUserAccess extends StatelessWidget {
   a.User user;
+  ProfileButton buttonCreate;
 
   OtherUserAccess(a.User currUser) {
     this.user = currUser;
+    buttonCreate = ProfileButton();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('הסר אותי מהמערכת'),
-              Icon(Icons.person_remove),
-            ],
-          ),
-          onPressed: () async {
-            await DataBaseService().RemoveCurrentuserFromAuthentication();
-            DataBaseService().RemoveUserfromdatabase(user);
-            DataBaseService().Sign_out(context);
+        TextButton(
+          child: buttonCreate.getChild('הסר אותי מהמערכת', Icons.person_remove),
+          style: buttonCreate.getStyle(context),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => RemoveUser(user),
+            );
           },
-          textColor: Theme.of(context).primaryColor,
         ),
       ],
     );
@@ -103,31 +86,27 @@ class OtherUserAccess extends StatelessWidget {
 
 class OtherAdminAccess extends StatelessWidget {
   a.User user;
+  ProfileButton buttonCreate;
 
   OtherAdminAccess(a.User currUser) {
     this.user = currUser;
+    buttonCreate = ProfileButton();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('הסר את המשתמש מהמערכת'),
-              Icon(Icons.person_remove),
-            ],
-          ),
-          onPressed: () async {
-            await DataBaseService().RemoveCurrentuserFromAuthentication();
-            DataBaseService().RemoveUserfromdatabase(user);
-            DataBaseService().Sign_out(context);
+        TextButton(
+          child: buttonCreate.getChild(
+              'הסר את המשתמש מהמערכת', Icons.person_remove),
+          style: buttonCreate.getStyle(context),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => RemoveUser(user),
+            );
           },
-          textColor: Theme.of(context).primaryColor,
         ),
       ],
     );

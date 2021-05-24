@@ -2,15 +2,75 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
+import 'package:hadar/utils/HelpRequestType.dart';
 import '../profile.dart';
+import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
+
+//when a user clicks on the category, he gets a description box,
+// where he can describe his request
+class DescriptonBox extends StatefulWidget {
+  DescriptonBox({Key key, this.title}) : super(key: key);
+  _DescriptonBox desBoxState = _DescriptonBox();
+  final String title;
+
+  void processText() {
+    desBoxState.processText();
+  }
+
+  @override
+  _DescriptonBox createState() => desBoxState;
+}
+
+class _DescriptonBox extends State<DescriptonBox> {
+  String _inputtext = 'waiting..';
+  TextEditingController inputtextField = TextEditingController();
+
+  void processText() {
+    setState(() {
+      _inputtext = inputtextField.text;
+      HelpRequestType helpRequestType = HelpRequestType(_inputtext);
+      _inputtext = null;
+      DataBaseService().addHelpRequestTypeDataBase(helpRequestType);
+      Navigator.of(context).pop();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 110,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: TextField(
+                      controller: inputtextField,
+                      textAlign: TextAlign.right,
+                      autofocus: true,
+                      decoration: new InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: widget.title,
+                      ),
+                    ))),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class MainInfo extends StatelessWidget {
   a.User user;
   String privilege;
 
-  MainInfo(a.User user,String privilege) {
+  MainInfo(a.User user, String privilege) {
     this.user = user;
     this.privilege = privilege;
   }
@@ -88,59 +148,38 @@ class ManagePersonalInfo extends StatelessWidget {
   a.User user;
   final nameKey = GlobalKey<FormState>();
   final name_Controller = TextEditingController();
+  ProfileButton buttonCreate;
 
   ManagePersonalInfo(a.User currUser) {
     this.user = currUser;
+    buttonCreate = ProfileButton();
   }
 
   @override
   Widget build(BuildContext context) {
+    ButtonStyle style = buttonCreate.getStyle(context);
     return Column(
       children: [
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('התראות'),
-              Icon(Icons.notifications),
-            ],
-          ),
+        TextButton(
+          child: buttonCreate.getChild('התראות', Icons.notifications_rounded),
+          style: style,
           onPressed: () {
             //  TODO: turn notifications ON/OFF
           },
-          textColor: Theme.of(context).primaryColor,
         ),
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('שנה מיקום קבוע'),
-              Icon(Icons.location_on),
-            ],
-          ),
+        TextButton(
+          child: buttonCreate.getChild('שנה מיקום קבוע', Icons.location_on),
+          style: style,
           onPressed: () {
             //  TODO: change location
           },
-          textColor: Theme.of(context).primaryColor,
         ),
-        FlatButton(
-          padding: EdgeInsets.only(right: 25.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Text('שנה סיסמא'),
-              Icon(Icons.lock),
-            ],
-          ),
+        TextButton(
+          child: buttonCreate.getChild('שנה סיסמא', Icons.lock),
+          style: style,
           onPressed: () {
             //  TODO: change password
           },
-          textColor: Theme.of(context).primaryColor,
         ),
       ],
     );
@@ -173,8 +212,7 @@ class SignOut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.only(left: 10),
+    return TextButton(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -185,15 +223,17 @@ class SignOut extends StatelessWidget {
                 fontSize: 17.0,
                 decoration: TextDecoration.underline,
                 fontWeight: FontWeight.bold),
-            // fontWeight: FontWeight.w400),
           ),
           Icon(Icons.logout),
         ],
       ),
+      style: TextButton.styleFrom(
+        primary: Theme.of(context).primaryColor,
+        padding: EdgeInsets.only(left: 10.0),
+      ),
       onPressed: () {
         DataBaseService().Sign_out(context);
       },
-      textColor: Theme.of(context).primaryColor,
     );
   }
 }
@@ -212,13 +252,33 @@ class Item {
 
 class BasicLists {
   a.User user;
-  ProfilePage parent;
+  Widget parent;
   List<Item> listForUserView;
   List<Item> listForUserAdminView;
-  BasicLists(a.User user,ProfilePage parent){
+  List<Item> listForAdminView;
+
+  BasicLists(a.User user, Widget parent) {
     this.user = user;
     this.parent = parent;
-    listForUserView= [
+    listForAdminView = [
+      Item(
+        name: 'מידע עלי',
+        builder: AboutMe(user),
+      ),
+      Item(
+        name: 'נהל פרטים אישיים',
+        builder: ManagePersonalInfo(user),
+      ),
+      Item(
+        name: 'נהל את המערכת',
+        builder: ManageTheSystem(),
+      ),
+      Item(
+        name: 'אחר',
+        builder: OtherUserAccess(user),
+      ),
+    ];
+    listForUserView = [
       Item(
         name: 'מידע עלי',
         builder: AboutMe(user),
@@ -236,7 +296,7 @@ class BasicLists {
         builder: OtherUserAccess(user),
       ),
     ];
-    listForUserAdminView=[
+    listForUserAdminView = [
       Item(
         name: 'מידע על המשתמש',
         builder: AboutMe(user),
@@ -249,32 +309,80 @@ class BasicLists {
   }
 }
 
-class SortByCatForAll extends StatefulWidget {
-  ProfilePage parent;
+class RemoveUser extends StatelessWidget {
   a.User user;
-  List<Item> items;
 
-  SortByCatForAll(a.User currUser, ProfilePage parent,List<Item> items) {
-    this.user = currUser;
-    this.parent = parent;
-    this.items=items;
+  RemoveUser(a.User user) {
+    this.user = user;
   }
 
   @override
-  _SortByCatForAllState createState() => _SortByCatForAllState(user, parent,items);
+  Widget build(BuildContext context) {
+    return new AlertDialog(
+      backgroundColor: BasicColor.backgroundClr,
+      title: Center(
+          child: const Text(
+        'האם אתה בטוח? ',
+        textDirection: TextDirection.rtl,
+      )),
+      actions: <Widget>[
+        Row(
+
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+              ),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('ביטול'),
+            ),
+            Spacer(flex: 1,),
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+              ),
+              onPressed: () async {
+                await DataBaseService().RemoveCurrentuserFromAuthentication();
+                DataBaseService().RemoveUserfromdatabase(user);
+                DataBaseService().Sign_out(context);
+              },
+              child: const Text('אישור'),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class SortByCatForAll extends StatefulWidget {
+  Widget parent;
+  a.User user;
+  List<Item> items;
+
+  SortByCatForAll(a.User currUser, Widget parent, List<Item> items) {
+    this.user = currUser;
+    this.parent = parent;
+    this.items = items;
+  }
+
+  @override
+  _SortByCatForAllState createState() =>
+      _SortByCatForAllState(user, parent, items);
 }
 
 class _SortByCatForAllState extends State<SortByCatForAll> {
   a.User user;
-  ProfilePage parent;
+  Widget parent;
   List<Item> _items;
 
-  _SortByCatForAllState(a.User currUser, ProfilePage parent,List<Item> items) {
+  _SortByCatForAllState(a.User currUser, Widget parent, List<Item> items) {
     this.user = currUser;
     this.parent = parent;
-    this._items=items;
+    this._items = items;
   }
-
 
   ExpansionPanelRadio _buildExpansionPanelRadio(Item item) {
     return ExpansionPanelRadio(
@@ -284,7 +392,10 @@ class _SortByCatForAllState extends State<SortByCatForAll> {
       headerBuilder: (BuildContext context, bool isExpanded) {
         return Container(
           child: ListTile(
-            title: Text(item.name),
+            title: Text(
+              item.name,
+              textDirection: TextDirection.rtl,
+            ),
           ),
         );
       },
@@ -308,3 +419,22 @@ class _SortByCatForAllState extends State<SortByCatForAll> {
   }
 }
 
+class ProfileButton {
+  Widget getChild(String title, IconData icon) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(title),
+        Icon(icon),
+      ],
+    );
+  }
+
+  ButtonStyle getStyle(BuildContext context) {
+    return TextButton.styleFrom(
+      primary: Theme.of(context).primaryColor,
+      padding: EdgeInsets.only(right: 25.0),
+    );
+  }
+}
