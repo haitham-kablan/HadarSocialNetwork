@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,6 +14,7 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:provider/provider.dart';
 
 import 'Design/mainDesign.dart';
+import 'feeds/OrganizationFeed.dart';
 import 'feeds/user_inneed_feed.dart';
 
 class RequestWindow extends StatelessWidget {
@@ -38,6 +41,7 @@ class RequestWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        //backgroundColor: BasicColor.backgroundClr,
         bottomNavigationBar: BottomBar(),
         body: CustomScrollView(
           slivers: [
@@ -78,6 +82,24 @@ class RequestWindow extends StatelessWidget {
                     Container(
                       height: 140,
                       child: desBox,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(top: 15, right: 10),
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'שירותי עמותות:',
+                        textDirection: TextDirection.rtl,
+                        style: TextStyle(
+                            fontSize: 15.0,
+                            color: BasicColor.clr,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+
+                    ),
+                    Container(
+                      height: 300,
+                        child: OrganizationsInfoList()
                     ),
 
 
@@ -210,16 +232,20 @@ class _DescriptonBox extends State<DescriptonBox> {
       //     context,
       //   );
       // }
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) {
-          return StreamProvider<List<HelpRequest>>.value(
-            value: DataBaseService().getUserHelpRequests(CurrentUser.curr_user as UserInNeed),
-            child: UserInNeedHelpRequestsFeed(),
-          );
-        }),
-      );
+      returnToFeed();
     }
+    );
+  }
+
+  void returnToFeed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return StreamProvider<List<HelpRequest>>.value(
+          value: DataBaseService().getUserHelpRequests(CurrentUser.curr_user as UserInNeed),
+          child: UserInNeedHelpRequestsFeed(),
+        );
+      }),
     );
   }
 
@@ -244,12 +270,30 @@ class _DescriptonBox extends State<DescriptonBox> {
                       ),
                     ))),
 
-            RaisedButton(
-              onPressed: () {
-                _processText();
-              },
-              child: Text('אישור'),
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+
+              children: [
+                RaisedButton(
+                  onPressed: () {
+                    returnToFeed();
+                  },
+                  child: Text('ביטול'),
+                ),
+                SizedBox(
+                  width: 25,
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    _processText();
+                  },
+                  child: Text('אישור'),
+                ),
+
+              ],
+            ),
+
+
           ],
         ),
       ),
