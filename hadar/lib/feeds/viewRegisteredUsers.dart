@@ -29,7 +29,7 @@ class AllUsersView extends StatelessWidget {
                       tabs: [
                         new Tab(
                             icon: Icon(Icons.account_circle_outlined, size: 25),
-                            text: " מבקשים עזרה"),
+                            text: " מבקשי עזרה"),
                         new Tab(
                             icon:
                             Icon(Icons.supervisor_account_sharp, size: 25),

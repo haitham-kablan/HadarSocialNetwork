@@ -126,7 +126,43 @@ class userInquiryView extends StatelessWidget {
               pinned: true,
             ),
             SliverFillRemaining(
-              child: InquiriesView(),
+              child: Column(
+                children: [
+                  Expanded(child: InquiriesView()),
+                  Container(
+                    alignment: Alignment.bottomLeft,
+                    height: 80,
+                    padding: EdgeInsets.all(20.0),
+                    child: TextButton(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(Icons.arrow_back),
+                          const Text(
+                            'חזרה',
+                            style: TextStyle(
+                                fontSize: 17.0,
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      style: TextButton.styleFrom(
+                        primary: Theme.of(context).primaryColor,
+                        padding: EdgeInsets.only(left: 10.0),
+                      ),
+                      onPressed: () {
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(
+                            context,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

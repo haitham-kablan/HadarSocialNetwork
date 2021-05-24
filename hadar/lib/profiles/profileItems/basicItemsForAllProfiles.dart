@@ -129,7 +129,7 @@ class AboutMe extends StatelessWidget {
           height: 10,
         ),
         Text(
-          user.email + '  :' + 'אימיל',
+          user.email + '  :' + 'אימייל',
           style: TextStyle(
               fontSize: 15.0,
               color: Colors.blueGrey,
