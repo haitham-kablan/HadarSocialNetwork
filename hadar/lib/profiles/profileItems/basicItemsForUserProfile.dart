@@ -31,7 +31,7 @@ class ContactUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ButtonStyle style =buttonCreate.getStyle(context);
+    ButtonStyle style = buttonCreate.getStyle(context);
     return Column(
       children: [
         TextButton(
@@ -62,7 +62,7 @@ class OtherUserAccess extends StatelessWidget {
 
   OtherUserAccess(a.User currUser) {
     this.user = currUser;
-    buttonCreate=ProfileButton ();
+    buttonCreate = ProfileButton();
   }
 
   @override
@@ -72,10 +72,11 @@ class OtherUserAccess extends StatelessWidget {
         TextButton(
           child: buttonCreate.getChild('הסר אותי מהמערכת', Icons.person_remove),
           style: buttonCreate.getStyle(context),
-          onPressed: ()async {
-            await DataBaseService().RemoveCurrentuserFromAuthentication();
-            DataBaseService().RemoveUserfromdatabase(user);
-            DataBaseService().Sign_out(context);
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => RemoveUser(user),
+            );
           },
         ),
       ],
@@ -89,7 +90,7 @@ class OtherAdminAccess extends StatelessWidget {
 
   OtherAdminAccess(a.User currUser) {
     this.user = currUser;
-    buttonCreate=ProfileButton();
+    buttonCreate = ProfileButton();
   }
 
   @override
@@ -97,12 +98,14 @@ class OtherAdminAccess extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          child: buttonCreate.getChild('הסר את המשתמש מהמערכת', Icons.person_remove),
+          child: buttonCreate.getChild(
+              'הסר את המשתמש מהמערכת', Icons.person_remove),
           style: buttonCreate.getStyle(context),
-          onPressed: ()async {
-            await DataBaseService().RemoveCurrentuserFromAuthentication();
-            DataBaseService().RemoveUserfromdatabase(user);
-            DataBaseService().Sign_out(context);
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => RemoveUser(user),
+            );
           },
         ),
       ],

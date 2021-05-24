@@ -31,17 +31,17 @@ class _DescriptonBox extends State<DescriptonBox> {
   void processText() {
     setState(() {
       _inputtext = inputtextField.text;
-      HelpRequestType helpRequestType= HelpRequestType(_inputtext);
-      _inputtext=null;
+      HelpRequestType helpRequestType = HelpRequestType(_inputtext);
+      _inputtext = null;
       DataBaseService().addHelpRequestTypeDataBase(helpRequestType);
       Navigator.of(context).pop();
-    }
-    );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(height: 110,
+    return Container(
+      height: 110,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -152,12 +152,12 @@ class ManagePersonalInfo extends StatelessWidget {
 
   ManagePersonalInfo(a.User currUser) {
     this.user = currUser;
-    buttonCreate=ProfileButton ();
+    buttonCreate = ProfileButton();
   }
 
   @override
   Widget build(BuildContext context) {
-    ButtonStyle style =buttonCreate.getStyle(context);
+    ButtonStyle style = buttonCreate.getStyle(context);
     return Column(
       children: [
         TextButton(
@@ -212,32 +212,29 @@ class SignOut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      TextButton(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Text(
-              'יציאה',
-              style: TextStyle(
-                  fontSize: 17.0,
-                  decoration: TextDecoration.underline,
-                  fontWeight: FontWeight.bold),
-            ),
-            Icon(Icons.logout),
-          ],
-        ),
-        style: TextButton.styleFrom(
-          primary: Theme
-              .of(context)
-              .primaryColor,
-          padding: EdgeInsets.only(left: 10.0),
-        ),
-        onPressed: () {
-          DataBaseService().Sign_out(context);
-        },
-      );
+    return TextButton(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Text(
+            'יציאה',
+            style: TextStyle(
+                fontSize: 17.0,
+                decoration: TextDecoration.underline,
+                fontWeight: FontWeight.bold),
+          ),
+          Icon(Icons.logout),
+        ],
+      ),
+      style: TextButton.styleFrom(
+        primary: Theme.of(context).primaryColor,
+        padding: EdgeInsets.only(left: 10.0),
+      ),
+      onPressed: () {
+        DataBaseService().Sign_out(context);
+      },
+    );
   }
 }
 
@@ -247,6 +244,7 @@ class Item {
     this.builder,
     this.isExpanded = false,
   });
+
   String name;
   Widget builder;
   bool isExpanded;
@@ -262,52 +260,100 @@ class BasicLists {
   BasicLists(a.User user, Widget parent) {
     this.user = user;
     this.parent = parent;
-      listForAdminView = [
-        Item(
-          name: 'מידע עלי',
-          builder: AboutMe(user),
+    listForAdminView = [
+      Item(
+        name: 'מידע עלי',
+        builder: AboutMe(user),
+      ),
+      Item(
+        name: 'נהל פרטים אישיים',
+        builder: ManagePersonalInfo(user),
+      ),
+      Item(
+        name: 'נהל את המערכת',
+        builder: ManageTheSystem(),
+      ),
+      Item(
+        name: 'אחר',
+        builder: OtherUserAccess(user),
+      ),
+    ];
+    listForUserView = [
+      Item(
+        name: 'מידע עלי',
+        builder: AboutMe(user),
+      ),
+      Item(
+        name: 'נהל פרטים אישיים',
+        builder: ManagePersonalInfo(user),
+      ),
+      Item(
+        name: 'צור קשר',
+        builder: ContactUs(user, parent),
+      ),
+      Item(
+        name: 'אחר',
+        builder: OtherUserAccess(user),
+      ),
+    ];
+    listForUserAdminView = [
+      Item(
+        name: 'מידע על המשתמש',
+        builder: AboutMe(user),
+      ),
+      Item(
+        name: 'אחר',
+        builder: OtherAdminAccess(user),
+      ),
+    ];
+  }
+}
+
+class RemoveUser extends StatelessWidget {
+  a.User user;
+
+  RemoveUser(a.User user) {
+    this.user = user;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new AlertDialog(
+      backgroundColor: BasicColor.backgroundClr,
+      title: Center(
+          child: const Text(
+        'האם אתה בטוח? ',
+        textDirection: TextDirection.rtl,
+      )),
+      actions: <Widget>[
+        Row(
+
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+              ),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: const Text('ביטול'),
+            ),
+            Spacer(flex: 1,),
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+              ),
+              onPressed: () async {
+                await DataBaseService().RemoveCurrentuserFromAuthentication();
+                DataBaseService().RemoveUserfromdatabase(user);
+                DataBaseService().Sign_out(context);
+              },
+              child: const Text('אישור'),
+            ),
+          ],
         ),
-        Item(
-          name: 'נהל פרטים אישיים',
-          builder: ManagePersonalInfo(user),
-        ),
-        Item(
-          name: 'נהל את המערכת',
-          builder: ManageTheSystem(),
-        ),
-        Item(
-          name: 'אחר',
-          builder: OtherUserAccess(user),
-        ),
-      ];
-        listForUserView = [
-          Item(
-            name: 'מידע עלי',
-            builder: AboutMe(user),
-          ),
-          Item(
-            name: 'נהל פרטים אישיים',
-            builder: ManagePersonalInfo(user),
-          ),
-          Item(
-            name: 'צור קשר',
-            builder: ContactUs(user, parent),
-          ),
-          Item(
-            name: 'אחר',
-            builder: OtherUserAccess(user),
-          ),
-        ];
-        listForUserAdminView = [
-          Item(
-            name: 'מידע על המשתמש',
-            builder: AboutMe(user),
-          ),
-          Item(
-            name: 'אחר',
-            builder: OtherAdminAccess(user),
-          ),
-        ];
+      ],
+    );
   }
 }
 
@@ -346,7 +392,10 @@ class _SortByCatForAllState extends State<SortByCatForAll> {
       headerBuilder: (BuildContext context, bool isExpanded) {
         return Container(
           child: ListTile(
-            title: Text(item.name),
+            title: Text(
+              item.name,
+              textDirection: TextDirection.rtl,
+            ),
           ),
         );
       },
@@ -370,9 +419,9 @@ class _SortByCatForAllState extends State<SortByCatForAll> {
   }
 }
 
-class ProfileButton{
-  Widget getChild(String title,IconData icon){
-    return  Row(
+class ProfileButton {
+  Widget getChild(String title, IconData icon) {
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -381,13 +430,11 @@ class ProfileButton{
       ],
     );
   }
-  ButtonStyle getStyle(BuildContext context){
+
+  ButtonStyle getStyle(BuildContext context) {
     return TextButton.styleFrom(
-    primary: Theme
-        .of(context)
-        .primaryColor,
-    padding: EdgeInsets.only(right: 25.0),
+      primary: Theme.of(context).primaryColor,
+      padding: EdgeInsets.only(right: 25.0),
     );
   }
 }
-
