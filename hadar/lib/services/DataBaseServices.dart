@@ -952,7 +952,7 @@ Privilege getTypeFromString(String type){
     return Privilege.UnregisterUser;
   }
 
-  if (type == 'Annoymous'){
+  if (type == 'Anonymous'){
     return Privilege.Anonymous;
   }
   assert(false);

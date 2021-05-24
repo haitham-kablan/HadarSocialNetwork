@@ -21,7 +21,7 @@ class AdminProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Profile',
+      //title: 'Profile',
       home: Scaffold(
         bottomNavigationBar: AdminBottomBar(),
         backgroundColor: BasicColor.backgroundClr,

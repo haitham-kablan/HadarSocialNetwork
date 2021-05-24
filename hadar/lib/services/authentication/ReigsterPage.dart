@@ -176,7 +176,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     key: phoneKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('כתובת אימיל',Icon(Icons.email,color: Colors.white),Colors.white,Colors.white,Email_Validator.Validate,email_Controller,false,Colors.white),
+                    child: Custom_Text_feild('כתובת אימייל',Icon(Icons.email,color: Colors.white),Colors.white,Colors.white,Email_Validator.Validate,email_Controller,false,Colors.white),
                     key: emailKey,
                   ),
                   Form(
@@ -372,7 +372,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                       setState(() {
                         alert=true;
                         show_spinner = false;
-                        _error_msg = 'האימיל שלך כבר תפוס';
+                        _error_msg = 'האימייל שלך כבר תפוס';
                       });
                       print('The account already exists for that email.');
                     }

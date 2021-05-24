@@ -5,10 +5,10 @@ class Email_Validator{
 
   static String Validate(String value){
     if(value.isEmpty){
-      return 'האימיל לא יכול להיות ריק';
+      return 'האימייל לא יכול להיות ריק';
     }
     if(!isEmail(value)){
-      return 'האימיל לא חוקי';
+      return 'האימייל לא חוקי';
     }
     else{
       return null;
