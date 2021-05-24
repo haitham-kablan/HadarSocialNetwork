@@ -4,7 +4,7 @@ import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/feeds/OrganizationFeed.dart';
 import 'package:hadar/feeds/feed_items/category_scrol.dart';
 import 'package:hadar/users/Organization.dart';
-
+/*
 class OrganizationPage extends StatelessWidget {
   final Organization curr_user;
   List<MyListView> categories;
@@ -33,3 +33,4 @@ class OrganizationPage extends StatelessWidget {
         curr_user, categories, categories[0].Help_request_type);
   }
 }
+*/

@@ -57,17 +57,6 @@ class CurrentUser{
         return VolunteerPage(curr_user as Volunteer , categories_list_items);
         break;
 
-      case Privilege.Organization:
-        //List<HelpRequestType> categories = await DataBaseService().getOrganizationServices(curr_user as Organization);
-        Organization organization = curr_user as Organization;
-        List<HelpRequestType> categories = organization.services;
-        List<MyListView> categories_list_items = List();
-        for(var i = 0; i < categories.length; i++){
-          categories_list_items.add(MyListView(categories[i].description));
-        }
-        //categories_list_items.add(MyListView('אחר'));
-        return OrganizationPage(organization , categories_list_items);
-        break;
 
       case Privilege.UnregisterUser:
         print('error in curr user');

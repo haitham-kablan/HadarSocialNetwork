@@ -40,16 +40,11 @@ class MyListView extends StatelessWidget {
                 father_state.father.provider = DataBaseService().get_requests_for_category(HelpRequestType(Help_request_type),CurrentUser.curr_user.id);
                 father_state.father.category = Help_request_type;
               });
-              if(CurrentUser.curr_user.privilege == Privilege.Volunteer) {
-                volunteer_feed_pafe_state.state.setState(() {
-                  volunteer_feed_pafe_state.state.title = Help_request_type;
-                });
-              }
-              else if(CurrentUser.curr_user.privilege == Privilege.Organization) {
-                organization_feed_pafe_state.state.setState(() {
-                  organization_feed_pafe_state.state.title = Help_request_type;
-                });
-              }
+
+              volunteer_feed_pafe_state.state.setState(() {
+                volunteer_feed_pafe_state.state.title = Help_request_type;
+              });
+
             },child: Center(child: Text(Help_request_type , style: TextStyle(color: BasicColor.clr , fontWeight: FontWeight.bold),))),
             SizedBox(height: 10,),
             GestureDetector( onTap: (){
@@ -57,16 +52,10 @@ class MyListView extends StatelessWidget {
                 father_state.father.provider = DataBaseService().get_requests_for_category(HelpRequestType(Help_request_type),CurrentUser.curr_user.id);
                 father_state.father.category = Help_request_type;
               });
-              if(CurrentUser.curr_user.privilege == Privilege.Volunteer) {
-                volunteer_feed_pafe_state.state.setState(() {
-                  volunteer_feed_pafe_state.state.title = Help_request_type;
-                });
-              }
-              else if(CurrentUser.curr_user.privilege == Privilege.Organization) {
-                organization_feed_pafe_state.state.setState(() {
-                  organization_feed_pafe_state.state.title = Help_request_type;
-                });
-              }
+              volunteer_feed_pafe_state.state.setState(() {
+                volunteer_feed_pafe_state.state.title = Help_request_type;
+              });
+
             }, child: Center(child: getHelpRequestTypeSize(HelpRequestType(Help_request_type),CurrentUser.curr_user.id))),
           ],
         ),
@@ -76,16 +65,10 @@ class MyListView extends StatelessWidget {
                father_state.father.provider = DataBaseService().get_requests_for_category(HelpRequestType(Help_request_type),CurrentUser.curr_user.id);
                father_state.father.category = Help_request_type;
              });
-             if(CurrentUser.curr_user.privilege == Privilege.Volunteer) {
-               volunteer_feed_pafe_state.state.setState(() {
-                 volunteer_feed_pafe_state.state.title = Help_request_type;
-               });
-             }
-             else if(CurrentUser.curr_user.privilege == Privilege.Organization) {
-               organization_feed_pafe_state.state.setState(() {
-                 organization_feed_pafe_state.state.title = Help_request_type;
-               });
-             }
+             volunteer_feed_pafe_state.state.setState(() {
+               volunteer_feed_pafe_state.state.title = Help_request_type;
+             });
+
              },
 
     );

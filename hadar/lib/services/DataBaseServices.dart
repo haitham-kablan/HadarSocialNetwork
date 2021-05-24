@@ -111,7 +111,7 @@ class DataBaseService{
     to_add['mobility'] = verificationRequest.mobility;
 
     //manage services for organizations
-    List<String> services = [];
+    List<String> services = [''];
     if(verificationRequest.type != Privilege.Organization){
       services.add('');
     }
@@ -204,11 +204,7 @@ class DataBaseService{
         addVolunteerToDataBase(Volunteer_to_add);
         verificationsRequestsCollection.doc(Volunteer_to_add.email).delete();
         break;
-      case Privilege.Organization:
-        Organization organization_to_add = Organization(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id, verificationRequest.time, verificationRequest.location, verificationRequest.services);
-        addOrganizationToDataBase(organization_to_add);
-        verificationsRequestsCollection.doc(organization_to_add.email).delete();
-        break;
+
       default:
         assert(false);
         break;
@@ -245,9 +241,6 @@ class DataBaseService{
         break;
       case Privilege.UserInNeed:
         userInNeedCollection.doc(user.id).update(toUpdate);
-        break;
-      case Privilege.Organization:
-        organizationsCollection.doc(user.id).update(toUpdate);
         break;
       default:
         return;
@@ -460,7 +453,6 @@ class DataBaseService{
     to_add['name'] = organization.name;
     to_add['phoneNumber'] = organization.phoneNumber;
     to_add['email'] = organization.email;
-    to_add['id'] = organization.id;
     to_add['location'] = organization.location;
 
     //convert from a list of HelpRequestType to a list of Strings
@@ -468,7 +460,7 @@ class DataBaseService{
     to_add['services'] = services;
 
 
-    return await organizationsCollection.doc(organization.id).set(to_add);
+    return await organizationsCollection.doc(organization.name).set(to_add);
   }
 
 
@@ -755,6 +747,13 @@ class DataBaseService{
         .map(UserInNeedListFromSnapShot);
   }
 
+  Stream<List<Organization>> getAllOrganizations(){
+
+    return organizationsCollection
+        .snapshots()
+        .map(organizationListFromSnapShot);
+  }
+
   Future<List<HelpRequestType>> helpRequestTypesAsList() async {
 
     List<HelpRequestType> list1 = List<HelpRequestType>();
@@ -822,23 +821,6 @@ class DataBaseService{
           doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
     }
 
-    if (privilege == Privilege.Organization){
-
-      querySnapshot = await organizationsCollection.where('email',isEqualTo: email).get();
-
-      if (querySnapshot.size == 0){
-        return null;
-      }
-      for(int i = 0 ; i< querySnapshot.docs.length ; i++){
-        doc = querySnapshot.docs[i];
-      }
-      //fetch services
-      List<dynamic> servicesStringList = doc.data()['services']?? '';
-      List<HelpRequestType> services = servicesStringList.map((type) => HelpRequestType(type)).toList();
-
-      return Organization(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['location'], services);
-    }
   }
 
   /*/
@@ -855,9 +837,6 @@ class DataBaseService{
       user = await getUserByEmail(curr_db_user.email, Privilege.Admin);
       if(user == null){
         user = await getUserByEmail(curr_db_user.email, Privilege.Volunteer);
-        if(user == null){
-          user = await getUserByEmail(curr_db_user.email, Privilege.Organization);
-        }
       }
     }
 
@@ -1042,7 +1021,15 @@ List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
 }
 
 
+List<Organization> organizationListFromSnapShot(QuerySnapshot snapshot){
 
+  return snapshot.docs.map((doc) {
+      List servicesString = doc.data()['services'] ?? [];
+      List<HelpRequestType> services = servicesString.map((service) => HelpRequestType(service)).toList();
+      return Organization(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' ,doc.data()['location'] ?? '' ,services);
+    }
+  ).toList();
+}
 
 
 
