@@ -29,11 +29,12 @@ void main() {
 
       final firestore = MockFirestoreInstance();
       await firestore.clearPersistence();
+      int LastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
-      await dataBaseServiceMock.addVolunteerToDataBase(Volunteer('volunteer', '123', 'email@com', false , '1',"",1,",",",","","","","","",""));
-      await dataBaseServiceMock.addUserInNeedToDataBase(UserInNeed(Privilege.UserInNeed,'user_in_need', '2233', 'no_need',false, '2',1,"","",2,"","","",""));
-      await dataBaseServiceMock.addAdminToDataBase(Admin('admin', '2233', 'no_need',false, '3'));
+      await dataBaseServiceMock.addVolunteerToDataBase(Volunteer('volunteer', '123', 'email@com', false , '1',LastNotifiedTime,"",1,",",",","","","","","",""));
+      await dataBaseServiceMock.addUserInNeedToDataBase(UserInNeed(Privilege.UserInNeed,'user_in_need', '2233', 'no_need',false, '2',LastNotifiedTime,1,"","",2,"","","",""));
+      await dataBaseServiceMock.addAdminToDataBase(Admin('admin', '2233', 'no_need',false, '3', LastNotifiedTime));
       UserInNeed userInNeed = (await dataBaseServiceMock.getUserById('2', Privilege.UserInNeed) ) as UserInNeed;
       Admin admin = (await dataBaseServiceMock.getUserById('3', Privilege.Admin) ) as Admin;
       Volunteer voluntter = (await dataBaseServiceMock.getUserById('1', Privilege.Volunteer) ) as Volunteer;
@@ -93,10 +94,11 @@ void main() {
       final firestore = MockFirestoreInstance();
       await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
+      int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
-      Admin admin = Admin("name", "phoneNumber", "ADMIN", false, "2");
-      Volunteer volunteer = Volunteer("name", "phoneNumber", "3", false, "3", "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      Admin admin = Admin("name", "phoneNumber", "ADMIN", false, "2", lastNotifiedTime);
+      Volunteer volunteer = Volunteer("name", "phoneNumber", "3", false, "3", lastNotifiedTime, "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "");
 
       await dataBaseServiceMock.addUserInNeedToDataBase(userInNeed);
       await dataBaseServiceMock.addVolunteerToDataBase(volunteer);
@@ -125,10 +127,11 @@ void main() {
       final firestore = MockFirestoreInstance();
       await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
+      int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
-      Admin admin = Admin("name", "phoneNumber", "ADMIN", false, "2");
-      Volunteer volunteer = Volunteer("name", "phoneNumber", "3", false, "3", "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      Admin admin = Admin("name", "phoneNumber", "ADMIN", false, "2", lastNotifiedTime);
+      Volunteer volunteer = Volunteer("name", "phoneNumber", "3", false, "3", lastNotifiedTime, "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "");
 
       await dataBaseServiceMock.addUserInNeedToDataBase(userInNeed);
       await dataBaseServiceMock.addVolunteerToDataBase(volunteer);
@@ -156,8 +159,9 @@ void main() {
       final firestore = MockFirestoreInstance();
       await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
+      int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
       HelpRequest helpRequest1 = HelpRequest(HelpRequestType("food"), "description", DateTime.now(), "1", "", Status.UNVERFIED, "location");
       HelpRequest helpRequest2 = HelpRequest(HelpRequestType("food"), "description", DateTime(1990), "1", "", Status.UNVERFIED, "location");
       HelpRequest helpRequest3 = HelpRequest(HelpRequestType("food"), "description", DateTime(1991), "1", "", Status.UNVERFIED, "location");
@@ -190,8 +194,9 @@ void main() {
       final firestore = MockFirestoreInstance();
       await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
+      int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
       HelpRequest helpRequest1 = HelpRequest(HelpRequestType("food"), "description", DateTime.now(), "1", "", Status.AVAILABLE, "location");
       HelpRequest helpRequest2 = HelpRequest(HelpRequestType("food"), "description", DateTime(1990), "1", "", Status.AVAILABLE, "location");
       HelpRequest helpRequest3 = HelpRequest(HelpRequestType("food"), "description", DateTime(1991), "1", "", Status.AVAILABLE, "location");
@@ -226,8 +231,9 @@ void main() {
       final firestore = MockFirestoreInstance();
       await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
+      int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
       HelpRequest helpRequest1 = HelpRequest(HelpRequestType("food"), "description", DateTime.now(), "1", "", Status.APPROVED, "location");
       HelpRequest helpRequest2 = HelpRequest(HelpRequestType("food"), "description", DateTime(1990), "1", "", Status.APPROVED, "location");
       HelpRequest helpRequest3 = HelpRequest(HelpRequestType("food"), "description", DateTime(1991), "1", "", Status.APPROVED, "location");
@@ -260,8 +266,9 @@ void main() {
       final firestore = MockFirestoreInstance();
       await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
+      int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", false, "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
       HelpRequest helpRequest1 = HelpRequest(HelpRequestType("food"), "description", DateTime.now(), "1", "", Status.AVAILABLE, "location");
       HelpRequest helpRequest2 = HelpRequest(HelpRequestType("food"), "description", DateTime(1990), "1", "", Status.AVAILABLE, "location");
       HelpRequest helpRequest3 = HelpRequest(HelpRequestType("food"), "description", DateTime(1991), "1", "", Status.AVAILABLE, "location");
