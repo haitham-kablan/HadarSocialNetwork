@@ -4,10 +4,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hadar/feeds/feed_items/help_request_tile.dart';
+import 'package:hadar/feeds/user_inneed_feed.dart';
 import 'package:hadar/main_pages/UserInNeedPage.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/users/Privilege.dart';
 
-import 'file:///D:/Hussein/Technion/234311%20-%20yearly%20project/Yearly_project/hadar/lib/feeds/user_inneed_feed.dart';
 import 'package:hadar/users/UserInNeed.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
@@ -25,12 +27,12 @@ Future<void> main() async {
     await firestore.clearPersistence();
     final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
 
-    UserInNeed userInNeed = UserInNeed("הייתם קבלאן", "1234567890", "haitham@gmail.com", true, "123456786");
-
-    HelpRequest helpRequest1 = HelpRequest(HelpRequestType('food'), 'I need some bread please', DateTime.now(), '123456786','');
-    HelpRequest helpRequest2 = HelpRequest(HelpRequestType('dentist'), 'My teeth hurt, please help', DateTime.now(), '123456786','');
-    HelpRequest helpRequest3 = HelpRequest(HelpRequestType('other'), 'please help me transfer my things', DateTime.now(), '123456786','');
-    HelpRequest helpRequest4 = HelpRequest(HelpRequestType('other'), 'please buy me a bottle of milk', DateTime.now(), '123456786','');
+    UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "user1", "1234567890", "user1@gmail.com", true, "123456786", 0, 30, "location", "status", 3, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+    CurrentUser.curr_user = userInNeed;
+    HelpRequest helpRequest1 = HelpRequest(HelpRequestType('food'), 'I need some bread please', DateTime.now(), '123456786', '', Status.APPROVED, 'location1');
+    HelpRequest helpRequest2 = HelpRequest(HelpRequestType('dentist'), 'My teeth hurt, please help', DateTime.now(), '123456786', '', Status.REJECTED, 'location2');
+    HelpRequest helpRequest3 = HelpRequest(HelpRequestType('other'), 'please help me transfer my things', DateTime.now(), '123456786', '', Status.APPROVED, 'location3');
+    HelpRequest helpRequest4 = HelpRequest(HelpRequestType('other'), 'please buy me a bottle of milk', DateTime.now(), '123456786','',  Status.AVAILABLE, 'location4');
 
     await dataBaseServiceMock.addUserInNeedToDataBase(userInNeed);
     await dataBaseServiceMock.addHelpRequestToDataBaseForUserInNeed(helpRequest1);
@@ -45,7 +47,9 @@ Future<void> main() async {
       child: UserInNeedHelpRequestsFeed(),
     ));
 
-    expect(find.byType(FeedTile), findsNWidgets(4));
+    //expect(find.byType(FeedTile), findsNWidgets(4));
+    expect(find.byType(Text), findsNWidgets(4));
+    expect(find.widgetWithText(Text, "food"), findsOneWidget);
     expect(find.widgetWithText(Text, "dentist"), findsOneWidget);
     expect(find.widgetWithText(Text, "other"), findsNWidgets(2));
 
