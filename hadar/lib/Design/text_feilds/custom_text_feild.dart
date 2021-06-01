@@ -10,7 +10,9 @@ class Custom_Text_feild extends StatefulWidget {
   var Validtor;
   var Controller;
   bool is_pw;
-  Custom_Text_feild(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller,this.is_pw,this.text_color);
+  var parent;
+
+  Custom_Text_feild(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller,this.is_pw,this.text_color,{this.parent});
   @override
   _Custom_Text_feildState createState() => _Custom_Text_feildState(hint,icon,border_color,on_tap_color,Validtor,Controller,is_pw,text_color);
 }
@@ -56,7 +58,12 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
               color: text_color,
             )
           ),
-        ),
+        onFieldSubmitted: (value) {
+          if(is_pw && widget.parent != null){
+            widget.parent.signInOnPressed();
+          }
+        },
+      ),
     );
 
   }
