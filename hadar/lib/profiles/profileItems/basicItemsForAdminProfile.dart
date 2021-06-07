@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/adminFeatures/adminAddOrganization.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
-import '../../adminAddHelpRequest.dart' as a;
+import '../../adminFeatures/adminAddHelpRequest.dart' as a;
 import '../../userInquiryView.dart';
 import 'basicItemsForAllProfiles.dart';
 
@@ -64,7 +65,11 @@ class ManageTheSystem extends StatelessWidget {
           child: buttonCreate.getChild('הוספת עמותה',Icons.add_business_outlined),
           style: style,
           onPressed: () {
-            //  TODO: add an organization
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>AddOrganizationWindow()),
+            );
           },
         ),
         TextButton(
