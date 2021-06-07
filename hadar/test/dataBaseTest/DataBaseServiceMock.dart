@@ -65,7 +65,6 @@ class DataBaseServiceMock{
 
 
 
-
   Future rateVolunteer(String to_rate_id , double number_of_stars) async{
 
 
@@ -82,8 +81,8 @@ class DataBaseServiceMock{
       // Note: this could be done without a transaction
       // by updating the population using FieldValue.increment()
 
-      int newCount = snapshot.data()['count'] + 1;
-      String old_stars = snapshot.data()['stars'];
+      int newCount = snapshot['count'] + 1;
+      String old_stars = snapshot['stars'];
       String new_stars = (double.parse(old_stars) + number_of_stars).toStringAsFixed(1);
 
       // Perform an update on the document
@@ -126,7 +125,7 @@ class DataBaseServiceMock{
     to_add['mobility'] = verificationRequest.mobility;
 
     //manage services for organizations
-    List<String> services = [];
+    List<String> services = [''];
     if(verificationRequest.type != Privilege.Organization){
       services.add('');
     }
@@ -203,7 +202,7 @@ class DataBaseServiceMock{
     switch (verificationRequest.type){
 
       case Privilege.Admin:
-        Admin admin_to_add = Admin(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id, verificationRequest.time);
+        Admin admin_to_add = Admin(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, verificationRequest.sender.id, verificationRequest.time);
         addAdminToDataBase(admin_to_add);
         verificationsRequestsCollection.doc(admin_to_add.email).delete();
         break;
@@ -215,10 +214,11 @@ class DataBaseServiceMock{
         break;
       case Privilege.Volunteer:
 
-        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, false, verificationRequest.sender.id, verificationRequest.time, '0',0,verificationRequest.birthdate,verificationRequest.location,verificationRequest.status,verificationRequest.work,verificationRequest.birthplace,verificationRequest.spokenlangs,verificationRequest.mobility,verificationRequest.firstaidcourse);
+        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, verificationRequest.sender.id, verificationRequest.time,'0',0,verificationRequest.birthdate,verificationRequest.location,verificationRequest.status,verificationRequest.work,verificationRequest.birthplace,verificationRequest.spokenlangs,verificationRequest.mobility,verificationRequest.firstaidcourse);
         addVolunteerToDataBase(Volunteer_to_add);
         verificationsRequestsCollection.doc(Volunteer_to_add.email).delete();
         break;
+
       default:
         assert(false);
         break;
@@ -231,6 +231,34 @@ class DataBaseServiceMock{
     return verificationsRequestsCollection.orderBy('time',descending: true)
         .snapshots()
         .map(VerficationRequestListFromSnapShot);
+  }
+
+  Future<bool> hasVerificationRequestsAfterTimestamp(int timestamp) async {
+    var requests = await verificationsRequestsCollection
+        .where('time', isGreaterThan: timestamp)
+        .get();
+
+    return requests.size > 0;
+  }
+
+  Future updateUserLastNotifiedTime(hadar.User user) async{
+
+    Map<String,dynamic> toUpdate = Map();
+    toUpdate['lastNotifiedTime'] = DateTime.now().millisecondsSinceEpoch;
+
+    switch (user.privilege){
+      case Privilege.Admin:
+        adminsCollection.doc(user.id).update(toUpdate);
+        break;
+      case Privilege.Volunteer:
+        helpersCollection.doc(user.id).update(toUpdate);
+        break;
+      case Privilege.UserInNeed:
+        userInNeedCollection.doc(user.id).update(toUpdate);
+        break;
+      default:
+        return;
+    }
   }
 
 
@@ -260,6 +288,28 @@ class DataBaseServiceMock{
   //
   //
   // }
+
+  Future<int> getSizeOfHelpReqType(HelpRequestType helpRequestType,String id) async {
+    List<HelpRequest> list = await get_requests_for_category(helpRequestType,id).first;
+    return list.length;
+
+    // QuerySnapshot querySnapshot = await allHelpsRequestsCollection.where('category',isEqualTo: helpRequestType.description).get();
+    // int counter = 0;
+    //
+    // if (querySnapshot.size == 0){
+    //   return 0;
+    // }
+    //
+    // for(int i = 0 ; i< querySnapshot.docs.length ; i++){
+    //    DocumentSnapshot doc = querySnapshot.docs[i];
+    //    doc['name'] ?? '';
+    //    if(doc['']){
+    //
+    //    }
+    // }
+    //
+    // return counter;
+  }
   Future addHelpRequestToDataBaseForUserInNeed(HelpRequest helpRequest) async{
 
     Map<String,dynamic> to_add = Map();
@@ -500,8 +550,8 @@ class DataBaseServiceMock{
         return null;
       }
 
-      return UserInNeed(getTypeFromString(doc.data()['privilege']) ,doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime ,doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
+      return UserInNeed(getTypeFromString(doc['privilege']) ,doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '',
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime ,doc['Age'] ?? 0 ,doc['Location'] ?? '' ,doc['Status'] ?? '' , doc['numKids'] ?? 0, doc['eduStatus'] ?? '', doc['homePhone'] ?? '',doc['specialStatus'] ?? '' ,doc['Rav7a'] ?? '' );
     }
 
     if (privilege == Privilege.Admin){
@@ -513,8 +563,8 @@ class DataBaseServiceMock{
         return null;
       }
 
-      return  Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime );
+      return  Admin(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '',
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime );
     }
 
     if (privilege == Privilege.Volunteer){
@@ -526,8 +576,10 @@ class DataBaseServiceMock{
         return null;
       }
 
-      return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime  ,doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
+      return  Volunteer(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime  ,doc['stars'] ?? 0,
+          doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,
+          doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' );
     }
 
 
@@ -579,6 +631,34 @@ class DataBaseServiceMock{
         .snapshots()
         .map(helpRequestListFromSnapShot);
 
+  }
+
+  Future<bool> hasUnverifiedHelpRequestsAfter(int timestamp) async {
+
+    var requests = await allHelpsRequestsCollection
+        .where('status' , isEqualTo: Status.UNVERFIED.toString().substring(7))
+        .where('time', isGreaterThan: timestamp)
+        .get();
+
+    return requests.size > 0;
+  }
+
+  Future<bool> hasApprovedHelpRequestsAfter(int timestamp) async {
+
+    var requests = await allHelpsRequestsCollection
+        .where('status' , isEqualTo: Status.APPROVED.toString().substring(7))
+        .where('time', isGreaterThan: timestamp)
+        .get();
+    return requests.size > 0;
+  }
+
+  Future<bool> hasAvailableHelpRequestsAfter(int timestamp) async {
+
+    var requests = await allHelpsRequestsCollection
+        .where('status' , isEqualTo: Status.AVAILABLE.toString().substring(7))
+        .where('time', isGreaterThan: timestamp)
+        .get();
+    return requests.size > 0;
   }
 
   Stream<List<UserInquiry>> getAll_inquires_for_user(String id) {
@@ -653,7 +733,7 @@ class DataBaseServiceMock{
 
     await helpRequestsTypeCollection.get().then((querySnapshot){
       querySnapshot.docs.forEach((element){
-        list1.add(HelpRequestType(element.data()['description']));
+        list1.add(HelpRequestType(element['description']));
       });
     });
 
@@ -683,13 +763,20 @@ class DataBaseServiceMock{
         .map(UserInNeedListFromSnapShot);
   }
 
+  Stream<List<Organization>> getAllOrganizations(){
+
+    return organizationsCollection
+        .snapshots()
+        .map(organizationListFromSnapShot);
+  }
+
   Future<List<HelpRequestType>> helpRequestTypesAsList() async {
 
     List<HelpRequestType> list1 = List<HelpRequestType>();
 
     await helpRequestsTypeCollection.get().then((querySnapshot){
       querySnapshot.docs.forEach((element){
-        list1.add(HelpRequestType(element.data()['description']));
+        list1.add(HelpRequestType(element['description']));
       });
     });
 
@@ -716,8 +803,8 @@ class DataBaseServiceMock{
         doc = querySnapshot.docs[i];
       }
 
-      return UserInNeed(Privilege.UserInNeed , doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' );
+      return UserInNeed(Privilege.UserInNeed , doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['Age'] ?? 0 ,doc['Location'] ?? '' ,doc['Status'] ?? '' , doc['numKids'] ?? 0, doc['eduStatus'] ?? '', doc['homePhone'] ?? '',doc['specialStatus'] ?? '' ,doc['Rav7a'] ?? '' );
     }
 
     if (privilege == Privilege.Admin){
@@ -731,8 +818,8 @@ class DataBaseServiceMock{
         doc = querySnapshot.docs[i];
       }
 
-      return  Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime );
+      return  Admin(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime );
     }
 
     if (privilege == Privilege.Volunteer){
@@ -746,9 +833,10 @@ class DataBaseServiceMock{
         doc = querySnapshot.docs[i];
       }
 
-      return  Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' );
+      return  Volunteer(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' );
     }
+
   }
 
   /*/
@@ -765,9 +853,6 @@ class DataBaseServiceMock{
       user = await getUserByEmail(curr_db_user.email, Privilege.Admin);
       if(user == null){
         user = await getUserByEmail(curr_db_user.email, Privilege.Volunteer);
-        if(user == null){
-          user = await getUserByEmail(curr_db_user.email, Privilege.Organization);
-        }
       }
     }
 
@@ -784,7 +869,7 @@ class DataBaseServiceMock{
     if (CurrentUser.curr_user == null){
       return;
     }
-    String token = await FirebaseMessaging().getToken();
+    String token = await FirebaseMessaging.instance.getToken();
     if(token != null){
       Map<String,dynamic> to_add = new Map();
       to_add['token'] = token;
@@ -824,7 +909,7 @@ class DataBaseServiceMock{
   List<HelpRequest> helpRequestListFromSnapShotForSpecificVolunteer(QuerySnapshot snapshot ){
 
     List<HelpRequest> all_help_requests = snapshot.docs.map((doc) =>
-        HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
+        HelpRequest(HelpRequestType(doc['category']) ?? '', doc['description'] ?? '', DateTime.parse(doc['date']) ?? '' , doc['sender_id'] ?? '',doc['handler_id'] ?? '', getStatusFromString(doc['status'] ),doc['location'] ?? "",doc['reject_reason'] ?? "")).toList();
     List<HelpRequest> handled_or_avaible = List();
     for(var i = 0; i < all_help_requests.length; i++){
       if(all_help_requests[i].status == Status.AVAILABLE || all_help_requests[i].handler_id == this.current_vol_id){
@@ -836,7 +921,7 @@ class DataBaseServiceMock{
   }
 
   List<HelpRequest> helpRequestListFromSnapShotVerified(QuerySnapshot snapshot){
-    List<HelpRequest> all_req_for_category =  snapshot.docs.map((doc) => HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
+    List<HelpRequest> all_req_for_category =  snapshot.docs.map((doc) => HelpRequest(HelpRequestType(doc['category']) ?? '', doc['description'] ?? '', DateTime.parse(doc['date']) ?? '' , doc['sender_id'] ?? '',doc['handler_id'] ?? '', getStatusFromString(doc['status'] ),doc['location'] ?? "",doc['reject_reason'] ?? "")).toList();
     List<HelpRequest> all_req_for_category_verfied = List();
     for(var i = 0; i < all_req_for_category.length; i++){
       if(all_req_for_category[i].status == Status.AVAILABLE || all_req_for_category[i].handler_id == current_vol_id ){
@@ -892,20 +977,20 @@ Privilege getTypeFromString(String type){
 
 List<VerificationRequest> VerficationRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      VerificationRequest(UnregisteredUser(doc.data()['name'] ?? '' , doc.data()['phoneNumber'] ?? '' , doc.data()['email'] ?? '' , doc.data()['sender_id'] ?? ''), getTypeFromString(doc.data()['type'] ?? '') ,DateTime.parse(doc.data()['date']) ?? '' , doc.data()['birthdate'] ?? '', doc.data()['location'] ?? '', doc.data()['status'] ?? '', doc.data()['work'] ?? ''
-          , doc.data()['birthplace'] ?? '', doc.data()['spokenlangs'] ?? '', doc.data()['firstaidcourse'] ?? ''
-          , doc.data()['mobility'] ?? '',List<HelpRequestType>())).toList();
+      VerificationRequest(UnregisteredUser(doc['name'] ?? '' , doc['phoneNumber'] ?? '' , doc['email'] ?? '' , doc['sender_id'] ?? ''), getTypeFromString(doc['type'] ?? '') ,DateTime.parse(doc['date']) ?? '' , doc['birthdate'] ?? '', doc['location'] ?? '', doc['status'] ?? '', doc['work'] ?? ''
+          , doc['birthplace'] ?? '', doc['spokenlangs'] ?? '', doc['firstaidcourse'] ?? ''
+          , doc['mobility'] ?? '',List<HelpRequestType>())).toList();
 }
 
 List<HelpRequest> helpRequestListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      HelpRequest(HelpRequestType(doc.data()['category']) ?? '', doc.data()['description'] ?? '', DateTime.parse(doc.data()['date']) ?? '' , doc.data()['sender_id'] ?? '',doc.data()['handler_id'] ?? '', getStatusFromString(doc.data()['status'] ),doc.data()['location'] ?? "",doc.data()['reject_reason'] ?? "")).toList();
+      HelpRequest(HelpRequestType(doc['category']) ?? '', doc['description'] ?? '', DateTime.parse(doc['date']) ?? '' , doc['sender_id'] ?? '',doc['handler_id'] ?? '', getStatusFromString(doc['status'] ),doc['location'] ?? "",doc['reject_reason'] ?? "")).toList();
 }
 
 List<UserInquiry> UserInqurytListFromSnapShot(QuerySnapshot snapshot){
 
   return snapshot.docs.map((doc) =>
-      UserInquiry(doc.data()['name'] ?? '',doc.data()['id'] ?? '',doc.data()['phoneNumber'] ?? '',doc.data()['reasonForInquiry'] ?? '',doc.data()['description'] ?? '',DateTime.parse(doc.data()['date']) ?? '')).toList();
+      UserInquiry(doc['name'] ?? '',doc['id'] ?? '',doc['phoneNumber'] ?? '',doc['reasonForInquiry'] ?? '',doc['description'] ?? '',DateTime.parse(doc['date']) ?? '')).toList();
 }
 
 
@@ -916,28 +1001,30 @@ List<UserInquiry> UserInqurytListFromSnapShot(QuerySnapshot snapshot){
 
 List<HelpRequestType> helpRequestTypeListFromSnapShot(QuerySnapshot snapshot){
   return snapshot.docs.map((doc) =>
-      HelpRequestType(doc.data()['description'] ?? '')).toList();
+      HelpRequestType(doc['description'] ?? '')).toList();
 }
 
 List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
+
   int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
   return snapshot.docs.map((doc) =>
-      Volunteer(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['stars'] ?? 0,doc.data()['count'] ?? 0 ,doc.data()['birthdate'] ?? ''  ,doc.data()['location'] ?? ''  ,doc.data()['status'] ?? ''  ,doc.data()['work'] ?? ''  ,doc.data()['birthplace'] ?? ''  ,doc.data()['spokenlangs'] ?? ''  ,doc.data()['firstaidcourse'] ?? ''  ,doc.data()['mobility'] ?? '' )).toList();
+      Volunteer(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' )).toList();
 }
 
 List<Admin> AdminListFromSnapShot(QuerySnapshot snapshot){
+
   int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
   return snapshot.docs.map((doc) =>
-      Admin(doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['String id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime)).toList();
+      Admin(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
+          doc['String id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime)).toList();
 }
 
 List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
   int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
   List<UserInNeed> all_users =  snapshot.docs.map((doc) =>
-      UserInNeed( getTypeFromString(doc.data()['privilege']), doc.data()['name'] ?? '', doc.data()['phoneNumber'] ?? '', doc.data()['email'] ?? '' , doc.data()['isSignedIn'] ?? false,
-          doc.data()['id'] ?? '', doc.data()['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc.data()['Age'] ?? 0 ,doc.data()['Location'] ?? '' ,doc.data()['Status'] ?? '' , doc.data()['numKids'] ?? 0, doc.data()['eduStatus'] ?? '', doc.data()['homePhone'] ?? '',doc.data()['specialStatus'] ?? '' ,doc.data()['Rav7a'] ?? '' )).toList();
+      UserInNeed( getTypeFromString(doc['privilege']), doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['Age'] ?? 0 ,doc['Location'] ?? '' ,doc['Status'] ?? '' , doc['numKids'] ?? 0, doc['eduStatus'] ?? '', doc['homePhone'] ?? '',doc['specialStatus'] ?? '' ,doc['Rav7a'] ?? '' )).toList();
   List<UserInNeed> all_users_without_annoy = List();
   for(var i = 0; i < all_users.length; i++){
     if(all_users[i].privilege == Privilege.UserInNeed){
@@ -948,6 +1035,20 @@ List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
 
 
 }
+
+
+List<Organization> organizationListFromSnapShot(QuerySnapshot snapshot){
+
+  return snapshot.docs.map((doc) {
+    List servicesString = doc['services'] ?? [];
+    List<HelpRequestType> services = servicesString.map((service) => HelpRequestType(service)).toList();
+    return Organization(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '', doc['location'] ?? '', services);
+  }
+  ).toList();
+}
+
+
+
 
 
 
