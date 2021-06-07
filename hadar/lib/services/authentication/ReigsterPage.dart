@@ -327,7 +327,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
                     switch(clicked_priv){
                       case Privilege.UserInNeed:
-                        user_in_need = UserInNeed(Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text,lastNotifiedTime, 0,'','',0,'','','','');
+                        user_in_need = UserInNeed(Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text,lastNotifiedTime, 0,'','',0,'','','','');
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => userInNeedRegisterPage(user_in_need)));
                         break;
@@ -336,7 +336,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         Navigator.pop(context);
                         break;
                       case Privilege.Volunteer:
-                        volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, false, id_Controller.text, lastNotifiedTime,'',0,'','','','','','','','');
+                        volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text, lastNotifiedTime,'',0,'','','','','','','','');
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => volunteerRegisterPage(volunteer)));
                         break;

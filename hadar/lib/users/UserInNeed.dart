@@ -14,9 +14,10 @@ class UserInNeed extends RegisteredUser{
   String homePhone;
   String specialStatus;
   String Rav7a;
-  UserInNeed(Privilege privilege , String name, String phoneNumber, String email, bool isSignedIn, String id, int lastNotifiedTime, int Age , String Location, String Status, int numKids,
+  UserInNeed(Privilege privilege , String name, String phoneNumber, String email,
+      String id, int lastNotifiedTime, int Age , String Location, String Status, int numKids,
       String eduStatus, String homePhone, String specialStatus, String Rav7a)
-      : super(name, phoneNumber, email, privilege, isSignedIn , id, lastNotifiedTime){
+      : super(name, phoneNumber, email, privilege, id, lastNotifiedTime){
     this.Age = Age;
     this.Location = Location;
     this.Status = Status;
