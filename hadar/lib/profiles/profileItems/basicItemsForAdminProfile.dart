@@ -64,11 +64,14 @@ class ManageTheSystem extends StatelessWidget {
         TextButton(
           child: buttonCreate.getChild('הוספת עמותה',Icons.add_business_outlined),
           style: style,
-          onPressed: () {
+          onPressed: () async {
+            List<HelpRequestType> types =
+            await DataBaseService().helpRequestTypesAsList();
+            types.add(HelpRequestType('אחר'));
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>AddOrganizationWindow()),
+                  builder: (context) =>AddOrganizationWindow(types)),
             );
           },
         ),

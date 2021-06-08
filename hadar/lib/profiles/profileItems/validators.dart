@@ -1,7 +1,6 @@
 import 'package:string_validator/string_validator.dart';
 
 
-
 class Validators{
 
   static String ValidateName(String value){

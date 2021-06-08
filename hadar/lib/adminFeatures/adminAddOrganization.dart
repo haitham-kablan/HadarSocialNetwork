@@ -3,23 +3,117 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/descriptionBox.dart';
-
-import 'package:hadar/users/UserInNeed.dart';
-import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
-import 'package:hadar/services/DataBaseServices.dart';
+import 'package:multiselect_formfield/multiselect_formfield.dart';
 
 import '../Design/mainDesign.dart';
 import '../profiles/adminProfile.dart';
 import '../profiles/profileItems/validators.dart';
 import '../users/Privilege.dart';
 
-class AddOrganizationWindow extends StatefulWidget {
+class checkBoxForCategories extends StatefulWidget {
+  List<HelpRequestType> types;
+  checkBoxForCategories(List<HelpRequestType> types){
+    this.types=types;
+  }
+
   @override
-  _AddOrganizationWindowState createState() => _AddOrganizationWindowState();
+  _checkBoxForCategoriesState createState() => _checkBoxForCategoriesState(types);
+}
+
+class _checkBoxForCategoriesState extends State<checkBoxForCategories> {
+  List<HelpRequestType> types;
+  List<String> types_string;
+  List _myActivities;
+  String _myActivitiesResult;
+  final formKey = new GlobalKey<FormState>();
+
+  _checkBoxForCategoriesState(List<HelpRequestType> types){
+    this.types=types;
+    types_string= List<String>();
+    for (HelpRequestType type in types){
+      types_string.add(type.description);
+    }
+
+  }
+  @override
+  void initState() {
+    super.initState();
+    _myActivities = [];
+    _myActivitiesResult = '';
+  }
+
+  _saveForm() {
+    var form = formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      setState(() {
+        _myActivitiesResult = _myActivities.toString();
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: formKey,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(16),
+            child: MultiSelectFormField(
+              autovalidate: false,
+              // title: 'My workouts',
+              // validator: (value) {
+              //   if (value == null || value.length == 0) {
+              //     return 'Please select one or more options';
+              //   }
+              // },
+              dataSource: types_string,
+              textField: 'display',
+              valueField: 'value',
+              okButtonLabel: 'OK',
+              cancelButtonLabel: 'CANCEL',
+              required: true,
+              // hintText: 'Please choose one or more',
+              // value: _myActivities,
+              onSaved: (value) {
+                if (value == null) return;
+                setState(() {
+                  _myActivities = value;
+                });
+              },
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(8),
+            child: RaisedButton(
+              child: Text('Save'),
+              onPressed: _saveForm,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(16),
+            child: Text(_myActivitiesResult),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class AddOrganizationWindow extends StatefulWidget {
+  List<HelpRequestType> types;
+  AddOrganizationWindow(List<HelpRequestType> types){
+    this.types=types;
+  }
+  @override
+  _AddOrganizationWindowState createState() => _AddOrganizationWindowState(types);
 }
 
 class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
+  List<HelpRequestType> types;
   final orgNameKey = GlobalKey<FormState>();
   final orgPhoneKey = GlobalKey<FormState>();
   final emailKey = GlobalKey<FormState>();
@@ -35,10 +129,13 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
   final email_Controller = TextEditingController();
   final location_Controller = TextEditingController();
 
+  _AddOrganizationWindowState(List<HelpRequestType> types){
+    this.types=types;
+  }
+
   Widget getRelContainer(Form form) {
     return Container(
-
-      height: 100,
+      height: 115,
       child: form,
     );
   }
@@ -117,7 +214,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                             Validators.ValidateName,
                             name_Controller,
                             false,
-                            Colors.white),
+                            Colors.black),
                         key: orgNameKey,
                       ),
                     ),
@@ -131,7 +228,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                             Validators.ValidatePhone,
                             phone_Controller,
                             false,
-                            Colors.white),
+                            Colors.black),
                         key: orgPhoneKey,
                       ),
                     ),
@@ -145,7 +242,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                             Validators.ValidateEmail,
                             email_Controller,
                             false,
-                            Colors.white),
+                            Colors.black),
                         key: emailKey,
                       ),
                     ),
@@ -159,15 +256,35 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                             Validators.ValidateLocation,
                             location_Controller,
                             false,
-                            Colors.white),
+                            Colors.black),
                         key: locationKey,
                       ),
                     ),
+                    Container(
+                      padding: EdgeInsets.only(top: 15, right: 10),
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'שירותי העמותה:',
+                        textDirection: TextDirection.rtl,
+                        style: TextStyle(
+                            fontSize: 15.0,
+                            color: BasicColor.clr,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    Container(height: 300, child: checkBoxForCategories(types)),
                     SizedBox(
                       height: 40,
                     ),
-                    TextButton(
+                    RaisedButton(
                       onPressed: () {
+                        if (!orgNameKey.currentState.validate() ||
+                            !orgPhoneKey.currentState.validate() ||
+                            !emailKey.currentState.validate() ||
+                            !locationKey.currentState.validate()) {
+                          return;
+                        }
                         //TODO:add services
                         //TODO:add to the database
                         Navigator.push(
@@ -176,9 +293,6 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                               builder: (context) => AdminProfile()),
                         );
                       },
-                      // style: TextButton.styleFrom(
-                      //   primary: Theme.of(context).primaryColor,
-                      // ),
                       child: Text('אישור'),
                     ),
                   ],
@@ -191,84 +305,3 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
     );
   }
 }
-//
-// class AdminAddOrganizationWindow extends StatelessWidget {
-//   final orgName = GlobalKey<FormState>();
-//   final orgPhone = GlobalKey<FormState>();
-//   final email = GlobalKey<FormState>();
-//   final locationDescription = GlobalKey<FormState>();
-//
-//   // List<HelpRequestType> types;
-//   String _error_msg = '';
-//   bool alert = false;
-//   bool clicked = false;
-//   Privilege clicked_priv = null;
-//
-//   // HelpRequestType helpRequestType;
-//
-//   AdminAddOrganizationWindow() {
-//     this.desName = DescriptonBox(title: 'שם');
-//     this.desPhone = DescriptonBox(title: 'מספר טלפון');
-//     this.desEmail = DescriptonBox(title: 'כתובת אלקטרונית');
-//     this.desLocation = DescriptonBox(title: 'מיקום');
-//   }
-//
-//   Widget getRelContainer(DescriptonBox des) {
-//     return Container(
-//       height: 100,
-//       child: des,
-//     );
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         bottomNavigationBar: AdminBottomBar(),
-//         body: CustomScrollView(
-//           slivers: [
-//             SliverPersistentHeader(
-//               delegate:
-//                   MySliverAppBar(expandedHeight: 150, title: 'הוספת עמותה'),
-//               pinned: true,
-//             ),
-//             SliverFillRemaining(
-//               child: SingleChildScrollView(
-//                 child: Column(
-//                   children: [
-//                     SizedBox(
-//                       height: 100,
-//                     ),
-//                     getRelContainer(desPhone),
-//                     getRelContainer(desEmail),
-//                     getRelContainer(desLocation),
-//                     SizedBox(
-//                       height: 40,
-//                     ),
-//                     RaisedButton(
-//                       onPressed: () async {
-//                         orgName = desName.getDataEntered();
-//                         orgPhone = desPhone.getDataEntered();
-//                         email = desEmail.getDataEntered();
-//                         locationDescription = desLocation.getDataEntered();
-//                         DescriptonBox(title: 'תיאור בקשה');
-//                         //TODO:add services
-//                         //TODO:add to the database
-//                         Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                               builder: (context) => AdminProfile()),
-//                         );
-//                       },
-//                       child: Text('אישור'),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

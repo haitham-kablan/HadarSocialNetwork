@@ -49,7 +49,7 @@ class DescriptionBoxState extends State<DescriptionBox> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(18.0),
+              padding: const EdgeInsets.all(12.0),
               child: Directionality(
                 textDirection: TextDirection.rtl,
                 child: TextFormField(
@@ -68,11 +68,6 @@ class DescriptionBoxState extends State<DescriptionBox> {
                     border: OutlineInputBorder(),
                     labelText: widget.hint,
                   ),
-                  onFieldSubmitted: (value) {
-                    if (is_pw && widget.parent != null) {
-                      widget.parent.signInOnPressed();
-                    }
-                  },
                 ),
               ),
             ),
