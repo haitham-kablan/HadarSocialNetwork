@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
 import 'feeds/feed_items/help_request_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -90,12 +91,12 @@ class InquiryItem extends StatelessWidget {
       subtitle: Row(
         children: <Widget>[
           Container(
-            child: Text("שם:  " +inquiry.name),
+            child: Text(AppLocalizations.of(context).nameTwoDots +inquiry.name),
             padding: const EdgeInsets.only(top: 8, left: 8),
           ),
           Spacer(),
           Container(
-            child: Text("מספר טלפון:  " +inquiry.phoneNumber),
+            child: Text(AppLocalizations.of(context).telNumberTwoDots +inquiry.phoneNumber),
             padding: const EdgeInsets.only(top: 8, left: 8),
           ),
           Spacer(),

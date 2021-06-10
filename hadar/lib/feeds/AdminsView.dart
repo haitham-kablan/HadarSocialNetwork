@@ -80,7 +80,7 @@ class UserItem extends StatelessWidget {
       subtitle: Row(
         children: <Widget>[
           Container(
-            child: Text(AppLocalizations.of(context).telNumber + user.phoneNumber),
+            child: Text(AppLocalizations.of(context).telNumberTwoDots + user.phoneNumber),
             padding: const EdgeInsets.only(top: 8, left: 8),
           ),
           Spacer(),

@@ -5,6 +5,7 @@ import '../Design/mainDesign.dart';
 import 'AdminsView.dart';
 import 'UsersInNeedView.dart';
 import 'VolunteersView.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class AllUsersView extends StatelessWidget {
@@ -18,7 +19,7 @@ class AllUsersView extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              adminViewRequestsBar("משתמשים"),
+              adminViewRequestsBar(AppLocalizations.of(context).users),
               new SliverPadding(
                 padding: new EdgeInsets.all(2.0),
                 sliver: new SliverList(
@@ -29,15 +30,15 @@ class AllUsersView extends StatelessWidget {
                       tabs: [
                         new Tab(
                             icon: Icon(Icons.account_circle_outlined, size: 25),
-                            text: " מבקשי עזרה"),
+                            text: AppLocalizations.of(context).userInNeeds),
                         new Tab(
                             icon:
                             Icon(Icons.supervisor_account_sharp, size: 25),
-                            text: "מתנדבים"),
+                            text: AppLocalizations.of(context).volunteers),
                         new Tab(
                             icon: Icon(Icons.admin_panel_settings_outlined,
                                 size: 25),
-                            text: "מנהלים"),
+                            text: AppLocalizations.of(context).admins),
                       ],
                     ),
                   ]),

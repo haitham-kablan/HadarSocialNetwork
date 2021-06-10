@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../HelpRequestAdminDialouge.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -187,7 +188,7 @@ class ThreeDotsWidget extends StatelessWidget {
                     Icons.done,
                     color: Colors.green,
                   ),
-                  HebrewText("קבל בקשה     "),
+                  Text(AppLocalizations.of(context).approveRequest),
                 ],
               ),
             ),
@@ -196,7 +197,7 @@ class ThreeDotsWidget extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   const Icon(Icons.person),
-                  HebrewText("משתמש     "),
+                  Text(AppLocalizations.of(context).user),
                 ],
               ),
             )
@@ -211,9 +212,6 @@ class ThreeDotsWidget extends StatelessWidget {
           case 1:
             print("accept seleted");
             // helpRequest.handler_id = '4';
-            List<HelpRequestType> list1 = List<HelpRequestType>();
-            list1.add(HelpRequestType('food'));
-            list1.add(HelpRequestType('money'));
             DataBaseService().assignHelpRequestForVolunteer(CurrentUser.curr_user as Volunteer, helpRequest);
 //                      Navigator.push(
 //                        context,
