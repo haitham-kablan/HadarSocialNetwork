@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:hadar/users/User.dart';
 
 import 'feed_items/help_request_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VolunteersView extends StatelessWidget{
   VolunteersView();
@@ -65,7 +66,7 @@ class UserItem extends StatelessWidget {
       isThreeLine: true,
       title: Row(children: <Widget>[
         Container(
-          child: Text("שם:  " +user.name,
+          child: Text(AppLocalizations.of(context).nameTwoDots + user.name,
               style: TextStyle(color: BasicColor.clr)),
         ),
         Spacer(),
@@ -77,7 +78,7 @@ class UserItem extends StatelessWidget {
       subtitle: Row(
         children: <Widget>[
           Container(
-            child: Text("מספר טלפון:  " +user.phoneNumber),
+            child: Text(AppLocalizations.of(context).telNumber + user.phoneNumber),
             padding: const EdgeInsets.only(top: 8, left: 8),
           ),
           Spacer(),

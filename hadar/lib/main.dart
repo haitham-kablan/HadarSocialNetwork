@@ -11,6 +11,8 @@ import 'package:hadar/services/getters/GetCurrentUser.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 void main() async {
@@ -19,6 +21,19 @@ void main() async {
   const double marginSize = kIsWeb ? 0.0 : 0.0;
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
+    localizationsDelegates: [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: [
+      //const Locale('en', ''), // English, no country code
+      const Locale('ar', ''), // Arabic, no country code
+      const Locale('he', ''), // Hebrew, no country code
+      //const Locale('ru', ''), // Russian, no country code
+    ],
+    locale: Locale.fromSubtags(languageCode: 'ar'),
     home: Container(
       margin: const EdgeInsets.only(left: marginSize, right: marginSize),
       child: Scaffold(

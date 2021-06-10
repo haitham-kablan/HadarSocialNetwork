@@ -19,6 +19,8 @@ import 'package:provider/provider.dart';
 import '../../HelpRequestAdminDialouge.dart';
 import '../../main.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class LogInPage extends StatefulWidget {
   @override
   _LogInPageState createState() => _LogInPageState();
@@ -92,7 +94,8 @@ class _LogInPageState extends State<LogInPage> {
               Container(
                 margin: EdgeInsets.only(top: 50),
                 child: Text(
-                  'ברוכים הבאים',
+                  //'ברוכים הבאים',
+                  AppLocalizations.of(context).welcome,
                   textDirection: TextDirection.rtl,
                   style: TextStyle(
                       fontSize: 30
