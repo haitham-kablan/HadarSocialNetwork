@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/descriptionBox.dart';
+import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/Organization.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
-import 'package:multiselect_formfield/multiselect_formfield.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 
 import '../Design/mainDesign.dart';
 import '../profiles/adminProfile.dart';
@@ -13,45 +17,35 @@ import '../users/Privilege.dart';
 
 class checkBoxForCategories extends StatefulWidget {
   List<HelpRequestType> types;
-  checkBoxForCategories(List<HelpRequestType> types){
-    this.types=types;
+  _checkBoxForCategoriesState state;
+
+  checkBoxForCategories(List<HelpRequestType> types) {
+    this.types = types;
   }
 
   @override
-  _checkBoxForCategoriesState createState() => _checkBoxForCategoriesState(types);
+  _checkBoxForCategoriesState createState() =>
+      state =_checkBoxForCategoriesState(types);
+
+  List<HelpRequestType> getSelectedItems() {
+    return state.getSelectedItems();
+  }
+
 }
 
 class _checkBoxForCategoriesState extends State<checkBoxForCategories> {
   List<HelpRequestType> types;
-  List<String> types_string;
-  List _myActivities;
-  String _myActivitiesResult;
+  List selected_items = [];
   final formKey = new GlobalKey<FormState>();
 
-  _checkBoxForCategoriesState(List<HelpRequestType> types){
-    this.types=types;
-    types_string= List<String>();
-    for (HelpRequestType type in types){
-      types_string.add(type.description);
-    }
-
-  }
-  @override
-  void initState() {
-    super.initState();
-    _myActivities = [];
-    _myActivitiesResult = '';
+  _checkBoxForCategoriesState(List<HelpRequestType> types) {
+    this.types = types;
   }
 
-  _saveForm() {
-    var form = formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      setState(() {
-        _myActivitiesResult = _myActivities.toString();
-      });
-    }
+  List<HelpRequestType> getSelectedItems() {
+    return selected_items;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,41 +56,26 @@ class _checkBoxForCategoriesState extends State<checkBoxForCategories> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(16),
-            child: MultiSelectFormField(
-              autovalidate: false,
-              // title: 'My workouts',
-              // validator: (value) {
-              //   if (value == null || value.length == 0) {
-              //     return 'Please select one or more options';
-              //   }
-              // },
-              dataSource: types_string,
-              textField: 'display',
-              valueField: 'value',
-              okButtonLabel: 'OK',
-              cancelButtonLabel: 'CANCEL',
-              required: true,
-              // hintText: 'Please choose one or more',
-              // value: _myActivities,
-              onSaved: (value) {
-                if (value == null) return;
-                setState(() {
-                  _myActivities = value;
-                });
-              },
+            child:
+            Directionality(
+              textDirection: TextDirection.rtl,
+              child: MultiSelectDialogField(
+                cancelText: Text('בטל'),
+                confirmText: Text('אישור'),
+                searchHint: 'חיפוש',
+                title: Text('בחר אחד או יותר'),
+                buttonText: Text(
+                  'בחר אחד או יותר', textDirection: TextDirection.rtl,),
+                searchable: true,
+                items: types.map((e) => MultiSelectItem(e, e.description))
+                    .toList(),
+                listType: MultiSelectListType.CHIP,
+                onConfirm: (values) {
+                  selected_items = values;
+                },
+              ),
             ),
           ),
-          Container(
-            padding: EdgeInsets.all(8),
-            child: RaisedButton(
-              child: Text('Save'),
-              onPressed: _saveForm,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(16),
-            child: Text(_myActivitiesResult),
-          )
         ],
       ),
     );
@@ -105,11 +84,14 @@ class _checkBoxForCategoriesState extends State<checkBoxForCategories> {
 
 class AddOrganizationWindow extends StatefulWidget {
   List<HelpRequestType> types;
-  AddOrganizationWindow(List<HelpRequestType> types){
-    this.types=types;
+
+  AddOrganizationWindow(List<HelpRequestType> types) {
+    this.types = types;
   }
+
   @override
-  _AddOrganizationWindowState createState() => _AddOrganizationWindowState(types);
+  _AddOrganizationWindowState createState() =>
+      _AddOrganizationWindowState(types);
 }
 
 class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
@@ -119,7 +101,6 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
   final emailKey = GlobalKey<FormState>();
   final locationKey = GlobalKey<FormState>();
 
-  // List<HelpRequestType> types;
   String _error_msg = '';
   bool alert = false;
   bool clicked = false;
@@ -128,9 +109,11 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
   final phone_Controller = TextEditingController();
   final email_Controller = TextEditingController();
   final location_Controller = TextEditingController();
+  checkBoxForCategories categories;
 
-  _AddOrganizationWindowState(List<HelpRequestType> types){
-    this.types=types;
+  _AddOrganizationWindowState(List<HelpRequestType> types) {
+    this.types = types;
+    this.categories=checkBoxForCategories(types);
   }
 
   Widget getRelContainer(Form form) {
@@ -192,7 +175,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
           slivers: [
             SliverPersistentHeader(
               delegate:
-                  MySliverAppBar(expandedHeight: 150, title: 'הוספת עמותה'),
+              MySliverAppBar(expandedHeight: 150, title: 'הוספת עמותה'),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -273,10 +256,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                             fontWeight: FontWeight.w400),
                       ),
                     ),
-                    Container(height: 300, child: checkBoxForCategories(types)),
-                    SizedBox(
-                      height: 40,
-                    ),
+                    Container(child: categories),
                     RaisedButton(
                       onPressed: () {
                         if (!orgNameKey.currentState.validate() ||
@@ -285,8 +265,10 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                             !locationKey.currentState.validate()) {
                           return;
                         }
-                        //TODO:add services
-                        //TODO:add to the database
+                        Organization org = new Organization(
+                            name_Controller.text, phone_Controller.text, email_Controller.text,
+                            location_Controller.text, categories.getSelectedItems());
+                        DataBaseService().addOrganizationToDataBase(org);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
