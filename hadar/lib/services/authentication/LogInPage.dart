@@ -103,7 +103,7 @@ class _LogInPageState extends State<LogInPage> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 80),
-                child:Form(key:nameKey,child: Custom_Text_feild(AppLocalizations.of(context).userName, Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false,Colors.grey)),
+                child:Form(key:nameKey,child: Custom_Text_feild(AppLocalizations.of(context).email, Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false,Colors.grey)),
               ),
               Container(
                 margin: EdgeInsets.only(top: 20),
@@ -235,7 +235,7 @@ class Sign_up_here_text extends StatelessWidget {
         children: <TextSpan>[
 
           TextSpan(
-              text: AppLocalizations.of(context).register,
+              text: AppLocalizations.of(context).clickHereToRegister,
               style: linkStyle,
               recognizer: TapGestureRecognizer()
                 ..onTap = () {

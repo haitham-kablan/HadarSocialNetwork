@@ -83,10 +83,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
       }).toList();
     }
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'User In-need Feed',
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: BottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
@@ -115,7 +112,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
             onPressed: () async {
               List<HelpRequestType> types =
                   await DataBaseService().helpRequestTypesAsList();
-              types.add(HelpRequestType(AppLocalizations.of(context).other));
+              types.add(HelpRequestType('אחר..'));
               //we must add אחר so it always appears on the last of the list
               Navigator.push(
                 context,
@@ -129,7 +126,6 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
             elevation: 10,
           ),
         ),
-      ),
     );
   }
 }

@@ -10,7 +10,7 @@ import 'package:marquee/marquee.dart';
 
 
 import 'Design/basicTools.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
 
@@ -21,7 +21,7 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: 15),
-                    child: Text('תיאור הבקשה' , style: TextStyle(
+                    child: Text(AppLocalizations.of(context).requestDescription , style: TextStyle(
                       fontSize: 30,
                       color: BasicColor.clr,fontWeight: FontWeight.bold
                     ),),
@@ -45,7 +45,7 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                       children: [
                         Text(helpRequest.sender_id ,style: TextStyle(fontSize: 18),textDirection: TextDirection.rtl, ),
                         Container(margin: EdgeInsets.only(right: 10),),
-                        Text('מבקש העזרה:' ,
+                        Text(AppLocalizations.of(context).userInNeedTwoDots ,
                           style: TextStyle(fontSize: 18 , color: BasicColor.clr ,),
                           textDirection: TextDirection.rtl,),
 
@@ -62,7 +62,7 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                       children: [
                         Text(helpRequest.category.description ,style: TextStyle(fontSize: 18),textDirection: TextDirection.rtl, ),
                         Container(margin: EdgeInsets.only(right: 10),),
-                        Text('קטגוריה:' ,
+                        Text(AppLocalizations.of(context).categoryTwoDots ,
                           style: TextStyle(fontSize: 18 , color: BasicColor.clr ,),
                           textDirection: TextDirection.rtl,),
 
@@ -79,7 +79,7 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(margin: EdgeInsets.only(right: 10),),
-                        Text('תיאור הבקשה:' ,
+                        Text(AppLocalizations.of(context).requestDescription ,
                           maxLines: 5,
                           style: TextStyle(fontSize: 18 , color: BasicColor.clr , ),
                           textDirection: TextDirection.rtl,),
@@ -113,7 +113,7 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                             await DialogHelper.exit(context,helpRequest);
                             Navigator.pop(context);
                           },
-                          child: Text('דחה בקשה' , style: TextStyle(color: Colors.white),),
+                          child: Text(AppLocalizations.of(context).rejectRequest , style: TextStyle(color: Colors.white),),
                         ),
                       ),
 
@@ -129,7 +129,7 @@ void HelpRequestAdminDialuge(context,HelpRequest helpRequest){
                             DataBaseService().verify_help_request(helpRequest);
                             Navigator.pop(context);
                           },
-                          child: Text('אשר בקשה', style: TextStyle(color: Colors.white),),
+                          child: Text(AppLocalizations.of(context).approveRequest, style: TextStyle(color: Colors.white),),
                         ),
                       ),
                     ],

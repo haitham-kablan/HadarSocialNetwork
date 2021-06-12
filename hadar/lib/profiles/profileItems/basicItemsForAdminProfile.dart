@@ -6,7 +6,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import '../../adminAddHelpRequest.dart' as a;
 import '../../userInquiryView.dart';
 import 'basicItemsForAllProfiles.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ManageTheSystem extends StatelessWidget {
   ProfileButton buttonCreate;
@@ -14,7 +14,7 @@ class ManageTheSystem extends StatelessWidget {
 
   Widget addCategory(BuildContext context) {
     return new AlertDialog( backgroundColor: BasicColor.backgroundClr,
-      title: Center(child: const Text('הוספת קטיגוריה')),
+      title: Center(child: Text(AppLocalizations.of(context).addCategory)),
       content:desBox,
       actions: <Widget>[
         new FlatButton(
@@ -22,7 +22,7 @@ class ManageTheSystem extends StatelessWidget {
             desBox.processText();
           },
           textColor: Theme.of(context).primaryColor,
-          child: const Text('אישור'),
+          child: Text(AppLocalizations.of(context).approve),
         ),
       ],
     );
@@ -35,7 +35,7 @@ class ManageTheSystem extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          child: buttonCreate.getChild('הוספת קטיגוריה', Icons.add_box_outlined),
+          child: buttonCreate.getChild(AppLocalizations.of(context).addCategory, Icons.add_box_outlined),
           style: style,
           onPressed: () {
             desBox = DescriptonBox();
@@ -46,7 +46,7 @@ class ManageTheSystem extends StatelessWidget {
           },
         ),
         TextButton(
-          child: buttonCreate.getChild('הוספת בקשה', Icons.post_add),
+          child: buttonCreate.getChild(AppLocalizations.of(context).addRequest, Icons.post_add),
           style: style,
           onPressed: () async {
             List<HelpRequestType> types =
@@ -56,26 +56,26 @@ class ManageTheSystem extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => a.AdminRequestWindow( types)),
+                  builder: (context) => a.AdminRequestWindow(types, context)),
             );
           },
         ),
         TextButton(
-          child: buttonCreate.getChild('הוספת עמותה',Icons.add_business_outlined),
+          child: buttonCreate.getChild(AppLocalizations.of(context).addOrginaization, Icons.add_business_outlined),
           style: style,
           onPressed: () {
             //  TODO: add an organization
           },
         ),
         TextButton(
-          child: buttonCreate.getChild('הצג כל העמותות',Icons.business_outlined),
+          child: buttonCreate.getChild(AppLocalizations.of(context).showAllOrginaization, Icons.business_outlined),
           style: style,
           onPressed: () {
             //  TODO: go to the organizations page
           },
         ),
         TextButton(
-          child: buttonCreate.getChild('פניות ממשתמשים',Icons.warning_rounded),
+          child: buttonCreate.getChild(AppLocalizations.of(context).usersInquiries, Icons.warning_rounded),
           style: style,
           onPressed: () {
             Navigator.push(

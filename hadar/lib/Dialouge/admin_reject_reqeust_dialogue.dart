@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/utils/HelpRequest.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExitConfirmationDialog extends StatelessWidget {
 
@@ -44,7 +45,7 @@ class ExitConfirmationDialog extends StatelessWidget {
           ),
         ),
         SizedBox(height: 24,),
-        Text('בבקשה פרט את סיבת דחיית הבקשה', style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+        Text(AppLocalizations.of(context).reqeustRejectReason, style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
         SizedBox(height: 8,),
         Padding(
           padding: const EdgeInsets.only(right: 16, left: 16),
@@ -65,7 +66,7 @@ class ExitConfirmationDialog extends StatelessWidget {
               hintStyle: TextStyle(
                 color: Colors.white,
               ),
-              hintText: 'סיבת דחייה',
+              hintText: AppLocalizations.of(context).rejectReason,
 
 
             ),
@@ -78,10 +79,10 @@ class ExitConfirmationDialog extends StatelessWidget {
             SizedBox(width: 8,),
             RaisedButton(onPressed: (){
               print(reason_reject.text);
-              help_request.reject_reason = reason_reject.text.isEmpty ? 'המנהל לא פירט את סיבת דחיית הבקשה' : reason_reject.text;
+              help_request.reject_reason = reason_reject.text.isEmpty ? AppLocalizations.of(context).adminDidntDescribeRejection : reason_reject.text;
               DataBaseService().cancel_help_reqeust(help_request);
               return Navigator.of(context).pop(true);
-            }, child: Text('שלח'), color: Colors.white, textColor: Colors.redAccent,)
+            }, child: Text(AppLocalizations.of(context).send), color: Colors.white, textColor: Colors.redAccent,)
           ],
         )
       ],

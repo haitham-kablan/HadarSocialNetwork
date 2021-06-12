@@ -6,6 +6,7 @@ import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
 import '../Design/basicTools.dart';
 import '../Design/mainDesign.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePage extends StatelessWidget {
   a.User user;
@@ -15,7 +16,7 @@ class ProfilePage extends StatelessWidget {
 
   ProfilePage(a.User currUser) {
     user = CurrentUser.curr_user;
-    getLists=BasicLists(user,this);
+
     if (user.privilege == Privilege.Admin) {
       adminIsOnProfile = true;
       privilege = 'Admin';
@@ -54,10 +55,9 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Profile',
-      home: Scaffold(
+    getLists=BasicLists(user, this, context);
+
+    return Scaffold(
         bottomNavigationBar: checkBottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
@@ -85,7 +85,6 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

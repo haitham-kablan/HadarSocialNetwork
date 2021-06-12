@@ -873,7 +873,7 @@ class DataBaseService{
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => LogInPage(), //todo: add the same thing as  in the main function
+        builder: (BuildContext context) => LogInPage(),
       ),
           (route) => false,
     );

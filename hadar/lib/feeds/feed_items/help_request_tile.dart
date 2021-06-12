@@ -16,6 +16,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedTile extends StatefulWidget {
   final Widget tileWidget;
@@ -171,7 +172,7 @@ class ThreeDotsWidget extends StatelessWidget {
                     Icons.done,
                     color: Colors.green,
                   ),
-                   HebrewText("קבל בקשה     "),
+                   Text(AppLocalizations.of(context).acceptRequest),
                 ],
               ),
             ),
@@ -303,7 +304,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                           onPressed: () {
                             print("Accepted");
                           },
-                          child: HebrewText('קבל בקשה'),
+                          child: Text(AppLocalizations.of(context).acceptRequest),
                         ),
                         RaisedButton(
                           shape: RoundedRectangleBorder(

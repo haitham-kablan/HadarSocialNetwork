@@ -22,7 +22,7 @@ import 'package:intl/intl.dart';
 
 import 'forms/UserInNeedRegPage.dart';
 import 'forms/VolunteerRegPage.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReigesterPage extends StatefulWidget {
   @override
@@ -164,27 +164,27 @@ class _ReigesterPageState extends State<ReigesterPage> {
                   SizedBox(height: 60),
                   Container(child: showAlert_as_col()),
                   Form(
-                    child: Custom_Text_feild('שם מלא',Icon(Icons.account_circle_rounded,color: Colors.white ),Colors.white,Colors.white,name_Validator.Validate,name_Controller,false,Colors.white),
+                    child: Custom_Text_feild(AppLocalizations.of(context).fullName, Icon(Icons.account_circle_rounded,color: Colors.white ),Colors.white,Colors.white,name_Validator.Validate,name_Controller,false,Colors.white),
                     key: nameKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('תעודת זהות',Icon(Icons.arrow_left_outlined,color: Colors.white),Colors.white,Colors.white,Id_Validator.Validate,id_Controller,false,Colors.white),
+                    child: Custom_Text_feild(AppLocalizations.of(context).id, Icon(Icons.arrow_left_outlined,color: Colors.white),Colors.white,Colors.white,Id_Validator.Validate,id_Controller,false,Colors.white),
                     key: idKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('מספר טלפון',Icon(Icons.phone,color: Colors.white),Colors.white,Colors.white,number_Validator.Validate,phone_Controller,false,Colors.white),
+                    child: Custom_Text_feild(AppLocalizations.of(context).telNumber, Icon(Icons.phone,color: Colors.white),Colors.white,Colors.white,number_Validator.Validate,phone_Controller,false,Colors.white),
                     key: phoneKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('כתובת אימייל',Icon(Icons.email,color: Colors.white),Colors.white,Colors.white,Email_Validator.Validate,email_Controller,false,Colors.white),
+                    child: Custom_Text_feild(AppLocalizations.of(context).emailAddress, Icon(Icons.email,color: Colors.white),Colors.white,Colors.white,Email_Validator.Validate,email_Controller,false,Colors.white),
                     key: emailKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('סיסמה',Icon(Icons.lock, color: Colors.white),Colors.white,Colors.white,password_Validator.Validate,first_pw_Controller,true,Colors.white),
+                    child: Custom_Text_feild(AppLocalizations.of(context).password, Icon(Icons.lock, color: Colors.white),Colors.white,Colors.white,password_Validator.Validate,first_pw_Controller,true,Colors.white),
                     key: paswwordKey,
                   ),
                   Form(
-                    child: Custom_Text_feild('אימות סיסמה',Icon(Icons.lock,color: Colors.white),Colors.white,Colors.white,second_pw_Validator.Validate,second_pw_Controller,true,Colors.white),
+                    child: Custom_Text_feild(AppLocalizations.of(context).confirmPassword, Icon(Icons.lock,color: Colors.white),Colors.white,Colors.white,second_pw_Validator.Validate,second_pw_Controller,true,Colors.white),
                     key: secnd_pass_Key,
                   ),
                 ],
@@ -193,7 +193,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
             Container(
               margin: EdgeInsets.only(top:30),
               child: Text(
-                'נרשם בתור',
+                AppLocalizations.of(context).signedAs,
                 style: TextStyle(
                   fontSize: 18,
                   color: BasicColor.clr,
@@ -221,7 +221,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     child: Column(
                       children: [
                         tripTypes["מנהל"],
-                        Text('מנהל'),
+                        Text(AppLocalizations.of(context).admin),
                       ],
                     ),
                   ),
@@ -237,7 +237,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     child: Column(
                       children: [
                         tripTypes["מבקש עזרה"],
-                        Text('מבקש עזרה'),
+                        Text(AppLocalizations.of(context).userInNeed),
                       ],
                     ),
                   ),
@@ -253,7 +253,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     child: Column(
                       children: [
                         tripTypes["עוזר"],
-                        Text('עוזר'),
+                        Text(AppLocalizations.of(context).volunteer),
                       ],
                     ),
                   ),
@@ -283,7 +283,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
               child: show_spinner ? SpinKitCircle(color: BasicColor.clr,) :RaisedButton(
                 color: BasicColor.clr,
                 splashColor: Colors.white,
-                child: Text('הרשמה',style: TextStyle(fontSize: 18 , color: Colors.white),),
+                child: Text(AppLocalizations.of(context).register,style: TextStyle(fontSize: 18 , color: Colors.white),),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 onPressed: () async {
                   second_pw_Validator.First_pw = first_pw_Controller.text;
@@ -301,7 +301,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     setState(() {
                       alert=true;
                       show_spinner = false;
-                      _error_msg = 'תעודת הזהות כבר תפוסה';
+                      _error_msg = AppLocalizations.of(context).idAlreadyTaken;
 
                     });
                     return;
@@ -310,7 +310,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     setState(() {
                       alert=true;
                       show_spinner = false;
-                      _error_msg = 'אנא בחר את התור שלך';
+                      _error_msg = AppLocalizations.of(context).chooseUrPrevilge;
 
                     });
                     return;
@@ -365,14 +365,14 @@ class _ReigesterPageState extends State<ReigesterPage> {
                       setState(() {
                         alert=true;
                         show_spinner = false;
-                        _error_msg = 'הסיסמה שלך חלשה';
+                        _error_msg = AppLocalizations.of(context).passwordIsTooWeak;
                       });
                       print('The password provided is too weak.');
                     } else if (e.code == 'email-already-in-use') {
                       setState(() {
                         alert=true;
                         show_spinner = false;
-                        _error_msg = 'האימייל שלך כבר תפוס';
+                        _error_msg = AppLocalizations.of(context).emailIsAlreadyTaken;
                       });
                       print('The account already exists for that email.');
                     }
@@ -380,7 +380,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     setState(() {
                       alert=true;
                       show_spinner = false;
-                      _error_msg = 'error in the system';
+                      _error_msg = AppLocalizations.of(context).systemError;
                     });
                   }
                 },

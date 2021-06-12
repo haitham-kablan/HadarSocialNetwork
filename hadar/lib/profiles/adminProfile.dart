@@ -14,15 +14,14 @@ class AdminProfile extends StatelessWidget {
   AdminProfile() {
     user = CurrentUser.curr_user;
     privilege = 'Admin';
-    getLists = BasicLists(user, this);
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      //title: 'Profile',
-      home: Scaffold(
+    getLists = BasicLists(user, this, context);
+
+    return Scaffold(
         bottomNavigationBar: AdminBottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
@@ -50,7 +49,6 @@ class AdminProfile extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

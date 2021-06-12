@@ -83,7 +83,7 @@ class InquiryItem extends StatelessWidget {
       isThreeLine: true,
       title: Row(children: <Widget>[
         Container(
-          child: Text("סיבת פנייה:  " + inquiry.reasonForInquiry,
+          child: Text(AppLocalizations.of(context).inquiryReasonTwoDots + inquiry.reasonForInquiry,
               style: TextStyle(color: BasicColor.clr)),
         ),
         Spacer(),
@@ -116,14 +116,13 @@ class userInquiryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: AdminBottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
               delegate:
-              MySliverAppBar(expandedHeight: 150, title: 'פניות המשתמשים'),
+              MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).usersInquiries),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -140,8 +139,8 @@ class userInquiryView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Icon(Icons.arrow_back),
-                          const Text(
-                            'חזרה',
+                          Text(
+                            AppLocalizations.of(context).back,
                             style: TextStyle(
                                 fontSize: 17.0,
                                 decoration: TextDecoration.underline,
@@ -167,7 +166,6 @@ class userInquiryView extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

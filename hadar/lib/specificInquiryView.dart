@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hadar/utils/UsersInquiry.dart';
 import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class specificInquiryView extends StatelessWidget {
   UserInquiry inquiry;
@@ -37,13 +38,12 @@ class specificInquiryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: AdminBottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
-              delegate: MySliverAppBar(expandedHeight: 150, title: 'פנייה'),
+              delegate: MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).inquiry),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -54,18 +54,17 @@ class specificInquiryView extends StatelessWidget {
                     SizedBox(
                       height: 120,
                     ),
-                    getData('שם הפונה', inquiry.name),
-                    getData('תעודת זהות', inquiry.id),
-                    getData('מספר טלפון', inquiry.phoneNumber),
-                    getData('סיבת הפנייה', inquiry.reasonForInquiry),
-                    getData('תוכן הפנייה', inquiry.description),
+                    getData(AppLocalizations.of(context).inquirer, inquiry.name),
+                    getData(AppLocalizations.of(context).id, inquiry.id),
+                    getData(AppLocalizations.of(context).telNumber, inquiry.phoneNumber),
+                    getData(AppLocalizations.of(context).inquiryReason, inquiry.reasonForInquiry),
+                    getData(AppLocalizations.of(context).inquiryInfo, inquiry.description),
                   ],
                 ),
               ),
             ),
           ],
         ),
-      ),
     );
   }
 }
