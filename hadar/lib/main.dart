@@ -33,7 +33,7 @@ void main() async {
       const Locale('he', ''), // Hebrew, no country code
       //const Locale('ru', ''), // Russian, no country code
     ],
-    locale: Locale.fromSubtags(languageCode: 'ar'),
+    locale: Locale.fromSubtags(languageCode: 'he'),
     home: Container(
       margin: const EdgeInsets.only(left: marginSize, right: marginSize),
       child: Scaffold(

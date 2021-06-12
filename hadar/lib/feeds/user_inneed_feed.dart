@@ -105,25 +105,28 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
             ),
           ],
         ),
-        floatingActionButton: Container(
-          color: Colors.transparent,
-          padding: EdgeInsets.only(bottom: 20.0, right: 5),
-          child: FloatingActionButton.extended(
-            onPressed: () async {
-              List<HelpRequestType> types =
-                  await DataBaseService().helpRequestTypesAsList();
-              types.add(HelpRequestType('אחר..'));
-              //we must add אחר so it always appears on the last of the list
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => RequestWindow(this, types)),
-              );
-            },
-            label: Text(AppLocalizations.of(context).requestHelp),
-            icon: Icon(Icons.add),
-            backgroundColor: BasicColor.clr,
-            elevation: 10,
+        floatingActionButton: Align(
+          alignment: Alignment.bottomRight,
+          child: Container(
+            color: Colors.transparent,
+            padding: EdgeInsets.only(bottom: 20.0, right: 25.0),
+            child: FloatingActionButton.extended(
+              onPressed: () async {
+                List<HelpRequestType> types =
+                    await DataBaseService().helpRequestTypesAsList();
+                types.add(HelpRequestType('אחר..'));
+                //we must add אחר so it always appears on the last of the list
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RequestWindow(this, types)),
+                );
+              },
+              label: Text(AppLocalizations.of(context).requestHelp),
+              icon: Icon(Icons.add),
+              backgroundColor: BasicColor.clr,
+              elevation: 10,
+            ),
           ),
         ),
     );

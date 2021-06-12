@@ -119,7 +119,7 @@ class AboutMe extends StatelessWidget {
     return Column(
       children: [
         Text(
-          user.phoneNumber + AppLocalizations.of(context).telNumberTwoDots,
+          AppLocalizations.of(context).telNumberTwoDots + user.phoneNumber,
           style: TextStyle(
               fontSize: 15.0,
               color: Colors.blueGrey,
@@ -130,7 +130,7 @@ class AboutMe extends StatelessWidget {
           height: 10,
         ),
         Text(
-          user.email + AppLocalizations.of(context).emailTwoDots,
+          AppLocalizations.of(context).emailTwoDots + user.email,
           style: TextStyle(
               fontSize: 15.0,
               color: Colors.blueGrey,
@@ -216,7 +216,7 @@ class SignOut extends StatelessWidget {
     return TextButton(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
             AppLocalizations.of(context).signOut,
@@ -395,7 +395,7 @@ class _SortByCatForAllState extends State<SortByCatForAll> {
           child: ListTile(
             title: Text(
               item.name,
-              textDirection: TextDirection.rtl,
+              //textDirection: TextDirection.rtl,
             ),
           ),
         );
@@ -424,10 +424,10 @@ class ProfileButton {
   Widget getChild(String title, IconData icon) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(title),
         Icon(icon),
+        Text(title),
       ],
     );
   }
