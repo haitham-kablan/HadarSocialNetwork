@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
-import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/utils/HelpRequestType.dart';
-import '../profile.dart';
 import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -80,8 +78,21 @@ class MainInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        TextButton(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text('שפה'),
+              Icon(Icons.language),
+            ],
+          ),
+          onPressed: () {
+            //TODO: change the language
+          }
+        ),
         SizedBox(
-          height: 120,
+          height: 80,
         ),
         Text(
           user.name,
@@ -229,7 +240,9 @@ class SignOut extends StatelessWidget {
         ],
       ),
       style: TextButton.styleFrom(
-        primary: Theme.of(context).primaryColor,
+        primary: Theme
+            .of(context)
+            .primaryColor,
         padding: EdgeInsets.only(left: 10.0),
       ),
       onPressed: () {
@@ -332,7 +345,9 @@ class RemoveUser extends StatelessWidget {
           children: [
             TextButton(
               style: TextButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
+                primary: Theme
+                    .of(context)
+                    .primaryColor,
               ),
               onPressed: () {
                 Navigator.pop(context, true);
@@ -342,7 +357,9 @@ class RemoveUser extends StatelessWidget {
             Spacer(flex: 1,),
             TextButton(
               style: TextButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
+                primary: Theme
+                    .of(context)
+                    .primaryColor,
               ),
               onPressed: () async {
                 await DataBaseService().RemoveCurrentuserFromAuthentication();
@@ -434,7 +451,9 @@ class ProfileButton {
 
   ButtonStyle getStyle(BuildContext context) {
     return TextButton.styleFrom(
-      primary: Theme.of(context).primaryColor,
+      primary: Theme
+          .of(context)
+          .primaryColor,
       padding: EdgeInsets.only(right: 25.0),
     );
   }
