@@ -12,10 +12,10 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
-import 'Design/mainDesign.dart';
-import 'profiles/adminProfile.dart';
-import 'feeds/user_inneed_feed.dart';
-import 'users/Privilege.dart';
+import '../Design/mainDesign.dart';
+import '../profiles/adminProfile.dart';
+import '../feeds/user_inneed_feed.dart';
+import '../users/Privilege.dart';
 
 class AdminRequestWindow extends StatelessWidget {
   DescriptonBox desBox;
