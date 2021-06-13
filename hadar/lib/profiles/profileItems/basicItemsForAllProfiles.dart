@@ -79,8 +79,21 @@ class MainInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        TextButton(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text('שפה'),
+              Icon(Icons.language),
+            ],
+          ),
+          onPressed: () {
+            //TODO: change the language
+          }
+        ),
         SizedBox(
-          height: 120,
+          height: 80,
         ),
         Text(
           user.name,
@@ -228,7 +241,9 @@ class SignOut extends StatelessWidget {
         ],
       ),
       style: TextButton.styleFrom(
-        primary: Theme.of(context).primaryColor,
+        primary: Theme
+            .of(context)
+            .primaryColor,
         padding: EdgeInsets.only(left: 10.0),
       ),
       onPressed: () {
@@ -322,16 +337,18 @@ class RemoveUser extends StatelessWidget {
       backgroundColor: BasicColor.backgroundClr,
       title: Center(
           child: const Text(
-        'האם אתה בטוח? ',
-        textDirection: TextDirection.rtl,
-      )),
+            'האם אתה בטוח? ',
+            textDirection: TextDirection.rtl,
+          )),
       actions: <Widget>[
         Row(
 
           children: [
             TextButton(
               style: TextButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
+                primary: Theme
+                    .of(context)
+                    .primaryColor,
               ),
               onPressed: () {
                 Navigator.pop(context, true);
@@ -341,7 +358,9 @@ class RemoveUser extends StatelessWidget {
             Spacer(flex: 1,),
             TextButton(
               style: TextButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
+                primary: Theme
+                    .of(context)
+                    .primaryColor,
               ),
               onPressed: () async {
                 await DataBaseService().RemoveCurrentuserFromAuthentication();
@@ -433,7 +452,9 @@ class ProfileButton {
 
   ButtonStyle getStyle(BuildContext context) {
     return TextButton.styleFrom(
-      primary: Theme.of(context).primaryColor,
+      primary: Theme
+          .of(context)
+          .primaryColor,
       padding: EdgeInsets.only(right: 25.0),
     );
   }
