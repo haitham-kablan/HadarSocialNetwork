@@ -16,6 +16,9 @@ import '../Design/mainDesign.dart';
 import '../profiles/adminProfile.dart';
 import '../feeds/user_inneed_feed.dart';
 import '../users/Privilege.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 
 class AdminRequestWindow extends StatelessWidget {
   DescriptonBox desBox;
@@ -34,18 +37,21 @@ class AdminRequestWindow extends StatelessWidget {
   String userPhone;
   HelpRequestType helpRequestType;
 
-  AdminRequestWindow( List<HelpRequestType> types) {
+  BuildContext context;
+
+  AdminRequestWindow( List<HelpRequestType> types, BuildContext context) {
+    this.context = context;
     this.types = types;
     init();
   }
 
   void init() {
-    this.desBox = DescriptonBox(title: 'תיאור בקשה');
-    this.desAge = DescriptonBox(title: 'גיל');
-    this.desId = DescriptonBox(title: 'תעודת זהות');
-    this.desLocation = DescriptonBox(title: 'מיקום');
-    this.desName = DescriptonBox(title: 'שם');
-    this.desPhone = DescriptonBox(title: 'מספר טלפון');
+    this.desBox = DescriptonBox(title: AppLocalizations.of(context).requestDescription);
+    this.desAge = DescriptonBox(title: AppLocalizations.of(context).age);
+    this.desId = DescriptonBox(title: AppLocalizations.of(context).id);
+    this.desLocation = DescriptonBox(title: AppLocalizations.of(context).location);
+    this.desName = DescriptonBox(title: AppLocalizations.of(context).name);
+    this.desPhone = DescriptonBox(title: AppLocalizations.of(context).telNumber);
     this.drop = Dropdown(desBox, types);
   }
 
@@ -58,14 +64,13 @@ class AdminRequestWindow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: AdminBottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
               delegate:
-                  MySliverAppBar(expandedHeight: 150, title: 'הוספת בקשה'),
+                  MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).addRequest),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -113,7 +118,7 @@ class AdminRequestWindow extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => AdminProfile()),
                       );
                     },
-                    child: Text('אישור'),
+                    child: Text(AppLocalizations.of(context).approve),
                   ),
                   ],
                 ),
@@ -121,7 +126,6 @@ class AdminRequestWindow extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
@@ -166,7 +170,7 @@ class DropDownState extends State<Dropdown> {
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: DropdownButton<HelpRequestType>(
-            hint: HebrewText("בחר קטיגוריה"),
+            hint: Text(AppLocalizations.of(context).chooseCategory),
             value: selectedType,
             onChanged: (HelpRequestType Value) {
               setState(

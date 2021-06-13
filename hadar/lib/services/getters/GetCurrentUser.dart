@@ -13,7 +13,7 @@ class GetCurrentUser extends StatelessWidget {
 
 
     return FutureBuilder<Widget>(
-      future: CurrentUser.init_user(),
+      future: CurrentUser.init_user(context),
       builder:
           (BuildContext context, AsyncSnapshot<Widget> snapshot) {
 

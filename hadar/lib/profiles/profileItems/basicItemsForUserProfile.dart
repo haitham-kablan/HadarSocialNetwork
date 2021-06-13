@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../TechSupportForm.dart';
 import '../profile.dart';
 import 'basicItemsForAllProfiles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ContactUs extends StatelessWidget {
   a.User user;
@@ -35,17 +36,17 @@ class ContactUs extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          child: buttonCreate.getChild('למלא טופס', Icons.wysiwyg_rounded),
+          child: buttonCreate.getChild(AppLocalizations.of(context).fillApplication, Icons.wysiwyg_rounded),
           style: style,
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => TechSupportForm(parent)),
+              MaterialPageRoute(builder: (context) => TechSupportForm(parent, context)),
             );
           },
         ),
         TextButton(
-          child: buttonCreate.getChild('להתקשר', Icons.phone),
+          child: buttonCreate.getChild(AppLocalizations.of(context).call, Icons.phone),
           style: style,
           onPressed: () {
             _launchCaller();
@@ -69,8 +70,9 @@ class OtherUserAccess extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+
         TextButton(
-          child: buttonCreate.getChild('הסר אותי מהמערכת', Icons.person_remove),
+          child: buttonCreate.getChild(AppLocalizations.of(context).deleteMeFromSystem, Icons.person_remove),
           style: buttonCreate.getStyle(context),
           onPressed: () {
             showDialog(
@@ -99,7 +101,7 @@ class OtherAdminAccess extends StatelessWidget {
       children: [
         TextButton(
           child: buttonCreate.getChild(
-              'הסר את המשתמש מהמערכת', Icons.person_remove),
+              AppLocalizations.of(context).deleteUserFromSystem, Icons.person_remove),
           style: buttonCreate.getStyle(context),
           onPressed: () {
             showDialog(

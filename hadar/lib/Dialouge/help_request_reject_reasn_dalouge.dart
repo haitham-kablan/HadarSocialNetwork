@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/utils/HelpRequest.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class shoReject_Reason extends StatelessWidget {
 
@@ -53,7 +54,7 @@ class shoReject_Reason extends StatelessWidget {
             RaisedButton(onPressed: (){
               DataBaseService().delete_help_reqeust(help_request);
               return Navigator.of(context).pop(true);
-            }, child: Text('מחק בקשה'), color: Colors.white, textColor: Colors.redAccent,)
+            }, child: Text(AppLocalizations.of(context).deleteRequest), color: Colors.white, textColor: Colors.redAccent,)
           ],
         )
       ],

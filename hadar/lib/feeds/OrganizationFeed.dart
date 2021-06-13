@@ -9,6 +9,7 @@ import 'package:hadar/users/Organization.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrganizationsInfoList extends StatelessWidget {
   @override
@@ -82,7 +83,7 @@ class _OrganizationInfo extends StatelessWidget {
             TableRow(
               children: <Widget>[
                 Text(
-                  'מספר טלפון :',
+                  AppLocalizations.of(context).telNumberTwoDots,
                   style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.blueGrey,
@@ -119,7 +120,7 @@ class _OrganizationInfo extends StatelessWidget {
             TableRow(
               children: <Widget>[
                 Text(
-                  'אימייל :',
+                  AppLocalizations.of(context).emailTwoDots,
                   style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.blueGrey,
@@ -141,7 +142,7 @@ class _OrganizationInfo extends StatelessWidget {
             TableRow(
               children: <Widget>[
                 Text(
-                  'מיקום :',
+                  AppLocalizations.of(context).locationTwoDots,
                   style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.blueGrey,
@@ -162,7 +163,7 @@ class _OrganizationInfo extends StatelessWidget {
             TableRow(
               children: <Widget>[
                 Text(
-                  'שירותים :',
+                  AppLocalizations.of(context).services,
                   style: TextStyle(
                       fontSize: 15.0,
                       color: Colors.blueGrey,

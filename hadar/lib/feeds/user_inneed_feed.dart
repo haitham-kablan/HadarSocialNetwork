@@ -21,6 +21,8 @@ import '../Design/mainDesign.dart';
 import '../UserInNeedRequestView.dart';
 
 import 'feed_items/help_request_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 bool debug = true;
 
@@ -81,10 +83,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
       }).toList();
     }
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'User In-need Feed',
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: BottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
@@ -106,28 +105,30 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
             ),
           ],
         ),
-        floatingActionButton: Container(
-          color: Colors.transparent,
-          padding: EdgeInsets.only(bottom: 20.0, right: 5),
-          child: FloatingActionButton.extended(
-            onPressed: () async {
-              List<HelpRequestType> types =
-                  await DataBaseService().helpRequestTypesAsList();
-              types.add(HelpRequestType('אחר'));
-              //we must add אחר so it always appears on the last of the list
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => RequestWindow(this, types)),
-              );
-            },
-            label: HebrewText("בקש עזרה"),
-            icon: Icon(Icons.add),
-            backgroundColor: BasicColor.clr,
-            elevation: 10,
+        floatingActionButton: Align(
+          alignment: Alignment.bottomRight,
+          child: Container(
+            color: Colors.transparent,
+            padding: EdgeInsets.only(bottom: 20.0, right: 25.0),
+            child: FloatingActionButton.extended(
+              onPressed: () async {
+                List<HelpRequestType> types =
+                    await DataBaseService().helpRequestTypesAsList();
+                types.add(HelpRequestType('אחר..'));
+                //we must add אחר so it always appears on the last of the list
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RequestWindow(this, types)),
+                );
+              },
+              label: Text(AppLocalizations.of(context).requestHelp),
+              icon: Icon(Icons.add),
+              backgroundColor: BasicColor.clr,
+              elevation: 10,
+            ),
           ),
         ),
-      ),
     );
   }
 }
@@ -199,7 +200,7 @@ class HelpRequestItem extends StatelessWidget {
                   await DialogHelpRequestHelper.exit(context,helpRequest);
                 },
               ),
-              Container(margin:EdgeInsets.only(bottom: 5),child: Text('סיבת דחייה' , style: TextStyle(color: Colors.black),))
+              Container(margin:EdgeInsets.only(bottom: 5),child: Text(AppLocalizations.of(context).rejectReason , style: TextStyle(color: Colors.black),))
                 ],
             )
            :  SizedBox())
@@ -316,7 +317,7 @@ class HelpRequestStatusWidget extends StatelessWidget {
                       }
                       //print("height: " + (MediaQuery.of(context).size.height /2).toString());
                     },
-                    child: Text('חידוש בקשה'),
+                    child: Text(AppLocalizations.of(context).renewRequest),
                   ),
                 ),
               ),

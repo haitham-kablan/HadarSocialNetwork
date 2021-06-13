@@ -15,6 +15,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 
 import '../../DataBaseServices.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class volunteerRegisterPage extends StatefulWidget {
   final Volunteer user;
@@ -75,7 +76,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
                     SizedBox(height: 60),
                     Form(
                       child: Custom_Text_feild(
-                          'תאריך לידה',
+                          AppLocalizations.of(context).dateOfBirth,
                           Icon(Icons.account_circle_rounded,
                               color: Colors.white),
                           Colors.white,
@@ -88,7 +89,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'כתובת',
+                          AppLocalizations.of(context).address,
                           Icon(Icons.account_circle_rounded,
                               color: Colors.white),
                           Colors.white,
@@ -101,7 +102,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'מצב משפחתי',
+                          AppLocalizations.of(context).familyStatus,
                           Icon(Icons.account_circle_rounded,
                               color: Colors.white),
                           Colors.white,
@@ -114,7 +115,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'עיסוק',
+                          AppLocalizations.of(context).job,
                           Icon(Icons.account_circle_rounded,
                               color: Colors.white),
                           Colors.white,
@@ -127,7 +128,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'ארץ לידה',
+                          AppLocalizations.of(context).birthLocation,
                           Icon(Icons.account_circle_rounded,
                               color: Colors.white),
                           Colors.white,
@@ -140,7 +141,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'שפות מדוברות',
+                          AppLocalizations.of(context).spokenLanguages,
                           Icon(Icons.account_circle_rounded,
                               color: Colors.white),
                           Colors.white,
@@ -154,7 +155,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
 
                     Form(
                       child: Custom_Text_feild(
-                          'ניידות',
+                          AppLocalizations.of(context).mobility,
                           Icon(Icons.account_circle_rounded,
                               color: Colors.white),
                           Colors.white,
@@ -167,7 +168,7 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'בעל קורס עזרה ראשונה?',
+                          AppLocalizations.of(context).firstAid,
                           Icon(Icons.account_circle_rounded,
                               color: Colors.white),
                           Colors.white,
@@ -188,8 +189,8 @@ class _volunteerRegisterPageState extends State<volunteerRegisterPage> {
                           splashColor: Colors.white,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30)),
-                          child: const Text(
-                            'הגש',
+                          child: Text(
+                            AppLocalizations.of(context).apply,
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                           onPressed: () {

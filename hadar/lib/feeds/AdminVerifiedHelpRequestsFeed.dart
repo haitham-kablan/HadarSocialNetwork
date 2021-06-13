@@ -19,6 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../HelpRequestAdminDialouge.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class AdminVerifiedHelpRequestsFeed extends StatelessWidget {
   final Admin curr_user;
@@ -181,7 +183,7 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 children: [
-                                  Text("מבקש העזרה",
+                                  Text(AppLocalizations.of(context).theUserInNeed,
                                     style: TextStyle(
                                         color: Colors.blueAccent,
                                         fontSize: 22.0,
@@ -194,7 +196,7 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                               child:
                               Column(
                                 children: [
-                                  Text("המתנדב",
+                                  Text(AppLocalizations.of(context).theVolunteer,
                                     style: TextStyle(
                                         color: Colors.blueAccent,
                                         fontSize: 22.0,
@@ -241,7 +243,7 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          child: Text('קטגוריה: ' , style: TextStyle(
+                          child: Text(AppLocalizations.of(context).categoryTwoDots , style: TextStyle(
                               fontSize: 15,
                               color: BasicColor.clr,fontWeight: FontWeight.bold
                           ),),
@@ -254,7 +256,7 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
 
                     Container(
                       alignment: Alignment.topRight,
-                      child: Text('תיאור הבקשה: ' ,
+                      child: Text(AppLocalizations.of(context).requestDescriptionTwoDots ,
                         style: TextStyle(fontSize: 15 , color: BasicColor.clr ,fontWeight: FontWeight.bold),
                       ),
                     ),

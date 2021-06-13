@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'Design/mainDesign.dart';
 import 'feeds/OrganizationFeed.dart';
 import 'feeds/user_inneed_feed.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RequestWindow extends StatelessWidget {
   HelpRequestFeedState parent;
@@ -32,22 +33,21 @@ class RequestWindow extends StatelessWidget {
   }
 
   void init() {
-    this.desBox = DescriptonBox(title: 'פירוט', parent: parent);
+    this.desBox = DescriptonBox(title: AppLocalizations.of(parent.context).explanation, parent: parent);
 
     this.drop = Dropdown(desBox, types);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         //backgroundColor: BasicColor.backgroundClr,
         bottomNavigationBar: BottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
               delegate:
-                  MySliverAppBar(expandedHeight: 150, title: 'בחר קטיגוריה'),
+                  MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).chooseCategory),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -72,7 +72,7 @@ class RequestWindow extends StatelessWidget {
                               borderSide: BorderSide(color: BasicColor.clr),
                             ),
 
-                            hintText:  "שנה את מיקום הבקשה",
+                            hintText:  AppLocalizations.of(context).changeRequestLocation,
                             hintStyle: TextStyle(
                               color: Colors.grey,
                             )
@@ -87,7 +87,7 @@ class RequestWindow extends StatelessWidget {
                       padding: EdgeInsets.only(top: 15, right: 10),
                       alignment: Alignment.centerRight,
                       child: Text(
-                        'שירותי עמותות:',
+                        AppLocalizations.of(context).organizationServices,
                         textDirection: TextDirection.rtl,
                         style: TextStyle(
                             fontSize: 15.0,
@@ -110,7 +110,6 @@ class RequestWindow extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
@@ -155,7 +154,7 @@ class DropDownState extends State<Dropdown> {
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: DropdownButton<HelpRequestType>(
-            hint: HebrewText("בחר קטיגוריה"),
+            hint: Text(AppLocalizations.of(context).chooseCategory),
             value: selectedType,
             onChanged: (HelpRequestType Value) {
               setState(
@@ -278,7 +277,7 @@ class _DescriptonBox extends State<DescriptonBox> {
                   onPressed: () {
                     returnToFeed();
                   },
-                  child: Text('ביטול'),
+                  child: Text(AppLocalizations.of(context).cancel),
                 ),
                 SizedBox(
                   width: 25,
@@ -287,7 +286,7 @@ class _DescriptonBox extends State<DescriptonBox> {
                   onPressed: () {
                     _processText();
                   },
-                  child: Text('אישור'),
+                  child: Text(AppLocalizations.of(context).approve),
                 ),
 
               ],

@@ -44,7 +44,7 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
           enableSuggestions: !is_pw,
           controller: Controller,
           validator: Validtor,
-          textAlign:TextAlign.right,
+          //textAlign:TextAlign.right,
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: border_color),

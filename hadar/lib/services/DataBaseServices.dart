@@ -47,6 +47,7 @@ class DataBaseService{
   final CollectionReference verificationsRequestsCollection = FirebaseFirestore.instance.collection(verification_requests);
   final CollectionReference allHelpsRequestsCollection = FirebaseFirestore.instance.collection('ALL_HELP_REQUESTS');
   final CollectionReference tokens = FirebaseFirestore.instance.collection('TOKENS');
+  final CollectionReference usersLanguagesCollection = FirebaseFirestore.instance.collection('USERS_LANGUAGES');
 
 
 
@@ -917,6 +918,17 @@ class DataBaseService{
     return all_req_for_category_verfied;
   }
 
+  Future<String> getUserAppLanguage(String userId) async{
+    return await usersLanguagesCollection.doc(userId).get().then((value) => value.exists ? value["language"] : "he");
+  }
+
+  Future setUserAppLanguage(String userId, String lang) async{
+    Map<String,dynamic> to_add = Map();
+    to_add["language"] = lang;
+
+    usersLanguagesCollection.doc(userId).set(to_add);
+  }
+
 }
 
 Status getStatusFromString(String type){
@@ -1032,6 +1044,7 @@ List<Organization> organizationListFromSnapShot(QuerySnapshot snapshot){
     }
   ).toList();
 }
+
 
 
 

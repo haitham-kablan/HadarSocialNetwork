@@ -9,6 +9,7 @@ import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/validators.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/UserInNeed.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class userInNeedRegisterPage extends StatefulWidget {
   final UserInNeed user;
@@ -65,7 +66,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                     SizedBox(height: 60),
                     Form(
                       child: Custom_Text_feild(
-                          'גיל',
+                          AppLocalizations.of(context).age,
                           null,
                           Colors.white,
                           Colors.white,
@@ -77,7 +78,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'כתובת',
+                          AppLocalizations.of(context).address,
                           null,
                           Colors.white,
                           Colors.white,
@@ -89,7 +90,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'מצב משפחתי',
+                          AppLocalizations.of(context).familyStatus,
                           null,
                           Colors.white,
                           Colors.white,
@@ -101,7 +102,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'מספר ילדים',
+                          AppLocalizations.of(context).childrenNumbers,
                           null,
                           Colors.white,
                           Colors.white,
@@ -113,7 +114,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'מסדרת חינוך (במידה ורלוונטי)',
+                          AppLocalizations.of(context).education,
                           null,
                           Colors.white,
                           Colors.white,
@@ -125,7 +126,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'מספר טלפון בית (במידה ויש)',
+                          AppLocalizations.of(context).homePhoneNumber,
                           null,
                           Colors.white,
                           Colors.white,
@@ -137,7 +138,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'ותיק/ערבי/עולה חדש?',
+                          AppLocalizations.of(context).whereYouCame,
                           null,
                           Colors.white,
                           Colors.white,
@@ -149,7 +150,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                     ),
                     Form(
                       child: Custom_Text_feild(
-                          'מטופל ברווחה',
+                          AppLocalizations.of(context).rev7aPatient,
                           null,
                           Colors.white,
                           Colors.white,
@@ -168,8 +169,8 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                           splashColor: Colors.white,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30)),
-                          child: const Text(
-                            'הגש',
+                          child: Text(
+                            AppLocalizations.of(context).apply,
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                           onPressed: () async{

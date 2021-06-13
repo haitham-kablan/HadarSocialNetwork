@@ -6,6 +6,7 @@ import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 //when a user clicks on the category, he gets a description box,
 // where he can describe his request
@@ -129,7 +130,7 @@ class AboutMe extends StatelessWidget {
     return Column(
       children: [
         Text(
-          user.phoneNumber + '  :' + 'מספר טלפון',
+          AppLocalizations.of(context).telNumberTwoDots + user.phoneNumber,
           style: TextStyle(
               fontSize: 15.0,
               color: Colors.blueGrey,
@@ -140,7 +141,7 @@ class AboutMe extends StatelessWidget {
           height: 10,
         ),
         Text(
-          user.email + '  :' + 'אימייל',
+          AppLocalizations.of(context).emailTwoDots + user.email,
           style: TextStyle(
               fontSize: 15.0,
               color: Colors.blueGrey,
@@ -172,21 +173,21 @@ class ManagePersonalInfo extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          child: buttonCreate.getChild('התראות', Icons.notifications_rounded),
+          child: buttonCreate.getChild(AppLocalizations.of(context).notification, Icons.notifications_rounded),
           style: style,
           onPressed: () {
             //  TODO: turn notifications ON/OFF
           },
         ),
         TextButton(
-          child: buttonCreate.getChild('שנה מיקום קבוע', Icons.location_on),
+          child: buttonCreate.getChild(AppLocalizations.of(context).changeStableLocation, Icons.location_on),
           style: style,
           onPressed: () {
             //  TODO: change location
           },
         ),
         TextButton(
-          child: buttonCreate.getChild('שנה סיסמא', Icons.lock),
+          child: buttonCreate.getChild(AppLocalizations.of(context).changePassword, Icons.lock),
           style: style,
           onPressed: () {
             //  TODO: change password
@@ -226,10 +227,10 @@ class SignOut extends StatelessWidget {
     return TextButton(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          const Text(
-            'יציאה',
+          Text(
+            AppLocalizations.of(context).signOut,
             style: TextStyle(
                 fontSize: 17.0,
                 decoration: TextDecoration.underline,
@@ -270,52 +271,52 @@ class BasicLists {
   List<Item> listForUserAdminView;
   List<Item> listForAdminView;
 
-  BasicLists(a.User user, Widget parent) {
+  BasicLists(a.User user, Widget parent, BuildContext context) {
     this.user = user;
     this.parent = parent;
     listForAdminView = [
       Item(
-        name: 'מידע עלי',
+        name: AppLocalizations.of(context).infoAboutMe,
         builder: AboutMe(user),
       ),
       Item(
-        name: 'נהל פרטים אישיים',
+        name: AppLocalizations.of(context).managePersonalInfo,
         builder: ManagePersonalInfo(user),
       ),
       Item(
-        name: 'נהל את המערכת',
+        name: AppLocalizations.of(context).manageSystem,
         builder: ManageTheSystem(),
       ),
       Item(
-        name: 'אחר',
+        name: AppLocalizations.of(context).other,
         builder: OtherUserAccess(user),
       ),
     ];
     listForUserView = [
       Item(
-        name: 'מידע עלי',
+        name: AppLocalizations.of(context).infoAboutMe,
         builder: AboutMe(user),
       ),
       Item(
-        name: 'נהל פרטים אישיים',
+        name: AppLocalizations.of(context).managePersonalInfo,
         builder: ManagePersonalInfo(user),
       ),
       Item(
-        name: 'צור קשר',
+        name: AppLocalizations.of(context).contact,
         builder: ContactUs(user, parent),
       ),
       Item(
-        name: 'אחר',
+        name: AppLocalizations.of(context).other,
         builder: OtherUserAccess(user),
       ),
     ];
     listForUserAdminView = [
       Item(
-        name: 'מידע על המשתמש',
+        name: AppLocalizations.of(context).userInfo,
         builder: AboutMe(user),
       ),
       Item(
-        name: 'אחר',
+        name: AppLocalizations.of(context).other,
         builder: OtherAdminAccess(user),
       ),
     ];
@@ -334,10 +335,10 @@ class RemoveUser extends StatelessWidget {
     return new AlertDialog(
       backgroundColor: BasicColor.backgroundClr,
       title: Center(
-          child: const Text(
-            'האם אתה בטוח? ',
-            textDirection: TextDirection.rtl,
-          )),
+        child: Text(
+          AppLocalizations.of(context).areYouSure,
+          textDirection: TextDirection.rtl,
+      )),
       actions: <Widget>[
         Row(
 
@@ -351,7 +352,7 @@ class RemoveUser extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context, true);
               },
-              child: const Text('ביטול'),
+              child: Text(AppLocalizations.of(context).cancel),
             ),
             Spacer(flex: 1,),
             TextButton(
@@ -365,7 +366,7 @@ class RemoveUser extends StatelessWidget {
                 DataBaseService().RemoveUserfromdatabase(user);
                 DataBaseService().Sign_out(context);
               },
-              child: const Text('אישור'),
+              child: Text(AppLocalizations.of(context).approve),
             ),
           ],
         ),
@@ -411,7 +412,7 @@ class _SortByCatForAllState extends State<SortByCatForAll> {
           child: ListTile(
             title: Text(
               item.name,
-              textDirection: TextDirection.rtl,
+              //textDirection: TextDirection.rtl,
             ),
           ),
         );
@@ -440,10 +441,10 @@ class ProfileButton {
   Widget getChild(String title, IconData icon) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(title),
         Icon(icon),
+        Text(title),
       ],
     );
   }

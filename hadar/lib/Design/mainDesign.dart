@@ -129,7 +129,7 @@ class BottomBar extends StatelessWidget {
                       color: BasicColor.clr,
                     ),
                     onPressed: () async {
-                      Widget curr_widget = await CurrentUser.init_user();
+                      Widget curr_widget = await CurrentUser.init_user(context);
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => curr_widget),

@@ -11,10 +11,13 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/utils/UsersInquiry.dart';
 
 import 'Design/mainDesign.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class TechSupportForm extends StatelessWidget {
   ProfilePage parent;
+  BuildContext context;
+
   DescriptonBox desReason;
   DescriptonBox desBox;
   DescriptonBox desName;
@@ -27,17 +30,18 @@ class TechSupportForm extends StatelessWidget {
   String userPhone;
   HelpRequestType helpRequestType;
 
-  TechSupportForm(ProfilePage parent) {
+  TechSupportForm(ProfilePage parent, BuildContext context) {
+    this.context = context;
     this.parent = parent;
     init();
   }
 
   void init() {
-    this.desName = DescriptonBox(title: 'שם', parent: parent);
-    this.desId = DescriptonBox(title: 'תעודת זהות', parent: parent);
-    this.desPhone = DescriptonBox(title: 'מספר טלפון', parent: parent);
-    this.desReason = DescriptonBox(title: 'סיבת הפנייה בקצרה', parent: parent);
-    this.desBox = DescriptonBox(title: 'פירוט', parent: parent);
+    this.desName = DescriptonBox(title: AppLocalizations.of(context).name, parent: parent);
+    this.desId = DescriptonBox(title: AppLocalizations.of(context).id, parent: parent);
+    this.desPhone = DescriptonBox(title: AppLocalizations.of(context).telNumber, parent: parent);
+    this.desReason = DescriptonBox(title: AppLocalizations.of(context).inquiryReasonInShort, parent: parent);
+    this.desBox = DescriptonBox(title: AppLocalizations.of(context).explanation, parent: parent);
   }
 
   Widget getRelContainer(DescriptonBox des){
@@ -50,14 +54,13 @@ class TechSupportForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: BottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
               delegate:
-              MySliverAppBar(expandedHeight: 150, title: 'פנייה'),
+              MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).inquiry),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -94,7 +97,7 @@ class TechSupportForm extends StatelessWidget {
                       );
                       // Navigator.canPop(context);
                     },
-                    child: Text('אישור'),
+                    child: Text(AppLocalizations.of(context).approve),
                   ),
                 ],
                 ),
@@ -102,7 +105,6 @@ class TechSupportForm extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

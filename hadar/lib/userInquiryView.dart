@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'Design/basicTools.dart';
 import 'Design/mainDesign.dart';
 import 'feeds/feed_items/help_request_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -82,7 +83,7 @@ class InquiryItem extends StatelessWidget {
       isThreeLine: true,
       title: Row(children: <Widget>[
         Container(
-          child: Text("סיבת פנייה:  " + inquiry.reasonForInquiry,
+          child: Text(AppLocalizations.of(context).inquiryReasonTwoDots + inquiry.reasonForInquiry,
               style: TextStyle(color: BasicColor.clr)),
         ),
         Spacer(),
@@ -90,12 +91,12 @@ class InquiryItem extends StatelessWidget {
       subtitle: Row(
         children: <Widget>[
           Container(
-            child: Text("שם:  " +inquiry.name),
+            child: Text(AppLocalizations.of(context).nameTwoDots +inquiry.name),
             padding: const EdgeInsets.only(top: 8, left: 8),
           ),
           Spacer(),
           Container(
-            child: Text("מספר טלפון:  " +inquiry.phoneNumber),
+            child: Text(AppLocalizations.of(context).telNumberTwoDots +inquiry.phoneNumber),
             padding: const EdgeInsets.only(top: 8, left: 8),
           ),
           Spacer(),
@@ -115,14 +116,13 @@ class userInquiryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: AdminBottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
               delegate:
-              MySliverAppBar(expandedHeight: 150, title: 'פניות המשתמשים'),
+              MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).usersInquiries),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -139,8 +139,8 @@ class userInquiryView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Icon(Icons.arrow_back),
-                          const Text(
-                            'חזרה',
+                          Text(
+                            AppLocalizations.of(context).back,
                             style: TextStyle(
                                 fontSize: 17.0,
                                 decoration: TextDecoration.underline,
@@ -166,7 +166,6 @@ class userInquiryView extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

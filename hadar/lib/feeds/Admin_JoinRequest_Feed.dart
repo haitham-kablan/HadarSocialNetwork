@@ -19,6 +19,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'adminfeedtile.dart';
 import 'feed_items/help_request_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class AdminJoinRequestsFeed extends StatelessWidget{
   final Admin admin;
@@ -150,12 +152,12 @@ class JoinRequestItem extends StatelessWidget {
           ),
           Container(
             child:(){
-              String userType = "מבקש עזרה";
+              String userType = AppLocalizations.of(context).userInNeed;
               if(joinRequest.type == Privilege.Volunteer)
-                userType = "מתנדב";
+                userType = AppLocalizations.of(context).volunteer;
               else if(joinRequest.type == Privilege.Admin)
-                userType = "מנהל";
-              return Text( " רוצה להירשם כ" + userType , style:TextStyle(color: BasicColor.clr));
+                userType = AppLocalizations.of(context).admin;
+              return Text( AppLocalizations.of(context).wantToJoinAs + userType , style:TextStyle(color: BasicColor.clr));
             }() ,
             alignment: Alignment.topRight,
           ),
@@ -263,12 +265,12 @@ class JoinRequestStatusWidget extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: (){
-                    String userType = "מבקש עזרה";
+                    String userType = AppLocalizations.of(context).userInNeed;
                     if(joinRequest.type == Privilege.Volunteer)
-                      userType = "מתנדב";
+                      userType = AppLocalizations.of(context).volunteer;
                     else if(joinRequest.type == Privilege.Admin)
-                      userType = "מנהל";
-                    return Text(joinRequest.sender.name + " רוצה להירשם כ" + userType ,
+                      userType = AppLocalizations.of(context).admin;
+                    return Text(joinRequest.sender.name + AppLocalizations.of(context).wantToJoinAs + userType ,
                       style: TextStyle(
                         fontSize: 25,
                         color:BasicColor.clr,
@@ -283,7 +285,7 @@ class JoinRequestStatusWidget extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    "שם: " + joinRequest.sender.name,
+                    AppLocalizations.of(context).nameTwoDots + joinRequest.sender.name,
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -298,7 +300,7 @@ class JoinRequestStatusWidget extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    "אימייל: " + joinRequest.sender.email,
+                    AppLocalizations.of(context).emailTwoDots + joinRequest.sender.email,
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -313,7 +315,7 @@ class JoinRequestStatusWidget extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    "ת.ז: " + joinRequest.sender.id,
+                    AppLocalizations.of(context).idTwoDots + joinRequest.sender.id,
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -328,7 +330,7 @@ class JoinRequestStatusWidget extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    "מספר: " + joinRequest.sender.phoneNumber,
+                    AppLocalizations.of(context).telNumberTwoDots + joinRequest.sender.phoneNumber,
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,
@@ -370,7 +372,7 @@ class JoinRequestStatusWidget extends StatelessWidget {
                           }
 
                         },
-                        child: Text('אשר בקשה'),
+                        child: Text(AppLocalizations.of(context).approveRequest),
                       ),
                       Spacer(),
                       RaisedButton(
@@ -389,7 +391,7 @@ class JoinRequestStatusWidget extends StatelessWidget {
                           }
 
                         },
-                        child: Text('דחה בקשה'),
+                        child: Text(AppLocalizations.of(context).rejectRequest),
                       ),
                     ],
                   ),

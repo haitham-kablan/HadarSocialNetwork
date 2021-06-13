@@ -19,6 +19,8 @@ import 'package:provider/provider.dart';
 import '../../HelpRequestAdminDialouge.dart';
 import '../../main.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class LogInPage extends StatefulWidget {
   @override
   _LogInPageState createState() => _LogInPageState();
@@ -92,7 +94,7 @@ class _LogInPageState extends State<LogInPage> {
               Container(
                 margin: EdgeInsets.only(top: 50),
                 child: Text(
-                  'ברוכים הבאים',
+                  AppLocalizations.of(context).welcome,
                   textDirection: TextDirection.rtl,
                   style: TextStyle(
                       fontSize: 30
@@ -101,13 +103,13 @@ class _LogInPageState extends State<LogInPage> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 80),
-                child:Form(key:nameKey,child: Custom_Text_feild('שם משתמש',Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false,Colors.grey)),
+                child:Form(key:nameKey,child: Custom_Text_feild(AppLocalizations.of(context).email, Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false,Colors.grey)),
               ),
               Container(
                 margin: EdgeInsets.only(top: 20),
                 child: Form(
                   key: paswwordKey,
-                  child: Custom_Text_feild('סיסמה',Icon(Icons.lock),BasicColor.clr,Colors.black,password_Validator.Validate,pw_control,true,Colors.grey,parent: this),
+                  child: Custom_Text_feild(AppLocalizations.of(context).password, Icon(Icons.lock),BasicColor.clr,Colors.black,password_Validator.Validate,pw_control,true,Colors.grey,parent: this),
                 ),
               ),
 
@@ -116,7 +118,7 @@ class _LogInPageState extends State<LogInPage> {
                 child: show_spinner ? SpinKitCircle(color: BasicColor.clr,) : RaisedButton(
                   color: BasicColor.clr,
                   splashColor: Colors.white,
-                  child: Text('כניסה',style: TextStyle(fontSize: 18 , color: Colors.white),),
+                  child: Text(AppLocalizations.of(context).login, style: TextStyle(fontSize: 18 , color: Colors.white),),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                   onPressed: signInOnPressed,
                 ),
@@ -163,7 +165,7 @@ class _LogInPageState extends State<LogInPage> {
       if(!is_verfied){
         await FirebaseAuth.instance.signOut();
         setState(() {
-          _error = ' החשבון שלך עדיין לא אומת על יד המנהל';
+          _error = AppLocalizations.of(context).accountNotApprovedYet;
           show_spinner = false;
         });
         return;
@@ -172,14 +174,14 @@ class _LogInPageState extends State<LogInPage> {
       print(FirebaseAuth.instance.currentUser);
 
 
-      Widget curr_widget = await CurrentUser.init_user();
+      Widget curr_widget = await CurrentUser.init_user(context);
 
       //in case of deleted user
       var is_deleted_by_admin = curr_widget;
       if(is_deleted_by_admin == null){
         await FirebaseAuth.instance.signOut();
         setState(() {
-          _error = ' החשבון שלך הוסר על ידי המנהל';
+          _error = AppLocalizations.of(context).deletedAccount;
           show_spinner = false;
         });
         return;
@@ -200,7 +202,7 @@ class _LogInPageState extends State<LogInPage> {
         setState(() {
           email_control.clear();
           pw_control.clear();
-          _error = 'לא נמצא שם משתמש כזה';
+          _error = AppLocalizations.of(context).userNotFound;
           show_spinner = false;
         });
 
@@ -209,7 +211,7 @@ class _LogInPageState extends State<LogInPage> {
         setState(() {
           email_control.clear();
           pw_control.clear();
-          _error = 'שם משתמש וסיסמה אינם תואמים';
+          _error = AppLocalizations.of(context).nameAndPwNotMatch;
           show_spinner = false;
         });
 
@@ -233,7 +235,7 @@ class Sign_up_here_text extends StatelessWidget {
         children: <TextSpan>[
 
           TextSpan(
-              text: 'לחץ כאן להירשם',
+              text: AppLocalizations.of(context).clickHereToRegister,
               style: linkStyle,
               recognizer: TapGestureRecognizer()
                 ..onTap = () {

@@ -18,6 +18,7 @@ import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:provider/provider.dart';
 
 import '../feeds/viewRegisteredUsers.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AdminPage extends StatelessWidget {
   final Admin curr_user;
@@ -35,7 +36,7 @@ class AdminPage extends StatelessWidget {
               child: NestedScrollView(
                 headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
-                    adminViewRequestsBar("בקשות"),
+                    adminViewRequestsBar(AppLocalizations.of(context).requests),
                     new SliverPadding(
                       padding: new EdgeInsets.all(2.0),
                       sliver: new SliverList(
@@ -47,17 +48,17 @@ class AdminPage extends StatelessWidget {
                               new Tab(
                                   icon: Icon(Icons.account_circle_outlined,
                                   size: 25),
-                                  text: "בקשות הצטרפות"
+                                  text: AppLocalizations.of(context).joinRequests
                               ),
                               new Tab(
                                   icon: Icon(Icons.supervisor_account_sharp,
                                   size: 25),
-                                  text: "בקשות ממתינות"
+                                  text: AppLocalizations.of(context).waitingRequests
                               ),
                               new Tab(
                                   icon: Icon(Icons.verified_user_outlined,
                                       size: 25),
-                                  text: "בקשות מאושרות"
+                                  text: AppLocalizations.of(context).approvedRequests
                               ),
                             ],
                           ),
