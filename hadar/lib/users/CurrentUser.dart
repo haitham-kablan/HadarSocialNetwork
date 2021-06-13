@@ -1,5 +1,6 @@
 
 
+
 import 'package:hadar/feeds/Admin_JoinRequest_Feed.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hadar/feeds/feed_items/category_scrol.dart';
@@ -20,6 +21,7 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:hadar/utils/VerificationRequest.dart';
 import 'package:provider/provider.dart';
 
+import '../main.dart';
 import 'Privilege.dart';
 import 'User.dart';
 
@@ -31,12 +33,14 @@ class CurrentUser{
     return curr_user;
   }
 
-  static Future<Widget> init_user() async{
+  static Future<Widget> init_user(BuildContext context) async{
     curr_user = await DataBaseService().getCurrentUser();
 
     if(curr_user == null){
       return null;
     }
+    String appLanguage = await DataBaseService().getUserAppLanguage(curr_user.id);
+    MainApp.of(context).setLocale(Locale.fromSubtags(languageCode: appLanguage));
     switch(curr_user.privilege){
 
       case Privilege.Admin:

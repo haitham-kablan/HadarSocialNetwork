@@ -70,6 +70,7 @@ class OtherUserAccess extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+
         TextButton(
           child: buttonCreate.getChild(AppLocalizations.of(context).deleteMeFromSystem, Icons.person_remove),
           style: buttonCreate.getStyle(context),

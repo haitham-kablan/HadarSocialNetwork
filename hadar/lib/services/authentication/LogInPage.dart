@@ -174,7 +174,7 @@ class _LogInPageState extends State<LogInPage> {
       print(FirebaseAuth.instance.currentUser);
 
 
-      Widget curr_widget = await CurrentUser.init_user();
+      Widget curr_widget = await CurrentUser.init_user(context);
 
       //in case of deleted user
       var is_deleted_by_admin = curr_widget;
