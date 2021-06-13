@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
-import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/utils/HelpRequestType.dart';
-import '../profile.dart';
 import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
 
