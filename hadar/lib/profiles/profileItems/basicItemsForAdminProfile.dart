@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/adminFeatures/adminAddOrganization.dart';
+import 'package:hadar/adminFeatures/adminManageOrganizations.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import '../../adminFeatures/adminAddHelpRequest.dart' as a;
@@ -79,7 +80,11 @@ class ManageTheSystem extends StatelessWidget {
           child: buttonCreate.getChild('הצג כל העמותות',Icons.business_outlined),
           style: style,
           onPressed: () {
-            //  TODO: go to the organizations page
+            Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>ManageOrganizations()),
+          );
           },
         ),
         TextButton(
