@@ -1,4 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+/*import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class Messaging extends StatefulWidget {
@@ -37,3 +37,4 @@ class _MessagingState extends State<Messaging> {
     return Container();
   }
 }
+*/

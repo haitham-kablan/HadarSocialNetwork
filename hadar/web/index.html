@@ -37,13 +37,13 @@
        https://developers.google.com/web/fundamentals/primers/service-workers -->
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
 
   <!-- TODO: Add SDKs for Firebase products that you want to use
        https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.22.1/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
 
 
   <script>
@@ -59,17 +59,12 @@
     appId: "1:1065832186997:web:06c2faeab42c271e69a43c",
     measurementId: "G-W3QKGN45W1"
   };
+
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
 </script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
-      });
-    }
-  </script>
+
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

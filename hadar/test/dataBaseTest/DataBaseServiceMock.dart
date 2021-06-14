@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
-import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -858,7 +858,7 @@ class DataBaseServiceMock{
 
     return user;
   }
-  Future get_token(String email) async{
+  /*Future get_token(String email) async{
 
     String token_to_return = null;
     await tokens.doc(email).get().then((value) => token_to_return = value.exists ? value.get('token') : null);
@@ -877,7 +877,7 @@ class DataBaseServiceMock{
       tokens.doc(CurrentUser.curr_user.email).set(to_add);
     }
 
-  }
+  }*/
   Future Sign_out(var context) async{
     await fb_auth.FirebaseAuth.instance.signOut();
     //print('length is :' , Navigator.)

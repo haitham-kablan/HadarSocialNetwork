@@ -187,7 +187,7 @@ class _LogInPageState extends State<LogInPage> {
         return;
       }
 
-      DataBaseService().add_user_token_to_db();
+      //DataBaseService().add_user_token_to_db();
       Navigator.pop(context);
       Navigator.push(
         context,
