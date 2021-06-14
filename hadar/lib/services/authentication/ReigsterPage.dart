@@ -168,15 +168,15 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     key: nameKey,
                   ),
                   Form(
-                    child: Custom_Text_feild(AppLocalizations.of(context).id, Icon(Icons.arrow_left_outlined,color: Colors.white),Colors.white,Colors.white,Id_Validator.Validate,id_Controller,false,Colors.white),
+                    child: Custom_Text_feild(AppLocalizations.of(context).id, Icon(Icons.arrow_left_outlined,color: Colors.white),Colors.white,Colors.white,Id_Validator.Validate,id_Controller,false,Colors.white, allowWhiteSpaces: false,),
                     key: idKey,
                   ),
                   Form(
-                    child: Custom_Text_feild(AppLocalizations.of(context).telNumber, Icon(Icons.phone,color: Colors.white),Colors.white,Colors.white,number_Validator.Validate,phone_Controller,false,Colors.white),
+                    child: Custom_Text_feild(AppLocalizations.of(context).telNumber, Icon(Icons.phone,color: Colors.white),Colors.white,Colors.white,number_Validator.Validate,phone_Controller,false,Colors.white, allowWhiteSpaces: false,),
                     key: phoneKey,
                   ),
                   Form(
-                    child: Custom_Text_feild(AppLocalizations.of(context).emailAddress, Icon(Icons.email,color: Colors.white),Colors.white,Colors.white,Email_Validator.Validate,email_Controller,false,Colors.white),
+                    child: Custom_Text_feild(AppLocalizations.of(context).emailAddress, Icon(Icons.email,color: Colors.white),Colors.white,Colors.white,Email_Validator.Validate,email_Controller,false,Colors.white, allowWhiteSpaces: false,),
                     key: emailKey,
                   ),
                   Form(

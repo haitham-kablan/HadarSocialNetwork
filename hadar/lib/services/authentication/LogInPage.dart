@@ -103,7 +103,7 @@ class _LogInPageState extends State<LogInPage> {
               ),
               Container(
                 margin: EdgeInsets.only(top: 80),
-                child:Form(key:nameKey,child: Custom_Text_feild(AppLocalizations.of(context).email, Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false,Colors.grey)),
+                child:Form(key:nameKey,child: Custom_Text_feild(AppLocalizations.of(context).email, Icon(Icons.email),BasicColor.clr,Colors.black,Email_Validator.Validate,email_control,false,Colors.grey, allowWhiteSpaces: false,)),
               ),
               Container(
                 margin: EdgeInsets.only(top: 20),
