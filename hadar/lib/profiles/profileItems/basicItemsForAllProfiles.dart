@@ -4,6 +4,7 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/utils/HelpRequestType.dart';
+import 'ChangeLangDialogue.dart';
 import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -83,16 +84,19 @@ class MainInfo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text('שפה'),
+              Text(AppLocalizations.of(context).language),
               Icon(Icons.language),
             ],
           ),
           onPressed: () {
-            //TODO: change the language
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => ChangeLangDialogue(),
+            );
           }
         ),
         SizedBox(
-          height: 80,
+          height: 60,
         ),
         Text(
           user.name,
@@ -105,14 +109,14 @@ class MainInfo extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        Text(
+        /*Text(
           privilege,
           style: TextStyle(
               fontSize: 18.0,
               color: Colors.black45,
               letterSpacing: 2.0,
               fontWeight: FontWeight.w300),
-        ),
+        ),*/
       ],
     );
   }

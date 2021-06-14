@@ -136,9 +136,8 @@ class userInquiryView extends StatelessWidget {
                     child: TextButton(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Icon(Icons.arrow_back),
                           Text(
                             AppLocalizations.of(context).back,
                             style: TextStyle(
@@ -146,6 +145,7 @@ class userInquiryView extends StatelessWidget {
                                 decoration: TextDecoration.underline,
                                 fontWeight: FontWeight.bold),
                           ),
+                          Icon(Icons.arrow_forward),
                         ],
                       ),
                       style: TextButton.styleFrom(

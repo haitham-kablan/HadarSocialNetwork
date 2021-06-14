@@ -32,7 +32,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  Locale _locale = Locale.fromSubtags(languageCode: 'ar');
+  Locale _locale = Locale.fromSubtags(languageCode: 'he');
 
   void setLocale(Locale value) {
     setState(() {
@@ -40,9 +40,25 @@ class _MainAppState extends State<MainApp> {
     });
   }
 
+  String getLanguage(){
+    switch(_locale.languageCode){
+      case "he": return "עברית";
+      case "ar": return "العربية";
+      case "en": return "English";
+      case "ru": return "русский";
+      default: return "עברית";
+    }
+  }
+
+  void _fetchUserLocal() async{
+    String appLanguage = await DataBaseService().getUserAppLanguage();
+    _locale = Locale.fromSubtags(languageCode: appLanguage);
+  }
+
   @override
   Widget build(BuildContext context) {
     const double marginSize = kIsWeb ? 0.0 : 0.0;
+    _fetchUserLocal();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [

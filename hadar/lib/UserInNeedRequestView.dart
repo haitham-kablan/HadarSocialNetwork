@@ -99,7 +99,7 @@ class RequestWindow extends StatelessWidget {
                     ),
                     Container(
                       height: 300,
-                        child: OrganizationsInfoList()
+                        child: OrganizationsInfoList(context)
                     ),
 
 

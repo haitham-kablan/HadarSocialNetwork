@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/feeds/OrganizationFeed.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ManageOrganizations extends StatelessWidget {
   const ManageOrganizations({Key key}) : super(key: key);
@@ -16,7 +18,7 @@ class ManageOrganizations extends StatelessWidget {
           slivers: [
             SliverPersistentHeader(
               delegate:
-                  MySliverAppBar(expandedHeight: 150, title: 'עמותות'),
+                  MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).organizations),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -27,7 +29,7 @@ class ManageOrganizations extends StatelessWidget {
                       height: 80,
                     ),
                     Text(
-                      'ניהול העמותות',
+                      AppLocalizations.of(context).manageOrganizations,
                       style: TextStyle(
                           fontSize: 25.0,
                           color: Colors.blueGrey,
@@ -37,7 +39,7 @@ class ManageOrganizations extends StatelessWidget {
                     SizedBox(
                       height: 40,
                     ),
-                    Container(height: 300, child: OrganizationsInfoList()),
+                    Container(height: 300, child: OrganizationsInfoList(context)),
                   ],
                 ),
               ),

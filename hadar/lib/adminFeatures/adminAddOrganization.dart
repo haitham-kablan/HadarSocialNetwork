@@ -15,11 +15,16 @@ import '../profiles/adminProfile.dart';
 import '../profiles/profileItems/validators.dart';
 import '../users/Privilege.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
 class checkBoxForCategories extends StatefulWidget {
   List<HelpRequestType> types;
   _checkBoxForCategoriesState state;
+  BuildContext currContext;
 
-  checkBoxForCategories(List<HelpRequestType> types) {
+  checkBoxForCategories(List<HelpRequestType> types,BuildContext currContext) {
+    this.currContext = currContext;
     this.types = types;
   }
 
@@ -60,12 +65,12 @@ class _checkBoxForCategoriesState extends State<checkBoxForCategories> {
             Directionality(
               textDirection: TextDirection.rtl,
               child: MultiSelectDialogField(
-                cancelText: Text('בטל'),
-                confirmText: Text('אישור'),
-                searchHint: 'חיפוש',
-                title: Text('בחר אחד או יותר'),
+                cancelText: Text(AppLocalizations.of(widget.currContext).cancel),
+                confirmText: Text(AppLocalizations.of(widget.currContext).approve),
+                searchHint: AppLocalizations.of(widget.currContext).search,
+                title: Text(AppLocalizations.of(widget.currContext).chooseOneOrMore),
                 buttonText: Text(
-                  'בחר אחד או יותר', textDirection: TextDirection.rtl,),
+                  AppLocalizations.of(widget.currContext).chooseOneOrMore),
                 searchable: true,
                 items: types.map((e) => MultiSelectItem(e, e.description))
                     .toList(),
@@ -113,7 +118,6 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
 
   _AddOrganizationWindowState(List<HelpRequestType> types) {
     this.types = types;
-    this.categories=checkBoxForCategories(types);
   }
 
   Widget getRelContainer(Form form) {
@@ -168,6 +172,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
 
   @override
   Widget build(BuildContext context) {
+    this.categories = checkBoxForCategories(types, context);
     return MaterialApp(
       home: Scaffold(
         bottomNavigationBar: AdminBottomBar(),
@@ -175,7 +180,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
           slivers: [
             SliverPersistentHeader(
               delegate:
-              MySliverAppBar(expandedHeight: 150, title: 'הוספת עמותה'),
+              MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).addOrginaization),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -189,7 +194,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                     getRelContainer(
                       Form(
                         child: DescriptionBox(
-                            'שם עמותה',
+                            AppLocalizations.of(context).organizationName,
                             Icon(Icons.account_circle_rounded,
                                 color: Colors.white),
                             Colors.white,
@@ -204,7 +209,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                     getRelContainer(
                       Form(
                         child: DescriptionBox(
-                            'מספר טלפון',
+                            AppLocalizations.of(context).telNumber,
                             Icon(Icons.phone, color: Colors.white),
                             Colors.white,
                             Colors.white,
@@ -218,7 +223,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                     getRelContainer(
                       Form(
                         child: DescriptionBox(
-                            'כתובת אלקטרונית',
+                            AppLocalizations.of(context).email,
                             Icon(Icons.email, color: Colors.white),
                             Colors.white,
                             Colors.white,
@@ -232,7 +237,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                     getRelContainer(
                       Form(
                         child: DescriptionBox(
-                            'כתובת',
+                            AppLocalizations.of(context).address,
                             Icon(Icons.location_on, color: Colors.white),
                             Colors.white,
                             Colors.white,
@@ -247,7 +252,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                       padding: EdgeInsets.only(top: 15, right: 10),
                       alignment: Alignment.centerRight,
                       child: Text(
-                        'שירותי העמותה:',
+                        AppLocalizations.of(context).organizationServices,
                         textDirection: TextDirection.rtl,
                         style: TextStyle(
                             fontSize: 15.0,
@@ -275,7 +280,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                               builder: (context) => AdminProfile()),
                         );
                       },
-                      child: Text('אישור'),
+                      child: Text(AppLocalizations.of(context).approve),
                     ),
                   ],
                 ),

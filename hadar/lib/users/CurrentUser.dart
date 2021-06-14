@@ -39,17 +39,17 @@ class CurrentUser{
     if(curr_user == null){
       return null;
     }
-    String appLanguage = await DataBaseService().getUserAppLanguage(curr_user.id);
-    MainApp.of(context).setLocale(Locale.fromSubtags(languageCode: appLanguage));
-    switch(curr_user.privilege){
 
+    switch(curr_user.privilege){
       case Privilege.Admin:
         initWorkmanager();
         return AdminPage(curr_user as Admin);
         break;
+
       case Privilege.UserInNeed:
         return UserInNeedPage(curr_user as UserInNeed);
         break;
+
       case Privilege.Volunteer:
         initWorkmanager();
         List<HelpRequestType> categories = await DataBaseService().helpRequestTypesAsList();

@@ -17,10 +17,11 @@ class specificInquiryView extends StatelessWidget {
     return Column(
       children: [
             Container(
+
               alignment: Alignment.topRight,
               child:
                 Text(
-                  data + "  :" + title,
+                  title + ":  " + data,
                   style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.blueGrey,
@@ -48,8 +49,9 @@ class specificInquiryView extends StatelessWidget {
             ),
             SliverFillRemaining(
               child: SingleChildScrollView(
+                padding: EdgeInsets.only(left: 10, right: 10),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 120,
