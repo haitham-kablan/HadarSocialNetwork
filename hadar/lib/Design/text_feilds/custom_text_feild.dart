@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hadar/services/authentication/validators.dart';
 
 class Custom_Text_feild extends StatefulWidget {
@@ -8,13 +9,14 @@ class Custom_Text_feild extends StatefulWidget {
   Color border_color;
   Color on_tap_color;
   var Validtor;
-  var Controller;
+  TextEditingController controller;
   bool is_pw;
   var parent;
+  bool allowWhiteSpaces;
 
-  Custom_Text_feild(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller,this.is_pw,this.text_color,{this.parent});
+  Custom_Text_feild(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.controller,this.is_pw,this.text_color,{this.parent, this.allowWhiteSpaces = true});
   @override
-  _Custom_Text_feildState createState() => _Custom_Text_feildState(hint,icon,border_color,on_tap_color,Validtor,Controller,is_pw,text_color);
+  _Custom_Text_feildState createState() => _Custom_Text_feildState(hint,icon,border_color,on_tap_color,Validtor,controller,is_pw,text_color);
 }
 
 class _Custom_Text_feildState extends State<Custom_Text_feild> {
@@ -27,8 +29,8 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
   bool is_pw;
 
   var Validtor;
-  var Controller;
-  _Custom_Text_feildState(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.Controller,this.is_pw,this.text_color);
+  TextEditingController controller;
+  _Custom_Text_feildState(this.hint,this.icon,this.border_color,this.on_tap_color,this.Validtor,this.controller,this.is_pw,this.text_color);
 
 
   @override
@@ -36,13 +38,15 @@ class _Custom_Text_feildState extends State<Custom_Text_feild> {
     return Container(
       margin: EdgeInsets.fromLTRB(65, 0, 65, 0),
       child: TextFormField(
+        inputFormatters: widget.allowWhiteSpaces ? [] : [
+          FilteringTextInputFormatter.deny(new RegExp(r"\s\b|\b\s"))],
         style: TextStyle(
           color: text_color == Colors.grey ? Colors.black : text_color,
         ),
           obscureText: is_pw,
           autocorrect: !is_pw,
           enableSuggestions: !is_pw,
-          controller: Controller,
+          controller: controller,
           validator: Validtor,
           //textAlign:TextAlign.right,
           decoration: InputDecoration(
