@@ -59,7 +59,7 @@ dependencies:
   flutter_local_notifications: ^6.0.0
   workmanager: ^0.4.0
 
-
+  multi_select_flutter: ^4.0.0
 
 
 dev_dependencies:

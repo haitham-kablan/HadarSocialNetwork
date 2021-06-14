@@ -918,15 +918,21 @@ class DataBaseService{
     return all_req_for_category_verfied;
   }
 
-  Future<String> getUserAppLanguage(String userId) async{
-    return await usersLanguagesCollection.doc(userId).get().then((value) => value.exists ? value["language"] : "he");
+  Future<String> getUserAppLanguage() async{
+    fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
+    if(curr_db_user == null){
+      return "he";
+    }
+    String langCode;
+    await usersLanguagesCollection.doc(curr_db_user.email).get().then((value) => langCode = (value.exists ? value["language"] : "he"));
+    return langCode;
   }
 
-  Future setUserAppLanguage(String userId, String lang) async{
+  Future setUserAppLanguage(String userEmail, String lang) async{
     Map<String,dynamic> to_add = Map();
     to_add["language"] = lang;
 
-    usersLanguagesCollection.doc(userId).set(to_add);
+    usersLanguagesCollection.doc(userEmail).set(to_add);
   }
 
 }

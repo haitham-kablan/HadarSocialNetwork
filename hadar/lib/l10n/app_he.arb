@@ -130,5 +130,12 @@
 	"signedAs": "נרשם בתור",
 	"signOut": "יציאה",
 	"apply": "הגש",
-	"systemError": "שגיאת מערכת! אנא נסה שוב מאוחר יותר."
+	"systemError": "שגיאת מערכת! אנא נסה שוב מאוחר יותר.",
+	"organizations": "עמותות",
+	"manageOrganizations": "ניהול העמותות",
+	"search": "חיפוש",
+	"chooseOneOrMore": "בחר אחד או יותר",
+	"organizationName": "שם העמותה",
+	"language": "שפה",
+	"changeLanguage": "שנה שפה"
 }
