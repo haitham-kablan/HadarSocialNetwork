@@ -21,7 +21,7 @@ void initWorkmanager(){
 
       // If enabled it will post a notification whenever
       // the task is running. Handy for debugging tasks
-      isInDebugMode: true
+      isInDebugMode: false
   );
 
   // Periodic task registration
