@@ -37,8 +37,7 @@ class specificInquiryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return  Scaffold(
         bottomNavigationBar: AdminBottomBar(),
         body: CustomScrollView(
           slivers: [
@@ -65,7 +64,6 @@ class specificInquiryView extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

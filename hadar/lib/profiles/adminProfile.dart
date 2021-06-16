@@ -19,10 +19,7 @@ class AdminProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      //title: 'Profile',
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: AdminBottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
@@ -50,7 +47,6 @@ class AdminProfile extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

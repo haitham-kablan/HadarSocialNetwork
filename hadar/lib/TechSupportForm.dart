@@ -50,8 +50,7 @@ class TechSupportForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return  Scaffold(
         bottomNavigationBar: BottomBar(),
         body: CustomScrollView(
           slivers: [
@@ -102,7 +101,6 @@ class TechSupportForm extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

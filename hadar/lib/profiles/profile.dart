@@ -54,10 +54,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Profile',
-      home: Scaffold(
+    return  Scaffold(
         bottomNavigationBar: checkBottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
@@ -85,7 +82,6 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

@@ -81,10 +81,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
       }).toList();
     }
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'User In-need Feed',
-      home: Scaffold(
+    return Scaffold(
         bottomNavigationBar: BottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
@@ -127,7 +124,6 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
             elevation: 10,
           ),
         ),
-      ),
     );
   }
 }

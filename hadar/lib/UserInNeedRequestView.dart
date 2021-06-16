@@ -39,8 +39,7 @@ class RequestWindow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         //backgroundColor: BasicColor.backgroundClr,
         bottomNavigationBar: BottomBar(),
         body: CustomScrollView(
@@ -110,7 +109,6 @@ class RequestWindow extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }
