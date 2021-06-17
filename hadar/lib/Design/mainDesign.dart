@@ -70,7 +70,12 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             onPressed: (){
               print("asdasd");
               if(Navigator.canPop(context)){
+                print("asdasdddd23333333333");
                 Navigator.pop(context);
+              }else{
+                print("asdasdddd");
+                Navigator.pop(context);
+
               }
             },
           ),
