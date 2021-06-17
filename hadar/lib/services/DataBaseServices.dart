@@ -1075,7 +1075,9 @@ List<Organization> organizationListFromSnapShot(QuerySnapshot snapshot){
 }
 
 
-
+List<HelpRequestType> convertCategoreisAsStringToHLT(List<String> categoreis){
+  return categoreis.map((e) => HelpRequestType(e));
+}
 
 
 
