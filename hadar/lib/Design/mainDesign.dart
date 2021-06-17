@@ -63,23 +63,25 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.centerLeft,
+        Positioned(
+          top: expandedHeight / 2 - shrinkOffset,
+          left: MediaQuery.of(context).size.width/30,
           child: IconButton(
-            icon: Icon(Icons.arrow_back_ios_rounded , color: Colors.white,),
-            onPressed: (){
-              print("asdasd");
-              if(Navigator.canPop(context)){
-                print("asdasdddd23333333333");
-                Navigator.pop(context);
-              }else{
-                print("asdasdddd");
-                Navigator.pop(context);
+              icon: Icon(Icons.keyboard_arrow_left , color: Colors.white,size: 45,),
+              onPressed: (){
+                print("asdasd");
+                if(Navigator.canPop(context)){
+                  print("asdasdddd23333333333");
+                  Navigator.pop(context);
+                }else{
+                  print("asdasdddd");
+                  Navigator.pop(context);
 
-              }
-            },
-          ),
+                }
+              },
+            ),
         ),
+
       ],
     );
   }
@@ -284,16 +286,21 @@ class adminViewRequestsBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       leading: Align(
-        alignment: Alignment.bottomLeft,
+        alignment: Alignment.bottomRight,
         child: IconButton(
-            icon: Icon(Icons.arrow_back_ios_rounded , color: Colors.white,),
+            icon: Icon(Icons.chevron_right , color: Colors.white,size: 45,),
             onPressed: (){
               print("asdasd");
               if(Navigator.canPop(context)){
+                print("asdasdddd23333333333");
                 Navigator.pop(context);
+              }else{
+                print("asdasdddd");
+                Navigator.pop(context);
+
               }
             },
-          ),
+        ),
       ),
       automaticallyImplyLeading: false,
       expandedHeight: 80.0,

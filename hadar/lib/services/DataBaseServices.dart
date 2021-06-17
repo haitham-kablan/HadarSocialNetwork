@@ -124,6 +124,29 @@ class DataBaseService{
     
   }
 
+  Future RemoveOrginazation(String name) async{
+
+    await organizationsCollection.doc(name).delete();
+
+  }
+
+  Future RemoveCategory(HelpRequestType helpRequestType) async{
+
+    Map<String,dynamic> update = Map();
+    update['category'] = 'אחר';
+    await helpRequestsTypeCollection.doc(helpRequestType.description).delete();
+    QuerySnapshot querySnapshot =
+    await allHelpsRequestsCollection.where('category' , isEqualTo:helpRequestType.description ).get();
+
+    if (querySnapshot.size == 0) {
+      return null;
+    }
+
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      allHelpsRequestsCollection.doc(querySnapshot.docs[i].id).update(update);
+    }
+
+  }
 
   Future RemoveCurrentuserFromAuthentication() async{
     fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
