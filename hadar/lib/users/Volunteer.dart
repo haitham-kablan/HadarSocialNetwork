@@ -26,7 +26,7 @@ class Volunteer extends RegisteredUser{
 
   Volunteer(String name, String phoneNumber, String email, String id ,int lastNotifiedTime, String stars , int count
       , String birthdate, String location, String status, String work, String birthplace
-      , String spokenlangs, String mobility, String firstaidcourse ,)
+      , String spokenlangs, String mobility, String firstaidcourse ,List<HelpRequestType> categories )
       : super(name, phoneNumber, email, Privilege.Volunteer, id, lastNotifiedTime){
     this.birthplace =birthplace;
     this.birthdate = birthdate;
@@ -42,7 +42,7 @@ class Volunteer extends RegisteredUser{
     helpRequests = new List<HelpRequest>();
     this.count  = count;
     this.stars = stars;
-    this.categories = [];
+    this.categories = categories;
   }
 
 }

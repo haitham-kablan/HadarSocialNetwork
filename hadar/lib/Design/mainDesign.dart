@@ -63,7 +63,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
-        Positioned(
+        Navigator.canPop(context) ? Positioned(
           top: expandedHeight / 2 - shrinkOffset,
           left: MediaQuery.of(context).size.width/30,
           child: IconButton(
@@ -80,8 +80,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
                 }
               },
             ),
-        ),
-
+        ) : Container(),
       ],
     );
   }
@@ -285,7 +284,7 @@ class adminViewRequestsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      leading: Align(
+      leading: Navigator.canPop(context) ? Align(
         alignment: Alignment.bottomRight,
         child: IconButton(
             icon: Icon(Icons.chevron_right , color: Colors.white,size: 45,),
@@ -301,7 +300,7 @@ class adminViewRequestsBar extends StatelessWidget {
               }
             },
         ),
-      ),
+      ) : Container(),
       automaticallyImplyLeading: false,
       expandedHeight: 80.0,
       floating: false,
