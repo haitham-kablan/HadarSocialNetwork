@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:hadar/feeds/feed_items/category_scrol.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/Admin.dart';
 
@@ -130,10 +131,11 @@ class DataBaseService{
 
   }
 
-  Future updateVolCategories(List<HelpRequestType> newList,String vol_id) async{
+  Future updateVolCategories(List<HelpRequestType> newList,Volunteer vol) async{
+    vol.categoriesAsList = newList.map((e) => MyListView(e.description)).toList();
     Map<String,dynamic> to_update = Map();
     to_update['categories'] = newList.map((e) => e.description).toList();
-    await helpersCollection.doc(vol_id).update(to_update);
+    await helpersCollection.doc(vol.id).update(to_update);
   }
 
   Future RemoveCategory(HelpRequestType helpRequestType) async{

@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:core';
 
 
+import 'package:hadar/feeds/feed_items/category_scrol.dart';
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 
@@ -23,6 +24,7 @@ class Volunteer extends RegisteredUser{
   String mobility ;
   String firstaidcourse ;
   List<HelpRequestType> categories;
+  List<MyListView> categoriesAsList;
 
   Volunteer(String name, String phoneNumber, String email, String id ,int lastNotifiedTime, String stars , int count
       , String birthdate, String location, String status, String work, String birthplace
@@ -43,6 +45,14 @@ class Volunteer extends RegisteredUser{
     this.count  = count;
     this.stars = stars;
     this.categories = categories;
+    this.categoriesAsList = [];
+    if (categories == null){
+      return;
+    }
+
+    for(var i = 0; i < this.categories.length; i++){
+      this.categoriesAsList.add(MyListView( this.categories[i].description));
+    }
   }
 
 }
