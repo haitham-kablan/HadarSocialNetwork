@@ -59,6 +59,7 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     const double marginSize = kIsWeb ? 0.0 : 0.0;
     _fetchUserLocal();
+    print("s");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
