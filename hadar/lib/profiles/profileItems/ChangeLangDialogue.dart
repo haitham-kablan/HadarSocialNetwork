@@ -18,7 +18,7 @@ class ChangeLangDialogue extends StatelessWidget {
         Container(
           child: Center(
             child: DropdownButton<String>(
-              items: <String>['עברית', 'العربية'/*, 'English', 'русский'*/]
+              items: <String>['עברית', 'العربية', 'English'/*, 'русский'*/]
                   .map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
