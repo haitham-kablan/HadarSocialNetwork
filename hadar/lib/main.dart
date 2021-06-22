@@ -70,7 +70,7 @@ class _MainAppState extends State<MainApp> {
       supportedLocales: [
         const Locale('he', ''), // Hebrew, no country code
         const Locale('ar', ''), // Arabic, no country code
-        //const Locale('en', ''), // English, no country code
+        const Locale('en', ''), // English, no country code
         //const Locale('ru', ''), // Russian, no country code
       ],
       locale: _locale,
