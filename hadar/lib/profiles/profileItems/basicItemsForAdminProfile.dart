@@ -5,7 +5,7 @@ import 'package:hadar/adminFeatures/adminAddOrganization.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import '../../adminFeatures/adminAddHelpRequest.dart' as a;
-import '../../adminManageOrganizations.dart';
+import '../../adminFeatures/adminManageOrganizations.dart';
 import '../../userInquiryView.dart';
 import 'basicItemsForAllProfiles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
