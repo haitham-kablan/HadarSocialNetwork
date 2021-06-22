@@ -214,7 +214,7 @@ class DataBaseServiceMock{
         break;
       case Privilege.Volunteer:
 
-        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, verificationRequest.sender.id, verificationRequest.time,'0',0,verificationRequest.birthdate,verificationRequest.location,verificationRequest.status,verificationRequest.work,verificationRequest.birthplace,verificationRequest.spokenlangs,verificationRequest.mobility,verificationRequest.firstaidcourse);
+        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, verificationRequest.sender.id, verificationRequest.time,'0',0,verificationRequest.birthdate,verificationRequest.location,verificationRequest.status,verificationRequest.work,verificationRequest.birthplace,verificationRequest.spokenlangs,verificationRequest.mobility,verificationRequest.firstaidcourse,[]);
         addVolunteerToDataBase(Volunteer_to_add);
         verificationsRequestsCollection.doc(Volunteer_to_add.email).delete();
         break;
@@ -579,7 +579,7 @@ class DataBaseServiceMock{
       return  Volunteer(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
           doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime  ,doc['stars'] ?? 0,
           doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,
-          doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' );
+          doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' ,[]);
     }
 
 
@@ -834,7 +834,7 @@ class DataBaseServiceMock{
       }
 
       return  Volunteer(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
-          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' );
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' ,[]);
     }
 
   }
@@ -1009,7 +1009,7 @@ List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
   int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
   return snapshot.docs.map((doc) =>
       Volunteer(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
-          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' )).toList();
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' ,[])).toList();
 }
 
 List<Admin> AdminListFromSnapShot(QuerySnapshot snapshot){

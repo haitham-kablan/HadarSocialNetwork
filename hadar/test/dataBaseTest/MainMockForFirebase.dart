@@ -52,7 +52,7 @@ class testing_stream extends StatelessWidget {
     List<HelpRequestType> list1 = List<HelpRequestType>();
     list1.add(HelpRequestType('food'));
     int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
-    Volunteer vol = Volunteer('haitham', '123', 'email@com', '1', lastNotifiedTime, "stars", 2, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "firstaidcourse");
+    Volunteer vol = Volunteer('haitham', '123', 'email@com', '1', lastNotifiedTime, "stars", 2, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "firstaidcourse",[]);
 
 
     return StreamProvider<List<HelpRequest>>.value(

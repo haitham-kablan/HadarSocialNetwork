@@ -336,7 +336,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                         Navigator.pop(context);
                         break;
                       case Privilege.Volunteer:
-                        volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text, lastNotifiedTime,'',0,'','','','','','','','');
+                        volunteer = Volunteer(name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text, lastNotifiedTime,'',0,'','','','','','','','',[]);
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => volunteerRegisterPage(volunteer)));
                         break;

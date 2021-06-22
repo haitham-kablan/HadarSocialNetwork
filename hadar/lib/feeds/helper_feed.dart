@@ -69,6 +69,12 @@ class _VolunteerFeedStatefullState extends State<VolunteerFeedStatefull> {
   Widget build(BuildContext context) {
     volunteer_feed_pafe_state.state = this;
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //     await DataBaseService().updateVolCategories([HelpRequestType("אוכל")], curr_user as Volunteer);
+      //   },
+      //
+      // ),
       bottomNavigationBar: BottomBar(),
       backgroundColor: BasicColor.backgroundClr,
       body: CustomScrollView(slivers: [

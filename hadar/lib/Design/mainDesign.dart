@@ -63,6 +63,24 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
+        Navigator.canPop(context) ? Positioned(
+          top: expandedHeight / 2 - shrinkOffset,
+          left: MediaQuery.of(context).size.width/30,
+          child: IconButton(
+              icon: Icon(Icons.keyboard_arrow_left , color: Colors.white,size: 45,),
+              onPressed: (){
+                print("asdasd");
+                if(Navigator.canPop(context)){
+                  print("asdasdddd23333333333");
+                  Navigator.pop(context);
+                }else{
+                  print("asdasdddd");
+                  Navigator.pop(context);
+
+                }
+              },
+            ),
+        ) : Container(),
       ],
     );
   }
@@ -276,6 +294,23 @@ class adminViewRequestsBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      leading: Navigator.canPop(context) ? Align(
+        alignment: Alignment.bottomRight,
+        child: IconButton(
+            icon: Icon(Icons.chevron_right , color: Colors.white,size: 45,),
+            onPressed: (){
+              print("asdasd");
+              if(Navigator.canPop(context)){
+                print("asdasdddd23333333333");
+                Navigator.pop(context);
+              }else{
+                print("asdasdddd");
+                Navigator.pop(context);
+
+              }
+            },
+        ),
+      ) : Container(),
       automaticallyImplyLeading: false,
       expandedHeight: 80.0,
       floating: false,

@@ -52,13 +52,17 @@ class CurrentUser{
 
       case Privilege.Volunteer:
         initWorkmanager();
-        List<HelpRequestType> categories = await DataBaseService().helpRequestTypesAsList();
-        List<MyListView> categories_list_items = List();
-        for(var i = 0; i < categories.length; i++){
-          categories_list_items.add(MyListView(categories[i].description));
+        List<HelpRequestType> db_categories = await DataBaseService().helpRequestTypesAsList();
+        List<HelpRequestType> user_categories = (curr_user as Volunteer).categories;
+
+        if(user_categories.isEmpty) {
+          for (var i = 0; i < db_categories.length; i++) {
+            (curr_user as Volunteer).categoriesAsList.add(MyListView(db_categories[i].description));
+          }
         }
-        categories_list_items.add(MyListView('אחר'));
-        return VolunteerPage(curr_user as Volunteer , categories_list_items);
+
+        (curr_user as Volunteer).categoriesAsList.add(MyListView('אחר'));
+        return VolunteerPage(curr_user as Volunteer , (curr_user as Volunteer).categoriesAsList);
         break;
 
 

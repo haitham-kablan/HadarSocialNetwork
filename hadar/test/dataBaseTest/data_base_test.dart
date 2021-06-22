@@ -28,11 +28,11 @@ void main() {
     test('getting user info' , () async {
 
       final firestore = MockFirestoreInstance();
-      await firestore.clearPersistence();
+     // await firestore.clearPersistence();
       int LastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
-      await dataBaseServiceMock.addVolunteerToDataBase(Volunteer('volunteer', '123', 'email@com', '1',LastNotifiedTime,"",1,",",",","","","","","",""));
+      await dataBaseServiceMock.addVolunteerToDataBase(Volunteer('volunteer', '123', 'email@com', '1',LastNotifiedTime,"",1,",",",","","","","","","",[]));
       await dataBaseServiceMock.addUserInNeedToDataBase(UserInNeed(Privilege.UserInNeed,'user_in_need', '2233', 'no_need', '2',LastNotifiedTime,1,"","",2,"","","",""));
       await dataBaseServiceMock.addAdminToDataBase(Admin('admin', '2233', 'no_need', '3', LastNotifiedTime));
       UserInNeed userInNeed = (await dataBaseServiceMock.getUserById('2', Privilege.UserInNeed) ) as UserInNeed;
@@ -60,7 +60,7 @@ void main() {
     test('add verifictaion request to db , returns false if we check if it is verfied' , () async {
 
       final firestore = MockFirestoreInstance();
-      await firestore.clearPersistence();
+    //  await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
 
       VerificationRequest verificationRequest = VerificationRequest(UnregisteredUser("1","1","1","1"),Privilege.Volunteer,DateTime.now(),"asd","1","1","1","1","1","1","1",List<HelpRequestType>());
@@ -74,7 +74,7 @@ void main() {
     test('test veryfying verification request' , () async {
 
       final firestore = MockFirestoreInstance();
-      await firestore.clearPersistence();
+    //  await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
 
       VerificationRequest verificationRequest = VerificationRequest(UnregisteredUser("1","1","1","1"),Privilege.Volunteer,DateTime.now(),"asd","1","1","1","1","1","1","1",List<HelpRequestType>());
@@ -89,13 +89,13 @@ void main() {
     test('remove user from db' , () async {
 
       final firestore = MockFirestoreInstance();
-      await firestore.clearPersistence();
+  //    await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
       UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
       Admin admin = Admin("name", "phoneNumber", "ADMIN", "2", lastNotifiedTime);
-      Volunteer volunteer = Volunteer("name", "phoneNumber", "3", "3", lastNotifiedTime, "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "");
+      Volunteer volunteer = Volunteer("name", "phoneNumber", "3", "3", lastNotifiedTime, "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "",[]);
 
       await dataBaseServiceMock.addUserInNeedToDataBase(userInNeed);
       await dataBaseServiceMock.addVolunteerToDataBase(volunteer);
@@ -122,13 +122,13 @@ void main() {
     test('remove user from db' , () async {
 
       final firestore = MockFirestoreInstance();
-      await firestore.clearPersistence();
+  //    await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
       UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
       Admin admin = Admin("name", "phoneNumber", "ADMIN", "2", lastNotifiedTime);
-      Volunteer volunteer = Volunteer("name", "phoneNumber", "3", "3", lastNotifiedTime, "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "");
+      Volunteer volunteer = Volunteer("name", "phoneNumber", "3", "3", lastNotifiedTime, "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "",[]);
 
       await dataBaseServiceMock.addUserInNeedToDataBase(userInNeed);
       await dataBaseServiceMock.addVolunteerToDataBase(volunteer);
@@ -154,7 +154,7 @@ void main() {
     test('get all unverfied requests' , () async {
 
       final firestore = MockFirestoreInstance();
-      await firestore.clearPersistence();
+   //  await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
@@ -189,7 +189,7 @@ void main() {
     test('get all available requests' , () async {
 
       final firestore = MockFirestoreInstance();
-      await firestore.clearPersistence();
+   //   await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
@@ -226,7 +226,7 @@ void main() {
     test('get all approved requests' , () async {
 
       final firestore = MockFirestoreInstance();
-      await firestore.clearPersistence();
+   //   await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
@@ -261,7 +261,7 @@ void main() {
     test('get all requests for category' , () async {
 
       final firestore = MockFirestoreInstance();
-      await firestore.clearPersistence();
+  //    await firestore.clearPersistence();
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 

@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:hadar/feeds/feed_items/category_scrol.dart';
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/Admin.dart';
 
@@ -124,6 +125,36 @@ class DataBaseService{
     
   }
 
+  Future RemoveOrginazation(String name) async{
+
+    await organizationsCollection.doc(name).delete();
+
+  }
+
+  Future updateVolCategories(List<HelpRequestType> newList,Volunteer vol) async{
+    vol.categoriesAsList = newList.map((e) => MyListView(e.description)).toList();
+    Map<String,dynamic> to_update = Map();
+    to_update['categories'] = newList.map((e) => e.description).toList();
+    await helpersCollection.doc(vol.id).update(to_update);
+  }
+
+  Future RemoveCategory(HelpRequestType helpRequestType) async{
+
+    Map<String,dynamic> update = Map();
+    update['category'] = 'אחר';
+    await helpRequestsTypeCollection.doc(helpRequestType.description).delete();
+    QuerySnapshot querySnapshot =
+    await allHelpsRequestsCollection.where('category' , isEqualTo:helpRequestType.description ).get();
+
+    if (querySnapshot.size == 0) {
+      return null;
+    }
+
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      allHelpsRequestsCollection.doc(querySnapshot.docs[i].id).update(update);
+    }
+
+  }
 
   Future RemoveCurrentuserFromAuthentication() async{
     fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
@@ -201,7 +232,7 @@ class DataBaseService{
         break;
       case Privilege.Volunteer:
 
-        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, verificationRequest.sender.id, verificationRequest.time,'0',0,verificationRequest.birthdate,verificationRequest.location,verificationRequest.status,verificationRequest.work,verificationRequest.birthplace,verificationRequest.spokenlangs,verificationRequest.mobility,verificationRequest.firstaidcourse);
+        Volunteer Volunteer_to_add = Volunteer(verificationRequest.sender.name, verificationRequest.sender.phoneNumber, verificationRequest.sender.email, verificationRequest.sender.id, verificationRequest.time,'0',0,verificationRequest.birthdate,verificationRequest.location,verificationRequest.status,verificationRequest.work,verificationRequest.birthplace,verificationRequest.spokenlangs,verificationRequest.mobility,verificationRequest.firstaidcourse,[]);
         addVolunteerToDataBase(Volunteer_to_add);
         verificationsRequestsCollection.doc(Volunteer_to_add.email).delete();
         break;
@@ -444,6 +475,7 @@ class DataBaseService{
     to_add['spokenlangs'] = user.spokenlangs;
     to_add['firstaidcourse'] = user.firstaidcourse;
     to_add['mobility'] = user.mobility;
+    to_add['categories'] = user.categories.map((e) => e.description).toList();
 
     return await helpersCollection.doc(user.id).set(to_add);
   }
@@ -566,7 +598,7 @@ class DataBaseService{
       return  Volunteer(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
           doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime  ,doc['stars'] ?? 0,
           doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,
-          doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' );
+          doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' , convertCategoreisAsStringToHLT(doc['categories'] ?? []));
     }
 
 
@@ -821,7 +853,7 @@ class DataBaseService{
       }
 
       return  Volunteer(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
-          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' );
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' ,convertCategoreisAsStringToHLT(doc['categories'] ?? []));
     }
 
   }
@@ -1013,7 +1045,7 @@ List<Volunteer> VolunteerListFromSnapShot(QuerySnapshot snapshot){
   int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
   return snapshot.docs.map((doc) =>
       Volunteer(doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
-  doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' )).toList();
+  doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['stars'] ?? 0,doc['count'] ?? 0 ,doc['birthdate'] ?? ''  ,doc['location'] ?? ''  ,doc['status'] ?? ''  ,doc['work'] ?? ''  ,doc['birthplace'] ?? ''  ,doc['spokenlangs'] ?? ''  ,doc['firstaidcourse'] ?? ''  ,doc['mobility'] ?? '' ,convertCategoreisAsStringToHLT(doc['categories'] ?? []))).toList();
 }
 
 List<Admin> AdminListFromSnapShot(QuerySnapshot snapshot){
@@ -1052,7 +1084,12 @@ List<Organization> organizationListFromSnapShot(QuerySnapshot snapshot){
 }
 
 
-
+List<HelpRequestType> convertCategoreisAsStringToHLT(List<dynamic> categoreis){
+  if(categoreis==[]){
+    return [];
+  }
+  return categoreis.map((e) => HelpRequestType(e as String)).toList();
+}
 
 
 
