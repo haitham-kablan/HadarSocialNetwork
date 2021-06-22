@@ -107,34 +107,38 @@ class BottomBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Spacer(flex: 1,),
-                  FlatButton(
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: 30,
-                      color: BasicColor.clr,
+                  Expanded(
+                    child: FlatButton(
+                      child: Icon(
+                        Icons.person_rounded,
+                        size: 30,
+                        color: BasicColor.clr,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfilePage(CurrentUser.curr_user)));
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfilePage(CurrentUser.curr_user)));
-                    },
                   ),
                   Spacer(flex: 1,),
 
-                  FlatButton(
-                    child: Icon(
-                      Icons.dynamic_feed_outlined,
-                      size: 30,
-                      color: BasicColor.clr,
+                  Expanded(
+                    child: FlatButton(
+                      child: Icon(
+                        Icons.dynamic_feed_outlined,
+                        size: 30,
+                        color: BasicColor.clr,
+                      ),
+                      onPressed: () async {
+                        Widget curr_widget = await CurrentUser.init_user(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => curr_widget),
+                        );
+                      },
                     ),
-                    onPressed: () async {
-                      Widget curr_widget = await CurrentUser.init_user(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => curr_widget),
-                      );
-                    },
                   ),
                   Spacer(flex: 1,),
 
@@ -174,55 +178,61 @@ class AdminBottomBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Spacer(flex: 1,),
-                  FlatButton(
-                    child: Icon(
-                      Icons.person_rounded,
-                      size: 30,
-                      color: BasicColor.clr,
+                  //Spacer(flex: 1,),
+                  Expanded(
+                    child: FlatButton(
+                      child: Icon(
+                        Icons.person_rounded,
+                        size: 30,
+                        color: BasicColor.clr,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdminProfile()
+                          ),
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AdminProfile()
-                        ),
-                      );
-                    },
                   ),
                   Spacer(flex: 1,),
-                  FlatButton(
-                    child: Icon(Icons.supervisor_account_sharp,
-                      size: 30,
-                      color: BasicColor.clr,
+                  Expanded(
+                    child: FlatButton(
+                      child: Icon(Icons.supervisor_account_sharp,
+                        size: 30,
+                        color: BasicColor.clr,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AllUsersView()
+                          ),
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AllUsersView()
-                        ),
-                      );
-                    },
                   ),
                   Spacer(flex: 1,),
-                  FlatButton(
-                    child: Icon(
-                      Icons.admin_panel_settings_outlined,
-                      size: 30,
-                      color: BasicColor.clr,
-                    ),
-                    onPressed: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AdminPage(CurrentUser.curr_user)
+                  Expanded(
+                    child: FlatButton(
+                      child: Icon(
+                        Icons.admin_panel_settings_outlined,
+                        size: 30,
+                        color: BasicColor.clr,
+                      ),
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdminPage(CurrentUser.curr_user)
 
-                        )
-                      );
-                    }
+                          )
+                        );
+                      }
+                    ),
                   ),
-                  Spacer(flex: 1,),
+                  //Spacer(flex: 1,),
                 ],
               ),
             ),

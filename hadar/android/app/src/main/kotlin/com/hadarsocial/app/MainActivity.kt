@@ -1,4 +1,4 @@
-package com.example.hadar
+package com.hadarsocial.app
 
 import io.flutter.embedding.android.FlutterActivity
 
