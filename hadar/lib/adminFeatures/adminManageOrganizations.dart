@@ -10,15 +10,15 @@ class ManageOrganizations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return
+      Scaffold(
         //backgroundColor: BasicColor.backgroundClr,
-        bottomNavigationBar: BottomBar(),
+        bottomNavigationBar: AdminBottomBar(),
         body: CustomScrollView(
           slivers: [
             SliverPersistentHeader(
               delegate:
-                  MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).organizations),
+              MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).organizations),
               pinned: true,
             ),
             SliverFillRemaining(
@@ -46,7 +46,6 @@ class ManageOrganizations extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 }

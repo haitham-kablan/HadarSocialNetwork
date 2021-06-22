@@ -70,7 +70,7 @@ class _checkBoxForCategoriesState extends State<checkBoxForCategories> {
                 searchHint: AppLocalizations.of(widget.currContext).search,
                 title: Text(AppLocalizations.of(widget.currContext).chooseOneOrMore),
                 buttonText: Text(
-                  AppLocalizations.of(widget.currContext).chooseOneOrMore),
+                    AppLocalizations.of(widget.currContext).chooseOneOrMore),
                 searchable: true,
                 items: types.map((e) => MultiSelectItem(e, e.description))
                     .toList(),
@@ -173,122 +173,121 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
   @override
   Widget build(BuildContext context) {
     this.categories = checkBoxForCategories(types, context);
-    return MaterialApp(
-      home: Scaffold(
-        bottomNavigationBar: AdminBottomBar(),
-        body: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-              delegate:
-              MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).addOrginaization),
-              pinned: true,
-            ),
-            SliverFillRemaining(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 100,
-                    ),
-                    Container(child: showAlert_as_col()),
-                    getRelContainer(
-                      Form(
-                        child: DescriptionBox(
-                            AppLocalizations.of(context).organizationName,
-                            Icon(Icons.account_circle_rounded,
-                                color: Colors.white),
-                            Colors.white,
-                            Colors.white,
-                            Validators.ValidateName,
-                            name_Controller,
-                            false,
-                            Colors.black),
-                        key: orgNameKey,
-                      ),
-                    ),
-                    getRelContainer(
-                      Form(
-                        child: DescriptionBox(
-                            AppLocalizations.of(context).telNumber,
-                            Icon(Icons.phone, color: Colors.white),
-                            Colors.white,
-                            Colors.white,
-                            Validators.ValidatePhone,
-                            phone_Controller,
-                            false,
-                            Colors.black),
-                        key: orgPhoneKey,
-                      ),
-                    ),
-                    getRelContainer(
-                      Form(
-                        child: DescriptionBox(
-                            AppLocalizations.of(context).email,
-                            Icon(Icons.email, color: Colors.white),
-                            Colors.white,
-                            Colors.white,
-                            Validators.ValidateEmail,
-                            email_Controller,
-                            false,
-                            Colors.black),
-                        key: emailKey,
-                      ),
-                    ),
-                    getRelContainer(
-                      Form(
-                        child: DescriptionBox(
-                            AppLocalizations.of(context).address,
-                            Icon(Icons.location_on, color: Colors.white),
-                            Colors.white,
-                            Colors.white,
-                            Validators.ValidateLocation,
-                            location_Controller,
-                            false,
-                            Colors.black),
-                        key: locationKey,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 15, right: 10),
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        AppLocalizations.of(context).organizationServices,
-                        textDirection: TextDirection.rtl,
-                        style: TextStyle(
-                            fontSize: 15.0,
-                            color: BasicColor.clr,
-                            letterSpacing: 2.0,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                    Container(child: categories),
-                    RaisedButton(
-                      onPressed: () {
-                        if (!orgNameKey.currentState.validate() ||
-                            !orgPhoneKey.currentState.validate() ||
-                            !emailKey.currentState.validate() ||
-                            !locationKey.currentState.validate()) {
-                          return;
-                        }
-                        Organization org = new Organization(
-                            name_Controller.text, phone_Controller.text, email_Controller.text,
-                            location_Controller.text, categories.getSelectedItems());
-                        DataBaseService().addOrganizationToDataBase(org);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AdminProfile()),
-                        );
-                      },
-                      child: Text(AppLocalizations.of(context).approve),
-                    ),
-                  ],
+    return
+          Scaffold(
+            bottomNavigationBar: AdminBottomBar(),
+            body: CustomScrollView(
+              slivers: [
+                SliverPersistentHeader(
+                  delegate:
+                  MySliverAppBar(expandedHeight: 150, title: AppLocalizations.of(context).addOrginaization),
+                  pinned: true,
                 ),
-              ),
+                SliverFillRemaining(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 100,
+                        ),
+                        Container(child: showAlert_as_col()),
+                        getRelContainer(
+                          Form(
+                            child: DescriptionBox(
+                                AppLocalizations.of(context).organizationName,
+                                Icon(Icons.account_circle_rounded,
+                                    color: Colors.white),
+                                Colors.white,
+                                Colors.white,
+                                Validators.ValidateName,
+                                name_Controller,
+                                false,
+                                Colors.black),
+                            key: orgNameKey,
+                          ),
+                        ),
+                        getRelContainer(
+                          Form(
+                            child: DescriptionBox(
+                                AppLocalizations.of(context).telNumber,
+                                Icon(Icons.phone, color: Colors.white),
+                                Colors.white,
+                                Colors.white,
+                                Validators.ValidatePhone,
+                                phone_Controller,
+                                false,
+                                Colors.black),
+                            key: orgPhoneKey,
+                          ),
+                        ),
+                        getRelContainer(
+                          Form(
+                            child: DescriptionBox(
+                                AppLocalizations.of(context).email,
+                                Icon(Icons.email, color: Colors.white),
+                                Colors.white,
+                                Colors.white,
+                                Validators.ValidateEmail,
+                                email_Controller,
+                                false,
+                                Colors.black),
+                            key: emailKey,
+                          ),
+                        ),
+                        getRelContainer(
+                          Form(
+                            child: DescriptionBox(
+                                AppLocalizations.of(context).address,
+                                Icon(Icons.location_on, color: Colors.white),
+                                Colors.white,
+                                Colors.white,
+                                Validators.ValidateLocation,
+                                location_Controller,
+                                false,
+                                Colors.black),
+                            key: locationKey,
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(top: 15, right: 10),
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            AppLocalizations.of(context).organizationServices,
+                            textDirection: TextDirection.rtl,
+                            style: TextStyle(
+                                fontSize: 15.0,
+                                color: BasicColor.clr,
+                                letterSpacing: 2.0,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                        Container(child: categories),
+                        RaisedButton(
+                          onPressed: () {
+                            if (!orgNameKey.currentState.validate() ||
+                                !orgPhoneKey.currentState.validate() ||
+                                !emailKey.currentState.validate() ||
+                                !locationKey.currentState.validate()) {
+                              return;
+                            }
+                            Organization org = new Organization(
+                                name_Controller.text, phone_Controller.text, email_Controller.text,
+                                location_Controller.text, categories.getSelectedItems());
+                            DataBaseService().addOrganizationToDataBase(org);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AdminProfile()),
+                            );
+                          },
+                          child: Text(AppLocalizations.of(context).approve),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+      );
   }
 }
