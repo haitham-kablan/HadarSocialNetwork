@@ -5,14 +5,66 @@ import 'package:flutter/widgets.dart';
 import 'package:hadar/Design/basicTools.dart';
 
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/Organization.dart';
+import 'package:hadar/users/Privilege.dart';
 
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class OrganizationsInfoList extends StatelessWidget {
 
+class removeOrganization extends StatelessWidget {
+  Organization org;
+
+  removeOrganization(Organization org) {
+    this.org = org;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new AlertDialog(
+      backgroundColor: BasicColor.backgroundClr,
+      title: Center(
+          child: Text(
+            AppLocalizations.of(context).areYouSure,
+            textDirection: TextDirection.rtl,
+          )),
+      actions: <Widget>[
+        Row(
+
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Theme
+                    .of(context)
+                    .primaryColor,
+              ),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: Text(AppLocalizations.of(context).cancel),
+            ),
+            Spacer(flex: 1,),
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Theme
+                    .of(context)
+                    .primaryColor,
+              ),
+              onPressed: (){
+                DataBaseService().RemoveOrginazation(org.name);
+              },
+              child: Text(AppLocalizations.of(context).approve),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class OrganizationsInfoList extends StatelessWidget {
   final BuildContext currContext;
 
   OrganizationsInfoList(this.currContext);
@@ -34,7 +86,7 @@ class _OrganizationFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Organization> organizations =
-        Provider.of<List<Organization>>(context);
+    Provider.of<List<Organization>>(context);
 
     List<_OrganizationInfo> organizationsTiles = [];
 
@@ -49,7 +101,7 @@ class _OrganizationFeed extends StatelessWidget {
         textDirection: TextDirection.rtl,
         child: ListView(
           semanticChildCount:
-              (organizations == null) ? 0 : organizations.length,
+          (organizations == null) ? 0 : organizations.length,
           padding: const EdgeInsets.only(bottom: 70.0, left: 8, right: 8),
           children: organizationsTiles,
         ),
@@ -70,6 +122,38 @@ class _OrganizationInfo extends StatelessWidget {
       await launch(url);
     } else {
       throw 'Could not launch $url';
+    }
+  }
+
+
+
+  Widget showDelete(Organization org,BuildContext context){
+    if(CurrentUser.curr_user.privilege == Privilege.Admin) {
+      return
+        Column(
+          children: [
+            SizedBox( height: 10,),
+            TextButton(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(AppLocalizations.of(currContext).delete),
+                    Icon(Icons.delete),
+                  ],
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) => removeOrganization(org),
+                  );
+                }
+            ),
+          ],
+        );
+    }
+    else{
+      return SizedBox();
     }
   }
 
@@ -120,10 +204,8 @@ class _OrganizationInfo extends StatelessWidget {
                         color: BasicColor.clr,
                       ),
                     ),
-
                   ],
                 ),
-
               ],
             ),
 
@@ -200,9 +282,10 @@ class _OrganizationInfo extends StatelessWidget {
 
               ],
             ),
+
           ],
         ),
-
+        showDelete(organization,context),
       ],
     );
   }
