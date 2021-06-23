@@ -137,5 +137,7 @@
 	"chooseOneOrMore": "Choose one or more",
 	"organizationName": "Organization name",
 	"language": "Language",
-	"changeLanguage": "Change language"
+	"changeLanguage": "Change language",
+	"delete": "delete",
+    "categories": "categories"
 }

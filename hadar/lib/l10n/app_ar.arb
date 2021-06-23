@@ -137,6 +137,7 @@
     "chooseOneOrMore": "إختر صنف او اكثر",
     "organizationName": "إسم الجمعيّة",
 	"language": "اللّغة",
-	"changeLanguage": "تغيير اللغة"
-	"delete": "حذف"
+	"changeLanguage": "تغيير اللغة",
+	"delete": "حذف",
+	"categories": "التصنيفات"
 }
