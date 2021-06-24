@@ -28,6 +28,11 @@ jobs:
         run: |
           cd hadar
           flutter pub get
+          
+      - name: x
+        run: |
+          cd hadar
+          flutter pub get
 
       # Uncomment this step to verify the use of 'dart format' on each commit.
       # - name: Verify formatting
