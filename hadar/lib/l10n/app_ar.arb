@@ -139,5 +139,7 @@
 	"language": "اللّغة",
 	"changeLanguage": "تغيير اللغة",
 	"delete": "حذف",
-	"categories": "التصنيفات"
+	"categories": "التصنيفات",
+	"favoriteCategories": "التصنيفات المفضلة لدي",
+	"update": "تحديث"
 }

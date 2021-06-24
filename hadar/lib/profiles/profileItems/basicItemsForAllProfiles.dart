@@ -2,12 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/utils/HelpRequestType.dart';
 import 'ChangeLangDialogue.dart';
 import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:hadar/profiles/profileItems/checkBoxForCategories.dart';
 
 //when a user clicks on the category, he gets a description box,
 // where he can describe his request
@@ -165,15 +167,31 @@ class ManagePersonalInfo extends StatelessWidget {
   final nameKey = GlobalKey<FormState>();
   final name_Controller = TextEditingController();
   ProfileButton buttonCreate;
+  List<HelpRequestType> types;
 
   ManagePersonalInfo(a.User currUser) {
     this.user = currUser;
     buttonCreate = ProfileButton();
+    init();
+  }
+
+  init() async {
+    List<HelpRequestType> types =
+    await DataBaseService().helpRequestTypesAsList();
+  }
+
+  ifVolunteerShowCat(BuildContext context){
+    if(user.privilege == Privilege.Volunteer ){
+      return VolunteerShowCategories();
+    }
+    else
+      return SizedBox();
   }
 
   @override
   Widget build(BuildContext context) {
     ButtonStyle style = buttonCreate.getStyle(context);
+
     return Column(
       children: [
         TextButton(
@@ -197,29 +215,9 @@ class ManagePersonalInfo extends StatelessWidget {
             //  TODO: change password
           },
         ),
+        ifVolunteerShowCat(context),
       ],
     );
-    // return Column(
-    //   children: [
-
-    // Form(
-    //   child: Custom_Text_feild(
-    //     'שנה סיסמא',
-    //     Icon(Icons.account_circle_rounded, color: BasicColor.clr),
-    //     BasicColor.clr,
-    //     BasicColor.clr,
-    //     name_Validator.Validate,
-    //     name_Controller,
-    //     false,
-    //     BasicColor.clr,
-    //   ),
-    //   key: nameKey,
-    // ),
-    // SizedBox(
-    //   height: 10,
-    // ),
-    //   ],
-    // );
   }
 }
 

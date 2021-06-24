@@ -139,5 +139,7 @@
 	"language": "Language",
 	"changeLanguage": "Change language",
 	"delete": "delete",
-    "categories": "categories"
+    "categories": "categories",
+    "favoriteCategories": "favoriteCategories",
+    "update": "update"
 }

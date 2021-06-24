@@ -139,5 +139,7 @@
 	"language": "שפה",
 	"changeLanguage": "שנה שפה",
 	"delete": "מחיקה",
-    "categories": "קטיגוריות"
+    "categories": "קטיגוריות",
+    "favoriteCategories": "הקטיגוריות המועדפות עלי",
+    "update": "עדכן"
 }

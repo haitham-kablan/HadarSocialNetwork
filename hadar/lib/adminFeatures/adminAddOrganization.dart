@@ -100,7 +100,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
 
   @override
   Widget build(BuildContext context) {
-    this.categories = checkBoxForCategories(types, context);
+    this.categories = checkBoxForCategories(types, context,[]);
     return
           Scaffold(
             bottomNavigationBar: AdminBottomBar(),
