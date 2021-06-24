@@ -133,6 +133,7 @@ class DataBaseService{
 
   Future updateVolCategories(List<HelpRequestType> newList,Volunteer vol) async{
     vol.categoriesAsList = newList.map((e) => MyListView(e.description)).toList();
+    vol.categories = newList;
     Map<String,dynamic> to_update = Map();
     to_update['categories'] = newList.map((e) => e.description).toList();
     await helpersCollection.doc(vol.id).update(to_update);

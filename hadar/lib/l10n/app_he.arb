@@ -137,6 +137,9 @@
 	"chooseOneOrMore": "בחר אחד או יותר",
 	"organizationName": "שם העמותה",
 	"language": "שפה",
-	"changeLanguage": "שנה שפה"
-	"delete": "מחיקה"
+	"changeLanguage": "שנה שפה",
+	"delete": "מחיקה",
+    "categories": "קטיגוריות",
+    "favoriteCategories": "הקטיגוריות המועדפות עלי",
+    "update": "עדכן"
 }

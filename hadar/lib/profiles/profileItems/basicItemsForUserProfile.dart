@@ -1,12 +1,90 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/screens/buttons/buttonClass.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/User.dart' as a;
+import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../TechSupportForm.dart';
-import '../profile.dart';
 import 'basicItemsForAllProfiles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'checkBoxForCategories.dart';
+import 'package:hadar/users/CurrentUser.dart';
+import 'package:hadar/users/Volunteer.dart';
+
+class VolunteerShowCategories extends StatefulWidget {
+  VolunteerShowCategories();
+
+  _VolunteerShowCategoriesState createState() =>
+      _VolunteerShowCategoriesState();
+}
+
+class _VolunteerShowCategoriesState extends State<VolunteerShowCategories> {
+  var isVisible = false;
+  List<HelpRequestType> types;
+  ProfileButton buttonCreate = ProfileButton();
+
+  _VolunteerShowCategoriesState();
+
+  checkBoxForCategories checkBox;
+  Volunteer user = CurrentUser.curr_user;
+
+  Future<List<HelpRequestType>> initTypes() async {
+    types = await DataBaseService().helpRequestTypesAsList();
+  }
+
+  volunteerCheckCategories() {
+    if (user.categories.isEmpty)
+      checkBox = checkBoxForCategories(types, context, types);
+    else {
+
+
+      checkBox = checkBoxForCategories(types, context, user.categories);
+    }
+    return checkBox;
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    initTypes();
+    return Column(
+      children: [
+        TextButton(
+          child: buttonCreate.getChild(
+              AppLocalizations.of(context).favoriteCategories, Icons.favorite),
+          style: buttonCreate.getStyle(context),
+          onPressed: () {
+            setState(
+              () {
+                isVisible = !isVisible;
+              },
+            );
+          },
+        ),
+        Visibility(
+          visible: isVisible,
+          child: volunteerCheckCategories(),
+        ),
+        Visibility(
+          visible: isVisible,
+          child: ElevatedButton(
+            onPressed: () {
+              DataBaseService()
+                  .updateVolCategories(checkBox.getSelectedItems(), user);
+              setState(
+                    () {
+                  isVisible = false;
+                },
+              );
+            },
+            child: Text(AppLocalizations.of(context).update),
+          ),
+        )
+      ],
+    );
+  }
+}
 
 class ContactUs extends StatelessWidget {
   a.User user;
@@ -36,17 +114,21 @@ class ContactUs extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          child: buttonCreate.getChild(AppLocalizations.of(context).fillApplication, Icons.wysiwyg_rounded),
+          child: buttonCreate.getChild(
+              AppLocalizations.of(context).fillApplication,
+              Icons.wysiwyg_rounded),
           style: style,
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => TechSupportForm(parent, context)),
+              MaterialPageRoute(
+                  builder: (context) => TechSupportForm(parent, context)),
             );
           },
         ),
         TextButton(
-          child: buttonCreate.getChild(AppLocalizations.of(context).call, Icons.phone),
+          child: buttonCreate.getChild(
+              AppLocalizations.of(context).call, Icons.phone),
           style: style,
           onPressed: () {
             _launchCaller();
@@ -70,9 +152,10 @@ class OtherUserAccess extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         TextButton(
-          child: buttonCreate.getChild(AppLocalizations.of(context).deleteMeFromSystem, Icons.person_remove),
+          child: buttonCreate.getChild(
+              AppLocalizations.of(context).deleteMeFromSystem,
+              Icons.person_remove),
           style: buttonCreate.getStyle(context),
           onPressed: () {
             showDialog(
@@ -101,7 +184,8 @@ class OtherAdminAccess extends StatelessWidget {
       children: [
         TextButton(
           child: buttonCreate.getChild(
-              AppLocalizations.of(context).deleteUserFromSystem, Icons.person_remove),
+              AppLocalizations.of(context).deleteUserFromSystem,
+              Icons.person_remove),
           style: buttonCreate.getStyle(context),
           onPressed: () {
             showDialog(
