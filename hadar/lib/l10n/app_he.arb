@@ -141,5 +141,6 @@
 	"delete": "מחיקה",
     "categories": "קטיגוריות",
     "favoriteCategories": "הקטיגוריות המועדפות עלי",
-    "update": "עדכן"
+    "update": "עדכן",
+    "showAllCategories": "הצג את כל הקטיגוריות"
 }

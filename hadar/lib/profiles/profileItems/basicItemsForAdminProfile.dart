@@ -2,17 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/adminFeatures/adminAddOrganization.dart';
+import 'package:hadar/adminFeatures/manageAllCategories.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 import '../../adminFeatures/adminAddHelpRequest.dart' as a;
 import '../../adminFeatures/adminManageOrganizations.dart';
-import '../../userInquiryView.dart';
+import '../../adminFeatures/userInquiryView.dart';
 import 'basicItemsForAllProfiles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ManageTheSystem extends StatelessWidget {
   ProfileButton buttonCreate;
   DescriptonBox desBox;
+  List<HelpRequestType> types;
+  List<HelpRequestType> typesWithOther;
 
   Widget addCategory(BuildContext context) {
     return new AlertDialog( backgroundColor: BasicColor.backgroundClr,
@@ -29,6 +32,7 @@ class ManageTheSystem extends StatelessWidget {
       ],
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,31 +52,40 @@ class ManageTheSystem extends StatelessWidget {
           },
         ),
         TextButton(
-          child: buttonCreate.getChild(AppLocalizations.of(context).addRequest, Icons.post_add),
+          child: buttonCreate.getChild(AppLocalizations.of(context).showAllCategories, Icons.list),
           style: style,
           onPressed: () async {
-            List<HelpRequestType> types =
-            await DataBaseService().helpRequestTypesAsList();
-            types.add(HelpRequestType('אחר..'));
-            //we must add אחר so it always appears on the last of the list
+            List<HelpRequestType> types = await DataBaseService().helpRequestTypesAsList();
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => a.AdminRequestWindow(types, context)),
+                  builder: (context) => CategoriesViewPage(types),),
+            );
+          },
+        ),
+        TextButton(
+          child: buttonCreate.getChild(AppLocalizations.of(context).addRequest, Icons.post_add),
+          style: style,
+          onPressed: () async{
+            List<HelpRequestType> types = await DataBaseService().helpRequestTypesAsList();
+            types.add(HelpRequestType('אחר..'));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => a.AdminRequestWindow(typesWithOther, context)),
             );
           },
         ),
         TextButton(
           child: buttonCreate.getChild(AppLocalizations.of(context).addOrginaization, Icons.add_business_outlined),
           style: style,
-          onPressed: () async {
-            List<HelpRequestType> types =
-            await DataBaseService().helpRequestTypesAsList();
-            types.add(HelpRequestType('אחר'));
+          onPressed: ()async {
+            List<HelpRequestType> types = await DataBaseService().helpRequestTypesAsList();
+            types.add(HelpRequestType('אחר..'));
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>AddOrganizationWindow(types)),
+                  builder: (context) =>AddOrganizationWindow(typesWithOther)),
             );
           },
         ),
