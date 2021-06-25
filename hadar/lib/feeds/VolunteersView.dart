@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/profiles/profile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Volunteer.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,14 @@ class UserItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap:(){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProfilePage(user)
+          ),
+        );
+      },
       isThreeLine: true,
       title: Row(children: <Widget>[
         Container(

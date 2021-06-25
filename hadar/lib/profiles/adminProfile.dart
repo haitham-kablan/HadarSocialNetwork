@@ -10,11 +10,21 @@ class AdminProfile extends StatelessWidget {
   a.User user;
   String privilege;
   BasicLists getLists;
+  bool adminIsOnProfile = false;
 
-  AdminProfile() {
-    user = CurrentUser.curr_user;
+  AdminProfile(a.User user) {
+    this.user = user;
     privilege = 'Admin';
+    a.User currUser= CurrentUser.curr_user;
+    if(currUser.id != user.id)
+      adminIsOnProfile=true;
+  }
 
+
+
+  Widget userOrAdminAccess() {
+    if (adminIsOnProfile) return SortByCatForAll(user, this,getLists.listForUserAdminView);
+    return SortByCatForAll(user, this,getLists.listForAdminView);
   }
 
   @override
@@ -39,7 +49,8 @@ class AdminProfile extends StatelessWidget {
                     SizedBox(
                       height: 40,
                     ),
-                    SortByCatForAll(user, this, getLists.listForAdminView),
+                    // SortByCatForAll(user, this, getLists.listForAdminView),
+                    userOrAdminAccess(),
                     SizedBox(
                       height: 80,
                     ),

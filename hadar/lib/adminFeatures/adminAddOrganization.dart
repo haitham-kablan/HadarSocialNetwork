@@ -5,6 +5,7 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/descriptionBox.dart';
 import 'package:hadar/profiles/profileItems/checkBoxForCategories.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/Organization.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 
@@ -205,7 +206,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AdminProfile()),
+                                  builder: (context) => AdminProfile(CurrentUser.curr_user)),
                             );
                           },
                           child: Text(AppLocalizations.of(context).approve),
