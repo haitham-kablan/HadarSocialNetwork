@@ -208,7 +208,7 @@ class AdminBottomBar extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AdminProfile()
+                              builder: (context) => AdminProfile(CurrentUser.curr_user)
                           ),
                         );
                       },

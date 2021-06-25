@@ -141,5 +141,6 @@
 	"delete": "delete",
     "categories": "categories",
     "favoriteCategories": "favoriteCategories",
-    "update": "update"
+    "update": "update",
+    "showAllCategories": "showAllCategories"
 }

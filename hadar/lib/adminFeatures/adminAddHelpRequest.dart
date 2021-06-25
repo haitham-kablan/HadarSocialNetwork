@@ -115,7 +115,7 @@ class AdminRequestWindow extends StatelessWidget {
 
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AdminProfile()),
+                        MaterialPageRoute(builder: (context) => AdminProfile(CurrentUser.curr_user)),
                       );
                     },
                     child: Text(AppLocalizations.of(context).approve),

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 
-import 'package:hadar/specificInquiryView.dart';
+import 'package:hadar/adminFeatures/specificInquiryView.dart';
 import 'package:hadar/utils/UsersInquiry.dart';
 import 'package:provider/provider.dart';
 
-import 'Design/basicTools.dart';
-import 'Design/mainDesign.dart';
-import 'feeds/feed_items/help_request_tile.dart';
+import '../Design/basicTools.dart';
+import '../Design/mainDesign.dart';
+import '../feeds/feed_items/help_request_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 

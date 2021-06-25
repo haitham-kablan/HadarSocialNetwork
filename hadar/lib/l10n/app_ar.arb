@@ -141,5 +141,6 @@
 	"delete": "حذف",
 	"categories": "التصنيفات",
 	"favoriteCategories": "التصنيفات المفضلة لدي",
-	"update": "تحديث"
+	"update": "تحديث",
+	"showAllCategories": "عرض كل التصنيفات"
 }
