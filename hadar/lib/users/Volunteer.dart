@@ -49,7 +49,6 @@ class Volunteer extends RegisteredUser{
     if (categories == null){
       return;
     }
-
     for(var i = 0; i < this.categories.length; i++){
       this.categoriesAsList.add(MyListView( this.categories[i].description));
     }
