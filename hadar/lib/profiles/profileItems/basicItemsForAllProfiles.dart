@@ -9,8 +9,7 @@ import 'ChangeLangDialogue.dart';
 import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'changePassword.dart';
+import 'package:hadar/profiles/profileItems/checkBoxForCategories.dart';
 
 //when a user clicks on the category, he gets a description box,
 // where he can describe his request
@@ -28,7 +27,7 @@ class DescriptonBox extends StatefulWidget {
 }
 
 class _DescriptonBox extends State<DescriptonBox> {
-  String _inputtext = 'waiting..';
+  String _inputtext = '';
   TextEditingController inputtextField = TextEditingController();
 
   void processText() {
@@ -51,17 +50,15 @@ class _DescriptonBox extends State<DescriptonBox> {
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.all(2.0),
-                child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: TextField(
-                      controller: inputtextField,
-                      textAlign: TextAlign.right,
-                      autofocus: true,
-                      decoration: new InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: widget.title,
-                      ),
-                    ))),
+                child: TextField(
+                  controller: inputtextField,
+                  textAlign: TextAlign.right,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: widget.title,
+                  ),
+                )),
           ],
         ),
       ),
@@ -83,20 +80,21 @@ class MainInfo extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(AppLocalizations.of(context).language),
-                Icon(Icons.language),
-              ],
-            ),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => ChangeLangDialogue(),
-              );
-            }),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(AppLocalizations.of(context).language),
+              Icon(Icons.language),
+            ],
+          ),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => ChangeLangDialogue(privilege),
+            );
+          }
+        ),
         SizedBox(
           height: 60,
         ),
@@ -177,13 +175,14 @@ class ManagePersonalInfo extends StatelessWidget {
 
   init() async {
     List<HelpRequestType> types =
-        await DataBaseService().helpRequestTypesAsList();
+    await DataBaseService().helpRequestTypesAsList();
   }
 
-  ifVolunteerShowCat(BuildContext context) {
-    if (user.privilege == Privilege.Volunteer) {
+  ifVolunteerShowCat(BuildContext context){
+    if(user.privilege == Privilege.Volunteer ){
       return VolunteerShowCategories();
-    } else
+    }
+    else
       return SizedBox();
   }
 
@@ -194,33 +193,24 @@ class ManagePersonalInfo extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          child: buttonCreate.getChild(
-              AppLocalizations.of(context).notification,
-              Icons.notifications_rounded),
+          child: buttonCreate.getChild(AppLocalizations.of(context).notification, Icons.notifications_rounded),
           style: style,
           onPressed: () {
             //  TODO: turn notifications ON/OFF
           },
         ),
         TextButton(
-          child: buttonCreate.getChild(
-              AppLocalizations.of(context).changeStableLocation,
-              Icons.location_on),
+          child: buttonCreate.getChild(AppLocalizations.of(context).changeStableLocation, Icons.location_on),
           style: style,
           onPressed: () {
             //  TODO: change location
           },
         ),
         TextButton(
-          child: buttonCreate.getChild(
-              AppLocalizations.of(context).changePassword, Icons.lock),
+          child: buttonCreate.getChild(AppLocalizations.of(context).changePassword, Icons.lock),
           style: style,
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) =>
-                  changePasswordDialogue(context),
-            );
+            //  TODO: change password
           },
         ),
         ifVolunteerShowCat(context),
@@ -250,7 +240,9 @@ class SignOut extends StatelessWidget {
         ],
       ),
       style: TextButton.styleFrom(
-        primary: Theme.of(context).primaryColor,
+        primary: Theme
+            .of(context)
+            .primaryColor,
         padding: EdgeInsets.only(left: 10.0),
       ),
       onPressed: () {
@@ -343,35 +335,38 @@ class RemoveUser extends StatelessWidget {
     return new AlertDialog(
       backgroundColor: BasicColor.backgroundClr,
       title: Center(
-          child: Text(
-        AppLocalizations.of(context).areYouSure,
-        textDirection: TextDirection.rtl,
+        child: Text(
+          AppLocalizations.of(context).areYouSure,
+          textDirection: TextDirection.rtl,
       )),
       actions: <Widget>[
         Row(
+
           children: [
             TextButton(
               style: TextButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
+                primary: Theme
+                    .of(context)
+                    .primaryColor,
               ),
               onPressed: () {
                 Navigator.pop(context, true);
               },
               child: Text(AppLocalizations.of(context).cancel),
             ),
-            Spacer(
-              flex: 1,
-            ),
+            Spacer(flex: 1,),
             TextButton(
               style: TextButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
+                primary: Theme
+                    .of(context)
+                    .primaryColor,
               ),
               onPressed: () async {
                 await DataBaseService().RemoveCurrentuserFromAuthentication();
                 DataBaseService().RemoveUserfromdatabase(user);
                 DataBaseService().Sign_out(context);
               },
-              child: Text(AppLocalizations.of(context).approve),
+              child: Text(AppLocalizations.of(context).confirm),
             ),
           ],
         ),
@@ -456,7 +451,9 @@ class ProfileButton {
 
   ButtonStyle getStyle(BuildContext context) {
     return TextButton.styleFrom(
-      primary: Theme.of(context).primaryColor,
+      primary: Theme
+          .of(context)
+          .primaryColor,
       padding: EdgeInsets.only(right: 25.0),
     );
   }

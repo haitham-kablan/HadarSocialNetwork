@@ -3,11 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/main.dart';
+import 'package:hadar/profiles/adminProfile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../profile.dart';
+
 class ChangeLangDialogue extends StatelessWidget {
+  final String privilege;
+
+  ChangeLangDialogue(this.privilege);
+
   @override
   Widget build(BuildContext context) {
     String userEmail = CurrentUser.curr_user.email;
@@ -48,6 +55,17 @@ class ChangeLangDialogue extends StatelessWidget {
                 MainApp.of(context)
                     .setLocale(Locale.fromSubtags(languageCode: langCode));
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      if(privilege != 'Admin') {
+                        return ProfilePage(CurrentUser.curr_user);
+                      }
+                      return AdminProfile(CurrentUser.curr_user);
+                    }
+                  ),
+                );
               },
             ),
           ),

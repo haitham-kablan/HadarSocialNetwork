@@ -25,7 +25,7 @@ class ManageTheSystem extends StatelessWidget {
             desBox.processText();
           },
           textColor: Theme.of(context).primaryColor,
-          child: Text(AppLocalizations.of(context).approve),
+          child: Text(AppLocalizations.of(context).confirm),
         ),
       ],
     );
@@ -66,7 +66,7 @@ class ManageTheSystem extends StatelessWidget {
           style: style,
           onPressed: () async{
             List<HelpRequestType> types = await DataBaseService().helpRequestTypesAsList();
-            types.add(HelpRequestType('אחר..'));
+            types.add(HelpRequestType('אחר'));
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -79,7 +79,7 @@ class ManageTheSystem extends StatelessWidget {
           style: style,
           onPressed: ()async {
             List<HelpRequestType> types = await DataBaseService().helpRequestTypesAsList();
-            types.add(HelpRequestType('אחר..'));
+            types.add(HelpRequestType('אחר'));
             Navigator.push(
               context,
               MaterialPageRoute(
