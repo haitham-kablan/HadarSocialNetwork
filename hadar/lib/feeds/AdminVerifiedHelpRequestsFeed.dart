@@ -90,10 +90,9 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
   var categoryTranslation;
   String description;
   var descriptionTranslation;
-  bool originalIsVisible = true;
-  bool translationIsVisible = false;
   bool showTranslation = true;
   bool showOriginal = false;
+
 
   initText() async {
     category = widget.helpRequest.category.description;
@@ -126,10 +125,8 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
                   context, widget.helpRequest);
             });
       },
-      // isThreeLine: true,
       title: Row(children: <Widget>[
         Container(
-          // child: Text(widget.helpRequest.category.description),
           child: GetUserName(widget.helpRequest.sender_id,
               DataBaseService().userInNeedCollection),
           alignment: Alignment.topRight,
@@ -146,20 +143,20 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
               children: <Widget>[
             Row(children: <Widget>[
               Visibility(
-                visible: originalIsVisible,
+                visible: showTranslation,
                 child: Text(category),
               ),
               Visibility(
-                visible: translationIsVisible,
+                visible: showOriginal,
                 child: Text(categoryTranslation.toString()),
               ),
             ]),
             Visibility(
-              visible: originalIsVisible,
+              visible: showTranslation,
               child: Text(description),
             ),
             Visibility(
-              visible: translationIsVisible,
+              visible: showOriginal,
               child: Text(descriptionTranslation.toString()),
             ),
             Visibility(
@@ -172,8 +169,6 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
                   setState(() {
                     showTranslation = false;
                     showOriginal = true;
-                    originalIsVisible = false;
-                    translationIsVisible = true;
                   });
                 },
               ),
@@ -188,8 +183,6 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
                       setState(() {
                         showTranslation = true;
                         showOriginal = false;
-                        originalIsVisible = true;
-                        translationIsVisible = false;
                       });
                     },
                   ),
