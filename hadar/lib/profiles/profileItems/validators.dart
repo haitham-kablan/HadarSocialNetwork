@@ -57,7 +57,18 @@ class Validators {
       return null;
     }
   }
-  
+
+  static String location_validator(String value){
+    if(value.isEmpty){
+      return 'מיקום לא יכול להיות ריק';
+    }
+    if (value.length > 60){
+      return 'המיקום שלך ארוך מדי';
+    }
+    else{
+      return null;
+    }
+  }
 
 
 }
