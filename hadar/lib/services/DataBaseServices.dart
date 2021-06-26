@@ -504,6 +504,17 @@ class DataBaseService{
     return await organizationsCollection.doc(organization.name).set(to_add);
   }
 
+  Future<bool> checkIfPasswordIsMatch(String email,String old_pw) async{
+
+    var credintal =  fb_auth.EmailAuthProvider.credential(email: email, password: old_pw);
+    try{
+      await fb_auth.FirebaseAuth.instance.currentUser.reauthenticateWithCredential(credintal);
+      return true;
+    }catch(FirebaseAuthException){
+      return false;
+    }
+
+  }
 
   Future addHelpRequestTypeDataBase(HelpRequestType helpRequestType) async{
 
