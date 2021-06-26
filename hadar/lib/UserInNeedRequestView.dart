@@ -286,7 +286,7 @@ class _DescriptonBox extends State<DescriptonBox> {
                   onPressed: () {
                     _processText();
                   },
-                  child: Text(AppLocalizations.of(context).approve),
+                  child: Text(AppLocalizations.of(context).confirm),
                 ),
 
               ],

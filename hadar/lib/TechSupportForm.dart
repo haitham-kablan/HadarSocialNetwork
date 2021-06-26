@@ -99,7 +99,7 @@ class TechSupportForm extends StatelessWidget {
                       );
                       // Navigator.canPop(context);
                     },
-                    child: Text(AppLocalizations.of(context).approve),
+                    child: Text(AppLocalizations.of(context).confirm),
                   ),
                 ],
                 ),

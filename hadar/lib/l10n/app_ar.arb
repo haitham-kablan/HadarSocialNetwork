@@ -75,7 +75,7 @@
 	"waitingRequests": "طلبات منتظرة",
 	"approvedRequests": "طلبات موافقة",
 	"addCategory": "أضف صنف ",
-	"approve": "موافقة",
+	"confirm": "موافقة",
 	"approveRequest": "موافقة الطلب",
 	"addRequest": "إضافة طلب",
 	"other3Dot": "آخر...",

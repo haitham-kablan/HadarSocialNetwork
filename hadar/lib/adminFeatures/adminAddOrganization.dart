@@ -209,7 +209,7 @@ class _AddOrganizationWindowState extends State<AddOrganizationWindow> {
                                   builder: (context) => AdminProfile(CurrentUser.curr_user)),
                             );
                           },
-                          child: Text(AppLocalizations.of(context).approve),
+                          child: Text(AppLocalizations.of(context).confirm),
                         ),
                       ],
                     ),

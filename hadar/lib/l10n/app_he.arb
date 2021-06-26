@@ -75,7 +75,7 @@
 	"waitingRequests": "בקשות ממתינות",
 	"approvedRequests": "בקשות מאושרות",
 	"addCategory": "הוספת קטגוריה",
-	"approve": "אישור",
+	"confirm": "אישור",
 	"approveRequest": "אישור בקשה",
 	"addRequest": "הוספת בקשה",
 	"other3Dot": "...אחר",

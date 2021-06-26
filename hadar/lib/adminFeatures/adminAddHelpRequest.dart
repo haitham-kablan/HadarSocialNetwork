@@ -118,7 +118,7 @@ class AdminRequestWindow extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => AdminProfile(CurrentUser.curr_user)),
                       );
                     },
-                    child: Text(AppLocalizations.of(context).approve),
+                    child: Text(AppLocalizations.of(context).confirm),
                   ),
                   ],
                 ),
@@ -230,7 +230,7 @@ class DescriptonBox extends StatefulWidget {
 }
 
 class _DescriptonBox extends State<DescriptonBox> {
-  String _inputtext = 'waiting..';
+  String _inputtext = '';
   HelpRequest helpRequest;
   TextEditingController inputtextField = TextEditingController();
   HelpRequestType helpRequestType;
@@ -260,17 +260,15 @@ class _DescriptonBox extends State<DescriptonBox> {
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: TextField(
-                      controller: inputtextField,
-                      textAlign: TextAlign.right,
-                      autofocus: true,
-                      decoration: new InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: widget.title,
-                      ),
-                    ))),
+                child: TextField(
+                  controller: inputtextField,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: widget.title,
+                  ),
+                )
+            ),
           ],
         ),
       ),

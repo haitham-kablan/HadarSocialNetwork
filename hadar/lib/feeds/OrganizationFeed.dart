@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../main.dart';
+
 
 class removeOrganization extends StatelessWidget {
   Organization org;
@@ -26,10 +28,8 @@ class removeOrganization extends StatelessWidget {
     return new AlertDialog(
       backgroundColor: BasicColor.backgroundClr,
       title: Center(
-          child: Text(
-            AppLocalizations.of(context).areYouSure,
-            textDirection: TextDirection.rtl,
-          )),
+          child: Text(AppLocalizations.of(context).areYouSure)
+      ),
       actions: <Widget>[
         Row(
 
@@ -54,8 +54,9 @@ class removeOrganization extends StatelessWidget {
               ),
               onPressed: (){
                 DataBaseService().RemoveOrginazation(org.name);
+                Navigator.pop(context, true);
               },
-              child: Text(AppLocalizations.of(context).approve),
+              child: Text(AppLocalizations.of(context).confirm),
             ),
           ],
         ),
@@ -97,14 +98,11 @@ class _OrganizationFeed extends StatelessWidget {
     }
 
     return Scaffold(
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ListView(
-          semanticChildCount:
-          (organizations == null) ? 0 : organizations.length,
-          padding: const EdgeInsets.only(bottom: 70.0, left: 8, right: 8),
-          children: organizationsTiles,
-        ),
+      body: ListView(
+        semanticChildCount:
+        (organizations == null) ? 0 : organizations.length,
+        padding: const EdgeInsets.only(bottom: 70.0, left: 8, right: 8),
+        children: organizationsTiles,
       ),
     );
   }
@@ -157,8 +155,28 @@ class _OrganizationInfo extends StatelessWidget {
     }
   }
 
+  Widget _styledText(String text, {bool isRTL = false}){
+    return Text(
+        text,
+        textDirection: isRTL ? TextDirection.rtl : null,
+        style: TextStyle(
+            fontSize: 15.0,
+            color: Colors.blueGrey,
+            letterSpacing: 2.0,
+            fontWeight: FontWeight.w400),
+      );
+  }
+
+  List<Widget> _adjustRowToLang(List<Widget> lst){
+    String langCode = MainApp.of(currContext).getLangCode();
+    return lst;
+    // return (langCode == "he" || langCode == "ar") ? lst : lst.reversed.toList();
+  }
+
   @override
   Widget build(BuildContext context) {
+    String langCode = MainApp.of(currContext).getLangCode();
+    bool isRTL = (langCode == "he" || langCode == "ar");
     return ExpansionTile(
       title: Text(organization.name),
 
@@ -170,30 +188,18 @@ class _OrganizationInfo extends StatelessWidget {
           //   1: FlexColumnWidth(),
           // },
           //defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          textDirection: TextDirection.rtl,
+          // textDirection: TextDirection.rtl,
+
 
 
           children: <TableRow>[
             TableRow(
-              children: <Widget>[
-                Text(
-                  AppLocalizations.of(currContext).telNumberTwoDots,
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.blueGrey,
-                      letterSpacing: 2.0,
-                      fontWeight: FontWeight.w400),
-                ),
+              children: [
+                _styledText(AppLocalizations.of(currContext).telNumberTwoDots),
                 Row(
+                  mainAxisAlignment: isRTL ? MainAxisAlignment.start : MainAxisAlignment.end,
                   children: [
-                    Text(
-                      organization.phoneNumber + ' ',
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.blueGrey,
-                          letterSpacing: 2.0,
-                          fontWeight: FontWeight.w400),
-                    ),
+                    _styledText(organization.phoneNumber + ' '),
                     GestureDetector(
                       onTap: () {
                         _launchCaller(organization.phoneNumber);
@@ -207,79 +213,34 @@ class _OrganizationInfo extends StatelessWidget {
                   ],
                 ),
               ],
+
             ),
 
             TableRow(
-              children: <Widget>[
-                Text(
-                  AppLocalizations.of(currContext).emailTwoDots,
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.blueGrey,
-                      letterSpacing: 2.0,
-                      fontWeight: FontWeight.w400),
-                ),
-                Text(
-                  organization.email,
-
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.blueGrey,
-                      letterSpacing: 2.0,
-                      fontWeight: FontWeight.w400),
-                ),
-
+              children: [
+                _styledText(AppLocalizations.of(currContext).emailTwoDots),
+                _styledText(organization.email, isRTL: true),
               ],
             ),
             TableRow(
-              children: <Widget>[
-                Text(
-                  AppLocalizations.of(currContext).locationTwoDots,
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.blueGrey,
-                      letterSpacing: 2.0,
-                      fontWeight: FontWeight.w400),
-                ),
-                Text(
-                  organization.location,
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.blueGrey,
-                      letterSpacing: 2.0,
-                      fontWeight: FontWeight.w400),
-                ),
-
+              children: [
+                _styledText(AppLocalizations.of(currContext).locationTwoDots),
+                _styledText(organization.location, isRTL: true),
               ],
             ),
             TableRow(
-              children: <Widget>[
-                Text(
-                  AppLocalizations.of(currContext).services,
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.blueGrey,
-                      letterSpacing: 2.0,
-                      fontWeight: FontWeight.w400),
-                ),
+              children: [
+                _styledText(AppLocalizations.of(currContext).services),
                 Container(
                   alignment: Alignment.topRight,
 
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: organization.services.map((service) {
-                      return Text(
-                        service.description,
-                        style: TextStyle(
-                            fontSize: 15.0,
-                            color: Colors.blueGrey,
-                            letterSpacing: 2.0,
-                            fontWeight: FontWeight.w400),
-                      );
-                    }).toList(),
+                    crossAxisAlignment: isRTL ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                    children: organization.services.map(
+                            (service) => _styledText(service.description)
+                    ).toList(),
                   ),
                 ),
-
               ],
             ),
 

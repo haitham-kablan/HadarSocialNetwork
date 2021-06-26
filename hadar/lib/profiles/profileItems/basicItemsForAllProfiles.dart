@@ -27,7 +27,7 @@ class DescriptonBox extends StatefulWidget {
 }
 
 class _DescriptonBox extends State<DescriptonBox> {
-  String _inputtext = 'waiting..';
+  String _inputtext = '';
   TextEditingController inputtextField = TextEditingController();
 
   void processText() {
@@ -50,17 +50,15 @@ class _DescriptonBox extends State<DescriptonBox> {
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.all(2.0),
-                child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: TextField(
-                      controller: inputtextField,
-                      textAlign: TextAlign.right,
-                      autofocus: true,
-                      decoration: new InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: widget.title,
-                      ),
-                    ))),
+                child: TextField(
+                  controller: inputtextField,
+                  textAlign: TextAlign.right,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: widget.title,
+                  ),
+                )),
           ],
         ),
       ),
@@ -93,7 +91,7 @@ class MainInfo extends StatelessWidget {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (BuildContext context) => ChangeLangDialogue(),
+              builder: (BuildContext context) => ChangeLangDialogue(privilege),
             );
           }
         ),
@@ -368,7 +366,7 @@ class RemoveUser extends StatelessWidget {
                 DataBaseService().RemoveUserfromdatabase(user);
                 DataBaseService().Sign_out(context);
               },
-              child: Text(AppLocalizations.of(context).approve),
+              child: Text(AppLocalizations.of(context).confirm),
             ),
           ],
         ),

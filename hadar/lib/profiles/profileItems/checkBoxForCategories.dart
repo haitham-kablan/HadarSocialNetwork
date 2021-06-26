@@ -58,7 +58,7 @@ class _checkBoxForCategoriesState extends State<checkBoxForCategories> {
                 cancelText:
                     Text(AppLocalizations.of(widget.currContext).cancel),
                 confirmText:
-                    Text(AppLocalizations.of(widget.currContext).approve),
+                    Text(AppLocalizations.of(widget.currContext).confirm),
                 searchHint: AppLocalizations.of(widget.currContext).search,
                 title: Text(AppLocalizations.of(widget.currContext).categories),
                 buttonText:

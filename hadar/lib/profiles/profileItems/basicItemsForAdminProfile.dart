@@ -27,7 +27,7 @@ class ManageTheSystem extends StatelessWidget {
             desBox.processText();
           },
           textColor: Theme.of(context).primaryColor,
-          child: Text(AppLocalizations.of(context).approve),
+          child: Text(AppLocalizations.of(context).confirm),
         ),
       ],
     );
