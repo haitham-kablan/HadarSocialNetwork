@@ -13,8 +13,7 @@ import 'basicItemsForUserProfile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'changePassword.dart';
-
-
+import 'notificationSwitch.dart';
 
 Widget changeLocationDialogue(BuildContext context) {
   // a.User user = CurrentUser.curr_user;
@@ -24,7 +23,8 @@ Widget changeLocationDialogue(BuildContext context) {
   return SingleChildScrollView(
     child: new AlertDialog(
       backgroundColor: BasicColor.backgroundClr,
-      title: Center(child: Text(AppLocalizations.of(context).changeStableLocation)),
+      title: Center(
+          child: Text(AppLocalizations.of(context).changeStableLocation)),
       content: Column(
         children: [
           Container(
@@ -64,7 +64,7 @@ Widget changeLocationDialogue(BuildContext context) {
                 primary: Theme.of(context).primaryColor,
               ),
               onPressed: () {
-                //TODO: call function from database 
+                //TODO: call function from database
                 Navigator.pop(context, true);
               },
               child: Text(AppLocalizations.of(context).confirm),
@@ -145,21 +145,21 @@ class MainInfo extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(AppLocalizations.of(context).language),
-              Icon(Icons.language),
-            ],
-          ),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => ChangeLangDialogue(privilege),
-            );
-          }
-        ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(AppLocalizations.of(context).language),
+                Icon(Icons.language),
+              ],
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) =>
+                    ChangeLangDialogue(privilege),
+              );
+            }),
         SizedBox(
           height: 60,
         ),
@@ -240,14 +240,13 @@ class ManagePersonalInfo extends StatelessWidget {
 
   init() async {
     List<HelpRequestType> types =
-    await DataBaseService().helpRequestTypesAsList();
+        await DataBaseService().helpRequestTypesAsList();
   }
 
-  ifVolunteerShowCat(BuildContext context){
-    if(user.privilege == Privilege.Volunteer ){
+  ifVolunteerShowCat(BuildContext context) {
+    if (user.privilege == Privilege.Volunteer) {
       return VolunteerShowCategories();
-    }
-    else
+    } else
       return SizedBox();
   }
 
@@ -257,30 +256,44 @@ class ManagePersonalInfo extends StatelessWidget {
 
     return Column(
       children: [
-        TextButton(
-          child: buttonCreate.getChild(AppLocalizations.of(context).notification, Icons.notifications_rounded),
-          style: style,
-          onPressed: () {
-            //  TODO: turn notifications ON/OFF
-          },
+        Row(
+          children: [
+            TextButton(
+              child: buttonCreate.getChild(
+                  AppLocalizations.of(context).notification,
+                  Icons.notifications_rounded),
+              style: style,
+              onPressed: (){},
+            ),
+            Spacer(),
+            Container(
+              child: NotificationSwitch(),
+              padding: EdgeInsets.only(left: 10.0),
+            ),
+          ],
         ),
         TextButton(
-          child: buttonCreate.getChild(AppLocalizations.of(context).changeStableLocation, Icons.location_on),
+          child: buttonCreate.getChild(
+              AppLocalizations.of(context).changeStableLocation,
+              Icons.location_on),
           style: style,
           onPressed: () {
             showDialog(
               context: context,
-              builder: (BuildContext context) => changeLocationDialogue(context),
+              builder: (BuildContext context) =>
+                  changeLocationDialogue(context),
             );
           },
         ),
         TextButton(
-          child: buttonCreate.getChild(AppLocalizations.of(context).changePassword, Icons.lock),
+          child: buttonCreate.getChild(
+              AppLocalizations.of(context).changePassword, Icons.lock),
           style: style,
           onPressed: () {
             showDialog(
               context: context,
-              builder: (BuildContext context) => changePasswordDialogue(context),
+              builder: (BuildContext context) =>
+                  changePasswordDialogue(context),
             );
           },
         ),
@@ -311,9 +324,7 @@ class SignOut extends StatelessWidget {
         ],
       ),
       style: TextButton.styleFrom(
-        primary: Theme
-            .of(context)
-            .primaryColor,
+        primary: Theme.of(context).primaryColor,
         padding: EdgeInsets.only(left: 10.0),
       ),
       onPressed: () {
@@ -406,31 +417,28 @@ class RemoveUser extends StatelessWidget {
     return new AlertDialog(
       backgroundColor: BasicColor.backgroundClr,
       title: Center(
-        child: Text(
-          AppLocalizations.of(context).areYouSure,
-          textDirection: TextDirection.rtl,
+          child: Text(
+        AppLocalizations.of(context).areYouSure,
+        textDirection: TextDirection.rtl,
       )),
       actions: <Widget>[
         Row(
-
           children: [
             TextButton(
               style: TextButton.styleFrom(
-                primary: Theme
-                    .of(context)
-                    .primaryColor,
+                primary: Theme.of(context).primaryColor,
               ),
               onPressed: () {
                 Navigator.pop(context, true);
               },
               child: Text(AppLocalizations.of(context).cancel),
             ),
-            Spacer(flex: 1,),
+            Spacer(
+              flex: 1,
+            ),
             TextButton(
               style: TextButton.styleFrom(
-                primary: Theme
-                    .of(context)
-                    .primaryColor,
+                primary: Theme.of(context).primaryColor,
               ),
               onPressed: () async {
                 await DataBaseService().RemoveCurrentuserFromAuthentication();
@@ -522,9 +530,7 @@ class ProfileButton {
 
   ButtonStyle getStyle(BuildContext context) {
     return TextButton.styleFrom(
-      primary: Theme
-          .of(context)
-          .primaryColor,
+      primary: Theme.of(context).primaryColor,
       padding: EdgeInsets.only(right: 25.0),
     );
   }
