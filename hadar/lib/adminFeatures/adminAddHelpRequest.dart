@@ -13,6 +13,7 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../Design/mainDesign.dart';
+import '../main.dart';
 import '../profiles/adminProfile.dart';
 import '../feeds/user_inneed_feed.dart';
 import '../users/Privilege.dart';
@@ -165,6 +166,8 @@ class DropDownState extends State<Dropdown> {
 
   @override
   Widget build(BuildContext context) {
+    String langCode = MainApp.of(context).getLangCode();
+    bool isRTL = (langCode == "he" || langCode == "ar");
     return Scaffold(
       body: Center(
         child: Directionality(
@@ -184,6 +187,7 @@ class DropDownState extends State<Dropdown> {
               return DropdownMenuItem<HelpRequestType>(
                 value: type,
                 child: Row(
+                  mainAxisAlignment: isRTL ? MainAxisAlignment.start : MainAxisAlignment.end,
                   children: <Widget>[
                     SizedBox(
                       width: 10,

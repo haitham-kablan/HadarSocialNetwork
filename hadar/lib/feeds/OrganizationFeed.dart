@@ -167,11 +167,6 @@ class _OrganizationInfo extends StatelessWidget {
       );
   }
 
-  List<Widget> _adjustRowToLang(List<Widget> lst){
-    String langCode = MainApp.of(currContext).getLangCode();
-    return lst;
-    // return (langCode == "he" || langCode == "ar") ? lst : lst.reversed.toList();
-  }
 
   @override
   Widget build(BuildContext context) {
