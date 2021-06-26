@@ -1,10 +1,11 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/descriptionBox.dart';
+import 'package:hadar/Design/errorShowBottomSheet.dart';
 import 'package:hadar/profiles/profileItems/validators.dart';
+import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -17,7 +18,6 @@ Widget changePasswordDialogue(BuildContext context) {
   final currentPass_controller = TextEditingController();
   final firstPass_Controller = TextEditingController();
   final sectPass_Controller = TextEditingController();
-
 
   return SingleChildScrollView(
     child: new AlertDialog(
@@ -92,46 +92,14 @@ Widget changePasswordDialogue(BuildContext context) {
                 primary: Theme.of(context).primaryColor,
               ),
               onPressed: () async {
-
-                //   //TODO: make sure currentPassword  is the current password for this user
-                //   //    TODO: make sure both passwords are identical
+                //TODO: make sure currentPassword  is the current password for this user
                 if (firstPass_Controller.text != sectPass_Controller.text) {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        padding: EdgeInsets.only(right: 25.0),
-                        height: 70,
-                        color: Colors.black87,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.warning_amber_rounded,
-                              color: Colors.red,
-                            ),
-                            Text(
-                              '  ' + AppLocalizations.of(context).passDontMatch,
-                              style: TextStyle(
-                                  color: Colors.white60,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
+                  showError(context, AppLocalizations.of(context).passDontMatch,
+                      Icons.warning_amber_rounded);
+                } else {
+                  Navigator.pop(context, true);
                 }
-                // UserCredential userCredential = await FirebaseAuth.instance
-                //     .signInWithEmailAndPassword(
-                //     email: user.email,
-                //     password: currentPass_controller.text);
-                // FirebaseAuth.instance.currentUser.reauthenticateWithCredential();
-
-
-                //  TODO: set the new password
+                // DataBaseService.changePassword(firstPass_Controller.text);
               },
               child: Text(AppLocalizations.of(context).approve),
             ),
