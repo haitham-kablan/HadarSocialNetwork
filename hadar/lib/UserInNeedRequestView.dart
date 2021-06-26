@@ -262,7 +262,6 @@ class _DescriptonBox extends State<DescriptonBox> {
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
                   controller: inputtextField,
-                  textAlign: TextAlign.center,
                   autofocus: true,
                   decoration: new InputDecoration(
                     border: OutlineInputBorder(),

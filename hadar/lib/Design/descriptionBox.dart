@@ -61,7 +61,6 @@ class DescriptionBoxState extends State<DescriptionBox> {
                 enableSuggestions: !is_pw,
                 controller: Controller,
                 validator: Validtor,
-                textAlign: TextAlign.center,
                 decoration: new InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: widget.hint,
