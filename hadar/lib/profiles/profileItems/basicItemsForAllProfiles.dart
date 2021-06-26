@@ -11,6 +11,8 @@ import 'basicItemsForUserProfile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hadar/profiles/profileItems/checkBoxForCategories.dart';
 
+import 'changePassword.dart';
+
 //when a user clicks on the category, he gets a description box,
 // where he can describe his request
 class DescriptonBox extends StatefulWidget {
@@ -210,7 +212,10 @@ class ManagePersonalInfo extends StatelessWidget {
           child: buttonCreate.getChild(AppLocalizations.of(context).changePassword, Icons.lock),
           style: style,
           onPressed: () {
-            //  TODO: change password
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => changePasswordDialogue(context),
+            );
           },
         ),
         ifVolunteerShowCat(context),
