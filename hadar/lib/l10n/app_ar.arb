@@ -142,5 +142,9 @@
 	"categories": "التصنيفات",
 	"favoriteCategories": "التصنيفات المفضلة لدي",
 	"update": "تحديث",
-	"showAllCategories": "عرض كل التصنيفات"
+	"showAllCategories": "عرض كل التصنيفات",
+    "current": "حالي",
+    "newPass": "جديد",
+    "reTypeNew": "إعادة كتابة كلمة المرور",
+     "passDontMatch": "كلمات المرور غير متطابقة, أعد المحاولة!"
 }

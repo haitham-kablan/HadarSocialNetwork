@@ -59,7 +59,6 @@ class ProfilePage extends StatelessWidget {
     getLists=BasicLists(user, this, context);
 
     return  Scaffold(
-
         bottomNavigationBar: checkBottomBar(),
         backgroundColor: BasicColor.backgroundClr,
         body: CustomScrollView(
