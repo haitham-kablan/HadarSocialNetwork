@@ -146,5 +146,7 @@
     "current": "נוכחי",
     "newPass": "חדש",
     "reTypeNew": "הקלדה חוזרת",
-    "passDontMatch": "הסיסמאות אינם תואמות, נסה שנית!"
+    "passDontMatch": "הסיסמאות אינם תואמות, נסה שנית!",
+    "translate": "תרגום",
+    "showOriginal": "הצג מקורי"
 }
