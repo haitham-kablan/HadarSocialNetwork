@@ -91,17 +91,18 @@ Widget changePasswordDialogue(BuildContext context) {
               style: TextButton.styleFrom(
                 primary: Theme.of(context).primaryColor,
               ),
-              onPressed: () async {
+              onPressed: () {
                 //TODO: make sure currentPassword  is the current password for this user
                 if (firstPass_Controller.text != sectPass_Controller.text) {
-                  showError(context, AppLocalizations.of(context).passDontMatch,
-                      Icons.warning_amber_rounded);
-                } else {
+                    showError(context, AppLocalizations.of(context).passDontMatch,
+                        Icons.warning_amber_rounded);
+                }else {
                   Navigator.pop(context, true);
-                }
                 // DataBaseService.changePassword(firstPass_Controller.text);
+              }
               },
-              child: Text(AppLocalizations.of(context).approve),
+
+              child: Text(AppLocalizations.of(context).confirm),
             ),
           ],
         ),
