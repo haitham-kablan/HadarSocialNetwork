@@ -37,8 +37,6 @@ class _VolunteerShowCategoriesState extends State<VolunteerShowCategories> {
     if (user.categories.isEmpty)
       checkBox = checkBoxForCategories(types, context, types);
     else {
-
-
       checkBox = checkBoxForCategories(types, context, user.categories);
     }
     return checkBox;

@@ -986,6 +986,19 @@ class DataBaseService{
     usersLanguagesCollection.doc(userEmail).set(to_add);
   }
 
+
+  static void changePassword(String password) async{
+    //Create an instance of the current user.
+    fb_auth.User user= await fb_auth.FirebaseAuth.instance.currentUser;
+
+    //Pass in the password to updatePassword.
+    user.updatePassword(password).then((_){
+      print("Successfully changed password");
+    }).catchError((error){
+      print("Password can't be changed" + error.toString());
+    });
+  }
+
 }
 
 Status getStatusFromString(String type){
@@ -1109,6 +1122,5 @@ List<HelpRequestType> convertCategoreisAsStringToHLT(List<dynamic> categoreis){
   }
   return categoreis.map((e) => HelpRequestType(e as String)).toList();
 }
-
 
 
