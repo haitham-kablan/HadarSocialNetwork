@@ -43,13 +43,13 @@ class DescriptionBoxState extends State<DescriptionBox> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.transparent,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(10.0),
               child: Directionality(
                 textDirection: TextDirection.rtl,
                 child: TextFormField(

@@ -14,8 +14,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class ManageTheSystem extends StatelessWidget {
   ProfileButton buttonCreate;
   DescriptonBox desBox;
-  List<HelpRequestType> types;
-  List<HelpRequestType> typesWithOther;
 
   Widget addCategory(BuildContext context) {
     return new AlertDialog( backgroundColor: BasicColor.backgroundClr,
@@ -72,7 +70,7 @@ class ManageTheSystem extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => a.AdminRequestWindow(typesWithOther, context)),
+                  builder: (context) => a.AdminRequestWindow(types, context)),
             );
           },
         ),
@@ -85,7 +83,7 @@ class ManageTheSystem extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>AddOrganizationWindow(typesWithOther)),
+                  builder: (context) =>AddOrganizationWindow(types)),
             );
           },
         ),
