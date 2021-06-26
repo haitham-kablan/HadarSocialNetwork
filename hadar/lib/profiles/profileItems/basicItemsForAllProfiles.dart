@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/Design/descriptionBox.dart';
+import 'package:hadar/profiles/profileItems/validators.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
@@ -9,9 +11,70 @@ import 'ChangeLangDialogue.dart';
 import 'basicItemsForAdminProfile.dart';
 import 'basicItemsForUserProfile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:hadar/profiles/profileItems/checkBoxForCategories.dart';
 
 import 'changePassword.dart';
+
+
+
+Widget changeLocationDialogue(BuildContext context) {
+  // a.User user = CurrentUser.curr_user;
+  final newLoaction_key = GlobalKey<FormState>();
+  final newLoaction_controller = TextEditingController();
+
+  return SingleChildScrollView(
+    child: new AlertDialog(
+      backgroundColor: BasicColor.backgroundClr,
+      title: Center(child: Text(AppLocalizations.of(context).changeStableLocation)),
+      content: Column(
+        children: [
+          Container(
+            height: 90,
+            child: Form(
+              child: DescriptionBox(
+                  AppLocalizations.of(context).current,
+                  Icon(Icons.lock, color: Colors.white),
+                  Colors.white,
+                  Colors.white,
+                  Validators.location_validator,
+                  newLoaction_controller,
+                  true,
+                  Colors.black),
+              key: newLoaction_key,
+            ),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        Row(
+          children: [
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+              ),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: Text(AppLocalizations.of(context).cancel),
+            ),
+            Spacer(
+              flex: 1,
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Theme.of(context).primaryColor,
+              ),
+              onPressed: () {
+                //TODO: call function from database 
+                Navigator.pop(context, true);
+              },
+              child: Text(AppLocalizations.of(context).confirm),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 
 //when a user clicks on the category, he gets a description box,
 // where he can describe his request
@@ -205,7 +268,10 @@ class ManagePersonalInfo extends StatelessWidget {
           child: buttonCreate.getChild(AppLocalizations.of(context).changeStableLocation, Icons.location_on),
           style: style,
           onPressed: () {
-            //  TODO: change location
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => changeLocationDialogue(context),
+            );
           },
         ),
         TextButton(

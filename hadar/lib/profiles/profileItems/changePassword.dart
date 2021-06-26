@@ -98,7 +98,7 @@ Widget changePasswordDialogue(BuildContext context) {
                         Icons.warning_amber_rounded);
                 }else {
                   Navigator.pop(context, true);
-                //  TODO: when done call changePassword 
+                //  TODO: when done call changePassword
                 // DataBaseService.changePassword(firstPass_Controller.text);
               }
               },
