@@ -136,7 +136,12 @@ class DataBaseService{
 
     vol.categoriesAsList = newList.map((e) => MyListView(e.description)).toList();
     vol.categories = newList;
-    await addVolunteerToDataBase(vol);
+
+    Map<String,dynamic> to_add = Map();
+    to_add["categories"] = newList.map((e) => e.description).toList();
+    await helpersCollection.doc(vol.id).update({"categories": FieldValue.delete()});
+    await helpersCollection.doc(vol.id).update(to_add);
+
 
   }
 
@@ -477,6 +482,7 @@ class DataBaseService{
     to_add['spokenlangs'] = user.spokenlangs;
     to_add['firstaidcourse'] = user.firstaidcourse;
     to_add['mobility'] = user.mobility;
+
     to_add['categories'] = user.categories.map((e) => e.description).toList();
 
     return await helpersCollection.doc(user.id).set(to_add);
