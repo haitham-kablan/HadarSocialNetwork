@@ -93,7 +93,8 @@ class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
               ]
           )
       ),
-//      trailing:
+     // trailing:
+     // Row(children: [Icon(Icons.translate)],),
 //          Row(
 //            mainAxisSize: MainAxisSize.min,
 //            children: <Widget>[

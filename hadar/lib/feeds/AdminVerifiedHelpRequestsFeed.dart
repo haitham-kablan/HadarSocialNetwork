@@ -3,7 +3,9 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/feeds/feed_items/help_request_tile.dart';
 import 'package:hadar/lang/HebrewText.dart';
+import 'package:hadar/profiles/profileItems/basicItemsForAllProfiles.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/services/getters/getCurrentLanguage.dart';
 import 'package:hadar/services/getters/getUserName.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/CurrentUser.dart';
@@ -16,33 +18,39 @@ import 'package:hadar/utils/HelpRequestType.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:translator/translator.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../HelpRequestAdminDialouge.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../main.dart';
 
 class AdminVerifiedHelpRequestsFeed extends StatelessWidget {
   final Admin curr_user;
   final Status status;
-  AdminVerifiedHelpRequestsFeed(this.curr_user,this.status);
+
+  AdminVerifiedHelpRequestsFeed(this.curr_user, this.status);
+
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<HelpRequest>>.value(
-      value: status == Status.UNVERFIED ?DataBaseService().getAll_unverfied_requests_Requests() : DataBaseService().getAll_approved_Requests(),
-      child:_AdminVerifiedHelpRequestsFeed(),
+      value: status == Status.UNVERFIED
+          ? DataBaseService().getAll_unverfied_requests_Requests()
+          : DataBaseService().getAll_approved_Requests(),
+      child: _AdminVerifiedHelpRequestsFeed(),
     );
   }
 }
 
-
-
 class _AdminVerifiedHelpRequestsFeed extends StatefulWidget {
   @override
-  _AdminVerifiedHelpRequestsFeedState createState() => _AdminVerifiedHelpRequestsFeedState();
+  _AdminVerifiedHelpRequestsFeedState createState() =>
+      _AdminVerifiedHelpRequestsFeedState();
 }
 
-class _AdminVerifiedHelpRequestsFeedState extends State<_AdminVerifiedHelpRequestsFeed> {
+class _AdminVerifiedHelpRequestsFeedState
+    extends State<_AdminVerifiedHelpRequestsFeed> {
   @override
   Widget build(BuildContext context) {
     final requests = Provider.of<List<HelpRequest>>(context);
@@ -54,35 +62,58 @@ class _AdminVerifiedHelpRequestsFeedState extends State<_AdminVerifiedHelpReques
           return ListView.builder(
             padding: const EdgeInsets.only(bottom: 70.0, top: 10),
             itemCount: (requests == null) ? 0 : requests.length,
-            itemBuilder: (context,index){
-              return FeedTile(tileWidget: AdminHelpRequestFeedTile(requests[index]));
+            itemBuilder: (context, index) {
+              return FeedTile(
+                  tileWidget: AdminHelpRequestFeedTile(requests[index]));
             },
           );
         },
       ),
     );
-
   }
 }
-
-
 
 class AdminHelpRequestFeedTile extends StatefulWidget {
   final HelpRequest helpRequest;
 
   AdminHelpRequestFeedTile(this.helpRequest);
+
   @override
-  _AdminHelpRequestFeedTileState createState() => _AdminHelpRequestFeedTileState();
+  _AdminHelpRequestFeedTileState createState() =>
+      _AdminHelpRequestFeedTileState();
 }
 
-
 class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
+  ProfileButton buttonCreate = ProfileButton();
+  final translator = GoogleTranslator();
+  String category;
+  var categoryTranslation;
+  String description;
+  var descriptionTranslation;
+  bool showTranslation = true;
+  bool showOriginal = false;
+
+
+  initText() async {
+    category = widget.helpRequest.category.description;
+    description = widget.helpRequest.description;
+    categoryTranslation = await translator.translate(
+      category,
+      to: getLanguage(context),
+    );
+    descriptionTranslation = await translator.translate(
+      description,
+      to: getLanguage(context),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    initText();
+    ButtonStyle style = buttonCreate.getStyle(context);
     final DateTime now = widget.helpRequest.date;
     final Intl.DateFormat formatter = Intl.DateFormat.yMd().add_Hm();
-    Color color =  Colors.white ;
+    Color color = Colors.white;
     return ListTile(
       tileColor: color,
       // onTap: () => print("List tile pressed!"),//showHelpRequestStatus(helpRequest),
@@ -90,19 +121,19 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
         showModalBottomSheet(
             context: context,
             builder: (context) {
-              return AdminHelpRequestFeedTileStatus(context, widget.helpRequest);
+              return AdminHelpRequestFeedTileStatus(
+                  context, widget.helpRequest);
             });
       },
-      isThreeLine: true,
       title: Row(children: <Widget>[
         Container(
-          // child: Text(widget.helpRequest.category.description),
-          child: GetUserName(widget.helpRequest.sender_id, DataBaseService().userInNeedCollection),
+          child: GetUserName(widget.helpRequest.sender_id,
+              DataBaseService().userInNeedCollection),
           alignment: Alignment.topRight,
         ),
         Spacer(),
         Container(
-          child: HebrewText(  formatter.format(now) ),
+          child: HebrewText(formatter.format(now)),
           alignment: Alignment.topLeft,
         ),
       ]),
@@ -110,27 +141,61 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(children: <Widget>[
-                  Text(widget.helpRequest.category.description),
-                  //Spacer(),
-                  //Spacer(),
-                  //CallWidget(widget.helpRequest),
-                  //ThreeDotsWidget(widget.helpRequest)
-                ]
-                ),
-                HebrewText(widget.helpRequest.description),
-              ]
-          )
-      ),
+            Row(children: <Widget>[
+              Visibility(
+                visible: showTranslation,
+                child: Text(category),
+              ),
+              Visibility(
+                visible: showOriginal,
+                child: Text(categoryTranslation.toString()),
+              ),
+            ]),
+            Visibility(
+              visible: showTranslation,
+              child: Text(description),
+            ),
+            Visibility(
+              visible: showOriginal,
+              child: Text(descriptionTranslation.toString()),
+            ),
+            Visibility(
+              visible: showTranslation,
+              child: TextButton(
+                child: buttonCreate.getChild(
+                    AppLocalizations.of(context).translate, Icons.translate),
+                style: style,
+                onPressed: () {
+                  setState(() {
+                    showTranslation = false;
+                    showOriginal = true;
+                  });
+                },
+              ),
+            ),
+                Visibility(
+                  visible: showOriginal,
+                  child: TextButton(
+                    child: buttonCreate.getChild(
+                        AppLocalizations.of(context).showOriginal, Icons.translate),
+                    style: style,
+                    onPressed: () {
+                      setState(() {
+                        showTranslation = true;
+                        showOriginal = false;
+                      });
+                    },
+                  ),
+                )
+          ])),
     );
   }
 }
 
 class AdminHelpRequestFeedTileStatus extends StatelessWidget {
-  AdminHelpRequestFeedTileStatus(context,this.helpRequest);
+  AdminHelpRequestFeedTileStatus(context, this.helpRequest);
 
   final HelpRequest helpRequest;
-
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +208,7 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
             color: Color(0xFF696969),
             //height: MediaQuery.of(context).size.height /2,
             child: Container(
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 color: BasicColor.backgroundClr,
                 borderRadius: BorderRadius.only(
                   topRight: const Radius.circular(20),
@@ -153,14 +218,14 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: Directionality(
                 textDirection: TextDirection.rtl,
-                child:Column(
+                child: Column(
                   children: [
                     SizedBox(
                       height: 20,
                     ),
                     Container(
                       //width: MediaQuery.of(context).size.width,
-                      child:Align(
+                      child: Align(
                         alignment: Alignment.bottomLeft,
                         child: Text(
                           dateFormat.format(helpRequest.date),
@@ -172,9 +237,9 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     Card(
-                      margin: EdgeInsets.symmetric(horizontal: 2.0,vertical: 8.0),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 2.0, vertical: 8.0),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -183,25 +248,26 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 children: [
-                                  Text(AppLocalizations.of(context).theUserInNeed,
+                                  Text(
+                                    AppLocalizations.of(context).theUserInNeed,
                                     style: TextStyle(
                                         color: Colors.blueAccent,
                                         fontSize: 22.0,
-                                        fontWeight: FontWeight.w600
-                                    ),),
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 ],
                               ),
                             ),
                             Expanded(
-                              child:
-                              Column(
+                              child: Column(
                                 children: [
-                                  Text(AppLocalizations.of(context).theVolunteer,
+                                  Text(
+                                    AppLocalizations.of(context).theVolunteer,
                                     style: TextStyle(
                                         color: Colors.blueAccent,
                                         fontSize: 22.0,
-                                        fontWeight: FontWeight.w600
-                                    ),),
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 ],
                               ),
                             ),
@@ -210,16 +276,21 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                       ),
                     ),
                     Card(
-                      margin: EdgeInsets.symmetric(horizontal: 2.0,vertical: 8.0),
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 2.0, vertical: 8.0),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                        padding: const EdgeInsets.only(
+                            left: 8.0, right: 8.0, bottom: 8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Expanded(
                               child: Column(
                                 children: [
-                                  GetHelpRequestTileUserInfo(helpRequest.sender_id,DataBaseService().userInNeedCollection,helpRequest),
+                                  GetHelpRequestTileUserInfo(
+                                      helpRequest.sender_id,
+                                      DataBaseService().userInNeedCollection,
+                                      helpRequest),
                                   CallWidget(helpRequest, true),
                                 ],
                               ),
@@ -227,11 +298,13 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                             Expanded(
                               child: Column(
                                 children: [
-                                  GetHelpRequestTileUserInfo(helpRequest.handler_id,DataBaseService().helpersCollection,null),
+                                  GetHelpRequestTileUserInfo(
+                                      helpRequest.handler_id,
+                                      DataBaseService().helpersCollection,
+                                      null),
                                   CallWidget(helpRequest, false),
                                 ],
                               ),
-
                             ),
                           ],
                         ),
@@ -243,26 +316,40 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          child: Text(AppLocalizations.of(context).categoryTwoDots , style: TextStyle(
-                              fontSize: 15,
-                              color: BasicColor.clr,fontWeight: FontWeight.bold
-                          ),),
+                          child: Text(
+                            AppLocalizations.of(context).categoryTwoDots,
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: BasicColor.clr,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                         Container(
-                          child: Text(helpRequest.category.description ,style: TextStyle(fontSize: 15),textDirection: TextDirection.rtl, ),
+                          child: Text(
+                            helpRequest.category.description,
+                            style: TextStyle(fontSize: 15),
+                            textDirection: TextDirection.rtl,
+                          ),
                         ),
                       ],
                     ),
-
                     Container(
                       alignment: Alignment.topRight,
-                      child: Text(AppLocalizations.of(context).requestDescriptionTwoDots ,
-                        style: TextStyle(fontSize: 15 , color: BasicColor.clr ,fontWeight: FontWeight.bold),
+                      child: Text(
+                        AppLocalizations.of(context).requestDescriptionTwoDots,
+                        style: TextStyle(
+                            fontSize: 15,
+                            color: BasicColor.clr,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                     Container(
-                        alignment: Alignment.topRight,
-                        child: Text(helpRequest.description, style: TextStyle(fontSize: 15),textDirection: TextDirection.rtl,),
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        helpRequest.description,
+                        style: TextStyle(fontSize: 15),
+                        textDirection: TextDirection.rtl,
+                      ),
                     ),
                   ],
                 ),
@@ -273,7 +360,6 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class CallWidget extends StatelessWidget {
@@ -284,12 +370,11 @@ class CallWidget extends StatelessWidget {
 
   _launchCaller() async {
     String number;
-    if(isUserInNeed) {
+    if (isUserInNeed) {
       UserInNeed usr = await (DataBaseService().getUserById(
           helpRequest.sender_id, Privilege.UserInNeed)) as UserInNeed;
       number = usr.phoneNumber;
-    }
-    else{
+    } else {
       Volunteer usr = await (DataBaseService().getUserById(
           helpRequest.handler_id, Privilege.Volunteer)) as Volunteer;
       number = usr.phoneNumber;
@@ -300,7 +385,6 @@ class CallWidget extends StatelessWidget {
     } else {
       throw 'Could not launch $url';
     }
-
   }
 
   @override
@@ -320,4 +404,3 @@ class CallWidget extends StatelessWidget {
     );
   }
 }
-

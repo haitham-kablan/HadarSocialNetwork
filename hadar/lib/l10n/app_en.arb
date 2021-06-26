@@ -146,5 +146,7 @@
     "current": "current",
     "newPass": "new",
     "reTypeNew": "Re-type new",
-    "passDontMatch": "Passwords do not match, try again!"
+    "passDontMatch": "Passwords do not match, try again!",
+    "translate": "translate",
+    "showOriginal": "show original"
 }
