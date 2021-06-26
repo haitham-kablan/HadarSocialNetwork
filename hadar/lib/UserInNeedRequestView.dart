@@ -18,6 +18,8 @@ import 'feeds/OrganizationFeed.dart';
 import 'feeds/user_inneed_feed.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'main.dart';
+
 class RequestWindow extends StatelessWidget {
   HelpRequestFeedState parent;
   DescriptonBox desBox;
@@ -40,6 +42,8 @@ class RequestWindow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String langCode = MainApp.of(parent.context).getLangCode();
+    bool isRTL = (langCode == "he" || langCode == "ar");
     return Scaffold(
         //backgroundColor: BasicColor.backgroundClr,
         bottomNavigationBar: BottomBar(),
@@ -65,7 +69,6 @@ class RequestWindow extends StatelessWidget {
                     Container(
                       margin: EdgeInsets.fromLTRB(30, 20, 30, 20),
                       child: TextFormField(
-                        textAlign: TextAlign.right,
                         controller: RequestWindow.location_controller,
                         decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
@@ -84,11 +87,10 @@ class RequestWindow extends StatelessWidget {
                       child: desBox,
                     ),
                     Container(
-                      padding: EdgeInsets.only(top: 15, right: 10),
-                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(top: 15, right: 10, left: 10),
+                      alignment: isRTL ? Alignment.centerRight : Alignment.centerLeft,
                       child: Text(
                         AppLocalizations.of(context).organizationServices,
-                        textDirection: TextDirection.rtl,
                         style: TextStyle(
                             fontSize: 15.0,
                             color: BasicColor.clr,
@@ -168,6 +170,7 @@ class DropDownState extends State<Dropdown> {
               return DropdownMenuItem<HelpRequestType>(
                 value: type,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     SizedBox(
                       width: 10,
@@ -204,7 +207,7 @@ class DescriptonBox extends StatefulWidget {
 }
 
 class _DescriptonBox extends State<DescriptonBox> {
-  String _inputtext = 'waiting..';
+  String _inputtext = '';
   HelpRequest helpRequest;
   TextEditingController inputtextField = TextEditingController();
   HelpRequestType helpRequestType;
@@ -257,17 +260,14 @@ class _DescriptonBox extends State<DescriptonBox> {
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: TextField(
-                      controller: inputtextField,
-                      textAlign: TextAlign.right,
-                      autofocus: true,
-                      decoration: new InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: widget.title,
-                      ),
-                    ))),
+                child: TextField(
+                  controller: inputtextField,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: widget.title,
+                  ),
+                )),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -286,7 +286,7 @@ class _DescriptonBox extends State<DescriptonBox> {
                   onPressed: () {
                     _processText();
                   },
-                  child: Text(AppLocalizations.of(context).approve),
+                  child: Text(AppLocalizations.of(context).confirm),
                 ),
 
               ],

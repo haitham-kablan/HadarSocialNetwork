@@ -15,22 +15,39 @@ class specificInquiryView extends StatelessWidget {
 
   Widget getData(String title, String data) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
             Container(
 
-              alignment: Alignment.topRight,
+              //alignment: Alignment.topRight,
               child:
                 Text(
-                  title + ":  " + data,
+                  title + ": ",
                   style: TextStyle(
                       fontSize: 20.0,
-                      color: Colors.blueGrey,
+                      color: BasicColor.clr,
                       letterSpacing: 2.0,
                       fontWeight: FontWeight.bold,
                      ),
                 ),
             ),
-            SizedBox(
+        Container(
+
+          alignment: Alignment.topRight,
+          padding: EdgeInsets.only(left: 8, right: 8),
+          child:
+          Text(
+            data,
+            style: TextStyle(
+              fontSize: 20.0,
+              color: Colors.blueGrey,
+              letterSpacing: 2.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+
+        SizedBox(
               height: 20,
             ),
           ],
@@ -52,7 +69,8 @@ class specificInquiryView extends StatelessWidget {
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 120,

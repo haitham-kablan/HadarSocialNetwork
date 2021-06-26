@@ -50,6 +50,10 @@ class _MainAppState extends State<MainApp> {
     }
   }
 
+  String getLangCode(){
+    return _locale.languageCode;
+  }
+
   void _fetchUserLocal() async{
     String appLanguage = await DataBaseService().getUserAppLanguage();
     _locale = Locale.fromSubtags(languageCode: appLanguage);

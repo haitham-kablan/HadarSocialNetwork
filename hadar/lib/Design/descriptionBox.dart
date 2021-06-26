@@ -50,24 +50,20 @@ class DescriptionBoxState extends State<DescriptionBox> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: TextFormField(
-                  style: TextStyle(
-                    color:
-                        text_color == Colors.grey ? Colors.black : text_color,
-                  ),
-                  autofocus: true,
-                  obscureText: is_pw,
-                  autocorrect: !is_pw,
-                  enableSuggestions: !is_pw,
-                  controller: Controller,
-                  validator: Validtor,
-                  textAlign: TextAlign.right,
-                  decoration: new InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: widget.hint,
-                  ),
+              child: TextFormField(
+                style: TextStyle(
+                  color:
+                      text_color == Colors.grey ? Colors.black : text_color,
+                ),
+                autofocus: true,
+                obscureText: is_pw,
+                autocorrect: !is_pw,
+                enableSuggestions: !is_pw,
+                controller: Controller,
+                validator: Validtor,
+                decoration: new InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: widget.hint,
                 ),
               ),
             ),

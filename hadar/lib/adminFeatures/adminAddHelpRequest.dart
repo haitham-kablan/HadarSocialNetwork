@@ -13,6 +13,7 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../Design/mainDesign.dart';
+import '../main.dart';
 import '../profiles/adminProfile.dart';
 import '../feeds/user_inneed_feed.dart';
 import '../users/Privilege.dart';
@@ -118,7 +119,7 @@ class AdminRequestWindow extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => AdminProfile(CurrentUser.curr_user)),
                       );
                     },
-                    child: Text(AppLocalizations.of(context).approve),
+                    child: Text(AppLocalizations.of(context).confirm),
                   ),
                   ],
                 ),
@@ -165,6 +166,8 @@ class DropDownState extends State<Dropdown> {
 
   @override
   Widget build(BuildContext context) {
+    String langCode = MainApp.of(context).getLangCode();
+    bool isRTL = (langCode == "he" || langCode == "ar");
     return Scaffold(
       body: Center(
         child: Directionality(
@@ -184,6 +187,7 @@ class DropDownState extends State<Dropdown> {
               return DropdownMenuItem<HelpRequestType>(
                 value: type,
                 child: Row(
+                  mainAxisAlignment: isRTL ? MainAxisAlignment.start : MainAxisAlignment.end,
                   children: <Widget>[
                     SizedBox(
                       width: 10,
@@ -230,7 +234,7 @@ class DescriptonBox extends StatefulWidget {
 }
 
 class _DescriptonBox extends State<DescriptonBox> {
-  String _inputtext = 'waiting..';
+  String _inputtext = '';
   HelpRequest helpRequest;
   TextEditingController inputtextField = TextEditingController();
   HelpRequestType helpRequestType;
@@ -260,17 +264,15 @@ class _DescriptonBox extends State<DescriptonBox> {
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: TextField(
-                      controller: inputtextField,
-                      textAlign: TextAlign.right,
-                      autofocus: true,
-                      decoration: new InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: widget.title,
-                      ),
-                    ))),
+                child: TextField(
+                  controller: inputtextField,
+                  autofocus: true,
+                  decoration: new InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: widget.title,
+                  ),
+                )
+            ),
           ],
         ),
       ),

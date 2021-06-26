@@ -75,7 +75,7 @@
 	"waitingRequests": "Waiting requests",
 	"approvedRequests": "Approved requests",
 	"addCategory": "Add category",
-	"approve": "Approve",
+	"confirm": "Confirm",
 	"approveRequest": "Approve request",
 	"addRequest": "Add request",
 	"other3Dot": "Other...",

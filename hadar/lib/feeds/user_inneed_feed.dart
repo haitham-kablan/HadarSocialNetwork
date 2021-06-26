@@ -114,7 +114,7 @@ class HelpRequestFeedState extends State<UserInNeedHelpRequestsFeed> {
               onPressed: () async {
                 List<HelpRequestType> types =
                     await DataBaseService().helpRequestTypesAsList();
-                types.add(HelpRequestType('אחר..'));
+                types.add(HelpRequestType('אחר'));
                 //we must add אחר so it always appears on the last of the list
                 Navigator.push(
                   context,
