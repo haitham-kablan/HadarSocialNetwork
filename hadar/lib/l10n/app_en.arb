@@ -142,5 +142,9 @@
     "categories": "categories",
     "favoriteCategories": "favoriteCategories",
     "update": "update",
-    "showAllCategories": "showAllCategories"
+    "showAllCategories": "showAllCategories",
+    "current": "current",
+    "newPass": "new",
+    "reTypeNew": "Re-type new",
+    "passDontMatch": "Passwords do not match, try again!"
 }

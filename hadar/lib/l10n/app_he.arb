@@ -142,5 +142,9 @@
     "categories": "קטיגוריות",
     "favoriteCategories": "הקטיגוריות המועדפות עלי",
     "update": "עדכן",
-    "showAllCategories": "הצג את כל הקטיגוריות"
+    "showAllCategories": "הצג את כל הקטיגוריות",
+    "current": "נוכחי",
+    "newPass": "חדש",
+    "reTypeNew": "הקלדה חוזרת",
+    "passDontMatch": "הסיסמאות אינם תואמות, נסה שנית!"
 }
