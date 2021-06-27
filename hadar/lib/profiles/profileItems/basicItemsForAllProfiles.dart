@@ -38,7 +38,7 @@ Widget changeLocationDialogue(BuildContext context) {
                   Colors.white,
                   Validators.location_validator,
                   newLoaction_controller,
-                  true,
+                  false,
                   Colors.black),
               key: newLoaction_key,
             ),
@@ -251,6 +251,28 @@ class ManagePersonalInfo extends StatelessWidget {
       return SizedBox();
   }
 
+  ifNotAdminShowLocation(BuildContext context){
+    ButtonStyle style = buttonCreate.getStyle(context);
+    if(user.privilege!=Privilege.Admin){
+      return TextButton(
+        child: buttonCreate.getChild(
+            AppLocalizations.of(context).changeStableLocation,
+            Icons.location_on),
+        style: style,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                changeLocationDialogue(context),
+          );
+        },
+      );
+    }
+    else{
+      return SizedBox();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ButtonStyle style = buttonCreate.getStyle(context);
@@ -273,19 +295,7 @@ class ManagePersonalInfo extends StatelessWidget {
             ),
           ],
         ),
-        TextButton(
-          child: buttonCreate.getChild(
-              AppLocalizations.of(context).changeStableLocation,
-              Icons.location_on),
-          style: style,
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) =>
-                  changeLocationDialogue(context),
-            );
-          },
-        ),
+        ifNotAdminShowLocation(context),
         TextButton(
           child: buttonCreate.getChild(
               AppLocalizations.of(context).changePassword, Icons.lock),
