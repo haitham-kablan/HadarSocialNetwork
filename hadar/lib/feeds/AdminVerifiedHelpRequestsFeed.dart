@@ -93,18 +93,33 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
   bool showTranslation = true;
   bool showOriginal = false;
 
+  // bool firstClick =true;
 
   initText() async {
     category = widget.helpRequest.category.description;
     description = widget.helpRequest.description;
-    categoryTranslation = await translator.translate(
-      category,
-      to: getLanguage(context),
-    );
-    descriptionTranslation = await translator.translate(
-      description,
-      to: getLanguage(context),
-    );
+    String newLang = getLanguage(context);
+    try {
+      categoryTranslation = await translator.translate(
+        category,
+        to: newLang,
+      );
+      descriptionTranslation =
+          await translator.translate(description, to: newLang);
+    } catch (e) {
+      if ('en' != newLang)
+        newLang = 'en';
+      else
+        newLang = 'he';
+      categoryTranslation = await translator.translate(
+        category,
+        to: newLang,
+      );
+      descriptionTranslation = await translator.translate(
+        description,
+        to: newLang,
+      );
+    }
   }
 
   @override
@@ -166,27 +181,31 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
                     AppLocalizations.of(context).translate, Icons.translate),
                 style: style,
                 onPressed: () {
-                  setState(() {
-                    showTranslation = false;
-                    showOriginal = true;
+                  Future.delayed(const Duration(milliseconds: 800), () {
+                    setState(() {
+                      showTranslation = false;
+                      showOriginal = true;
+                    });
                   });
                 },
               ),
             ),
-                Visibility(
-                  visible: showOriginal,
-                  child: TextButton(
-                    child: buttonCreate.getChild(
-                        AppLocalizations.of(context).showOriginal, Icons.translate),
-                    style: style,
-                    onPressed: () {
-                      setState(() {
-                        showTranslation = true;
-                        showOriginal = false;
-                      });
-                    },
-                  ),
-                )
+            Visibility(
+              visible: showOriginal,
+              child: TextButton(
+                child: buttonCreate.getChild(
+                    AppLocalizations.of(context).showOriginal, Icons.translate),
+                style: style,
+                onPressed: () {
+                  Future.delayed(const Duration(milliseconds: 800), () {
+                    setState(() {
+                      showTranslation = true;
+                      showOriginal = false;
+                    });
+                  });
+                },
+              ),
+            )
           ])),
     );
   }
