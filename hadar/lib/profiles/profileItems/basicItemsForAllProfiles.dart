@@ -4,6 +4,7 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/descriptionBox.dart';
 import 'package:hadar/profiles/profileItems/validators.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/Privilege.dart';
 import 'package:hadar/users/User.dart' as a;
 import 'package:hadar/utils/HelpRequestType.dart';
@@ -63,8 +64,8 @@ Widget changeLocationDialogue(BuildContext context) {
               style: TextButton.styleFrom(
                 primary: Theme.of(context).primaryColor,
               ),
-              onPressed: () {
-                //TODO: call function from database
+              onPressed: ()async {
+               await DataBaseService().updateLocation(newLoaction_controller.text, CurrentUser.curr_user);
                 Navigator.pop(context, true);
               },
               child: Text(AppLocalizations.of(context).confirm),

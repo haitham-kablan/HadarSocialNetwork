@@ -352,6 +352,22 @@ class DataBaseService{
 
   }
 
+  Future updateLocation(String newLocation,hadar.User user)async{
+    if (newLocation.isEmpty){
+      return;
+    }else{
+      CollectionReference wantedRef = user.privilege == Privilege.UserInNeed ? userInNeedCollection : helpersCollection;
+      String wantedString = user.privilege == Privilege.UserInNeed ? "Location" : "location";
+      if (user.privilege == Privilege.Admin || user.privilege == Privilege.Organization){
+        return;
+      }else{
+        Map<String,dynamic> to_add = Map();
+        to_add[wantedString] = newLocation;
+        await wantedRef.doc(user.id).update(to_add);
+      }
+    }
+  }
+
   Future addInquryToDataBase(UserInquiry userInquiry) async{
 
     Map<String,dynamic> to_add = Map();
