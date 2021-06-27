@@ -31,7 +31,10 @@ void initWorkmanager(){
     //This is the value that will be
     // returned in the callbackDispatcher
     "notificationHandler",
-      initialDelay: Duration(seconds: 15),
+
+    //This is the start delay time of the Workmanager,
+    //it will start working after this time duration
+    initialDelay: Duration(seconds: 10),
 
     // When no frequency is provided
     // the default 15 minutes is set.

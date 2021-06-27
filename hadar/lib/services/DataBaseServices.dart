@@ -266,11 +266,11 @@ class DataBaseService{
     return requests.size > 0;
   }
 
-  Future updateUserLastNotifiedTime(hadar.User user) async{
+  Future updateUserLastNotifiedTime(hadar.User user, {bool turnOffNotifications = false}) async{
 
     Map<String,dynamic> toUpdate = Map();
-    toUpdate['lastNotifiedTime'] = DateTime.now().millisecondsSinceEpoch;
-
+    toUpdate['lastNotifiedTime'] = turnOffNotifications ? -1 : DateTime.now().millisecondsSinceEpoch;
+    user.lastNotifiedTime = toUpdate['lastNotifiedTime'];
     switch (user.privilege){
       case Privilege.Admin:
         adminsCollection.doc(user.id).update(toUpdate);
