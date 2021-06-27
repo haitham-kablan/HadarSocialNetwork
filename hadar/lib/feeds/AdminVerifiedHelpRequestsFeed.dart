@@ -3,9 +3,9 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/mainDesign.dart';
 import 'package:hadar/feeds/feed_items/help_request_tile.dart';
 import 'package:hadar/lang/HebrewText.dart';
+import 'package:hadar/feeds/feed_items/translateRequests.dart';
 import 'package:hadar/profiles/profileItems/basicItemsForAllProfiles.dart';
 import 'package:hadar/services/DataBaseServices.dart';
-import 'package:hadar/services/getters/getCurrentLanguage.dart';
 import 'package:hadar/services/getters/getUserName.dart';
 import 'package:hadar/users/Admin.dart';
 import 'package:hadar/users/CurrentUser.dart';
@@ -85,47 +85,16 @@ class AdminHelpRequestFeedTile extends StatefulWidget {
 
 class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
   ProfileButton buttonCreate = ProfileButton();
-  final translator = GoogleTranslator();
   String category;
-  var categoryTranslation;
   String description;
-  var descriptionTranslation;
-  bool showTranslation = true;
-  bool showOriginal = false;
+  TranslateRequest translation;
 
-  // bool firstClick =true;
-
-  initText() async {
-    category = widget.helpRequest.category.description;
-    description = widget.helpRequest.description;
-    String newLang = getLanguage(context);
-    try {
-      categoryTranslation = await translator.translate(
-        category,
-        to: newLang,
-      );
-      descriptionTranslation =
-          await translator.translate(description, to: newLang);
-    } catch (e) {
-      if ('en' != newLang)
-        newLang = 'en';
-      else
-        newLang = 'he';
-      categoryTranslation = await translator.translate(
-        category,
-        to: newLang,
-      );
-      descriptionTranslation = await translator.translate(
-        description,
-        to: newLang,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    initText();
-    ButtonStyle style = buttonCreate.getStyle(context);
+    category = widget.helpRequest.category.description;
+    description = widget.helpRequest.description;
+    translation = TranslateRequest(category, description);
     final DateTime now = widget.helpRequest.date;
     final Intl.DateFormat formatter = Intl.DateFormat.yMd().add_Hm();
     Color color = Colors.white;
@@ -152,61 +121,7 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
           alignment: Alignment.topLeft,
         ),
       ]),
-      subtitle: Container(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-            Row(children: <Widget>[
-              Visibility(
-                visible: showTranslation,
-                child: Text(category),
-              ),
-              Visibility(
-                visible: showOriginal,
-                child: Text(categoryTranslation.toString()),
-              ),
-            ]),
-            Visibility(
-              visible: showTranslation,
-              child: Text(description),
-            ),
-            Visibility(
-              visible: showOriginal,
-              child: Text(descriptionTranslation.toString()),
-            ),
-            Visibility(
-              visible: showTranslation,
-              child: TextButton(
-                child: buttonCreate.getChild(
-                    AppLocalizations.of(context).translate, Icons.translate),
-                style: style,
-                onPressed: () {
-                  Future.delayed(const Duration(milliseconds: 800), () {
-                    setState(() {
-                      showTranslation = false;
-                      showOriginal = true;
-                    });
-                  });
-                },
-              ),
-            ),
-            Visibility(
-              visible: showOriginal,
-              child: TextButton(
-                child: buttonCreate.getChild(
-                    AppLocalizations.of(context).showOriginal, Icons.translate),
-                style: style,
-                onPressed: () {
-                  Future.delayed(const Duration(milliseconds: 800), () {
-                    setState(() {
-                      showTranslation = true;
-                      showOriginal = false;
-                    });
-                  });
-                },
-              ),
-            )
-          ])),
+      subtitle: translation,
     );
   }
 }
@@ -215,6 +130,7 @@ class AdminHelpRequestFeedTileStatus extends StatelessWidget {
   AdminHelpRequestFeedTileStatus(context, this.helpRequest);
 
   final HelpRequest helpRequest;
+
 
   @override
   Widget build(BuildContext context) {
