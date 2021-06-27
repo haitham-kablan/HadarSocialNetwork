@@ -42,7 +42,9 @@ class CurrentUser{
 
     switch(curr_user.privilege){
       case Privilege.Admin:
-        initWorkmanager();
+        if(curr_user.lastNotifiedTime != -1) {
+          initWorkmanager();
+        }
         return AdminPage(curr_user as Admin);
         break;
 
@@ -51,7 +53,9 @@ class CurrentUser{
         break;
 
       case Privilege.Volunteer:
-        initWorkmanager();
+        if(curr_user.lastNotifiedTime != -1) {
+          initWorkmanager();
+        }
         List<HelpRequestType> db_categories = await DataBaseService().helpRequestTypesAsList();
         List<HelpRequestType> user_categories = (curr_user as Volunteer).categories;
 

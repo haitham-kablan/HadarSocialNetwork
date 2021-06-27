@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/services/WorkmanagerHandling.dart';
+import 'package:hadar/users/CurrentUser.dart';
 
 class NotificationSwitch extends StatefulWidget {
   const NotificationSwitch({Key key}) : super(key: key);
@@ -10,7 +13,7 @@ class NotificationSwitch extends StatefulWidget {
 }
 
 class _NotificationSwitchState extends State<NotificationSwitch> {
-  bool isSwitched = false;
+  bool isSwitched = CurrentUser.curr_user.lastNotifiedTime != -1;
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +23,15 @@ class _NotificationSwitchState extends State<NotificationSwitch> {
         setState(() {
           isSwitched = value;
           if(isSwitched){
-            //TODO: turn notifications on
+            //turn notifications on
+            initWorkmanager();
+            CurrentUser.curr_user.lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
             print("notification switch is on ");
           }
           else{
-            //TODO: turn notifications off
+            //turn notifications off
+            WorkManagerInst.instance.cancelAll();
+            DataBaseService().updateUserLastNotifiedTime(CurrentUser.curr_user, turnOffNotifications: true);
             print("notification switch is off ");
           }
         });
