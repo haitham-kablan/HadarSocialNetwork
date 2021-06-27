@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/feeds/feed_items/translateRequests.dart';
 import 'package:hadar/feeds/helper_feed.dart';
 import 'package:hadar/lang/HebrewText.dart';
 import 'package:hadar/services/DataBaseServices.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedTile extends StatefulWidget {
   final Widget tileWidget;
+
   FeedTile({this.tileWidget});
 
   @override
@@ -31,7 +33,6 @@ class _FeedTileState extends State<FeedTile> {
 
   @override
   Widget build(BuildContext context) {
-
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Card(
@@ -43,71 +44,47 @@ class _FeedTileState extends State<FeedTile> {
   }
 }
 
-
-
 class VolunteerFeedTile extends StatefulWidget {
   final HelpRequest helpRequest;
 
   VolunteerFeedTile(this.helpRequest);
+
   @override
   _VolunteerFeedTileState createState() => _VolunteerFeedTileState();
 }
 
 class _VolunteerFeedTileState extends State<VolunteerFeedTile> {
+  TranslateRequest translation;
 
   @override
   Widget build(BuildContext context) {
-
     final DateTime now = widget.helpRequest.date;
     final DateFormat formatter = DateFormat.yMd().add_Hm();
-    Color color = widget.helpRequest.handler_id == '' ? Colors.white : BasicColor.stam;
-
+    Color color =
+        widget.helpRequest.handler_id == '' ? Colors.white : BasicColor.stam;
+  translation = TranslateRequest(widget.helpRequest, 'helperFeed');
     return ListTile(
       tileColor: color,
-      onTap: () => print("List tile pressed!"),//showHelpRequestStatus(helpRequest),
+      onTap: () => print("List tile pressed!"),
+      //showHelpRequestStatus(helpRequest),
       isThreeLine: false,
       title: Row(children: <Widget>[
         Container(
           // child: Text(widget.helpRequest.category.description),
-          child: GetUserInNeedInfo(widget.helpRequest.sender_id,DataBaseService().userInNeedCollection,widget.helpRequest),
+          child: GetUserInNeedInfo(widget.helpRequest.sender_id,
+              DataBaseService().userInNeedCollection, widget.helpRequest),
           alignment: Alignment.topRight,
         ),
         Spacer(),
         Container(
-          child: HebrewText(  formatter.format(now) ),
+          child: HebrewText(formatter.format(now)),
           alignment: Alignment.topLeft,
         ),
       ]),
-      subtitle: Container(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(children: <Widget>[
-                          Text(widget.helpRequest.category.description),
-                          Spacer(),
-                          Spacer(),
-                          //CallWidget(widget.helpRequest),
-                  widget.helpRequest.handler_id == ''  ? ThreeDotsWidget(widget.helpRequest): Container()]
-                ),
-                HebrewText(widget.helpRequest.description),
-              ]
-          )
-      ),
-     // trailing:
-     // Row(children: [Icon(Icons.translate)],),
-//          Row(
-//            mainAxisSize: MainAxisSize.min,
-//            children: <Widget>[
-//              //CallWidget(widget.helpRequest),
-//             // ThreeDotsWidget(widget.helpRequest),
-//
-//            ],
-//          ),
-//
+      subtitle:translation,
     );
   }
 }
-
 
 class CallWidget extends StatelessWidget {
   final HelpRequest helpRequest;
@@ -145,12 +122,12 @@ class CallWidget extends StatelessWidget {
 }
 
 class ThreeDotsWidget extends StatelessWidget {
-
   HelpRequest helpRequest;
+
   ThreeDotsWidget(this.helpRequest);
 
-
   Offset _tapPosition;
+
   void _storePosition(TapDownDetails details) {
     _tapPosition = details.globalPosition;
   }
@@ -173,7 +150,7 @@ class ThreeDotsWidget extends StatelessWidget {
                     Icons.done,
                     color: Colors.green,
                   ),
-                   Text(AppLocalizations.of(context).acceptRequest),
+                  Text(AppLocalizations.of(context).acceptRequest),
                 ],
               ),
             ),
@@ -202,11 +179,12 @@ class ThreeDotsWidget extends StatelessWidget {
         switch (_selected) {
           case 1:
             print("accept seleted");
-           // helpRequest.handler_id = '4';
+            // helpRequest.handler_id = '4';
             List<HelpRequestType> list1 = List<HelpRequestType>();
             list1.add(HelpRequestType('food'));
             list1.add(HelpRequestType('money'));
-            DataBaseService().assignHelpRequestForVolunteer(CurrentUser.curr_user as Volunteer, helpRequest);
+            DataBaseService().assignHelpRequestForVolunteer(
+                CurrentUser.curr_user as Volunteer, helpRequest);
 //                      Navigator.push(
 //                        context,
 //                        MaterialPageRoute(builder: (context) => testing_stream()),
@@ -305,7 +283,8 @@ class HelpRequestStatusWidget extends StatelessWidget {
                           onPressed: () {
                             print("Accepted");
                           },
-                          child: Text(AppLocalizations.of(context).acceptRequest),
+                          child:
+                              Text(AppLocalizations.of(context).acceptRequest),
                         ),
                         RaisedButton(
                           shape: RoundedRectangleBorder(
