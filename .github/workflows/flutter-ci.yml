@@ -25,7 +25,7 @@ jobs:
     
     # Get flutter dependencies.
     - run: flutter pub get
-      #working-directory: ./hadar
+      working-directory: ./hadar
 
     # Statically analyze the Dart code for any errors.
     - run: flutter analyze .
