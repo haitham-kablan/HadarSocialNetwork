@@ -138,10 +138,10 @@ class DataBaseService{
     vol.categories = newList;
 
     Map<String,dynamic> to_add = Map();
-    to_add["categories"] = newList.map((e) => e.description).toList();
-    await helpersCollection.doc(vol.id).update({"categories": FieldValue.delete()});
-    await helpersCollection.doc(vol.id).update(to_add);
+    to_add["lastNotifiedTime"] = vol.lastNotifiedTime;
 
+    await addVolunteerToDataBase(vol);
+    await helpersCollection.doc(vol.id).update(to_add);
 
   }
 
