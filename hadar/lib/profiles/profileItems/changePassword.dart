@@ -120,7 +120,6 @@ Widget changePasswordDialogue(BuildContext context) {
                 }
 
                   Navigator.pop(context, true);
-                //  TODO: when done call changePassword
                 DataBaseService.changePassword(firstPass_Controller.text);
 
               },

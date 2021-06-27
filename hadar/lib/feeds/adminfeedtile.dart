@@ -21,6 +21,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '../HelpRequestAdminDialouge.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'feed_items/translateRequests.dart';
+
 
 
 
@@ -80,9 +82,11 @@ class AdminHelpRequestFeedTile extends StatefulWidget {
 
 
 class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
+  TranslateRequest translation;
 
   @override
   Widget build(BuildContext context) {
+    translation = TranslateRequest(widget.helpRequest,'adminRequest');
     final DateTime now = widget.helpRequest.date;
     final intl.DateFormat formatter = intl.DateFormat.yMd().add_Hm();
     Color color =  Colors.white ;
@@ -103,22 +107,7 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
           alignment: Alignment.topLeft,
         ),
       ]),
-      subtitle: Container(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(children: <Widget>[
-                  Text(widget.helpRequest.category.description),
-                  Spacer(),
-                  Spacer(),
-                  CallWidget(widget.helpRequest),
-                  //ThreeDotsWidget(widget.helpRequest)
-                ]
-                ),
-                HebrewText(widget.helpRequest.description),
-              ]
-          )
-      ),
+      subtitle: translation,
     );
   }
 }
