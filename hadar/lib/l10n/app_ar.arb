@@ -48,6 +48,8 @@
 	"locationIsTooLong": "المكان طويل جدا",
 	"locationCantBeEmpty": "المكان لا يمكن ان يكون خالي",
 	"passwordDoesntMatch": "كلمة المرور غير متوافقه",
+	"passworIsnotValid": "كلمه المرور لا تلاءم البريد الاكتروني",
+	"cantEmptyPassword": "كلمه المرور لا يجب ان تكون فارغه",
 	"phoneNumberIsntLegal": "رقم هاتف غير صحيح",
 	"phoneNumberCantBeEmpty": "رقم الهاتف لا يمكن ان يكون خالي",
 	"nameIsTooLong": "الاسم طويل جدا",

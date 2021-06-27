@@ -91,16 +91,38 @@ Widget changePasswordDialogue(BuildContext context) {
               style: TextButton.styleFrom(
                 primary: Theme.of(context).primaryColor,
               ),
-              onPressed: () {
-                //TODO: make sure currentPassword  is the current password for this user
-                if (firstPass_Controller.text != sectPass_Controller.text) {
+              onPressed: () async{
+
+                if (currentPass_controller.text.isEmpty){
+                  showError(context, AppLocalizations.of(context).passworIsnotValid,
+                      Icons.warning_amber_rounded);
+                  return;
+                }
+
+                bool match = await DataBaseService().checkIfPasswordIsMatch(user.email, currentPass_controller.text);
+
+                if (!match){
+                  showError(context, AppLocalizations.of(context).passworIsnotValid,
+                      Icons.warning_amber_rounded);
+                  return;
+                }
+
+                if (firstPass_Controller.text.isEmpty || sectPass_Controller.text.isEmpty ) {
+                  showError(context, AppLocalizations.of(context).cantEmptyPassword,
+                      Icons.warning_amber_rounded);
+                  return;
+                }
+
+                if (firstPass_Controller.text != sectPass_Controller.text ) {
                     showError(context, AppLocalizations.of(context).passDontMatch,
                         Icons.warning_amber_rounded);
-                }else {
+                    return;
+                }
+
                   Navigator.pop(context, true);
                 //  TODO: when done call changePassword
-                // DataBaseService.changePassword(firstPass_Controller.text);
-              }
+                DataBaseService.changePassword(firstPass_Controller.text);
+
               },
               child: Text(AppLocalizations.of(context).confirm),
             ),

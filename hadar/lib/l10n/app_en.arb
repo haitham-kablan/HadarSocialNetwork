@@ -18,6 +18,8 @@
 	"locationTwoDots": "Location :",
 	"location": "Location",
 	"requestDescriptionTwoDots": "Request description: ",
+	"passworIsnotValid": "The password doesnt macth the orignal password",
+	"cantEmptyPassword": "The password cant be empty",
 	"requestDescription": "Request description",
 	"categoryTwoDots": "Category: ",
 	"theVolunteer": "The volunteer",

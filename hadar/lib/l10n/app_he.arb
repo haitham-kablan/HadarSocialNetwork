@@ -16,6 +16,8 @@
 	"other": "אחר",
 	"services": "שירותים :",
 	"locationTwoDots": "מיקום :",
+	"passworIsnotValid": "הסיסמה לא תואמת לדואל",
+	"cantEmptyPassword": "הסיסמה לא יכולה להיות ריקה",
 	"location": "מיקום",
 	"requestDescriptionTwoDots": "תיאור הבקשה: ",
 	"requestDescription": "תיאור בקשה",
