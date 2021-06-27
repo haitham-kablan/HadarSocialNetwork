@@ -92,9 +92,9 @@ class _AdminHelpRequestFeedTileState extends State<AdminHelpRequestFeedTile> {
 
   @override
   Widget build(BuildContext context) {
-    category = widget.helpRequest.category.description;
-    description = widget.helpRequest.description;
-    translation = TranslateRequest(category, description);
+    // category = widget.helpRequest.category.description;
+    // description = widget.helpRequest.description;
+    translation = TranslateRequest(widget.helpRequest,'adminVerified');
     final DateTime now = widget.helpRequest.date;
     final Intl.DateFormat formatter = Intl.DateFormat.yMd().add_Hm();
     Color color = Colors.white;
