@@ -18,7 +18,7 @@ jobs:
       with:
         channel: 'beta' # 'dev', 'alpha', default to: 'stable'
         # flutter-version: '1.12.x' # you can also specify exact version of flutter
-        working-directory: ./app
+        working-directory: ./hadar
 
     # Upgrade flutter dependencies.
     - run: flutter pub upgrade
