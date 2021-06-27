@@ -31,7 +31,7 @@ class _NotificationSwitchState extends State<NotificationSwitch> {
           else{
             //turn notifications off
             WorkManagerInst.instance.cancelAll();
-            DataBaseService().updateUserLastNotifiedTime(CurrentUser.curr_user, turnOffNotifications: true);
+            // DataBaseService().updateUserLastNotifiedTime(CurrentUser.curr_user, turnOffNotifications: true);
             print("notification switch is off ");
           }
         });
