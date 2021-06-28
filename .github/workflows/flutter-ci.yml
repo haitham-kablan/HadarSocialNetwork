@@ -16,21 +16,23 @@ jobs:
         working-directory: ./hadar
     steps:
 
-    # Setup the flutter environment.
+      # Setup the flutter environment.
       - uses: subosito/flutter-action@v1
         with:
           channel: 'beta' # 'dev', 'alpha', default to: 'stable'
         # flutter-version: '1.12.x' # you can also specify exact version of flutter
         #working-directory: ./hadar
-    
-    # Get flutter dependencies.
+        
+      - uses: actions/checkout@v1
+      
+      # Get flutter dependencies.
       - run: flutter pub get
-      #working-directory: ./hadar
+        #working-directory: ./hadar
 
-    # Statically analyze the Dart code for any errors.
+      # Statically analyze the Dart code for any errors.
       - run: flutter analyze .
-      #working-directory: ./hadar
+        #working-directory: ./hadar
 
-    # Run widget tests for our flutter project.
+      # Run widget tests for our flutter project.
       - run: flutter test
-      #working-directory: ./hadar
+        #working-directory: ./hadar
