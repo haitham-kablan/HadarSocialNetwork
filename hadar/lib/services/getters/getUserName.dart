@@ -6,7 +6,6 @@ import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:hadar/users/User.dart';
 import 'package:hadar/utils/HelpRequest.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 /*
@@ -73,12 +72,7 @@ class GetUserInNeedInfo extends StatelessWidget {
           Map<String, dynamic> data = snapshot.data.data();
           if(data == null){return Text('invalid id');}
           //"בן/בת " + userInNeed.Age.toString() + ", " + userInNeed.Location;
-          String gender = data['gender'] == "" ? AppLocalizations.of(context).anonymous : data['gender'];
-          if (data['gender'] != ""){
-            String x = data['gender']=="איש" ? "בן": "בת";
-            gender = gender + " " + x;
-          }
-          return Text(gender + "  " +"${data['Age']}" + ", " + helpRequest.location
+          return Text("בן/בת " + "${data['Age']}" + ", " + helpRequest.location
             , style: TextStyle(
               color: BasicColor.clr,
               fontWeight: FontWeight.bold,
