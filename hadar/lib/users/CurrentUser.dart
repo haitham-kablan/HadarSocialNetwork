@@ -28,6 +28,7 @@ import 'User.dart';
 class CurrentUser{
 
   static User curr_user = null;
+  static Widget userMainWidget;
 
   User getCurrent() {
     return curr_user;
@@ -45,11 +46,13 @@ class CurrentUser{
         if(curr_user.lastNotifiedTime != -1) {
           initWorkmanager();
         }
-        return AdminPage(curr_user as Admin);
+        userMainWidget = AdminPage(curr_user as Admin);
+        return userMainWidget;
         break;
 
       case Privilege.UserInNeed:
-        return UserInNeedPage(curr_user as UserInNeed);
+        userMainWidget = UserInNeedPage(curr_user as UserInNeed);
+        return userMainWidget;
         break;
 
       case Privilege.Volunteer:
@@ -66,7 +69,8 @@ class CurrentUser{
         }
 
         (curr_user as Volunteer).categoriesAsList.add(MyListView('אחר'));
-        return VolunteerPage(curr_user as Volunteer , (curr_user as Volunteer).categoriesAsList);
+        userMainWidget = VolunteerPage(curr_user as Volunteer , (curr_user as Volunteer).categoriesAsList);
+        return userMainWidget;
         break;
 
 

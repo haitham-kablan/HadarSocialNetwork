@@ -2,17 +2,23 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/profiles/adminProfile.dart';
+import 'package:hadar/profiles/profile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 
 import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hadar/services/getters/GetCurrentUser.dart';
+import 'package:hadar/users/CurrentUser.dart';
 
 import 'package:hadar/utils/HelpRequest.dart';
 import 'package:hadar/utils/HelpRequestType.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'feeds/viewRegisteredUsers.dart';
+import 'main_pages/AdminPage.dart';
 
 
 void main() async {
@@ -79,6 +85,14 @@ class _MainAppState extends State<MainApp> {
         //const Locale('ru', ''), // Russian, no country code
       ],
       locale: _locale,
+      //initialRoute: '/',
+      routes: {
+        '/adminPage': (context) => AdminPage(CurrentUser.curr_user),
+        '/adminProfile': (context) => AdminProfile(CurrentUser.curr_user),
+        '/adminAllUsersView': (context) => AllUsersView(),
+        '/userProfile': (context) => ProfilePage(CurrentUser.curr_user),
+        '/userMainPage': (context) => CurrentUser.userMainWidget,
+      },
       home: Container(
         margin: const EdgeInsets.only(left: marginSize, right: marginSize),
         child: Scaffold(
