@@ -74,9 +74,6 @@ class _MainAppState extends State<MainApp> {
     if(appLanguage != null) {
       _locale = Locale.fromSubtags(languageCode: appLanguage);
     }
-    // else{
-    //   _locale = Locale.fromSubtags(languageCode: Platform.localeName.substring(0,2));
-    // }
   }
 
   @override

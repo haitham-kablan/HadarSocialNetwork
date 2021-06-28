@@ -18,7 +18,10 @@ class ChangeLangDialogue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String userEmail = CurrentUser.curr_user.email;
+    String userEmail = "";
+    if(userIsLoggedIn) {
+      userEmail = CurrentUser.curr_user.email;
+    }
     return new AlertDialog(
       title: Center(child: Text(AppLocalizations.of(context).changeLanguage, style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),)),
       backgroundColor: BasicColor.backgroundClr,

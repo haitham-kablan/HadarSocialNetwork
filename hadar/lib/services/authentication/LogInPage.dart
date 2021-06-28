@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/Design/text_feilds/custom_text_feild.dart';
+import 'package:hadar/profiles/profileItems/ChangeLangDialogue.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/services/authentication/ReigsterPage.dart';
 import 'package:hadar/services/authentication/validators.dart';
@@ -88,11 +89,30 @@ class _LogInPageState extends State<LogInPage> {
             children: [
 
               Container(
-                child: this.showAlert(),
-                margin: EdgeInsets.all(40),
+                margin: EdgeInsets.only(left: 10, right: 10, bottom: 75),
+                child: TextButton(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(AppLocalizations.of(context).language),
+                        Icon(Icons.language),
+                      ],
+                    ),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            ChangeLangDialogue("default", userIsLoggedIn: false),
+                      );
+                    }),
               ),
               Container(
-                margin: EdgeInsets.only(top: 50),
+                child: this.showAlert(),
+                margin: EdgeInsets.all(25),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 15),
                 child: Text(
                   AppLocalizations.of(context).welcome,
                   textDirection: TextDirection.rtl,
