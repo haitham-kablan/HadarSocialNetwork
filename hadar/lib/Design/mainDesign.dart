@@ -133,10 +133,12 @@ class BottomBar extends StatelessWidget {
                         color: BasicColor.clr,
                       ),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProfilePage(CurrentUser.curr_user)));
+                        if(ModalRoute.of(context).settings.name != '/userProfile') {
+                          Navigator.pushNamed(
+                              context,
+                              '/userProfile',
+                          );
+                        }
                       },
                     ),
                   ),
@@ -150,11 +152,12 @@ class BottomBar extends StatelessWidget {
                         color: BasicColor.clr,
                       ),
                       onPressed: () async {
-                        Widget curr_widget = await CurrentUser.init_user(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => curr_widget),
-                        );
+                        if(ModalRoute.of(context).settings.name != '/userMainPage' && ModalRoute.of(context).settings.name != '/'){
+                          Navigator.pushNamed(
+                            context,
+                            '/userMainPage',
+                          );
+                        }
                       },
                     ),
                   ),
@@ -205,12 +208,12 @@ class AdminBottomBar extends StatelessWidget {
                         color: BasicColor.clr,
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AdminProfile(CurrentUser.curr_user)
-                          ),
-                        );
+                        if(ModalRoute.of(context).settings.name != '/adminProfile'){
+                          Navigator.pushNamed(
+                            context,
+                            '/adminProfile',
+                          );
+                        }
                       },
                     ),
                   ),
@@ -222,12 +225,12 @@ class AdminBottomBar extends StatelessWidget {
                         color: BasicColor.clr,
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AllUsersView()
-                          ),
-                        );
+                        if(ModalRoute.of(context).settings.name != '/adminAllUsersView') {
+                          Navigator.pushNamed(
+                            context,
+                            '/adminAllUsersView',
+                          );
+                        }
                       },
                     ),
                   ),
@@ -240,13 +243,13 @@ class AdminBottomBar extends StatelessWidget {
                         color: BasicColor.clr,
                       ),
                       onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AdminPage(CurrentUser.curr_user)
-
-                          )
-                        );
+                        if(ModalRoute.of(context).settings.name != '/adminPage'
+                            && ModalRoute.of(context).settings.name != '/') {
+                          Navigator.pushNamed(
+                            context,
+                            '/adminPage',
+                          );
+                        }
                       }
                     ),
                   ),
