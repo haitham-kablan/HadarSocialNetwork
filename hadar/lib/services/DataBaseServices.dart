@@ -446,7 +446,7 @@ class DataBaseService{
   Future addUserInNeedToDataBase(UserInNeed user) async{
 
     Map<String,dynamic> to_add = Map();
-
+    int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
     to_add['name'] = user.name;
     to_add['phoneNumber'] = user.phoneNumber;
     to_add['email'] = user.email;
@@ -461,6 +461,7 @@ class DataBaseService{
     to_add['homePhone'] = user.homePhone;
     to_add['specialStatus'] = user.specialStatus;
     to_add['Rav7a'] = user.Rav7a;
+    to_add['lastNotifiedTime'] = defaultLastNotifiedTime;
 
     return await userInNeedCollection.doc(user.id).set(to_add);
   }
@@ -468,12 +469,13 @@ class DataBaseService{
   Future addAdminToDataBase(Admin user) async{
 
     Map<String,dynamic> to_add = Map();
-
+    int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
     to_add['name'] = user.name;
     to_add['phoneNumber'] = user.phoneNumber;
     to_add['email'] = user.email;
     to_add['id'] = user.id;
     to_add['privilege'] = user.privilege.toString().substring(10);
+    to_add['lastNotifiedTime'] = defaultLastNotifiedTime;
 
     return await adminsCollection.doc(user.id).set(to_add);
   }
@@ -482,6 +484,7 @@ class DataBaseService{
   Future addVolunteerToDataBase(Volunteer user) async{
 
     Map<String,dynamic> to_add = Map();
+    int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
     to_add['name'] = user.name;
     to_add['phoneNumber'] = user.phoneNumber;
@@ -498,6 +501,7 @@ class DataBaseService{
     to_add['spokenlangs'] = user.spokenlangs;
     to_add['firstaidcourse'] = user.firstaidcourse;
     to_add['mobility'] = user.mobility;
+    to_add['lastNotifiedTime'] = defaultLastNotifiedTime;
 
     to_add['categories'] = user.categories.map((e) => e.description).toList();
 
