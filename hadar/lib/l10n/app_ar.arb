@@ -150,8 +150,5 @@
     "reTypeNew": "إعادة كتابة كلمة المرور",
      "passDontMatch": "كلمات المرور غير متطابقة, أعد المحاولة!",
      "translate": "ترجمة",
-     "showOriginal": "عرض الأصلي",
-     "gender": "الجنس",
-     "male": "ذكر",
-     "female": "انثى"
+     "showOriginal": "عرض الأصلي"
 }

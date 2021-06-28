@@ -13,7 +13,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class userInNeedRegisterPage extends StatefulWidget {
   final UserInNeed user;
-
   userInNeedRegisterPage(this.user);
   @override
   _userInNeedRegisterPageState createState() =>
@@ -29,7 +28,6 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
   final homephone = GlobalKey<FormState>();
   final specialstatus = GlobalKey<FormState>();
   final rev7a = GlobalKey<FormState>();
-  final gender = GlobalKey<FormState>();
   final UserInNeed user;
   _userInNeedRegisterPageState(this.user);
 
@@ -41,12 +39,9 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
   final homephone_controller = TextEditingController();
   final specialstatus_controller = TextEditingController();
   final rev7a_controller = TextEditingController();
-  final gender_controller = TextEditingController();
 
-  String genderStr;
   @override
   Widget build(BuildContext context) {
-
     return new Directionality(
         textDirection: TextDirection.rtl,
         child: new Builder(builder: (BuildContext context) {
@@ -58,7 +53,6 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
   }
 
   Widget get_bg() {
-    String dropdownValue = AppLocalizations.of(context).male;
     return new Scaffold(
       body: new SafeArea(
           top: false,
@@ -166,69 +160,6 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                           Colors.white),
                       key: rev7a,
                     ),
-                    Form(
-                      child:Container(
-                          //mainAxisSize.min
-                          margin: const EdgeInsets.all(10.0),
-                        //color: Colors.blue[600],
-                          width: 200,
-                          height: 40,
-                          //child: ChangeLangDialogue(genderStr)
-                        child: Center(
-                          child: DropdownButton<String>(
-                            //dropdownColor: Colors.black,
-                            value: dropdownValue,
-                            icon: const Icon(Icons.arrow_downward, color: Colors.white,),
-                            iconSize: 24,
-                            elevation: 16,
-                            dropdownColor: Colors.grey,
-                            style: const TextStyle(color: Colors.white),
-                            underline: Container(
-                              height: 2,
-                              color: Colors.white,
-                            ),
-                            onChanged: (String newValue) {
-                              setState(() {
-                                dropdownValue = newValue;
-                              });
-                            },
-                            // items: <String>[AppLocalizations.of(context).male, AppLocalizations.of(context).female]
-                            //     .map((String value) {
-                            //   return DropdownMenuItem<String>(
-                            //     value: value,
-                            //     child: Center(child: new Text(value, style: TextStyle(fontSize: 18),)),
-                            //   );
-                            // }).toList(),
-                            items: <String>[AppLocalizations.of(context).male, AppLocalizations.of(context).female]
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            //value: MainApp.of(context).getLanguage(),
-                            // onChanged: (String newLang) {
-                            //   String male = AppLocalizations.of(context).male;
-                            //   String female = AppLocalizations.of(context).female;
-                            //   switch (newLang) {
-                            //     case "male":
-                            //       genderStr = AppLocalizations.of(context).male;
-                            //       break;
-                            //     case "female":
-                            //       genderStr = AppLocalizations.of(context).female;
-                            //       break;
-                            //     default:
-                            //       genderStr = AppLocalizations.of(context).male;
-                            //   }
-                            //
-                            //
-                            // },
-                          ),
-                        ),
-                      ),
-                      //child: ChangeLangDialogue(genderStr),
-                      key: gender,
-                    )
                   ])),
                   new Container(
                       margin: EdgeInsets.all(10),
@@ -290,56 +221,6 @@ class demo_bg extends StatelessWidget {
             child: son,
           ),
         ),
-      ],
-    );
-  }
-}
-
-
-
-class ChangeLangDialogue extends StatelessWidget {
-  String genderStr;
-  ChangeLangDialogue(this.genderStr);
-
-  @override
-  Widget build(BuildContext context) {
-    return new AlertDialog(
-      title: Center(child: Text(AppLocalizations.of(context).gender, style: TextStyle(fontSize: 10),)),
-      backgroundColor: BasicColor.backgroundClr,
-      actions: [
-        Container(
-          child: Center(
-            child: DropdownButton<String>(
-              items: <String>[AppLocalizations.of(context).male, AppLocalizations.of(context).female]
-                  .map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Center(child: new Text(value, style: TextStyle(fontSize: 18),)),
-                );
-              }).toList(),
-              //value: MainApp.of(context).getLanguage(),
-              onChanged: (String newLang) {
-                 String male = AppLocalizations.of(context).male;
-                 String female = AppLocalizations.of(context).female;
-                switch (newLang) {
-                  case "male":
-                    genderStr = AppLocalizations.of(context).male;
-                    break;
-                  case "female":
-                    genderStr = AppLocalizations.of(context).female;
-                    break;
-                  default:
-                    genderStr = AppLocalizations.of(context).male;
-                }
-
-
-              },
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 15,
-        )
       ],
     );
   }
