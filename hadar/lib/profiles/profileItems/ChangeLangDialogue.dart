@@ -5,6 +5,7 @@ import 'package:hadar/Design/basicTools.dart';
 import 'package:hadar/main.dart';
 import 'package:hadar/profiles/adminProfile.dart';
 import 'package:hadar/services/DataBaseServices.dart';
+import 'package:hadar/services/authentication/LogInPage.dart';
 import 'package:hadar/users/CurrentUser.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -12,8 +13,8 @@ import '../profile.dart';
 
 class ChangeLangDialogue extends StatelessWidget {
   final String privilege;
-
-  ChangeLangDialogue(this.privilege);
+  final bool userIsLoggedIn;
+  ChangeLangDialogue(this.privilege,{this.userIsLoggedIn = true});
 
   @override
   Widget build(BuildContext context) {
@@ -51,21 +52,32 @@ class ChangeLangDialogue extends StatelessWidget {
                   default:
                     langCode = "he";
                 }
-                DataBaseService().setUserAppLanguage(userEmail, langCode);
                 MainApp.of(context)
                     .setLocale(Locale.fromSubtags(languageCode: langCode));
                 Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      if(privilege != 'Admin') {
-                        return ProfilePage(CurrentUser.curr_user);
-                      }
-                      return AdminProfile(CurrentUser.curr_user);
-                    }
-                  ),
-                );
+                if(userIsLoggedIn) {
+                  DataBaseService().setUserAppLanguage(userEmail, langCode);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) {
+                          if (privilege != 'Admin') {
+                            return ProfilePage(CurrentUser.curr_user);
+                          }
+                          return AdminProfile(CurrentUser.curr_user);
+                        }
+                    ),
+                  );
+                }
+                else{
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LogInPage()
+                    ),
+                  );
+                }
               },
             ),
           ),

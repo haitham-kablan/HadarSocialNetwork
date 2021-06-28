@@ -173,7 +173,6 @@ class _LogInPageState extends State<LogInPage> {
 
       print(FirebaseAuth.instance.currentUser);
 
-
       Widget curr_widget = await CurrentUser.init_user(context);
 
       //in case of deleted user
@@ -188,7 +187,9 @@ class _LogInPageState extends State<LogInPage> {
       }
 
       //DataBaseService().add_user_token_to_db();
-      Navigator.pop(context);
+      if(Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => curr_widget),
@@ -217,6 +218,8 @@ class _LogInPageState extends State<LogInPage> {
 
       }
     }
+    MainApp.of(context).fetchUserLocale();
+
   }
 
 
