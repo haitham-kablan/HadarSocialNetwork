@@ -988,10 +988,10 @@ class DataBaseService{
   Future<String> getUserAppLanguage() async{
     fb_auth.User curr_db_user = fb_auth.FirebaseAuth.instance.currentUser;
     if(curr_db_user == null){
-      return "he";
+      return null;
     }
     String langCode;
-    await usersLanguagesCollection.doc(curr_db_user.email).get().then((value) => langCode = (value.exists ? value["language"] : "he"));
+    await usersLanguagesCollection.doc(curr_db_user.email).get().then((value) => langCode = (value.exists ? value["language"] : null));
     return langCode;
   }
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:flutter/cupertino.dart';
@@ -38,7 +40,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  Locale _locale = Locale.fromSubtags(languageCode: 'he');
+  Locale _locale = Locale.fromSubtags(languageCode: Platform.localeName.substring(0,2));
 
   void setLocale(Locale value) {
     setState(() {
@@ -60,15 +62,24 @@ class _MainAppState extends State<MainApp> {
     return _locale.languageCode;
   }
 
-  void _fetchUserLocal() async{
+  void fetchUserLocale() async{
     String appLanguage = await DataBaseService().getUserAppLanguage();
-    _locale = Locale.fromSubtags(languageCode: appLanguage);
+    if(appLanguage != null) {
+      setLocale(Locale.fromSubtags(languageCode: appLanguage));
+    }
+  }
+
+  void _fetchLoggedUserLocale() async{
+    String appLanguage = await DataBaseService().getUserAppLanguage();
+    if(appLanguage != null) {
+      _locale = Locale.fromSubtags(languageCode: appLanguage);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     const double marginSize = kIsWeb ? 0.0 : 0.0;
-    _fetchUserLocal();
+    _fetchLoggedUserLocale();
     print("ss");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
