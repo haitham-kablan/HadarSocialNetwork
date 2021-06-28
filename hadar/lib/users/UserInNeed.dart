@@ -8,6 +8,7 @@ class UserInNeed extends RegisteredUser{
 
   int Age;
   String Location;
+  String gender;
   String Status;
   int numKids;
   String eduStatus;
@@ -16,7 +17,7 @@ class UserInNeed extends RegisteredUser{
   String Rav7a;
   UserInNeed(Privilege privilege , String name, String phoneNumber, String email,
       String id, int lastNotifiedTime, int Age , String Location, String Status, int numKids,
-      String eduStatus, String homePhone, String specialStatus, String Rav7a)
+      String eduStatus, String homePhone, String specialStatus, String Rav7a , String gender)
       : super(name, phoneNumber, email, privilege, id, lastNotifiedTime){
     this.Age = Age;
     this.Location = Location;
@@ -26,6 +27,7 @@ class UserInNeed extends RegisteredUser{
     this.homePhone = homePhone;
     this.specialStatus = specialStatus;
     this.Rav7a = Rav7a;
+    this.gender = gender;
 
   }
 

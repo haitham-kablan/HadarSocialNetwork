@@ -258,6 +258,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                             user.Location = location_controller.text;
                             user.specialStatus = specialstatus_controller.text;
                             user.Rav7a = rev7a_controller.text;
+                            //todo : update user feild gender
                             DataBaseService().addUserInNeedToDataBase(user);
                             Navigator.pop(context);
                             Navigator.pop(context);
