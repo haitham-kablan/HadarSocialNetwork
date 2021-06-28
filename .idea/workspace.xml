@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="3f165d4e-92e0-40ee-a3ed-2e4094b3b9e3" name="Default Changelist" comment="" />
+    <list default="true" id="3f165d4e-92e0-40ee-a3ed-2e4094b3b9e3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Yearly_project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Yearly_project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hadar/lib/l10n/app_ar.arb" beforeDir="false" afterPath="$PROJECT_DIR$/hadar/lib/l10n/app_ar.arb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hadar/lib/l10n/app_en.arb" beforeDir="false" afterPath="$PROJECT_DIR$/hadar/lib/l10n/app_en.arb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hadar/lib/l10n/app_he.arb" beforeDir="false" afterPath="$PROJECT_DIR$/hadar/lib/l10n/app_he.arb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hadar/lib/services/authentication/forms/UserInNeedRegPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/hadar/lib/services/authentication/forms/UserInNeedRegPage.dart" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,10 +30,22 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/hadar" />
-    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/hadar/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter" nameIsGenerated="true">
+      <option name="filePath" value="$PROJECT_DIR$/hadar/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -38,10 +60,22 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1624901161052">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1624901161052" />
+    <state x="498" y="202" key="#com.intellij.ide.util.TreeFileChooserDialog" timestamp="1624901148519">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="498" y="202" key="#com.intellij.ide.util.TreeFileChooserDialog/0.0.1536.824@0.0.1536.824" timestamp="1624901148519" />
     <state x="488" y="148" key="FileChooserDialogImpl" timestamp="1621323734520">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="488" y="148" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1621323734520" />
     <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1620149620011" />
+    <state x="277" y="57" key="SettingsEditor" timestamp="1624901121027">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="277" y="57" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1624901121027" />
   </component>
 </project>
