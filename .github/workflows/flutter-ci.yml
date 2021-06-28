@@ -25,12 +25,15 @@ jobs:
         
       - uses: actions/checkout@v1
       
+      # Upgrade flutter dependencies.
+      - run: flutter pub upgrade
+      
       # Get flutter dependencies.
       - run: flutter pub get
         #working-directory: ./hadar
 
       # Statically analyze the Dart code for any errors.
-      - run: flutter analyze .
+      #- run: flutter analyze .
         #working-directory: ./hadar
 
       # Run widget tests for our flutter project.
