@@ -33,7 +33,7 @@ void main() {
 
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       await dataBaseServiceMock.addVolunteerToDataBase(Volunteer('volunteer', '123', 'email@com', '1',LastNotifiedTime,"",1,",",",","","","","","","",[]));
-      await dataBaseServiceMock.addUserInNeedToDataBase(UserInNeed(Privilege.UserInNeed,'user_in_need', '2233', 'no_need', '2',LastNotifiedTime,1,"","",2,"","","",""));
+      await dataBaseServiceMock.addUserInNeedToDataBase(UserInNeed(Privilege.UserInNeed,'user_in_need', '2233', 'no_need', '2',LastNotifiedTime,1,"","",2,"","","","",""));
       await dataBaseServiceMock.addAdminToDataBase(Admin('admin', '2233', 'no_need', '3', LastNotifiedTime));
       UserInNeed userInNeed = (await dataBaseServiceMock.getUserById('2', Privilege.UserInNeed) ) as UserInNeed;
       Admin admin = (await dataBaseServiceMock.getUserById('3', Privilege.Admin) ) as Admin;
@@ -93,7 +93,7 @@ void main() {
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a","");
       Admin admin = Admin("name", "phoneNumber", "ADMIN", "2", lastNotifiedTime);
       Volunteer volunteer = Volunteer("name", "phoneNumber", "3", "3", lastNotifiedTime, "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "",[]);
 
@@ -126,7 +126,7 @@ void main() {
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a","");
       Admin admin = Admin("name", "phoneNumber", "ADMIN", "2", lastNotifiedTime);
       Volunteer volunteer = Volunteer("name", "phoneNumber", "3", "3", lastNotifiedTime, "2", 1, "birthdate", "location", "status", "work", "birthplace", "spokenlangs", "mobility", "",[]);
 
@@ -158,7 +158,7 @@ void main() {
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a","");
       HelpRequest helpRequest1 = HelpRequest(HelpRequestType("food"), "description", DateTime.now(), "1", "", Status.UNVERFIED, "location");
       HelpRequest helpRequest2 = HelpRequest(HelpRequestType("food"), "description", DateTime(1990), "1", "", Status.UNVERFIED, "location");
       HelpRequest helpRequest3 = HelpRequest(HelpRequestType("food"), "description", DateTime(1991), "1", "", Status.UNVERFIED, "location");
@@ -193,7 +193,7 @@ void main() {
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a","");
       HelpRequest helpRequest1 = HelpRequest(HelpRequestType("food"), "description", DateTime.now(), "1", "", Status.AVAILABLE, "location");
       HelpRequest helpRequest2 = HelpRequest(HelpRequestType("food"), "description", DateTime(1990), "1", "", Status.AVAILABLE, "location");
       HelpRequest helpRequest3 = HelpRequest(HelpRequestType("food"), "description", DateTime(1991), "1", "", Status.AVAILABLE, "location");
@@ -230,7 +230,7 @@ void main() {
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a","");
       HelpRequest helpRequest1 = HelpRequest(HelpRequestType("food"), "description", DateTime.now(), "1", "", Status.APPROVED, "location");
       HelpRequest helpRequest2 = HelpRequest(HelpRequestType("food"), "description", DateTime(1990), "1", "", Status.APPROVED, "location");
       HelpRequest helpRequest3 = HelpRequest(HelpRequestType("food"), "description", DateTime(1991), "1", "", Status.APPROVED, "location");
@@ -265,7 +265,7 @@ void main() {
       final DataBaseServiceMock dataBaseServiceMock = DataBaseServiceMock(firestore);
       int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
 
-      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a");
+      UserInNeed userInNeed = UserInNeed(Privilege.UserInNeed, "name", "phoneNumber", "user_in_need", "1", lastNotifiedTime, 2, "Location", "Status", 1, "eduStatus", "homePhone", "specialStatus", "Rav7a","");
       HelpRequest helpRequest1 = HelpRequest(HelpRequestType("food"), "description", DateTime.now(), "1", "", Status.AVAILABLE, "location");
       HelpRequest helpRequest2 = HelpRequest(HelpRequestType("food"), "description", DateTime(1990), "1", "", Status.AVAILABLE, "location");
       HelpRequest helpRequest3 = HelpRequest(HelpRequestType("food"), "description", DateTime(1991), "1", "", Status.AVAILABLE, "location");
