@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hadar/Design/basicTools.dart';
+import 'package:hadar/feeds/feed_items/category_scrol.dart';
 import 'package:hadar/screens/buttons/buttonClass.dart';
 import 'package:hadar/services/DataBaseServices.dart';
 import 'package:hadar/users/User.dart' as a;
@@ -33,19 +35,30 @@ class _VolunteerShowCategoriesState extends State<VolunteerShowCategories> {
     types = await DataBaseService().helpRequestTypesAsList();
   }
 
-  volunteerCheckCategories() {
-    if (user.categories.isEmpty)
-      checkBox = checkBoxForCategories(types, context, types);
-    else {
-      checkBox = checkBoxForCategories(types, context, user.categories);
+
+  getCurrentCategories(){
+    List<Widget> current=[];
+    List<HelpRequestType> getData;
+    if(user.categories.isEmpty)
+      getData = types;
+    else
+      getData =user.categories;
+      for(HelpRequestType category in getData){
+        if(category.description == 'אחר')
+          continue;
+        current.add(Chip(
+          label:  Text(category.description,style: TextStyle(color: Colors.white),),
+          backgroundColor: Theme.of(context).primaryColor,
+        ));
     }
-    return checkBox;
+    return current;
   }
 
 
   @override
   Widget build(BuildContext context) {
     initTypes();
+    checkBox=checkBoxForCategories(types, context);
     return Column(
       children: [
         TextButton(
@@ -61,8 +74,19 @@ class _VolunteerShowCategoriesState extends State<VolunteerShowCategories> {
           },
         ),
         Visibility(
+          child:  Container(
+            padding: EdgeInsets.only(left:20, right:20 ),
+            child: Wrap(
+              spacing: 5.0,
+              children:
+                getCurrentCategories(),
+            ),
+          ),
+          visible: !isVisible,
+        ),
+        Visibility(
           visible: isVisible,
-          child: volunteerCheckCategories(),
+          child: checkBox,
         ),
         Visibility(
           visible: isVisible,
@@ -71,8 +95,9 @@ class _VolunteerShowCategoriesState extends State<VolunteerShowCategories> {
               DataBaseService()
                   .updateVolCategories(checkBox.getSelectedItems(), user);
               setState(
-                    () {
+                () {
                   isVisible = false;
+
                 },
               );
             },

@@ -21,7 +21,6 @@ jobs:
         with:
           channel: 'beta' # 'dev', 'alpha', default to: 'stable'
         # flutter-version: '1.12.x' # you can also specify exact version of flutter
-        #working-directory: ./hadar
         
       - uses: actions/checkout@v1
       
@@ -30,12 +29,9 @@ jobs:
       
       # Get flutter dependencies.
       - run: flutter pub get
-        #working-directory: ./hadar
 
       # Statically analyze the Dart code for any errors.
       #- run: flutter analyze .
-        #working-directory: ./hadar
 
       # Run widget tests for our flutter project.
       - run: flutter test
-        #working-directory: ./hadar
