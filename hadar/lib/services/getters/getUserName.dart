@@ -72,7 +72,11 @@ class GetUserInNeedInfo extends StatelessWidget {
           Map<String, dynamic> data = snapshot.data.data();
           if(data == null){return Text('invalid id');}
           //"בן/בת " + userInNeed.Age.toString() + ", " + userInNeed.Location;
-          return Text("בן/בת " + "${data['Age']}" + ", " + helpRequest.location
+          String gender = data['gender'] == "איש" ? "גבר בן " : "גברת בת ";
+          if (data['gender'] == ""){
+            gender = "אנונימי בן ";
+          }
+          return Text(gender + "${data['Age']}" + ", " + helpRequest.location
             , style: TextStyle(
               color: BasicColor.clr,
               fontWeight: FontWeight.bold,

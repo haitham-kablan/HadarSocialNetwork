@@ -462,6 +462,7 @@ class DataBaseService{
     to_add['specialStatus'] = user.specialStatus;
     to_add['Rav7a'] = user.Rav7a;
     to_add['lastNotifiedTime'] = defaultLastNotifiedTime;
+    to_add['gender'] = user.gender;
 
     return await userInNeedCollection.doc(user.id).set(to_add);
   }
@@ -609,7 +610,7 @@ class DataBaseService{
       }
 
       return UserInNeed(getTypeFromString(doc['privilege']) ,doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '',
-          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime ,doc['Age'] ?? 0 ,doc['Location'] ?? '' ,doc['Status'] ?? '' , doc['numKids'] ?? 0, doc['eduStatus'] ?? '', doc['homePhone'] ?? '',doc['specialStatus'] ?? '' ,doc['Rav7a'] ?? '' );
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime ,doc['Age'] ?? 0 ,doc['Location'] ?? '' ,doc['Status'] ?? '' , doc['numKids'] ?? 0, doc['eduStatus'] ?? '', doc['homePhone'] ?? '',doc['specialStatus'] ?? '' ,doc['Rav7a'] ?? '' ,doc['gender'] ?? '' );
     }
 
     if (privilege == Privilege.Admin){
@@ -862,7 +863,7 @@ class DataBaseService{
       }
 
       return UserInNeed(Privilege.UserInNeed , doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
-          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['Age'] ?? 0 ,doc['Location'] ?? '' ,doc['Status'] ?? '' , doc['numKids'] ?? 0, doc['eduStatus'] ?? '', doc['homePhone'] ?? '',doc['specialStatus'] ?? '' ,doc['Rav7a'] ?? '' );
+          doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['Age'] ?? 0 ,doc['Location'] ?? '' ,doc['Status'] ?? '' , doc['numKids'] ?? 0, doc['eduStatus'] ?? '', doc['homePhone'] ?? '',doc['specialStatus'] ?? '' ,doc['Rav7a'] ?? '' ,doc['gender'] ?? '' );
     }
 
     if (privilege == Privilege.Admin){
@@ -1112,7 +1113,7 @@ List<UserInNeed> UserInNeedListFromSnapShot(QuerySnapshot snapshot){
   int defaultLastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
   List<UserInNeed> all_users =  snapshot.docs.map((doc) =>
       UserInNeed( getTypeFromString(doc['privilege']), doc['name'] ?? '', doc['phoneNumber'] ?? '', doc['email'] ?? '' ,
-  doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['Age'] ?? 0 ,doc['Location'] ?? '' ,doc['Status'] ?? '' , doc['numKids'] ?? 0, doc['eduStatus'] ?? '', doc['homePhone'] ?? '',doc['specialStatus'] ?? '' ,doc['Rav7a'] ?? '' )).toList();
+  doc['id'] ?? '', doc['lastNotifiedTime'] ?? defaultLastNotifiedTime, doc['Age'] ?? 0 ,doc['Location'] ?? '' ,doc['Status'] ?? '' , doc['numKids'] ?? 0, doc['eduStatus'] ?? '', doc['homePhone'] ?? '',doc['specialStatus'] ?? '' ,doc['Rav7a'] ?? '' ,doc['gender'] ?? '' )).toList();
   List<UserInNeed> all_users_without_annoy = List();
   for(var i = 0; i < all_users.length; i++){
     if(all_users[i].privilege == Privilege.UserInNeed){

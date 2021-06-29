@@ -40,10 +40,15 @@ class _ReigesterPageState extends State<ReigesterPage> {
   final phoneKey = GlobalKey<FormState>();
   String _error_msg = '';
   bool alert = false;
+  bool gender_alert = false;
   bool clicked=false;
+  bool gender_clicked=false;
   Privilege clicked_priv = null;
+  String gender_clicked_final = "";
   Map<String, Icon> tripTypes = user_types([Colors.grey , Colors.grey , Colors.grey, Colors.grey]);
+  Map<String, Icon> genderTypes = gender_types([Colors.grey , Colors.grey]);
   List<String> tripKeys ;
+  List<String> genderKeys ;
 
   final name_Controller = TextEditingController();
   final id_Controller = TextEditingController();
@@ -60,7 +65,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(
-          child: get_bg(),
+          child:  Expanded(child: get_bg())
         ),
     );
   }
@@ -72,6 +77,13 @@ class _ReigesterPageState extends State<ReigesterPage> {
       index == 2 ? BasicColor.clr : Colors.grey,
       index == 3 ? BasicColor.clr : Colors.grey];
     return user_types(new_clrs);
+  }
+
+  Map<String, Icon> update_gender_list(int index) {
+
+    List<Color> new_clrs = [index == 0 ? BasicColor.clr : Colors.grey ,
+      index == 1 ? BasicColor.clr : Colors.grey];
+    return gender_types(new_clrs);
   }
 
   Widget showAlert() {
@@ -277,6 +289,61 @@ class _ReigesterPageState extends State<ReigesterPage> {
               ),
             ),
 
+            Container(
+              margin: EdgeInsets.only(top:30),
+              child: Text(
+                AppLocalizations.of(context).gender,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: BasicColor.clr,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.right,
+
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FlatButton(
+                    onPressed: ()  {
+
+                      setState(() {
+                        genderTypes = update_gender_list(0);
+                        gender_alert = false;
+                        gender_clicked=true;
+                        gender_clicked_final = "איש";
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        genderTypes["איש"],
+                        Text(AppLocalizations.of(context).male),
+                      ],
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        genderTypes = update_gender_list(1);
+                        gender_alert = false;
+                        gender_clicked=true;
+                        gender_clicked_final = "אישה";
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        genderTypes["אישה"],
+                        Text(AppLocalizations.of(context).female),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
 
             Container(
               margin: EdgeInsets.all(10),
@@ -315,6 +382,15 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     });
                     return;
                   }
+                  if(gender_clicked == false){
+                    setState(() {
+                      alert=true;
+                      show_spinner = false;
+                      _error_msg = AppLocalizations.of(context).genderError;
+
+                    });
+                    return;
+                  }
                   assert (clicked_priv != null);
                   try {
                     await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -327,7 +403,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     int lastNotifiedTime = DateTime.now().millisecondsSinceEpoch;
                     switch(clicked_priv){
                       case Privilege.UserInNeed:
-                        user_in_need = UserInNeed(Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text,lastNotifiedTime, 0,'','',0,'','','','');
+                        user_in_need = UserInNeed(Privilege.UserInNeed , name_Controller.text, phone_Controller.text, email_Controller.text, id_Controller.text,lastNotifiedTime, 0,'','',0,'','','','',gender_clicked_final);
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => userInNeedRegisterPage(user_in_need)));
                         break;
@@ -403,6 +479,12 @@ Map<String, Icon> user_types(List<Color> colors) => {
   "עוזר": Icon(Icons.supervisor_account_sharp, size: 25,color: colors[2] ),
   "עמותה": Icon(Icons.house_siding_sharp, size: 25,color: colors[3] ),
  // "צד שלישי": Icon(Icons.app_registration, size: 27,color: colors[3] ),
+};
+
+Map<String, Icon> gender_types(List<Color> colors ) => {
+
+  "איש": Icon(Icons.male, size: 25 ,color: colors[0]),
+  "אישה": Icon(Icons.female, size: 25,color: colors[1]),
 };
 
 bool Check_user(name, String id, String phone_number, String email, String pw, String second_pw){

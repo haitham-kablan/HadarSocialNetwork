@@ -46,9 +46,9 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
         textDirection: TextDirection.rtl,
         child: new Builder(builder: (BuildContext context) {
           return Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: Center(child: get_bg()),
-          );
+              resizeToAvoidBottomInset: false,
+              body: Center(child: get_bg()),
+            );
         }));
   }
 
@@ -174,7 +174,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                           onPressed: () async{
-                            if(!age.currentState.validate() || !location.currentState.validate() || numKids.currentState.validate() ){
+                            if(!age.currentState.validate() || !location.currentState.validate() || !numKids.currentState.validate() ){
                               return;
                             }
                             user.Age = age_controller.text == ''
