@@ -1,5 +1,5 @@
 
-
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:hadar/feeds/Admin_JoinRequest_Feed.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +43,7 @@ class CurrentUser{
 
     switch(curr_user.privilege){
       case Privilege.Admin:
-        if(curr_user.lastNotifiedTime != -1) {
+        if(curr_user.lastNotifiedTime != -1 && !kIsWeb) {
           initWorkmanager();
         }
         userMainWidget = AdminPage(curr_user as Admin);
@@ -56,7 +56,7 @@ class CurrentUser{
         break;
 
       case Privilege.Volunteer:
-        if(curr_user.lastNotifiedTime != -1) {
+        if(curr_user.lastNotifiedTime != -1 && !kIsWeb) {
           initWorkmanager();
         }
         List<HelpRequestType> db_categories = await DataBaseService().helpRequestTypesAsList();
