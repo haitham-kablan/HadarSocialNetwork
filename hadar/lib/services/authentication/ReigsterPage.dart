@@ -64,9 +64,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Center(
-          child:  Expanded(child: get_bg())
-        ),
+        body:  Container(child: Expanded(child: get_bg()))
     );
   }
 
