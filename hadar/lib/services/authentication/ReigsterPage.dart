@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hadar/Design/basicTools.dart';
@@ -33,18 +34,20 @@ class ReigesterPage extends StatefulWidget {
 class _ReigesterPageState extends State<ReigesterPage> {
 
   final nameKey = GlobalKey<FormState>();
+
   final emailKey = GlobalKey<FormState>();
   final paswwordKey = GlobalKey<FormState>();
   final secnd_pass_Key = GlobalKey<FormState>();
   final idKey = GlobalKey<FormState>();
   final phoneKey = GlobalKey<FormState>();
+  bool isChecked = false;
   String _error_msg = '';
   bool alert = false;
   bool clicked=false;
   Privilege clicked_priv = null;
   Map<String, Icon> tripTypes = user_types([Colors.grey , Colors.grey , Colors.grey, Colors.grey]);
   List<String> tripKeys ;
-
+  TextStyle linkStyle = TextStyle(color: BasicColor.clr , fontSize: 15 , fontWeight: FontWeight.bold , decoration: TextDecoration.underline);
   final name_Controller = TextEditingController();
   final id_Controller = TextEditingController();
   final email_Controller = TextEditingController();
@@ -54,13 +57,13 @@ class _ReigesterPageState extends State<ReigesterPage> {
   bool show_spinner = false;
   @override
   Widget build(BuildContext context) {
-
+    Size size = MediaQuery.of(context).size;
     List<String> tripKeys = tripTypes.keys.toList();
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Center(
-          child: get_bg(),
+          child: get_bg(size),
         ),
     );
   }
@@ -155,7 +158,7 @@ class _ReigesterPageState extends State<ReigesterPage> {
       height: 0,
     );
   }
-  Widget get_bg(){
+  Widget get_bg(Size size){
     return  Column(
           children: [
             demo_bg(
@@ -277,7 +280,76 @@ class _ReigesterPageState extends State<ReigesterPage> {
               ),
             ),
 
+            SizedBox(height: 20,),
+            Row(
+              children: [
+                Spacer(flex: 1,),
+                Checkbox(value: isChecked, onChanged: (bool value) { setState(() {
+                  isChecked = value;
+                }); },
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
 
+                      TextSpan(
+                          text: AppLocalizations.of(context).terms,
+                          style: linkStyle,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              showDialog(context: context, builder: (context){
+                                return Center(
+                                  child: Container(
+                                    height: size.height * 0.7,
+                                    width: size.width * 0.8,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: BasicColor.backgroundClr,
+                                    ),
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(height: 30,),
+                                          Material(
+                                            color: Colors.transparent,
+                                              child: Text("תנאי השישמוש של האפליקציה",style: TextStyle(color: BasicColor.clr,fontSize: 20),)),
+                                          SizedBox(height: 25,),
+                                          Material(
+                                              color: Colors.transparent,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(15.0),
+                                                child: Text("1. אני מודע\\ת ומסכים\\מה כי בקשת העזרה שלי מפורסמת בפומבי ומנוהלת על ידי עובדות סוציאליות המתחזקות את האפליקציה המכונה \"רשת חברתית\" ",style: TextStyle(color: Colors.grey[800],fontSize: 15),),
+                                              )),
+                                          SizedBox(height: 20,),
+                                          Material(
+                                              color: Colors.transparent,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(15.0),
+                                                child: Text("2. אני מודע\\ת ומסכים\\מה כי האפליקציה מנטרת את המיקו שלי , המיקום חשוף רק לעובדות הסוציאליות המנווטות את המידע ולצוות ניהול הנתונים הטכניוני ולא לכלל הציבור.",style: TextStyle(color: Colors.grey[800],fontSize: 15),),
+                                              )),
+                                          SizedBox(height: 20,),
+                                          Material(
+                                              color: Colors.transparent,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(15.0),
+                                                child: Text("3. אני מודע\\ת ומסכים\\מה כי תיעוד הבקשות נשמר במחשבי הטכניון התומכים בפלטפורמה במטרה לשפר את רווחת התושבים בשכונת הדר ולתמוך במחקר התומך.",style: TextStyle(color: Colors.grey[800],fontSize: 15),),
+                                              )),
+                                          //SizedBox(height: 20,),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                            }),
+                    ],
+                  ),
+                ),
+
+                Spacer(flex: 1,),
+              ],
+            ),
+            SizedBox(height: 20,),
             Container(
               margin: EdgeInsets.all(10),
               child: show_spinner ? SpinKitCircle(color: BasicColor.clr,) :RaisedButton(
@@ -315,6 +387,17 @@ class _ReigesterPageState extends State<ReigesterPage> {
                     });
                     return;
                   }
+
+                  if(!isChecked){
+                    setState(() {
+                      alert=true;
+                      show_spinner = false;
+                      _error_msg = "נא אשר את תנאי השימוש באפליקציה";
+
+                    });
+                    return;
+                  }
+
                   assert (clicked_priv != null);
                   try {
                     await FirebaseAuth.instance.createUserWithEmailAndPassword(
