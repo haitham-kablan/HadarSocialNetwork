@@ -174,7 +174,7 @@ class _userInNeedRegisterPageState extends State<userInNeedRegisterPage> {
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                           onPressed: () async{
-                            if(!age.currentState.validate() || !location.currentState.validate() || numKids.currentState.validate() ){
+                            if(!age.currentState.validate() || !location.currentState.validate() || !numKids.currentState.validate() ){
                               return;
                             }
                             user.Age = age_controller.text == ''
